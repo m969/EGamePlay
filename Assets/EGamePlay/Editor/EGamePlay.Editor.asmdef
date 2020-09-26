@@ -1,0 +1,17 @@
+{
+    "name": "EGamePlay.Editor",
+    "references": [
+        "GUID:6e851b320268d76448f1a83d6bc35620"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
