@@ -19,6 +19,7 @@
 		private AttributeConfigObject attributeConfigObject;
 
 		[LabelText("属性配置")]
+        [ListDrawerSettings(Expanded = true, DraggableItems = false)]
 		public List<AttributeConfig> AttributeConfigs;
 		//[Button("+")]
 		//private void AddAttributeConfig()
@@ -29,6 +30,7 @@
 
 		[OnInspectorGUI(AppendMethodName = "DrawStateList"/*, AppendMethodName = "EndDrawStateMatrix"*/)]
 		[LabelText("状态配置")]
+        [ListDrawerSettings(Expanded = true, DraggableItems = false)]
 		public List<StateConfig> StateConfigs;
 		//[Button("+")]
 		//private void AddStateConfig()
@@ -37,14 +39,14 @@
 		//	StateConfigs.Add(new StateConfig() { Guid = string.Concat(arr) });
 		//}
 
-        //[HideLabel]
-        //[ReadOnly]
-        //[OnInspectorGUI(PrependMethodName = "DrawStateList"/*, AppendMethodName = "EndDrawStateMatrix"*/)]
-        //public string SplitTitle = "";
+		//[HideLabel]
+		//[ReadOnly]
+		//[OnInspectorGUI(PrependMethodName = "DrawStateList"/*, AppendMethodName = "EndDrawStateMatrix"*/)]
+		//public string SplitTitle = "";
 
-        private void OnEnable()
+		private void OnEnable()
         {
-			attributeConfigObject = AssetDatabase.LoadAssetAtPath<AttributeConfigObject>("Assets/EGamePlay/CombatConfigs/战斗属性配置.asset");
+			attributeConfigObject = AssetDatabase.LoadAssetAtPath<AttributeConfigObject>("Assets/EGamePlay/Demo/Resources/战斗属性配置.asset");
 			if (attributeConfigObject == null)
             {
 

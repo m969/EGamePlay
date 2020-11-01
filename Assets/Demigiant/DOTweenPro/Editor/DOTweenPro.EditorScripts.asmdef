@@ -1,0 +1,11 @@
+{
+	"name": "DOTweenPro.EditorScripts",
+	"references": [
+		"DOTween.Modules",
+		"DOTweenPro.Scripts"
+	],
+	"includePlatforms": [
+		"Editor"
+	],
+	"autoReferenced": false
+}

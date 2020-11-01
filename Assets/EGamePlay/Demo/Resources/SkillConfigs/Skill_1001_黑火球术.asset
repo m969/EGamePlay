@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
+  m_Name: "Skill_1001_\u9ED1\u706B\u7403\u672F"
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  ID: 1001
+  Name: "\u9ED1\u706B\u7403\u672F"
+  SkillSpellType: 0
+  TargetSelectType: 1
+  AffectAreaType: 0
+  CircleAreaRadius: 0
+  AreaGuideObj: {fileID: 0}
+  AreaCollider: {fileID: 0}
+  AffectTargetType: 2
+  Cold: 0
+  ColdGroupTitle: "\u51B7\u5374\u65F6\u95F4"
+  ColdTime: 0
+  EffectGroupList:
+  - Enabled: 1
+    SkillEffectType: 1
+    IsSkillEffect: 1
+    AddSkillEffectTargetType: 0
+    EffectTriggerType: 0
+    DamageType: 1
+    DamageValue: 80
+    CanCrit: 0
+    CureValue: 
+    AddStatus: {fileID: 0}
+    RemoveStatusConfigObject: {fileID: 0}
+    RemoveBuffTargetType: 0
+    NumericType: 0
+    NumericValue: 
+    ShieldType: 0
+    ShieldValue: 0
+    ShieldDuration: 0
+  - Enabled: 1
+    SkillEffectType: 3
+    IsSkillEffect: 1
+    AddSkillEffectTargetType: 0
+    EffectTriggerType: 0
+    DamageType: 0
+    DamageValue: 
+    CanCrit: 0
+    CureValue: 
+    AddStatus: {fileID: 11400000, guid: e9f6e9afe434d2b47b41c70f8c214017, type: 2}
+    RemoveStatusConfigObject: {fileID: 0}
+    RemoveBuffTargetType: 0
+    NumericType: 0
+    NumericValue: 
+    ShieldType: 0
+    ShieldValue: 0
+    ShieldDuration: 0
+  - Enabled: 1
+    SkillEffectType: 3
+    IsSkillEffect: 1
+    AddSkillEffectTargetType: 0
+    EffectTriggerType: 0
+    DamageType: 0
+    DamageValue: 
+    CanCrit: 0
+    CureValue: 
+    AddStatus: {fileID: 11400000, guid: b8c91eb546ede34438b6e5f3aefa1734, type: 2}
+    RemoveStatusConfigObject: {fileID: 0}
+    RemoveBuffTargetType: 0
+    NumericType: 0
+    NumericValue: 
+    ShieldType: 0
+    ShieldValue: 0
+    ShieldDuration: 0
+  - Enabled: 1
+    SkillEffectType: 7
+    IsSkillEffect: 1
+    AddSkillEffectTargetType: 1
+    EffectTriggerType: 0
+    DamageType: 0
+    DamageValue: 
+    CanCrit: 0
+    CureValue: 
+    AddStatus: {fileID: 0}
+    RemoveStatusConfigObject: {fileID: 0}
+    RemoveBuffTargetType: 0
+    NumericType: 0
+    NumericValue: 
+    ShieldType: 0
+    ShieldValue: 0
+    ShieldDuration: 0
+  SkillAnimationClip: {fileID: 0}
+  SkillEffectObject: {fileID: 0}
+  SkillAudio: {fileID: 0}

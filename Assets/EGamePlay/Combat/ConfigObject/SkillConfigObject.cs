@@ -9,6 +9,7 @@ using Sirenix.OdinInspector.Editor;
 using UnityEngine.PlayerLoop;
 using Sirenix.Utilities.Editor;
 using UnityEngine.Serialization;
+using System.Linq;
 
 namespace EGamePlay.Combat
 {
@@ -23,20 +24,40 @@ namespace EGamePlay.Combat
         [DelayedProperty]
         public string Name = "技能1";
         public SkillSpellType SkillSpellType;
-        public SkillType SkillType;
+        //public SkillType SkillType;
+        //[LabelText("是否指定目标")]
+        //public bool IsTargeted = true;
+        //[HideIf("IsTargeted")]
+        [LabelText("技能目标检测方式")]
         public SkillTargetSelectType TargetSelectType;
+        [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
+        [LabelText("区域场类型")]
+        public SkillAffectAreaType AffectAreaType;
 
-        [ToggleGroup("TargetSelect", "$TargetGroupTitle")]
-        [ReadOnly]
-        public bool TargetSelect = true;
-        [ToggleGroup("TargetSelect")]
-        [HideInInspector]
-        public string TargetGroupTitle = "目标限制";
-        [ToggleGroup("TargetSelect")]
+        [LabelText("圆形区域场半径")]
+        [ShowIf("ShowCircleAreaRadius")]
+        public float CircleAreaRadius;
+        public bool ShowCircleAreaRadius { get { return AffectAreaType == SkillAffectAreaType.Circle && TargetSelectType == SkillTargetSelectType.AreaSelect; } }
+
+        [LabelText("区域场引导配置")]
+        [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
+        public GameObject AreaGuideObj;
+        [LabelText("区域场配置")]
+        [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
+        public GameObject AreaCollider;
+
+        //[ToggleGroup("TargetSelect", "$TargetGroupTitle")]
+        //[ReadOnly]
+        //public bool TargetSelect = true;
+        //[ToggleGroup("TargetSelect")]
+        //[HideInInspector]
+        //public string TargetGroupTitle = "目标限制";
+        //[ToggleGroup("TargetSelect")]
+        [LabelText("技能作用对象")]
         public SkillAffectTargetType AffectTargetType;
-        [ToggleGroup("TargetSelect")]
-        [HideIf("AffectTargetType", SkillAffectTargetType.Self)]
-        public SkillTargetType TargetType;
+        //[ToggleGroup("TargetSelect")]
+        //[HideIf("AffectTargetType", SkillAffectTargetType.Self)]
+        //public SkillTargetType TargetType;
 
         [ToggleGroup("Cold", "$ColdGroupTitle")]
         public bool Cold = false;
@@ -51,10 +72,26 @@ namespace EGamePlay.Combat
         [Space(30)]
         [LabelText("效果列表")]
         [OnInspectorGUI("DrawSpace", append:true)]
+        [ListDrawerSettings(Expanded = true, DraggableItems = false, /*HideAddButton = true, */ShowItemCount = false)]
         public SkillEffectToggleGroup[] EffectGroupList;
         private void DrawSpace()
         {
+            //if (GUILayout.Button("+"))
+            //{
+            //    var list = EffectGroupList.ToList();
+            //    list.Add(new SkillEffectToggleGroup());
+            //    EffectGroupList = list.ToArray();
+            //}
             GUILayout.Space(30);
+        }
+        private void OnEndListElementGUI()
+        {
+            if (GUILayout.Button("+"))
+            {
+                var list = EffectGroupList.ToList();
+                list.Add(new SkillEffectToggleGroup());
+                EffectGroupList = list.ToArray();
+            }
         }
 
         [BoxGroup("技能表现")]

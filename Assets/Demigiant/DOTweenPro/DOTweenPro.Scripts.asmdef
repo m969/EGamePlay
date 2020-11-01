@@ -1,0 +1,6 @@
+{
+	"name": "DOTweenPro.Scripts",
+	"references": [
+		"DOTween.Modules"
+	]
+}

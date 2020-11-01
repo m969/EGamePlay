@@ -17,25 +17,34 @@
         Passive,
     }
 
-    [LabelText("技能类型")]
-    public enum SkillType
-    {
-        [LabelText("指向性技能")]
-        Toward,
-        [LabelText("非指向性技能")]
-        Untoward,
-    }
+    //[LabelText("技能类型")]
+    //public enum SkillType
+    //{
+    //    [LabelText("指定目标类技能")]
+    //    Targeting,
+    //    [LabelText("非指向性技能")]
+    //    Untoward,
+    //}
 
-    [LabelText("目标选择方式")]
+    //[LabelText("技能效果触发类型")]
+    //public enum SkillEffectTriggerType
+    //{
+    //    [LabelText("指定目标类技能")]
+    //    Targeting,
+    //    [LabelText("非指向性技能")]
+    //    Untoward,
+    //}
+
+    [LabelText("技能目标检测方式")]
     public enum SkillTargetSelectType
     {
         [LabelText("自动")]
         Auto,
-        [LabelText("手动锁定")]
+        [LabelText("手动指定")]
         PlayerSelect,
-        [LabelText("弹体碰撞指定")]
+        [LabelText("弹体碰撞检测")]
         BodyCollideSelect,
-        [LabelText("区域场指定")]
+        [LabelText("固定区域场检测")]
         AreaSelect,
         [LabelText("条件指定")]
         ConditionSelect,
@@ -43,7 +52,18 @@
         Other,
     }
 
-    [LabelText("作用对象")]
+    [LabelText("区域场类型")]
+    public enum SkillAffectAreaType
+    {
+        [LabelText("圆形")]
+        Circle = 0,
+        [LabelText("矩形")]
+        Rect = 1,
+        [LabelText("组合")]
+        Compose = 2,
+    }
+
+    [LabelText("技能作用对象")]
     public enum SkillAffectTargetType
     {
         [LabelText("自身")]
@@ -66,16 +86,15 @@
     [LabelText("目标类型")]
     public enum SkillTargetType
     {
-        [LabelText("单体目标")]
+        [LabelText("单体检测")]
         Single = 0,
-        [LabelText("群体目标")]
+        [LabelText("多人检测")]
         Multiple = 1,
     }
 
     [LabelText("伤害类型")]
     public enum DamageType
     {
-        [HideLabel]
         [LabelText("物理伤害")]
         Physic = 0,
         [LabelText("魔法伤害")]
@@ -134,13 +153,36 @@
     public enum NumericType
     {
         [LabelText("物理攻击")]
-        PhysicAttack = 0,
-        [LabelText("护甲")]
-        Defense = 1,
+        PhysicAttack = 1001,
+        [LabelText("物理护甲")]
+        Defense = 1002,
         [LabelText("法术强度")]
-        SpellPower = 2,
-        [LabelText("魔抗")]
-        MagicDefense = 3,
+        SpellPower = 1003,
+        [LabelText("魔法抗性")]
+        MagicDefense = 1004,
+
+        [LabelText("暴击概率")]
+        CriticalProb = 2001,
+    }
+
+    [LabelText("整形数值")]
+    public enum IntNumericType
+    {
+        [LabelText("物理攻击")]
+        PhysicAttack = 1001,
+        [LabelText("物理护甲")]
+        Defense = 1002,
+        [LabelText("法术强度")]
+        SpellPower = 1003,
+        [LabelText("魔法抗性")]
+        MagicDefense = 1004,
+    }
+
+    [LabelText("浮点型形数值")]
+    public enum FloatNumericType
+    {
+        [LabelText("暴击概率")]
+        CriticalProb = 2001,
     }
 
     //[Flags]

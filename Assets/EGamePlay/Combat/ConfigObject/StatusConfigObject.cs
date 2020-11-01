@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System.IO;
 using Sirenix.Utilities.Editor;
+using System.Linq;
 
 namespace EGamePlay.Combat
 {
@@ -53,15 +54,25 @@ namespace EGamePlay.Combat
         //[TabGroup("状态效果配置/TabGroup", "活跃时")]
         [Space(30)]
         [LabelText("效果列表")]
+        [ListDrawerSettings(Expanded = true, DraggableItems = false, /*HideAddButton = true, */ShowItemCount = false)]
         public SkillEffectToggleGroup[] RunningEffectGroupList;
-        
+
         //[TabGroup("状态效果配置/TabGroup", "结束")]
         //[LabelText("效果列表")]
         //public SkillEffectToggleGroup[] EndEffectGroupList;
 
         private void BeginBox()
         {
+            //if (GUILayout.Button("+"))
+            //{
+            //    var list = RunningEffectGroupList.ToList();
+            //    list.Add(new SkillEffectToggleGroup());
+            //    RunningEffectGroupList = list.ToArray();
+            //}
             GUILayout.Space(30);
+            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            //SirenixEditorGUI.DrawHorizontalLineSeperator(, 0, 10);
+            GUILayout.Space(10);
             SirenixEditorGUI.BeginBox("状态表现");
         }
         [LabelText("状态特效")]
