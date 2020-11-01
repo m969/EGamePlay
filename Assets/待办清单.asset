@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478531cf99638f947a17f3838cc389f7, type: 3}
+  m_Name: "\u5F85\u529E\u6E05\u5355"
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  TaskConfigs:
+  - Title: "\u52A8\u6001\u8868\u8FBE\u5F0F\u89E3\u6790\u529F\u80FD"
+    Description: "\u63CF\u8FF0"
+  - Title: "\u78B0\u649E\u76D2\u4E0E\u53EF\u89C6\u6280\u80FD\u573A"
+    Description: "LockstepCollision\u78B0\u649E\u7CFB\u7EDF"
+  - Title: "\u6280\u80FD\u6548\u679C\u6570\u503C\u516C\u5F0F\u7F16\u8F91\u9762\u677F"
+    Description: "\u63CF\u8FF0"
+  - Title: Hero Builder Editor
+    Description: "\u63CF\u8FF0"
