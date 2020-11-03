@@ -5,11 +5,9 @@ using UnityEngine;
 
 public class EGamePlayInit : MonoBehaviour
 {
-    private GlobalCombatManager GlobalCombatManager;
 
 
     private void Start()
     {
-        GlobalCombatManager = new GlobalCombatManager();
     }
 }

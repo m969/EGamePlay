@@ -41,7 +41,7 @@ namespace EGamePlay.Combat
         {
             var damageAction = combatAction as DamageAction;
             HealthPoint.Minus(damageAction.DamageValue);
-            ActionTrigger.CallAction(CombatActionType.CauseDamage, combatAction);
+            CallAction(CombatActionType.CauseDamage, combatAction);
         }
 
         public void ReceiveCure(int cure)
