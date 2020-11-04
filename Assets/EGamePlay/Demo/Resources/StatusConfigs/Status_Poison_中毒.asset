@@ -34,18 +34,21 @@ MonoBehaviour:
     SkillEffectType: 1
     IsSkillEffect: 0
     AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
+    EffectTriggerType: 3
+    Interval: 1049
     DamageType: 1
     DamageValue: 
     CanCrit: 0
     CureValue: 
     AddStatus: {fileID: 0}
-    RemoveStatusConfigObject: {fileID: 0}
-    RemoveBuffTargetType: 0
+    RemoveStatus: {fileID: 0}
     NumericType: 0
     NumericValue: 
     ShieldType: 0
     ShieldValue: 0
     ShieldDuration: 0
-  SkillParticleEffect: {fileID: 0}
-  SkillAudio: {fileID: 0}
+    TagType: 0
+    TagCount: 1
+    TagDuration: 0
+  ParticleEffect: {fileID: 0}
+  Audio: {fileID: 0}

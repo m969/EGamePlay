@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Burn_\u707C\u70E7"
+  m_Name: "Status_Vertigo_\u7729\u6655"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,34 +21,14 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  ID: Burn
-  Name: "\u707C\u70E7"
+  ID: Vertigo
+  Name: "\u7729\u6655"
   StatusType: 1
   ShowInStatusIconList: 1
-  MaxStack: 99
+  MaxStack: 1
   DurationToggleGroup:
     Enabled: 1
-    Duration: 3000
-  RunningEffectGroupList:
-  - Enabled: 1
-    SkillEffectType: 1
-    IsSkillEffect: 0
-    AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 0
-    DamageValue: 
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 0}
-    RemoveStatus: {fileID: 0}
-    NumericType: 0
-    NumericValue: 
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 0
+    Duration: 2000
+  RunningEffectGroupList: []
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
