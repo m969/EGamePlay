@@ -54,10 +54,10 @@ public sealed class Hero : MonoBehaviour
             GameObject.Destroy(hitEffect, 0.2f);
 
 
-            var DamageAction = CombatActionManager.CreateDamageAction(CombatEntity);
-            DamageAction.Target = monster.GetComponent<Monster>().CombatEntity;
+            var DamageOperation = CombatOperationManager.CreateDamageOperation(CombatEntity);
+            DamageOperation.Target = monster.GetComponent<Monster>().CombatEntity;
             CombatEntity.NumericBox.PhysicAttack_I.SetBase(RandomHelper.RandomNumber(600, 999));
-            DamageAction.ApplyDamage();
+            DamageOperation.ApplyDamage();
         }
     }
 }

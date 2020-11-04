@@ -76,12 +76,6 @@ namespace EGamePlay.Combat
         public SkillEffectToggleGroup[] EffectGroupList;
         private void DrawSpace()
         {
-            //if (GUILayout.Button("+"))
-            //{
-            //    var list = EffectGroupList.ToList();
-            //    list.Add(new SkillEffectToggleGroup());
-            //    EffectGroupList = list.ToArray();
-            //}
             GUILayout.Space(30);
         }
         private void OnEndListElementGUI()
@@ -129,21 +123,6 @@ namespace EGamePlay.Combat
         }
     }
 
-    //[Serializable]
-    //public class CureToggleGroup : MyToggleObject
-    //{
-    //    [LabelText("治疗参数")]
-    //    public string CureValue;
-    //}
-
-    //[Serializable]
-    //public class DamageToggleGroup : MyToggleObject
-    //{
-    //    public DamageType DamageType;
-    //    [LabelText("伤害参数")]
-    //    public string DamageValue;
-    //}
-
     [Serializable]
     public class SkillEffectToggleGroup
     {
@@ -158,44 +137,33 @@ namespace EGamePlay.Combat
                     case SkillEffectType.None: return "（空）";
                     case SkillEffectType.CauseDamage: return "造成伤害";
                     case SkillEffectType.CureHero: return "治疗英雄";
-                    case SkillEffectType.AddBuff:
+                    case SkillEffectType.AddStatus:
                         if (this.AddStatus != null)
                         {
                             return $"施加 [ {this.AddStatus.Name} ] 状态";
                         }
                         return "施加状态";
-                    case SkillEffectType.RemoveBuff: return "移除状态";
+                    case SkillEffectType.RemoveStatus: return "移除状态";
                     case SkillEffectType.AddShield: return "添加护盾";
-                    //case SkillEffectType.AddTag: return "标记叠加";
                     case SkillEffectType.ChangeNumeric: return "改变数值";
-                    //case SkillEffectType.ChangeState:
-                    //    {
-                    //        switch (StateType)
-                    //        {
-                    //            case StateType.Vertigo: return $"改变[眩晕]状态";
-                    //            case StateType.Silent: return $"改变[沉默]状态";
-                    //            case StateType.Poison: return $"改变[中毒]状态";
-                    //            default: return "改变状态";
-                    //        }
-                    //    }
                     default: return "（空）";
                 }
             }
         }
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.None)]
+        [ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.None)]
         public SkillEffectType SkillEffectType;
 
         [HideInInspector]
         public bool IsSkillEffect;
         
-        [ToggleGroup("Enabled")]
-        [ShowIf("IsSkillEffect", true)]
+        [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
         public AddSkillEffetTargetType AddSkillEffectTargetType;
 
-        [ToggleGroup("Enabled")]
-        [HideIf("IsSkillEffect", true)]
+        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true)]
         public EffectTriggerType EffectTriggerType;
+
+        [ToggleGroup("Enabled"), LabelText("间隔时间"), ShowIf("EffectTriggerType", EffectTriggerType.Interval)]
+        public int Interval;
 
         #region 造成伤害
         [ToggleGroup("Enabled")]
@@ -220,16 +188,16 @@ namespace EGamePlay.Combat
 
         #region 施加状态
         [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.AddBuff)]
+        [ShowIf("SkillEffectType", SkillEffectType.AddStatus)]
         public StatusConfigObject AddStatus;
         #endregion
 
         #region 移除状态
         [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.RemoveBuff)]
+        [ShowIf("SkillEffectType", SkillEffectType.RemoveStatus)]
         public StatusConfigObject RemoveStatusConfigObject;
         [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.RemoveBuff)]
+        [ShowIf("SkillEffectType", SkillEffectType.RemoveStatus)]
         public AddSkillEffetTargetType RemoveBuffTargetType;
         #endregion
 
@@ -244,34 +212,22 @@ namespace EGamePlay.Combat
         #endregion
 
         #region 添加护盾
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.AddShield)]
+        [ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.AddShield)]
         public ShieldType ShieldType;
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.AddShield)]
-        [LabelText("护盾值")]
+        [ToggleGroup("Enabled"), LabelText("护盾值"), ShowIf("SkillEffectType", SkillEffectType.AddShield)]
         public uint ShieldValue;
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.AddShield)]
-        [LabelText("护盾持续时间")]
-        [SuffixLabel("毫秒", true)]
+        [ToggleGroup("Enabled"), LabelText("护盾持续时间"), ShowIf("SkillEffectType", SkillEffectType.AddShield), SuffixLabel("毫秒", true)]
         public uint ShieldDuration;
         #endregion
 
-        //#region 标记叠加
-        //[ToggleGroup("Enabled")]
-        //[ShowIf("SkillEffectType", SkillEffectType.AddTag)]
-        //public TagType TagType;
-        //[ToggleGroup("Enabled")]
-        //[ShowIf("SkillEffectType", SkillEffectType.AddTag)]
-        //[LabelText("标记数量")]
-        //public uint TagCount = 1;
-        //[ToggleGroup("Enabled")]
-        //[ShowIf("SkillEffectType", SkillEffectType.AddTag)]
-        //[LabelText("标记停留时间")]
-        //[SuffixLabel("毫秒", true)]
-        //public uint TagDuration;
-        //#endregion
+        #region 标记叠加
+        [ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.StackTag)]
+        public TagType TagType;
+        [ToggleGroup("Enabled"), LabelText("标记数量"), ShowIf("SkillEffectType", SkillEffectType.StackTag)]
+        public uint TagCount = 1;
+        [ToggleGroup("Enabled"), LabelText("标记停留时间"), ShowIf("SkillEffectType", SkillEffectType.StackTag), SuffixLabel("毫秒", true)]
+        public uint TagDuration;
+        #endregion
     }
 
     [LabelText("护盾类型")]

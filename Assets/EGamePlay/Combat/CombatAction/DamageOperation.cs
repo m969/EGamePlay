@@ -7,9 +7,9 @@ using System;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 伤害行为
+    /// 伤害行动
     /// </summary>
-    public class DamageAction : CombatAction
+    public class DamageOperation : CombatOperation
     {
         //伤害类型
         public DamageType DamageType { get; set; }
@@ -41,7 +41,8 @@ namespace EGamePlay.Combat
 
         private void AfterDamage()
         {
-
+            Creator.TriggerAction(CombatActionType.CauseDamage, this);
+            Target.TriggerAction(CombatActionType.ReceiveDamage, this);
         }
     }
 

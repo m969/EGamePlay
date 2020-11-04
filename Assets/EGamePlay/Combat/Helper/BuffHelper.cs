@@ -174,7 +174,7 @@
         Immediate,
         [LabelText("条件触发")]
         Condition,
-        [LabelText("动作触发")]
+        [LabelText("行为触发")]
         Action,
         [LabelText("间隔触发")]
         Interval,

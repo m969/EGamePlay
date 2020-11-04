@@ -6,9 +6,9 @@ using System;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 赋给效果行为
+    /// 赋给效果行动
     /// </summary>
-    public class AssignEffectAction : CombatAction
+    public class AssignEffectOperation : CombatOperation
     {
         //效果类型
         public EffectType EffectType { get; set; }
@@ -21,7 +21,7 @@ namespace EGamePlay.Combat
 
         }
 
-        public void ApplyAssignAction()
+        public void ApplyAssignOperation()
         {
             BeforeAssign();
 

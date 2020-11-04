@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public class CombatEntity : Entity
+    public sealed class CombatEntity : Entity
     {
         public CombatListen CombatListen { get; set; }
         public CombatRun CombatRun { get; set; }
@@ -22,31 +22,31 @@ namespace EGamePlay.Combat
             HealthPoint.Reset();
         }
 
-        public void AddListener(CombatActionType actionType, Action<CombatAction> action)
+        public void AddListener(CombatActionType actionType, Action<CombatOperation> action)
         {
             ActionTrigger.AddListener(actionType, action);
         }
 
-        public void RemoveListener(CombatActionType actionType, Action<CombatAction> action)
+        public void RemoveListener(CombatActionType actionType, Action<CombatOperation> action)
         {
             ActionTrigger.RemoveListener(actionType, action);
         }
 
-        public void CallAction(CombatActionType actionType, CombatAction action)
+        public void TriggerAction(CombatActionType actionType, CombatOperation action)
         {
-            ActionTrigger.CallAction(actionType, action);
+            ActionTrigger.TriggerAction(actionType, action);
         }
 
-        public void ReceiveDamage(CombatAction combatAction)
+        public void ReceiveDamage(CombatOperation combatAction)
         {
-            var damageAction = combatAction as DamageAction;
+            var damageAction = combatAction as DamageOperation;
             HealthPoint.Minus(damageAction.DamageValue);
-            CallAction(CombatActionType.CauseDamage, combatAction);
         }
 
-        public void ReceiveCure(int cure)
+        public void ReceiveCure(CombatOperation combatAction)
         {
-            HealthPoint.Add(cure);
+            var cureOperation = combatAction as CureOperation;
+            HealthPoint.Add(cureOperation.CureValue);
         }
     }
 }

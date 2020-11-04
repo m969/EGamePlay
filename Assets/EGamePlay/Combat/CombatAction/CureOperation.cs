@@ -6,9 +6,9 @@ using EGamePlay;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 治疗行为
+    /// 治疗行动
     /// </summary>
-    public class CureAction : CombatAction
+    public class CureOperation : CombatOperation
     {
         //治疗数值
         public int CureValue { get; set; }
