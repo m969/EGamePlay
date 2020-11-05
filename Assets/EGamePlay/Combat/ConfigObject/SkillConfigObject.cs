@@ -24,10 +24,6 @@ namespace EGamePlay.Combat
         [DelayedProperty]
         public string Name = "技能1";
         public SkillSpellType SkillSpellType;
-        //public SkillType SkillType;
-        //[LabelText("是否指定目标")]
-        //public bool IsTargeted = true;
-        //[HideIf("IsTargeted")]
         [LabelText("技能目标检测方式")]
         public SkillTargetSelectType TargetSelectType;
         [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
@@ -46,18 +42,8 @@ namespace EGamePlay.Combat
         [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         public GameObject AreaCollider;
 
-        //[ToggleGroup("TargetSelect", "$TargetGroupTitle")]
-        //[ReadOnly]
-        //public bool TargetSelect = true;
-        //[ToggleGroup("TargetSelect")]
-        //[HideInInspector]
-        //public string TargetGroupTitle = "目标限制";
-        //[ToggleGroup("TargetSelect")]
         [LabelText("技能作用对象")]
         public SkillAffectTargetType AffectTargetType;
-        //[ToggleGroup("TargetSelect")]
-        //[HideIf("AffectTargetType", SkillAffectTargetType.Self)]
-        //public SkillTargetType TargetType;
 
         [ToggleGroup("Cold", "$ColdGroupTitle")]
         public bool Cold = false;
@@ -72,8 +58,11 @@ namespace EGamePlay.Combat
         [Space(30)]
         [LabelText("效果列表")]
         [OnInspectorGUI("DrawSpace", append:true)]
-        [ListDrawerSettings(Expanded = true, DraggableItems = false, /*HideAddButton = true, */ShowItemCount = false)]
-        public SkillEffectToggleGroup[] EffectGroupList;
+        [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false)]
+        public SkillEffectGroup[] EffectGroupList;
+        //[ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false)]
+        //[LabelText("效果列表")]
+        //public EffectConfigObject[] Effects;
         private void DrawSpace()
         {
             GUILayout.Space(30);
@@ -83,21 +72,30 @@ namespace EGamePlay.Combat
             if (GUILayout.Button("+"))
             {
                 var list = EffectGroupList.ToList();
-                list.Add(new SkillEffectToggleGroup());
+                list.Add(new SkillEffectGroup());
                 EffectGroupList = list.ToArray();
             }
         }
 
-        [BoxGroup("技能表现")]
+        private void BeginBox()
+        {
+            GUILayout.Space(30);
+            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            GUILayout.Space(10);
+            SirenixEditorGUI.BeginBox("技能表现");
+        }
+        [OnInspectorGUI("BeginBox", append: false)]
         [LabelText("技能动作")]
         public AnimationClip SkillAnimationClip;
-        [BoxGroup("技能表现")]
         [LabelText("技能特效")]
         public SkillEffectObject SkillEffectObject;
-        [BoxGroup("技能表现")]
         [LabelText("技能音效")]
+        [OnInspectorGUI("EndBox", append: true)]
         public AudioClip SkillAudio;
-
+        private void EndBox()
+        {
+            SirenixEditorGUI.EndBox();
+        }
 
         [OnInspectorGUI]
         private void OnInspectorGUI()
@@ -124,7 +122,7 @@ namespace EGamePlay.Combat
     }
 
     [Serializable]
-    public class SkillEffectToggleGroup
+    public class SkillEffectGroup
     {
         [ToggleGroup("Enabled", "$Label")]
         public bool Enabled;
@@ -143,9 +141,15 @@ namespace EGamePlay.Combat
                             return $"施加 [ {this.AddStatus.Name} ] 状态";
                         }
                         return "施加状态";
-                    case SkillEffectType.RemoveStatus: return "移除状态";
+                    case SkillEffectType.RemoveStatus:
+                        if (this.RemoveStatus != null)
+                        {
+                            return $"移除 [ {this.RemoveStatus.Name} ] 状态";
+                        }
+                        return "移除状态";
                     case SkillEffectType.AddShield: return "添加护盾";
-                    case SkillEffectType.ChangeNumeric: return "改变数值";
+                    case SkillEffectType.NumericModify: return "增减数值";
+                    case SkillEffectType.StackTag: return "标记叠加";
                     default: return "（空）";
                 }
             }
@@ -162,52 +166,39 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true)]
         public EffectTriggerType EffectTriggerType;
 
-        [ToggleGroup("Enabled"), LabelText("间隔时间"), ShowIf("EffectTriggerType", EffectTriggerType.Interval)]
-        public int Interval;
+        [ToggleGroup("Enabled"), LabelText("间隔时间"), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true)]
+        public uint Interval;
 
         #region 造成伤害
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.CauseDamage)]
+        [ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.CauseDamage)]
         public DamageType DamageType;
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.CauseDamage)]
-        [LabelText("伤害取值")]
+        [ToggleGroup("Enabled"), LabelText("伤害取值"), ShowIf("SkillEffectType", SkillEffectType.CauseDamage)]
         public string DamageValue;
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.CauseDamage)]
-        [LabelText("是否可以暴击")]
+        [ToggleGroup("Enabled"), LabelText("是否可以暴击"), ShowIf("SkillEffectType", SkillEffectType.CauseDamage)]
         public bool CanCrit;
         #endregion
 
         #region 治疗英雄
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.CureHero)]
-        [LabelText("治疗参数")]
+        [ToggleGroup("Enabled"), LabelText("治疗参数"), ShowIf("SkillEffectType", SkillEffectType.CureHero)]
         public string CureValue;
         #endregion
 
         #region 施加状态
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.AddStatus)]
+        [ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.AddStatus)]
         public StatusConfigObject AddStatus;
         #endregion
 
         #region 移除状态
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.RemoveStatus)]
-        public StatusConfigObject RemoveStatusConfigObject;
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.RemoveStatus)]
-        public AddSkillEffetTargetType RemoveBuffTargetType;
+        [ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.RemoveStatus)]
+        public StatusConfigObject RemoveStatus;
+        //[ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.RemoveStatus)]
+        //public AddSkillEffetTargetType RemoveBuffTargetType;
         #endregion
 
-        #region 改变数值
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.ChangeNumeric)]
+        #region 数值增减
+        [ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.NumericModify)]
         public NumericType NumericType;
-        [ToggleGroup("Enabled")]
-        [ShowIf("SkillEffectType", SkillEffectType.ChangeNumeric)]
-        [LabelText("数值参数")]
+        [ToggleGroup("Enabled"), LabelText("数值参数"), ShowIf("SkillEffectType", SkillEffectType.NumericModify)]
         public string NumericValue;
         #endregion
 
@@ -223,7 +214,7 @@ namespace EGamePlay.Combat
         #region 标记叠加
         [ToggleGroup("Enabled"), ShowIf("SkillEffectType", SkillEffectType.StackTag)]
         public TagType TagType;
-        [ToggleGroup("Enabled"), LabelText("标记数量"), ShowIf("SkillEffectType", SkillEffectType.StackTag)]
+        [ToggleGroup("Enabled"), LabelText("叠加数量"), ShowIf("SkillEffectType", SkillEffectType.StackTag)]
         public uint TagCount = 1;
         [ToggleGroup("Enabled"), LabelText("标记停留时间"), ShowIf("SkillEffectType", SkillEffectType.StackTag), SuffixLabel("毫秒", true)]
         public uint TagDuration;

@@ -74,7 +74,7 @@
         EnemyTeam = 2,
     }
 
-    [LabelText("施加对象")]
+    [LabelText("作用对象")]
     public enum AddSkillEffetTargetType
     {
         [LabelText("技能目标")]
@@ -116,16 +116,16 @@
         AddStatus = 3,
         [LabelText("移除状态")]
         RemoveStatus = 4,
-        [LabelText("改变数值")]
-        ChangeNumeric = 6,
+        [LabelText("增减数值")]
+        NumericModify = 6,
         [LabelText("添加护盾")]
         AddShield = 7,
         [LabelText("标记叠加")]
         StackTag = 8,
-        [LabelText("中毒")]
-        Poison = 9,
-        [LabelText("灼烧")]
-        Burn = 10,
+        //[LabelText("中毒")]
+        //Poison = 9,
+        //[LabelText("灼烧")]
+        //Burn = 10,
     }
 
     [Flags]

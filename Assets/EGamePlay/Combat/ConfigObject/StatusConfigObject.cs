@@ -30,58 +30,26 @@ namespace EGamePlay.Combat
 
         [Toggle("Enabled")]
         public DurationToggleGroup DurationToggleGroup = new DurationToggleGroup();
-        
-        //[Toggle("Enabled")]
-        //public StateToggleGroup StateToggleGroup = new StateToggleGroup();
 
-        //[Space(10)]
-        //[LabelText("效果触发机制")]
-        //public EffectTriggerType EffectTriggerType;
-        //[ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
-        //public ConditionType ConditionType;
-        //[ShowIf("EffectTriggerType", EffectTriggerType.Action)]
-        //public ActionType ActionType;
-        //[ShowIf("EffectTriggerType", EffectTriggerType.Interval)]
-        //[LabelText("间隔时间")]
-        //[SuffixLabel("毫秒", true)]
-        //public uint Interval;
-        
-        //[TitleGroup("状态效果配置", Alignment = TitleAlignments.Centered)]
-        //[TabGroup("状态效果配置/TabGroup", "开始")]
-        //[LabelText("效果列表")]
-        //public SkillEffectToggleGroup[] StartEffectGroupList;
-        
-        //[TabGroup("状态效果配置/TabGroup", "活跃时")]
         [Space(30)]
         [LabelText("效果列表")]
         [ListDrawerSettings(Expanded = true, DraggableItems = false, /*HideAddButton = true, */ShowItemCount = false)]
-        public SkillEffectToggleGroup[] RunningEffectGroupList;
-
-        //[TabGroup("状态效果配置/TabGroup", "结束")]
-        //[LabelText("效果列表")]
-        //public SkillEffectToggleGroup[] EndEffectGroupList;
+        public SkillEffectGroup[] RunningEffectGroupList;
 
         private void BeginBox()
         {
-            //if (GUILayout.Button("+"))
-            //{
-            //    var list = RunningEffectGroupList.ToList();
-            //    list.Add(new SkillEffectToggleGroup());
-            //    RunningEffectGroupList = list.ToArray();
-            //}
             GUILayout.Space(30);
             SirenixEditorGUI.DrawThickHorizontalSeparator();
-            //SirenixEditorGUI.DrawHorizontalLineSeperator(, 0, 10);
             GUILayout.Space(10);
             SirenixEditorGUI.BeginBox("状态表现");
         }
         [LabelText("状态特效")]
         [OnInspectorGUI("BeginBox", append:false)]
-        public GameObject SkillParticleEffect;
+        public GameObject ParticleEffect;
 
         [LabelText("状态音效")]
         [OnInspectorGUI("EndBox", append:true)]
-        public AudioClip SkillAudio;
+        public AudioClip Audio;
         private void EndBox()
         {
             SirenixEditorGUI.EndBox();

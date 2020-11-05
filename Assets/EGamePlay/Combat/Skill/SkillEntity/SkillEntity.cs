@@ -59,7 +59,7 @@ namespace EGamePlay.Combat.Skill
             SkillRun.EndRun();
         }
 
-        public void ApplyTargetSkillEffect(SkillEffectToggleGroup skillEffect)
+        public void ApplyTargetSkillEffect(SkillEffectGroup skillEffect)
         {
 
         }

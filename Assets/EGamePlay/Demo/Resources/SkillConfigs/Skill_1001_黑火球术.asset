@@ -45,8 +45,7 @@ MonoBehaviour:
     CanCrit: 0
     CureValue: 
     AddStatus: {fileID: 0}
-    RemoveStatusConfigObject: {fileID: 0}
-    RemoveBuffTargetType: 0
+    RemoveStatus: {fileID: 0}
     NumericType: 0
     NumericValue: 
     ShieldType: 0
@@ -66,8 +65,7 @@ MonoBehaviour:
     CanCrit: 0
     CureValue: 
     AddStatus: {fileID: 11400000, guid: e9f6e9afe434d2b47b41c70f8c214017, type: 2}
-    RemoveStatusConfigObject: {fileID: 0}
-    RemoveBuffTargetType: 0
+    RemoveStatus: {fileID: 0}
     NumericType: 0
     NumericValue: 
     ShieldType: 0
@@ -87,8 +85,7 @@ MonoBehaviour:
     CanCrit: 0
     CureValue: 
     AddStatus: {fileID: 11400000, guid: b8c91eb546ede34438b6e5f3aefa1734, type: 2}
-    RemoveStatusConfigObject: {fileID: 0}
-    RemoveBuffTargetType: 0
+    RemoveStatus: {fileID: 0}
     NumericType: 0
     NumericValue: 
     ShieldType: 0
@@ -108,8 +105,7 @@ MonoBehaviour:
     CanCrit: 0
     CureValue: 
     AddStatus: {fileID: 0}
-    RemoveStatusConfigObject: {fileID: 0}
-    RemoveBuffTargetType: 0
+    RemoveStatus: {fileID: 0}
     NumericType: 0
     NumericValue: 
     ShieldType: 0
@@ -118,6 +114,66 @@ MonoBehaviour:
     TagType: 0
     TagCount: 1
     TagDuration: 0
+  - Enabled: 1
+    SkillEffectType: 6
+    IsSkillEffect: 1
+    AddSkillEffectTargetType: 0
+    EffectTriggerType: 0
+    Interval: 0
+    DamageType: 0
+    DamageValue: 
+    CanCrit: 0
+    CureValue: 
+    AddStatus: {fileID: 0}
+    RemoveStatus: {fileID: 0}
+    NumericType: 1001
+    NumericValue: 100
+    ShieldType: 0
+    ShieldValue: 0
+    ShieldDuration: 0
+    TagType: 0
+    TagCount: 1
+    TagDuration: 0
+  - Enabled: 1
+    SkillEffectType: 4
+    IsSkillEffect: 1
+    AddSkillEffectTargetType: 1
+    EffectTriggerType: 0
+    Interval: 0
+    DamageType: 0
+    DamageValue: 
+    CanCrit: 0
+    CureValue: 
+    AddStatus: {fileID: 0}
+    RemoveStatus: {fileID: 11400000, guid: b8c91eb546ede34438b6e5f3aefa1734, type: 2}
+    NumericType: 0
+    NumericValue: 
+    ShieldType: 0
+    ShieldValue: 0
+    ShieldDuration: 0
+    TagType: 0
+    TagCount: 1
+    TagDuration: 0
+  - Enabled: 1
+    SkillEffectType: 8
+    IsSkillEffect: 1
+    AddSkillEffectTargetType: 0
+    EffectTriggerType: 0
+    Interval: 0
+    DamageType: 0
+    DamageValue: 
+    CanCrit: 0
+    CureValue: 
+    AddStatus: {fileID: 0}
+    RemoveStatus: {fileID: 0}
+    NumericType: 0
+    NumericValue: 
+    ShieldType: 0
+    ShieldValue: 0
+    ShieldDuration: 0
+    TagType: 0
+    TagCount: 1
+    TagDuration: 2000
   SkillAnimationClip: {fileID: 0}
   SkillEffectObject: {fileID: 0}
   SkillAudio: {fileID: 0}
