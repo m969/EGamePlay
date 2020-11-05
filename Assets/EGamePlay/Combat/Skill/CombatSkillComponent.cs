@@ -27,10 +27,10 @@ namespace EGamePlay.Combat.Skill
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                Skills[0].StartListen();
-            }
+            //if (Input.GetKeyDown(KeyCode.Alpha1))
+            //{
+            //    Skills[0].StartListen();
+            //}
 
             foreach (var item in Skills)
             {

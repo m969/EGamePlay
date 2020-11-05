@@ -24,7 +24,7 @@ MonoBehaviour:
   ID: 1001
   Name: "\u9ED1\u706B\u7403\u672F"
   SkillSpellType: 0
-  TargetSelectType: 1
+  TargetSelectType: 0
   AffectAreaType: 0
   CircleAreaRadius: 0
   AreaGuideObj: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
     EffectTriggerType: 0
     Interval: 0
     DamageType: 1
-    DamageValue: 80
+    DamageValue: 800
     CanCrit: 0
     CureValue: 
     AddStatus: {fileID: 0}

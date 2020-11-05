@@ -43,7 +43,7 @@ MonoBehaviour:
     EffectTriggerType: 0
     Interval: 0
     DamageType: 1
-    DamageValue: 20
+    DamageValue: 700
     CanCrit: 0
     CureValue: 
     AddStatus: {fileID: 0}

@@ -9,44 +9,44 @@ namespace EGamePlay.Combat.Skill
         public CombatEntity SpellCaster { get; set; }
         public CombatEntity SkillTarget { get; set; }
         public SkillConfigObject SkillConfigObject { get; set; }
-        public SkillListen SkillListen { get; set; } = new SkillListen();
+        //public SkillListen SkillListen { get; set; } = new SkillListen();
         public SkillRun SkillRun { get; set; } = new SkillRun();
-        public bool Listening { get; set; }
+        //public bool Listening { get; set; }
         public bool Running { get; set; }
 
 
         public void Start()
         {
-            SkillListen.SkillEntity = this;
+            //SkillListen.SkillEntity = this;
             SkillRun.SkillEntity = this;
-            SkillListen.Start();
+            //SkillListen.Start();
             SkillRun.Start();
         }
 
         public void Update()
         {
-            if (Listening)
-            {
-                SkillListen.Update();
-            }
+            //if (Listening)
+            //{
+            //    SkillListen.Update();
+            //}
             if (Running)
             {
                 SkillRun.Update();
             }
         }
 
-        public void StartListen()
-        {
-            Debug.Log("StartListen");
-            Listening = true;
-            SkillListen.StartListen();
-        }
+        //public void StartListen()
+        //{
+        //    Debug.Log("StartListen");
+        //    Listening = true;
+        //    SkillListen.StartListen();
+        //}
 
-        public void EndListen()
-        {
-            Listening = false;
-            SkillListen.EndListen();
-        }
+        //public void EndListen()
+        //{
+        //    Listening = false;
+        //    SkillListen.EndListen();
+        //}
 
         public void StartRun()
         {
@@ -69,6 +69,8 @@ namespace EGamePlay.Combat.Skill
                 {
                     var operation = CombatOperationManager.CreateOperation<DamageOperation>(this.SpellCaster);
                     operation.Target = SkillTarget;
+                    operation.DamageSource = DamageSource.Skill;
+                    operation.Expression = item.DamageValue;
                     operation.ApplyDamage();
                 }
                 else if (item.SkillEffectType == SkillEffectType.CureHero)

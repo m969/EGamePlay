@@ -27,33 +27,32 @@ namespace EGamePlay.Combat.Skill
                 }
                 if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
                 {
-                    SkillEntity.EndListen();
+                    //SkillEntity.EndListen();
                     var operation = CombatOperationManager.CreateOperation<SpellSkillOperation>(SkillEntity.SpellCaster);
                     operation.SpellSkill();
-                    //Skill.StartRun();
                 }
             }
         }
 
-        /// <summary>
-        /// 开始技能监听
-        /// </summary>
-        public void StartListen()
-        {
-            SkillGuideTrm = GameObject.Instantiate(SkillEntity.SkillConfigObject.AreaGuideObj).transform;
-            if (CastMapPoint(out var point))
-            {
-                SkillGuideTrm.position = point;
-            }
-        }
+        ///// <summary>
+        ///// 开始技能监听
+        ///// </summary>
+        //public void StartListen()
+        //{
+        //    SkillGuideTrm = GameObject.Instantiate(SkillEntity.SkillConfigObject.AreaGuideObj).transform;
+        //    if (CastMapPoint(out var point))
+        //    {
+        //        SkillGuideTrm.position = point;
+        //    }
+        //}
 
-        /// <summary>
-        /// 结束技能监听
-        /// </summary>
-        public void EndListen()
-        {
-            GameObject.Destroy(SkillGuideTrm.gameObject);
-        }
+        ///// <summary>
+        ///// 结束技能监听
+        ///// </summary>
+        //public void EndListen()
+        //{
+        //    GameObject.Destroy(SkillGuideTrm.gameObject);
+        //}
 
         public bool CastMapPoint(out Vector3 hitPoint)
         {

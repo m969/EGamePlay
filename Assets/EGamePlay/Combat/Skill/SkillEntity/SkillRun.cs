@@ -31,10 +31,15 @@ namespace EGamePlay.Combat.Skill
         /// </summary>
         public void StartRun()
         {
-            SkillColliderObj = GameObject.Instantiate(SkillConfigObject.AreaCollider.gameObject);
-            SkillEffectObj = GameObject.Instantiate(SkillConfigObject.SkillEffectObject.SkillParticleEffect);
-            SkillColliderObj.transform.position = SkillEntity.SkillListen.SkillGuideTrm.position;
-            SkillEffectObj.transform.position = SkillEntity.SkillListen.SkillGuideTrm.position;
+            if (SkillConfigObject.TargetSelectType == SkillTargetSelectType.AreaSelect)
+            {
+                SkillColliderObj = GameObject.Instantiate(SkillConfigObject.AreaCollider.gameObject);
+                SkillEffectObj = GameObject.Instantiate(SkillConfigObject.SkillEffectObject.SkillParticleEffect);
+            }
+
+            //SkillColliderObj.transform.position = SkillEntity.SkillListen.SkillGuideTrm.position;
+            //SkillEffectObj.transform.position = SkillEntity.SkillListen.SkillGuideTrm.position;
+
             GameTimer.OnFinish(() =>
             {
                 SkillEntity.EndRun();
