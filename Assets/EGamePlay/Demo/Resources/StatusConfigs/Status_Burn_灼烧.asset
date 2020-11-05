@@ -34,8 +34,9 @@ MonoBehaviour:
     SkillEffectType: 1
     IsSkillEffect: 0
     AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    DamageType: 0
+    EffectTriggerType: 3
+    Interval: 100
+    DamageType: 1
     DamageValue: 
     CanCrit: 0
     CureValue: 
@@ -47,5 +48,8 @@ MonoBehaviour:
     ShieldType: 0
     ShieldValue: 0
     ShieldDuration: 0
+    TagType: 0
+    TagCount: 1
+    TagDuration: 0
   SkillParticleEffect: {fileID: 0}
   SkillAudio: {fileID: 0}

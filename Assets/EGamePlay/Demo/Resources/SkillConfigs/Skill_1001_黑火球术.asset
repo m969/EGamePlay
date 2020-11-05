@@ -39,6 +39,7 @@ MonoBehaviour:
     IsSkillEffect: 1
     AddSkillEffectTargetType: 0
     EffectTriggerType: 0
+    Interval: 0
     DamageType: 1
     DamageValue: 80
     CanCrit: 0
@@ -51,11 +52,15 @@ MonoBehaviour:
     ShieldType: 0
     ShieldValue: 0
     ShieldDuration: 0
+    TagType: 0
+    TagCount: 1
+    TagDuration: 0
   - Enabled: 1
     SkillEffectType: 3
     IsSkillEffect: 1
     AddSkillEffectTargetType: 0
     EffectTriggerType: 0
+    Interval: 0
     DamageType: 0
     DamageValue: 
     CanCrit: 0
@@ -68,11 +73,15 @@ MonoBehaviour:
     ShieldType: 0
     ShieldValue: 0
     ShieldDuration: 0
+    TagType: 0
+    TagCount: 1
+    TagDuration: 0
   - Enabled: 1
     SkillEffectType: 3
     IsSkillEffect: 1
     AddSkillEffectTargetType: 0
     EffectTriggerType: 0
+    Interval: 0
     DamageType: 0
     DamageValue: 
     CanCrit: 0
@@ -85,11 +94,15 @@ MonoBehaviour:
     ShieldType: 0
     ShieldValue: 0
     ShieldDuration: 0
+    TagType: 0
+    TagCount: 1
+    TagDuration: 0
   - Enabled: 1
     SkillEffectType: 7
     IsSkillEffect: 1
     AddSkillEffectTargetType: 1
     EffectTriggerType: 0
+    Interval: 0
     DamageType: 0
     DamageValue: 
     CanCrit: 0
@@ -102,6 +115,9 @@ MonoBehaviour:
     ShieldType: 0
     ShieldValue: 0
     ShieldDuration: 0
+    TagType: 0
+    TagCount: 1
+    TagDuration: 0
   SkillAnimationClip: {fileID: 0}
   SkillEffectObject: {fileID: 0}
   SkillAudio: {fileID: 0}
