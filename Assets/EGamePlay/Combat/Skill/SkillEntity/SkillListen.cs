@@ -7,8 +7,8 @@ namespace EGamePlay.Combat.Skill
 {
     public class SkillListen
     {
-        public SkillEntity Skill { get; set; }
-        public SkillConfigObject SkillConfigObject => Skill.SkillConfigObject;
+        public SkillEntity SkillEntity { get; set; }
+        public SkillConfigObject SkillConfigObject => SkillEntity.SkillConfigObject;
         public Transform SkillGuideTrm { get; set; }
 
 
@@ -19,7 +19,7 @@ namespace EGamePlay.Combat.Skill
 
         public void Update()
         {
-            if (Skill.SkillConfigObject.TargetSelectType == SkillTargetSelectType.AreaSelect)
+            if (SkillEntity.SkillConfigObject.TargetSelectType == SkillTargetSelectType.AreaSelect)
             {
                 if (CastMapPoint(out var point))
                 {
@@ -27,8 +27,10 @@ namespace EGamePlay.Combat.Skill
                 }
                 if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
                 {
-                    Skill.StartRun();
-                    Skill.EndListen();
+                    SkillEntity.EndListen();
+                    var operation = CombatOperationManager.CreateOperation<SpellSkillOperation>(SkillEntity.SpellCaster);
+                    operation.SpellSkill();
+                    //Skill.StartRun();
                 }
             }
         }
@@ -38,7 +40,7 @@ namespace EGamePlay.Combat.Skill
         /// </summary>
         public void StartListen()
         {
-            SkillGuideTrm = GameObject.Instantiate(Skill.SkillConfigObject.AreaGuideObj).transform;
+            SkillGuideTrm = GameObject.Instantiate(SkillEntity.SkillConfigObject.AreaGuideObj).transform;
             if (CastMapPoint(out var point))
             {
                 SkillGuideTrm.position = point;

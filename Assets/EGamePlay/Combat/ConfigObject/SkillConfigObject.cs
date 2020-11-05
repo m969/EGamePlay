@@ -163,9 +163,11 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
         public AddSkillEffetTargetType AddSkillEffectTargetType;
 
+        //[BoxGroup("Enabled/EffectTrigger")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true)]
         public EffectTriggerType EffectTriggerType;
 
+        //[BoxGroup("Enabled/EffectTrigger")]
         [ToggleGroup("Enabled"), LabelText("间隔时间"), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true)]
         public uint Interval;
 

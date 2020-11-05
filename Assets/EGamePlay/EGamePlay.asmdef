@@ -1,11 +1,7 @@
 {
-    "name": "EGamePlay.Editor",
-    "references": [
-        "GUID:6e851b320268d76448f1a83d6bc35620"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "name": "EGamePlay",
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -12,12 +12,28 @@ namespace EGamePlay.Combat
         private static List<CombatOperation> CombatOperations = new List<CombatOperation>();
 
 
-        public static DamageOperation CreateDamageOperation(CombatEntity combatEntity)
+        //public static DamageOperation CreateDamageOperation(CombatEntity combatEntity)
+        //{
+        //    var operation = new DamageOperation();
+        //    operation.Creator = combatEntity;
+        //    CombatOperations.Add(operation);
+        //    return operation;
+        //}
+
+        //public static SpellSkillOperation CreateSpellSkillOperation(CombatEntity combatEntity)
+        //{
+        //    var operation = new SpellSkillOperation();
+        //    operation.Creator = combatEntity;
+        //    CombatOperations.Add(operation);
+        //    return operation;
+        //}
+
+        public static T CreateOperation<T>(CombatEntity combatEntity) where T:CombatOperation, new()
         {
-            var DamageOperation = new DamageOperation();
-            DamageOperation.Creator = combatEntity;
-            CombatOperations.Add(DamageOperation);
-            return DamageOperation;
+            var operation = new T();
+            operation.Creator = combatEntity;
+            CombatOperations.Add(operation);
+            return operation;
         }
     }
 }

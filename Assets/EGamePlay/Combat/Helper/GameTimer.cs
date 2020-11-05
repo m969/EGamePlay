@@ -29,10 +29,13 @@ public class GameTimer
 
     public GameTimer UpdateAsFinish(float delta)
     {
-        _time += delta;
-        if (IsFinished)
+        if (!IsFinished)
         {
-            _onFinish?.Invoke();
+            _time += delta;
+            if (IsFinished)
+            {
+                _onFinish?.Invoke();
+            }
         }
         return this;
     }

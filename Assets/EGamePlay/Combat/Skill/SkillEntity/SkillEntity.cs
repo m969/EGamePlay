@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace EGamePlay.Combat.Skill
 {
-    public class SkillEntity : Entity
+    public abstract class SkillEntity : Entity
     {
+        public CombatEntity SpellCaster { get; set; }
+        public CombatEntity SkillTarget { get; set; }
         public SkillConfigObject SkillConfigObject { get; set; }
         public SkillListen SkillListen { get; set; } = new SkillListen();
         public SkillRun SkillRun { get; set; } = new SkillRun();
@@ -15,8 +17,8 @@ namespace EGamePlay.Combat.Skill
 
         public void Start()
         {
-            SkillListen.Skill = this;
-            SkillRun.Skill = this;
+            SkillListen.SkillEntity = this;
+            SkillRun.SkillEntity = this;
             SkillListen.Start();
             SkillRun.Start();
         }
@@ -59,9 +61,29 @@ namespace EGamePlay.Combat.Skill
             SkillRun.EndRun();
         }
 
-        public void ApplyTargetSkillEffect(SkillEffectGroup skillEffect)
+        public void AssignSkillEffect()
         {
-
+            foreach (var item in SkillConfigObject.EffectGroupList)
+            {
+                if (item.SkillEffectType == SkillEffectType.CauseDamage)
+                {
+                    var operation = CombatOperationManager.CreateOperation<DamageOperation>(this.SpellCaster);
+                    operation.Target = SkillTarget;
+                    operation.ApplyDamage();
+                }
+                else if (item.SkillEffectType == SkillEffectType.CureHero)
+                {
+                    var operation = CombatOperationManager.CreateOperation<CureOperation>(this.SpellCaster);
+                    operation.Target = SkillTarget;
+                    operation.ApplyCure();
+                }
+                else
+                {
+                    var operation = CombatOperationManager.CreateOperation<AssignEffectOperation>(this.SpellCaster);
+                    operation.Target = SkillTarget;
+                    operation.ApplyAssignOperation();
+                }
+            }
         }
     }
 }

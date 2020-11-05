@@ -24,15 +24,15 @@ namespace EGamePlay.Combat
         public StatusType StatusType;
         [LabelText("是否在状态栏显示")]
         public bool ShowInStatusIconList;
-        [LabelText("最高叠加层数")]
-        [Range(1, 99)]
+        [LabelText("是否可叠加")]
+        public bool CanStack;
+        [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
         public int MaxStack = 1;
 
         [Toggle("Enabled")]
         public DurationToggleGroup DurationToggleGroup = new DurationToggleGroup();
 
-        [Space(30)]
-        [LabelText("效果列表")]
+        [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(Expanded = true, DraggableItems = false, /*HideAddButton = true, */ShowItemCount = false)]
         public SkillEffectGroup[] RunningEffectGroupList;
 

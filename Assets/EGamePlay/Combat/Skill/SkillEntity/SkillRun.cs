@@ -6,8 +6,8 @@ namespace EGamePlay.Combat.Skill
 {
     public class SkillRun
     {
-        public SkillEntity Skill { get; set; }
-        public SkillConfigObject SkillConfigObject => Skill.SkillConfigObject;
+        public SkillEntity SkillEntity { get; set; }
+        public SkillConfigObject SkillConfigObject => SkillEntity.SkillConfigObject;
         public GameTimer GameTimer { get; set; } = new GameTimer(0.05f);
         public GameObject SkillColliderObj { get; set; }
         public GameObject SkillEffectObj { get; set; }
@@ -33,11 +33,11 @@ namespace EGamePlay.Combat.Skill
         {
             SkillColliderObj = GameObject.Instantiate(SkillConfigObject.AreaCollider.gameObject);
             SkillEffectObj = GameObject.Instantiate(SkillConfigObject.SkillEffectObject.SkillParticleEffect);
-            SkillColliderObj.transform.position = Skill.SkillListen.SkillGuideTrm.position;
-            SkillEffectObj.transform.position = Skill.SkillListen.SkillGuideTrm.position;
+            SkillColliderObj.transform.position = SkillEntity.SkillListen.SkillGuideTrm.position;
+            SkillEffectObj.transform.position = SkillEntity.SkillListen.SkillGuideTrm.position;
             GameTimer.OnFinish(() =>
             {
-                Skill.EndRun();
+                SkillEntity.EndRun();
             });
             GameTimer.Reset();
         }

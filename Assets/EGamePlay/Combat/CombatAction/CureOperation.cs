@@ -22,7 +22,7 @@ namespace EGamePlay.Combat
         public void ApplyCure()
         {
             BeforeCure();
-
+            Target.ReceiveCure(this);
             AfterCure();
         }
 

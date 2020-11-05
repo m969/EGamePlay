@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EGamePlay;
 using EGamePlay.Combat;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -16,7 +17,7 @@ public sealed class Monster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CombatEntity = new CombatEntity();
+        CombatEntity = Entity.Create<CombatEntity>();
         CombatEntity.Initialize();
         CombatEntity.AddListener(CombatActionType.ReceiveDamage, OnReceiveDamage);
     }

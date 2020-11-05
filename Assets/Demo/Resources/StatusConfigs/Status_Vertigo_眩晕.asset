@@ -25,6 +25,7 @@ MonoBehaviour:
   Name: "\u7729\u6655"
   StatusType: 1
   ShowInStatusIconList: 1
+  CanStack: 0
   MaxStack: 1
   DurationToggleGroup:
     Enabled: 1

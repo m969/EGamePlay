@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EGamePlay.Combat.Skill;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace EGamePlay.Combat
         public HealthPoint HealthPoint { get; private set; } = new HealthPoint();
         public CombatNumericBox NumericBox { get; private set; } = new CombatNumericBox();
         public CombatActionTrigger ActionTrigger { get; set; } = new CombatActionTrigger();
+        public CombatSkillComponent SkillComponent { get { return GetComponent<CombatSkillComponent>(); } }
 
 
         public void Initialize()
@@ -37,16 +39,23 @@ namespace EGamePlay.Combat
             ActionTrigger.TriggerAction(actionType, action);
         }
 
-        public void ReceiveDamage(CombatOperation combatAction)
+        public void ReceiveDamage(CombatOperation combatOperation)
         {
-            var damageAction = combatAction as DamageOperation;
-            HealthPoint.Minus(damageAction.DamageValue);
+            var damageOperation = combatOperation as DamageOperation;
+            HealthPoint.Minus(damageOperation.DamageValue);
         }
 
-        public void ReceiveCure(CombatOperation combatAction)
+        public void ReceiveCure(CombatOperation combatOperation)
         {
-            var cureOperation = combatAction as CureOperation;
+            var cureOperation = combatOperation as CureOperation;
             HealthPoint.Add(cureOperation.CureValue);
+        }
+
+        public T CreateSkill<T>() where T : SkillEntity, new()
+        {
+            var skill = SkillComponent.CreateSkill<T>();
+            skill.SpellCaster = this;
+            return skill;
         }
     }
 }

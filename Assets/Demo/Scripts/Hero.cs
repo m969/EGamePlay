@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EGamePlay;
 using EGamePlay.Combat;
 using UnityEngine.UIElements;
+using EGamePlay.Combat.Skill;
 
 public sealed class Hero : MonoBehaviour
 {
@@ -17,8 +19,9 @@ public sealed class Hero : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CombatEntity = new CombatEntity();
+        CombatEntity = Entity.Create<CombatEntity>();
         CombatEntity.Initialize();
+        CombatEntity.AddComponent<CombatSkillComponent>().Setup();
         AnimTimer.MaxTime = AnimTime;
     }
 
@@ -54,10 +57,19 @@ public sealed class Hero : MonoBehaviour
             GameObject.Destroy(hitEffect, 0.2f);
 
 
-            var DamageOperation = CombatOperationManager.CreateDamageOperation(CombatEntity);
+            var DamageOperation = CombatOperationManager.CreateOperation<DamageOperation>(CombatEntity);
             DamageOperation.Target = monster.GetComponent<Monster>().CombatEntity;
             CombatEntity.NumericBox.PhysicAttack_I.SetBase(RandomHelper.RandomNumber(600, 999));
             DamageOperation.ApplyDamage();
         }
+    }
+
+    public void SpellSkillA()
+    {
+        var monster = GameObject.Find("/Monster");
+        var operation = CombatOperationManager.CreateOperation<SpellSkillOperation>(this.CombatEntity);
+        operation.SkillEntity = this.CombatEntity.CreateSkill<Skill_1002>();
+        operation.Target = monster.GetComponent<Monster>().CombatEntity;
+        operation.SpellSkill();
     }
 }

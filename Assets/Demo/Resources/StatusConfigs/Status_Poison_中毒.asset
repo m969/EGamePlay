@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Burn_\u707C\u70E7"
+  m_Name: "Status_Poison_\u4E2D\u6BD2"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,22 +21,23 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  ID: Burn
-  Name: "\u707C\u70E7"
+  ID: Poison
+  Name: "\u4E2D\u6BD2"
   StatusType: 1
   ShowInStatusIconList: 1
-  MaxStack: 99
+  CanStack: 0
+  MaxStack: 1
   DurationToggleGroup:
     Enabled: 1
-    Duration: 3000
+    Duration: 10000
   RunningEffectGroupList:
   - Enabled: 1
     SkillEffectType: 1
     IsSkillEffect: 0
     AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 0
+    EffectTriggerType: 3
+    Interval: 1049
+    DamageType: 1
     DamageValue: 
     CanCrit: 0
     CureValue: 

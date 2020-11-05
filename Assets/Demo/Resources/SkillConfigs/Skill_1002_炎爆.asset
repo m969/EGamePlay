@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Poison_\u4E2D\u6BD2"
+  m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
+  m_Name: "Skill_1002_\u708E\u7206"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,23 +21,29 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  ID: Poison
-  Name: "\u4E2D\u6BD2"
-  StatusType: 1
-  ShowInStatusIconList: 1
-  MaxStack: 1
-  DurationToggleGroup:
-    Enabled: 1
-    Duration: 10000
-  RunningEffectGroupList:
+  ID: 1002
+  Name: "\u708E\u7206"
+  SkillSpellType: 0
+  TargetSelectType: 3
+  AffectAreaType: 0
+  CircleAreaRadius: 1
+  AreaGuideObj: {fileID: 4659930441604555287, guid: 898cf3acc27544548b710e7d5899e83f,
+    type: 3}
+  AreaCollider: {fileID: 4659930441604555287, guid: e04cf34d12876b249b8a764625ced6f6,
+    type: 3}
+  AffectTargetType: 2
+  Cold: 0
+  ColdGroupTitle: "\u6280\u80FD\u51B7\u5374"
+  ColdTime: 0
+  EffectGroupList:
   - Enabled: 1
     SkillEffectType: 1
-    IsSkillEffect: 0
+    IsSkillEffect: 1
     AddSkillEffectTargetType: 0
-    EffectTriggerType: 3
-    Interval: 1049
+    EffectTriggerType: 0
+    Interval: 0
     DamageType: 1
-    DamageValue: 
+    DamageValue: 20
     CanCrit: 0
     CureValue: 
     AddStatus: {fileID: 0}
@@ -50,5 +56,6 @@ MonoBehaviour:
     TagType: 0
     TagCount: 1
     TagDuration: 0
-  ParticleEffect: {fileID: 0}
-  Audio: {fileID: 0}
+  SkillAnimationClip: {fileID: 0}
+  SkillEffectObject: {fileID: 11400000, guid: 62856a91c7a028c4eae2042f80c97c97, type: 2}
+  SkillAudio: {fileID: 0}

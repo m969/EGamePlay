@@ -3,6 +3,44 @@
 namespace EGamePlay.Combat
 {
     /// <summary>
+    /// 整形数值修饰器
+    /// </summary>
+    public class IntNumericModifier
+    {
+        public int Value;
+    }
+    /// <summary>
+    /// 整形数值修饰器集合
+    /// </summary>
+    public class IntNumericModifierCollection
+    {
+        public int Value { get; private set; }
+        private List<IntNumericModifier> Modifiers { get; } = new List<IntNumericModifier>();
+
+        public int AppendModifier(IntNumericModifier modifier)
+        {
+            Modifiers.Add(modifier);
+            Update();
+            return Value;
+        }
+
+        public int RemoveModifier(IntNumericModifier modifier)
+        {
+            Modifiers.Remove(modifier);
+            Update();
+            return Value;
+        }
+
+        public void Update()
+        {
+            Value = 0;
+            foreach (var item in Modifiers)
+            {
+                Value += item.Value;
+            }
+        }
+    }
+    /// <summary>
     /// 整形数值
     /// </summary>
     public class IntNumeric
@@ -13,6 +51,11 @@ namespace EGamePlay.Combat
         public int pctAdd { get; private set; }
         public int finalAdd { get; private set; }
         public int finalPctAdd { get; private set; }
+        private IntNumericModifierCollection AddCollection { get; } = new IntNumericModifierCollection();
+        private IntNumericModifierCollection PctAddCollection { get; } = new IntNumericModifierCollection();
+        private IntNumericModifierCollection FinalAddCollection { get; } = new IntNumericModifierCollection();
+        private IntNumericModifierCollection FinalPctAddCollection { get; } = new IntNumericModifierCollection();
+
 
         public void Initialize()
         {
@@ -24,29 +67,45 @@ namespace EGamePlay.Combat
             Update();
             return baseValue;
         }
-        public int Add(int value)
+        public void AppendAddModifier(IntNumericModifier modifier)
         {
-            add += value;
+            add = AddCollection.AppendModifier(modifier);
             Update();
-            return add;
         }
-        public int PctAdd(int value)
+        public void AppendPctAddModifier(IntNumericModifier modifier)
         {
-            pctAdd += value;
+            pctAdd = PctAddCollection.AppendModifier(modifier);
             Update();
-            return pctAdd;
         }
-        public int FinalAdd(int value)
+        public void AppendFinalAddModifier(IntNumericModifier modifier)
         {
-            finalAdd += value;
+            finalAdd = FinalAddCollection.AppendModifier(modifier);
             Update();
-            return finalAdd;
         }
-        public int FinalPctAdd(int value)
+        public void AppendFinalPctAddModifier(IntNumericModifier modifier)
         {
-            finalPctAdd += value;
+            finalPctAdd = FinalPctAddCollection.AppendModifier(modifier);
             Update();
-            return finalPctAdd;
+        }
+        public void RemoveAddModifier(IntNumericModifier modifier)
+        {
+            add = AddCollection.RemoveModifier(modifier);
+            Update();
+        }
+        public void RemovePctAddModifier(IntNumericModifier modifier)
+        {
+            pctAdd = PctAddCollection.RemoveModifier(modifier);
+            Update();
+        }
+        public void RemoveFinalAddModifier(IntNumericModifier modifier)
+        {
+            finalAdd = FinalAddCollection.RemoveModifier(modifier);
+            Update();
+        }
+        public void RemoveFinalPctAddModifier(IntNumericModifier modifier)
+        {
+            finalPctAdd = FinalPctAddCollection.RemoveModifier(modifier);
+            Update();
         }
 
         public void Update()

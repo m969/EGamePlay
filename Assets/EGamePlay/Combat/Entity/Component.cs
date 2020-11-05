@@ -12,5 +12,10 @@ namespace EGamePlay
         {
             Parent = parent;
         }
+
+        public virtual void Setup()
+        {
+
+        }
     }
 }
