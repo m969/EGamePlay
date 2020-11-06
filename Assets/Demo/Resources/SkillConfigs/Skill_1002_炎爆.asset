@@ -20,7 +20,50 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: Effects
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 1|EGamePlay.Combat.DamageEffect, EGamePlay
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 3
+      Data: 0
+    - Name: DamageType
+      Entry: 3
+      Data: 0
+    - Name: DamageValue
+      Entry: 1
+      Data: 860
+    - Name: CanCrit
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   ID: 1002
   Name: "\u708E\u7206"
   SkillSpellType: 0
@@ -35,27 +78,7 @@ MonoBehaviour:
   Cold: 0
   ColdGroupTitle: "\u6280\u80FD\u51B7\u5374"
   ColdTime: 0
-  EffectGroupList:
-  - Enabled: 1
-    SkillEffectType: 1
-    IsSkillEffect: 1
-    AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 1
-    DamageValue: 700
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 0}
-    RemoveStatus: {fileID: 0}
-    NumericType: 0
-    NumericValue: 
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 0
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   SkillAnimationClip: {fileID: 0}
   SkillEffectObject: {fileID: 11400000, guid: 62856a91c7a028c4eae2042f80c97c97, type: 2}
   SkillAudio: {fileID: 0}

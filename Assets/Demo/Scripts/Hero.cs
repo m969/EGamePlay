@@ -72,11 +72,11 @@ public sealed class Hero : MonoBehaviour
         SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
         SpawnHitEffect(transform.position, monster.transform.position);
 
-        var DamageOperation = CombatOperationManager.CreateOperation<DamageOperation>(CombatEntity);
-        DamageOperation.Target = monster.GetComponent<Monster>().CombatEntity;
-        DamageOperation.DamageSource = DamageSource.Attack;
+        var operation = CombatOperationManager.CreateOperation<DamageOperation>(CombatEntity);
+        operation.Target = monster.GetComponent<Monster>().CombatEntity;
+        operation.DamageSource = DamageSource.Attack;
         CombatEntity.NumericBox.PhysicAttack_I.SetBase(RandomHelper.RandomNumber(600, 999));
-        DamageOperation.ApplyDamage();
+        operation.ApplyDamage();
     }
 
     public void SpellSkillA()

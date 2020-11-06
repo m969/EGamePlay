@@ -1,12 +1,8 @@
 ﻿namespace EGamePlay.Combat
 {
     using System;
+    using System.Collections.Generic;
     using Sirenix.OdinInspector;
-
-    public class SkillHelper
-    {
-
-    }
 
     [LabelText("技能释放方式")]
     public enum SkillSpellType
@@ -128,6 +124,24 @@
         //Burn = 10,
     }
 
+    public class SkillHelper
+    {
+        public static void AddEffect(List<Effect> Effects, SkillEffectType EffectType)
+        {
+            if (EffectType != SkillEffectType.None)
+            {
+                if (EffectType == SkillEffectType.AddStatus) Effects.Add(new AddStatusEffect() { Enabled = true });
+                if (EffectType == SkillEffectType.RemoveStatus) Effects.Add(new RemoveStatusEffect() { Enabled = true });
+                if (EffectType == SkillEffectType.NumericModify) Effects.Add(new NumericModifyEffect() { Enabled = true });
+                if (EffectType == SkillEffectType.CauseDamage) Effects.Add(new DamageEffect() { Enabled = true });
+                if (EffectType == SkillEffectType.CureHero) Effects.Add(new CureEffect() { Enabled = true });
+                if (EffectType == SkillEffectType.AddShield) Effects.Add(new AddShieldEffect() { Enabled = true });
+                if (EffectType == SkillEffectType.StackTag) Effects.Add(new StackTagEffect() { Enabled = true });
+                EffectType = SkillEffectType.None;
+            }
+        }
+    }
+
     [Flags]
     [LabelText("状态类型")]
     public enum StateType
@@ -151,9 +165,12 @@
         Burn = 1 << 22,
     }
 
-    [LabelText("数值类型")]
+    [LabelText("属性类型")]
     public enum NumericType
     {
+        [LabelText("（空）")]
+        None = 0,
+
         [LabelText("物理攻击")]
         PhysicAttack = 1001,
         [LabelText("物理护甲")]

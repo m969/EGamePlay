@@ -31,40 +31,50 @@ namespace EGamePlay.Combat
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
         public int MaxStack = 1;
 
-        [Toggle("Enabled")]
         public DurationToggleGroup DurationToggleGroup = new DurationToggleGroup();
 
         [LabelText("效果列表"), Space(30)]
-        [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false)]
-        public SkillEffectGroup[] RunningEffectGroupList;
-
-        [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
-        //[TypeFilter("GetFilteredTypeList")]
         [HideReferenceObjectPicker]
-        public List<MyToggleObject> MyToggleObjects = new List<MyToggleObject>();
-        [HorizontalGroup(/*Width = 120*//*, */PaddingLeft = 40, PaddingRight = 40/*, MarginLeft = 60, MarginRight = 60*/)]
+        public List<Effect> Effects = new List<Effect>();
+
+        [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel]
         [OnValueChanged("AddEffect")]
-        public SkillEffectType EffectType;
+        [ValueDropdown("EffectTypeSelect")]
+        public string EffectTypeName = "(添加效果)";
+
+        public IEnumerable<string> EffectTypeSelect()
+        {
+            var types = typeof(Effect).Assembly.GetTypes()
+                .Where(x => !x.IsAbstract)
+                .Where(x => typeof(Effect).IsAssignableFrom(x))
+                .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
+                .Select(x => x.GetCustomAttribute<EffectAttribute>().EffectType);
+            var results = types.ToList();
+            results.Insert(0, "(添加效果)");
+            return results;
+        }
 
         private void AddEffect()
         {
-            if (EffectType != SkillEffectType.None)
+            if (EffectTypeName != "(添加效果)")
             {
-                if (EffectType == SkillEffectType.AddStatus) MyToggleObjects.Add(new StateToggleGroup());
-                if (EffectType == SkillEffectType.NumericModify) MyToggleObjects.Add(new DurationToggleGroup());
-                EffectType = SkillEffectType.None;
-            }
-        }
+                var effectType = typeof(Effect).Assembly.GetTypes()
+                    .Where(x => !x.IsAbstract)
+                    .Where(x => typeof(Effect).IsAssignableFrom(x))
+                    .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
+                    .Where(x => x.GetCustomAttribute<EffectAttribute>().EffectType == EffectTypeName)
+                    .First();
 
-        //public IEnumerable<Type> GetFilteredTypeList()
-        //{
-        //    var q = typeof(MyToggleObject).Assembly.GetTypes()
-        //        .Where(x => !x.IsAbstract)
-        //        .Where(x => typeof(MyToggleObject).IsAssignableFrom(x));
-        //    return q;
-        //}
+                var effect = Activator.CreateInstance(effectType) as Effect;
+                effect.Enabled = true;
+                Effects.Add(effect);
+
+                EffectTypeName = "(添加效果)";
+            }
+            //SkillHelper.AddEffect(Effects, EffectType);
+        }
 
         private void BeginBox()
         {
@@ -123,15 +133,9 @@ namespace EGamePlay.Combat
     }
 
     [Serializable]
-    public abstract class MyToggleObject
-    {
-
-    }
-
-    [Serializable]
     [HideLabel]
     //[LabelText("持续时间")]
-    public class DurationToggleGroup : MyToggleObject
+    public class DurationToggleGroup
     {
         [ToggleGroup("Enabled", "持续时间")]
         public bool Enabled;
@@ -146,7 +150,7 @@ namespace EGamePlay.Combat
     [Serializable]
     [HideLabel]
     //[LabelText("设置状态")]
-    public class StateToggleGroup : MyToggleObject
+    public class StateToggleGroup
     {
         [ToggleGroup("Enabled", "设置状态")]
         public bool Enabled;

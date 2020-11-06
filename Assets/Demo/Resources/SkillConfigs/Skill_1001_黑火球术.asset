@@ -15,12 +15,107 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: e9f6e9afe434d2b47b41c70f8c214017, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: Effects
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 1|EGamePlay.Combat.DamageEffect, EGamePlay
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 3
+      Data: 0
+    - Name: DamageType
+      Entry: 3
+      Data: 1
+    - Name: DamageValue
+      Entry: 1
+      Data: 550
+    - Name: CanCrit
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.AddStatusEffect, EGamePlay
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 3
+      Data: 0
+    - Name: AddStatus
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|EGamePlay.Combat.NumericModifyEffect, EGamePlay
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 3
+      Data: 0
+    - Name: NumericType
+      Entry: 3
+      Data: 1001
+    - Name: NumericValue
+      Entry: 1
+      Data: -50
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   ID: 1001
   Name: "\u9ED1\u706B\u7403\u672F"
   SkillSpellType: 0
@@ -33,147 +128,7 @@ MonoBehaviour:
   Cold: 0
   ColdGroupTitle: "\u51B7\u5374\u65F6\u95F4"
   ColdTime: 0
-  EffectGroupList:
-  - Enabled: 1
-    SkillEffectType: 1
-    IsSkillEffect: 1
-    AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 1
-    DamageValue: 800
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 0}
-    RemoveStatus: {fileID: 0}
-    NumericType: 0
-    NumericValue: 
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 0
-  - Enabled: 1
-    SkillEffectType: 3
-    IsSkillEffect: 1
-    AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 0
-    DamageValue: 
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 11400000, guid: e9f6e9afe434d2b47b41c70f8c214017, type: 2}
-    RemoveStatus: {fileID: 0}
-    NumericType: 0
-    NumericValue: 
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 0
-  - Enabled: 1
-    SkillEffectType: 3
-    IsSkillEffect: 1
-    AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 0
-    DamageValue: 
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 11400000, guid: b8c91eb546ede34438b6e5f3aefa1734, type: 2}
-    RemoveStatus: {fileID: 0}
-    NumericType: 0
-    NumericValue: 
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 0
-  - Enabled: 1
-    SkillEffectType: 7
-    IsSkillEffect: 1
-    AddSkillEffectTargetType: 1
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 0
-    DamageValue: 
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 0}
-    RemoveStatus: {fileID: 0}
-    NumericType: 0
-    NumericValue: 
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 0
-  - Enabled: 1
-    SkillEffectType: 6
-    IsSkillEffect: 1
-    AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 0
-    DamageValue: 
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 0}
-    RemoveStatus: {fileID: 0}
-    NumericType: 1001
-    NumericValue: 100
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 0
-  - Enabled: 1
-    SkillEffectType: 4
-    IsSkillEffect: 1
-    AddSkillEffectTargetType: 1
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 0
-    DamageValue: 
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 0}
-    RemoveStatus: {fileID: 11400000, guid: b8c91eb546ede34438b6e5f3aefa1734, type: 2}
-    NumericType: 0
-    NumericValue: 
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 0
-  - Enabled: 1
-    SkillEffectType: 8
-    IsSkillEffect: 1
-    AddSkillEffectTargetType: 0
-    EffectTriggerType: 0
-    Interval: 0
-    DamageType: 0
-    DamageValue: 
-    CanCrit: 0
-    CureValue: 
-    AddStatus: {fileID: 0}
-    RemoveStatus: {fileID: 0}
-    NumericType: 0
-    NumericValue: 
-    ShieldType: 0
-    ShieldValue: 0
-    ShieldDuration: 0
-    TagType: 0
-    TagCount: 1
-    TagDuration: 2000
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   SkillAnimationClip: {fileID: 0}
   SkillEffectObject: {fileID: 0}
   SkillAudio: {fileID: 0}

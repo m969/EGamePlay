@@ -63,17 +63,17 @@ namespace EGamePlay.Combat.Skill
 
         public void AssignSkillEffect()
         {
-            foreach (var item in SkillConfigObject.EffectGroupList)
+            foreach (var item in SkillConfigObject.Effects)
             {
-                if (item.SkillEffectType == SkillEffectType.CauseDamage)
+                if (item is DamageEffect damageEffect)
                 {
                     var operation = CombatOperationManager.CreateOperation<DamageOperation>(this.SpellCaster);
                     operation.Target = SkillTarget;
                     operation.DamageSource = DamageSource.Skill;
-                    operation.Expression = item.DamageValue;
+                    operation.Expression = damageEffect.DamageValue;
                     operation.ApplyDamage();
                 }
-                else if (item.SkillEffectType == SkillEffectType.CureHero)
+                else if (item is CureEffect cureEffect)
                 {
                     var operation = CombatOperationManager.CreateOperation<CureOperation>(this.SpellCaster);
                     operation.Target = SkillTarget;
