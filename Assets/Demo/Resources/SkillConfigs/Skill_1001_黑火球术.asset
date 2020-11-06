@@ -103,7 +103,7 @@ MonoBehaviour:
       Data: 0
     - Name: NumericType
       Entry: 3
-      Data: 1001
+      Data: 1002
     - Name: NumericValue
       Entry: 1
       Data: -50
