@@ -1555,6 +1555,8 @@ MonoBehaviour:
   AnimTime: 0.05
   AttackPrefab: {fileID: 453928607068391413, guid: ab9c12b4a40a2a249800ef30b3607ff1,
     type: 3}
+  SkillEffectPrefab: {fileID: 453928607068391413, guid: 63e5b91a9823f354680283e73875879a,
+    type: 3}
   HitEffectPrefab: {fileID: 945749897893569834, guid: 84c1f0cb74706bb41953794e56b77676,
     type: 3}
 --- !u!1 &1186170163

@@ -7,6 +7,8 @@ using Sirenix.Serialization;
 using System.IO;
 using Sirenix.Utilities.Editor;
 using System.Linq;
+using UnityEditor;
+using System.Reflection;
 
 namespace EGamePlay.Combat
 {
@@ -33,8 +35,36 @@ namespace EGamePlay.Combat
         public DurationToggleGroup DurationToggleGroup = new DurationToggleGroup();
 
         [LabelText("效果列表"), Space(30)]
-        [ListDrawerSettings(Expanded = true, DraggableItems = false, /*HideAddButton = true, */ShowItemCount = false)]
+        [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false)]
         public SkillEffectGroup[] RunningEffectGroupList;
+
+        [LabelText("效果列表"), Space(30)]
+        [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
+        //[TypeFilter("GetFilteredTypeList")]
+        [HideReferenceObjectPicker]
+        public List<MyToggleObject> MyToggleObjects = new List<MyToggleObject>();
+        [HorizontalGroup(/*Width = 120*//*, */PaddingLeft = 40, PaddingRight = 40/*, MarginLeft = 60, MarginRight = 60*/)]
+        [HideLabel]
+        [OnValueChanged("AddEffect")]
+        public SkillEffectType EffectType;
+
+        private void AddEffect()
+        {
+            if (EffectType != SkillEffectType.None)
+            {
+                if (EffectType == SkillEffectType.AddStatus) MyToggleObjects.Add(new StateToggleGroup());
+                if (EffectType == SkillEffectType.NumericModify) MyToggleObjects.Add(new DurationToggleGroup());
+                EffectType = SkillEffectType.None;
+            }
+        }
+
+        //public IEnumerable<Type> GetFilteredTypeList()
+        //{
+        //    var q = typeof(MyToggleObject).Assembly.GetTypes()
+        //        .Where(x => !x.IsAbstract)
+        //        .Where(x => typeof(MyToggleObject).IsAssignableFrom(x));
+        //    return q;
+        //}
 
         private void BeginBox()
         {
@@ -55,10 +85,26 @@ namespace EGamePlay.Combat
             SirenixEditorGUI.EndBox();
         }
 
-
+        //private bool NeedClearLog;
         [OnInspectorGUI]
         private void OnInspectorGUI()
         {
+            //if (NeedClearLog)
+            //{
+            //    var assembly = Assembly.GetAssembly(typeof(UnityEditor.SceneView));
+            //    var type = assembly.GetType("UnityEditor.LogEntries");
+            //    var method = type.GetMethod("Clear");
+            //    method.Invoke(new object(), null);
+            //    NeedClearLog = false;
+            //}
+            //if (EffectType != SkillEffectType.None)
+            //{
+            //    if (EffectType == SkillEffectType.AddStatus) MyToggleObjects.Add(new StateToggleGroup());
+            //    if (EffectType == SkillEffectType.NumericModify) MyToggleObjects.Add(new DurationToggleGroup());
+            //    EffectType = SkillEffectType.None;
+            //    NeedClearLog = true;
+            //}
+
             string[] guids = UnityEditor.Selection.assetGUIDs;
             int i = guids.Length;
             if (i == 1)
@@ -77,15 +123,20 @@ namespace EGamePlay.Combat
     }
 
     [Serializable]
-    public class MyToggleObject
+    public abstract class MyToggleObject
     {
-        public bool Enabled;
+
     }
 
     [Serializable]
-    [LabelText("持续时间")]
+    [HideLabel]
+    //[LabelText("持续时间")]
     public class DurationToggleGroup : MyToggleObject
     {
+        [ToggleGroup("Enabled", "持续时间")]
+        public bool Enabled;
+
+        [ToggleGroup("Enabled")]
         [Tooltip("不勾即代表永久，0也代表永久")]
         [LabelText("持续时间")]
         [SuffixLabel("毫秒", true)]
@@ -93,9 +144,14 @@ namespace EGamePlay.Combat
     }
     
     [Serializable]
-    [LabelText("设置状态")]
+    [HideLabel]
+    //[LabelText("设置状态")]
     public class StateToggleGroup : MyToggleObject
     {
+        [ToggleGroup("Enabled", "设置状态")]
+        public bool Enabled;
+
+        [ToggleGroup("Enabled")]
         [LabelText("设置")]
         public StateType StateType;
     }

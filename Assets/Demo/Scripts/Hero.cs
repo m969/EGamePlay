@@ -13,6 +13,7 @@ public sealed class Hero : MonoBehaviour
     public float AnimTime = 0.05f;
     public GameTimer AnimTimer = new GameTimer(0.1f);
     public GameObject AttackPrefab;
+    public GameObject SkillEffectPrefab;
     public GameObject HitEffectPrefab;
 
 
@@ -45,21 +46,31 @@ public sealed class Hero : MonoBehaviour
         }
     }
 
-    public void Attack()
+    private void SpawnLineEffect(GameObject lineEffectPrefab, Vector3 p1, Vector3 p2)
     {
-        var monster = GameObject.Find("/Monster");
-        var attackEffect = GameObject.Instantiate(AttackPrefab);
+        var attackEffect = GameObject.Instantiate(lineEffectPrefab);
         attackEffect.transform.position = Vector3.up;
-        attackEffect.GetComponent<LineRenderer>().SetPosition(0, transform.position);
-        attackEffect.GetComponent<LineRenderer>().SetPosition(1, monster.transform.position);
+        attackEffect.GetComponent<LineRenderer>().SetPosition(0, p1);
+        attackEffect.GetComponent<LineRenderer>().SetPosition(1, p2);
         GameObject.Destroy(attackEffect, 0.05f);
+    }
 
-        var vec = transform.position - monster.transform.position;
-        var hitPoint = monster.transform.position + vec.normalized * .6f;
+    private void SpawnHitEffect(Vector3 p1, Vector3 p2)
+    {
+        var vec = p1 - p2;
+        var hitPoint = p2 + vec.normalized * .6f;
         hitPoint += Vector3.up;
         var hitEffect = GameObject.Instantiate(HitEffectPrefab);
         hitEffect.transform.position = hitPoint;
         GameObject.Destroy(hitEffect, 0.2f);
+    }
+
+    public void Attack()
+    {
+        var monster = GameObject.Find("/Monster");
+
+        SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
+        SpawnHitEffect(transform.position, monster.transform.position);
 
         var DamageOperation = CombatOperationManager.CreateOperation<DamageOperation>(CombatEntity);
         DamageOperation.Target = monster.GetComponent<Monster>().CombatEntity;
@@ -71,6 +82,10 @@ public sealed class Hero : MonoBehaviour
     public void SpellSkillA()
     {
         var monster = GameObject.Find("/Monster");
+
+        SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
+        SpawnHitEffect(transform.position, monster.transform.position);
+
         var operation = CombatOperationManager.CreateOperation<SpellSkillOperation>(this.CombatEntity);
         operation.Target = monster.GetComponent<Monster>().CombatEntity;
         var skill = CombatSkillManager.CreateSkill<Skill_1001>();
@@ -83,6 +98,10 @@ public sealed class Hero : MonoBehaviour
     public void SpellSkillB()
     {
         var monster = GameObject.Find("/Monster");
+
+        SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
+        SpawnHitEffect(transform.position, monster.transform.position);
+
         var operation = CombatOperationManager.CreateOperation<SpellSkillOperation>(this.CombatEntity);
         operation.Target = monster.GetComponent<Monster>().CombatEntity;
         var skill = CombatSkillManager.CreateSkill<Skill_1002>();

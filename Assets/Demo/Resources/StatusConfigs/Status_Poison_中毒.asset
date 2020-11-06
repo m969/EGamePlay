@@ -20,7 +20,68 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: MyToggleObjects
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.MyToggleObject,
+        EGamePlay]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 7
+      Data: 1|EGamePlay.Combat.StateToggleGroup, EGamePlay
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: StateType
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.StateToggleGroup, EGamePlay
+    - Name: Enabled
+      Entry: 5
+      Data: false
+    - Name: StateType
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|EGamePlay.Combat.StateToggleGroup, EGamePlay
+    - Name: Enabled
+      Entry: 5
+      Data: false
+    - Name: StateType
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|EGamePlay.Combat.DurationToggleGroup, EGamePlay
+    - Name: Enabled
+      Entry: 5
+      Data: false
+    - Name: Duration
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   ID: Poison
   Name: "\u4E2D\u6BD2"
   StatusType: 1
@@ -51,5 +112,6 @@ MonoBehaviour:
     TagType: 0
     TagCount: 1
     TagDuration: 0
+  EffectType: 0
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

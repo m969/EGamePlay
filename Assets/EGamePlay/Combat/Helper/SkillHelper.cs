@@ -103,10 +103,10 @@
         Real = 2,
     }
 
-    [LabelText("效果类型")]
+    //[LabelText("效果类型")]
     public enum SkillEffectType
     {
-        [LabelText("(选择效果)")]
+        [LabelText("(添加效果)")]
         None = 0,
         [LabelText("造成伤害")]
         CauseDamage = 1,
