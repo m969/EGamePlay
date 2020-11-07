@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace EGamePlay.Combat
 {
-    [Effect("标记叠加")]
+    [Effect("标记叠加", 70)]
     public class StackTagEffect : Effect
     {
         public override string Label => "标记叠加";

@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace EGamePlay.Combat
 {
-    [Effect("移除状态")]
+    [Effect("移除状态", 40)]
     public class RemoveStatusEffect : Effect
     {
         public override string Label

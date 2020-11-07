@@ -3,7 +3,7 @@
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 战斗数值匣子，在这里管理所有角色战斗数值的存储、变更、刷新等
+    /// 战斗数值匣子，在这里管理所有角色战斗属性数值的存储、变更、刷新等
     /// </summary>
     public class CombatNumericBox
 	{

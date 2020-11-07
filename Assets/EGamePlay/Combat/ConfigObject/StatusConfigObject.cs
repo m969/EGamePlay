@@ -50,6 +50,7 @@ namespace EGamePlay.Combat
                 .Where(x => !x.IsAbstract)
                 .Where(x => typeof(Effect).IsAssignableFrom(x))
                 .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
+                .OrderBy(x => x.GetCustomAttribute<EffectAttribute>().Order)
                 .Select(x => x.GetCustomAttribute<EffectAttribute>().EffectType);
             var results = types.ToList();
             results.Insert(0, "(添加效果)");

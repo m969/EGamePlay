@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace EGamePlay.Combat
 {
-    [Effect("添加护盾")]
+    [Effect("添加护盾", 60)]
     public class AddShieldEffect : Effect
     {
         public override string Label => "添加护盾";

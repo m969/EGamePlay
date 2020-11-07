@@ -3,28 +3,28 @@
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 浮点型数值修饰器
+    /// 浮点型修饰器
     /// </summary>
-    public class FloatNumericModifier
+    public class FloatModifier
     {
         public float Value;
     }
     /// <summary>
-    /// 浮点型数值修饰器集合
+    /// 浮点型修饰器集
     /// </summary>
-    public class FloatNumericModifierCollection
+    public class FloatModifierCollection
     {
         public float Value { get; private set; }
-        private List<FloatNumericModifier> Modifiers { get; } = new List<FloatNumericModifier>();
+        private List<FloatModifier> Modifiers { get; } = new List<FloatModifier>();
 
-        public float AppendModifier(FloatNumericModifier modifier)
+        public float AppendModifier(FloatModifier modifier)
         {
             Modifiers.Add(modifier);
             Update();
             return Value;
         }
 
-        public float RemoveModifier(FloatNumericModifier modifier)
+        public float RemoveModifier(FloatModifier modifier)
         {
             Modifiers.Remove(modifier);
             Update();
@@ -51,10 +51,10 @@ namespace EGamePlay.Combat
         public int pctAdd { get; private set; }
         public float finalAdd { get; private set; }
         public int finalPctAdd { get; private set; }
-        private FloatNumericModifierCollection AddCollection { get; } = new FloatNumericModifierCollection();
-        private IntNumericModifierCollection PctAddCollection { get; } = new IntNumericModifierCollection();
-        private FloatNumericModifierCollection FinalAddCollection { get; } = new FloatNumericModifierCollection();
-        private IntNumericModifierCollection FinalPctAddCollection { get; } = new IntNumericModifierCollection();
+        private FloatModifierCollection AddCollection { get; } = new FloatModifierCollection();
+        private IntModifierCollection PctAddCollection { get; } = new IntModifierCollection();
+        private FloatModifierCollection FinalAddCollection { get; } = new FloatModifierCollection();
+        private IntModifierCollection FinalPctAddCollection { get; } = new IntModifierCollection();
 
 
         public void Initialize()
@@ -67,42 +67,42 @@ namespace EGamePlay.Combat
             Update();
             return baseValue;
         }
-        public void AppendAddModifier(FloatNumericModifier modifier)
+        public void AppendAddModifier(FloatModifier modifier)
         {
             add = AddCollection.AppendModifier(modifier);
             Update();
         }
-        public void AppendPctAddModifier(IntNumericModifier modifier)
+        public void AppendPctAddModifier(IntModifier modifier)
         {
             pctAdd = PctAddCollection.AppendModifier(modifier);
             Update();
         }
-        public void AppendFinalAddModifier(FloatNumericModifier modifier)
+        public void AppendFinalAddModifier(FloatModifier modifier)
         {
             finalAdd = FinalAddCollection.AppendModifier(modifier);
             Update();
         }
-        public void AppendFinalPctAddModifier(IntNumericModifier modifier)
+        public void AppendFinalPctAddModifier(IntModifier modifier)
         {
             finalPctAdd = FinalPctAddCollection.AppendModifier(modifier);
             Update();
         }
-        public void RemoveAddModifier(FloatNumericModifier modifier)
+        public void RemoveAddModifier(FloatModifier modifier)
         {
             add = AddCollection.RemoveModifier(modifier);
             Update();
         }
-        public void RemovePctAddModifier(IntNumericModifier modifier)
+        public void RemovePctAddModifier(IntModifier modifier)
         {
             pctAdd = PctAddCollection.RemoveModifier(modifier);
             Update();
         }
-        public void RemoveFinalAddModifier(FloatNumericModifier modifier)
+        public void RemoveFinalAddModifier(FloatModifier modifier)
         {
             finalAdd = FinalAddCollection.RemoveModifier(modifier);
             Update();
         }
-        public void RemoveFinalPctAddModifier(IntNumericModifier modifier)
+        public void RemoveFinalPctAddModifier(IntModifier modifier)
         {
             finalPctAdd = FinalPctAddCollection.RemoveModifier(modifier);
             Update();

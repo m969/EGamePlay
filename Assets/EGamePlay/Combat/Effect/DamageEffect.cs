@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace EGamePlay.Combat
 {
-    [Effect("造成伤害")]
+    [Effect("造成伤害", 10)]
     public class DamageEffect : Effect
     {
         public override string Label => "造成伤害";
