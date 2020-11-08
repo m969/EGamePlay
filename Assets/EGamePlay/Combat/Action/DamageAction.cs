@@ -25,7 +25,8 @@ namespace EGamePlay.Combat
         public bool CanCritical { get; set; }
 
 
-        private void BeforeDamage()
+        //前置处理
+        private void PreProcess()
         {
             if (DamageSource == DamageSource.Attack)
             {
@@ -39,17 +40,19 @@ namespace EGamePlay.Combat
             }
         }
 
+        //应用伤害
         public void ApplyDamage()
         {
-            BeforeDamage();
+            PreProcess();
             Target.ReceiveDamage(this);
-            AfterDamage();
+            PostProcess();
         }
 
-        private void AfterDamage()
+        //后置处理
+        private void PostProcess()
         {
-            Creator.TriggerAction(ActionPointType.CauseDamage, this);
-            Target.TriggerAction(ActionPointType.ReceiveDamage, this);
+            Creator.TriggerActionPoint(ActionPointType.PostCauseDamage, this);//造成伤害后
+            Target.TriggerActionPoint(ActionPointType.PostReceiveDamage, this);//承受伤害后
         }
     }
 

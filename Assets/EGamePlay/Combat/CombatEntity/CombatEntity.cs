@@ -10,31 +10,31 @@ namespace EGamePlay.Combat
     {
         public HealthPoint HealthPoint { get; private set; } = new HealthPoint();
         public CombatNumericBox NumericBox { get; private set; } = new CombatNumericBox();
-        public ActionPointEventManager ActionPointEventManager { get; set; } = new ActionPointEventManager();
+        public ActionPointManager ActionPointManager { get; set; } = new ActionPointManager();
         public CombatSkillComponent SkillComponent { get { return GetComponent<CombatSkillComponent>(); } }
 
 
         public void Initialize()
         {
             NumericBox.Initialize();
-            ActionPointEventManager.Initialize();
+            ActionPointManager.Initialize();
             HealthPoint.SetMaxValue(99_999);
             HealthPoint.Reset();
         }
 
         public void AddListener(ActionPointType actionPointType, Action<CombatAction> action)
         {
-            ActionPointEventManager.AddListener(actionPointType, action);
+            ActionPointManager.AddListener(actionPointType, action);
         }
 
         public void RemoveListener(ActionPointType actionPointType, Action<CombatAction> action)
         {
-            ActionPointEventManager.RemoveListener(actionPointType, action);
+            ActionPointManager.RemoveListener(actionPointType, action);
         }
 
-        public void TriggerAction(ActionPointType actionPointType, CombatAction action)
+        public void TriggerActionPoint(ActionPointType actionPointType, CombatAction action)
         {
-            ActionPointEventManager.TriggerAction(actionPointType, action);
+            ActionPointManager.TriggerActionPoint(actionPointType, action);
         }
 
         public void ReceiveDamage(CombatAction combatAction)

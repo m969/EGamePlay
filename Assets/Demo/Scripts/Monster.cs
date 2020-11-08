@@ -19,7 +19,7 @@ public sealed class Monster : MonoBehaviour
     {
         CombatEntity = Entity.Create<CombatEntity>();
         CombatEntity.Initialize();
-        CombatEntity.AddListener(ActionPointType.ReceiveDamage, OnReceiveDamage);
+        CombatEntity.AddListener(ActionPointType.PostReceiveDamage, OnReceiveDamage);
     }
 
     // Update is called once per frame
