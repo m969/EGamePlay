@@ -180,14 +180,14 @@
         Interval,
     }
 
-    [LabelText("动作类型")]
-    public enum ActionType
-    {
-        [LabelText("发出普攻")]
-        Attack,
-        [LabelText("遭受普攻")]
-        BeAttack,
-    }
+    //[LabelText("动作类型")]
+    //public enum ActionType
+    //{
+    //    [LabelText("发出普攻")]
+    //    Attack,
+    //    [LabelText("遭受普攻")]
+    //    BeAttack,
+    //}
 
     [LabelText("条件类型")]
     public enum ConditionType

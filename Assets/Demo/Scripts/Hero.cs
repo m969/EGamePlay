@@ -72,11 +72,11 @@ public sealed class Hero : MonoBehaviour
         SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
         SpawnHitEffect(transform.position, monster.transform.position);
 
-        var operation = CombatOperationManager.CreateOperation<DamageOperation>(CombatEntity);
-        operation.Target = monster.GetComponent<Monster>().CombatEntity;
-        operation.DamageSource = DamageSource.Attack;
+        var action = CombatActionManager.CreateAction<DamageAction>(CombatEntity);
+        action.Target = monster.GetComponent<Monster>().CombatEntity;
+        action.DamageSource = DamageSource.Attack;
         CombatEntity.NumericBox.PhysicAttack_I.SetBase(RandomHelper.RandomNumber(600, 999));
-        operation.ApplyDamage();
+        action.ApplyDamage();
     }
 
     public void SpellSkillA()
@@ -86,13 +86,13 @@ public sealed class Hero : MonoBehaviour
         SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
         SpawnHitEffect(transform.position, monster.transform.position);
 
-        var operation = CombatOperationManager.CreateOperation<SpellSkillOperation>(this.CombatEntity);
-        operation.Target = monster.GetComponent<Monster>().CombatEntity;
+        var action = CombatActionManager.CreateAction<SpellSkillAction>(this.CombatEntity);
+        action.Target = monster.GetComponent<Monster>().CombatEntity;
         var skill = CombatSkillManager.CreateSkill<Skill_1001>();
         skill.SpellCaster = this.CombatEntity;
         skill.SkillConfigObject = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        operation.SkillEntity = skill;
-        operation.SpellSkill();
+        action.SkillEntity = skill;
+        action.SpellSkill();
     }
 
     public void SpellSkillB()
@@ -102,12 +102,12 @@ public sealed class Hero : MonoBehaviour
         SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
         SpawnHitEffect(transform.position, monster.transform.position);
 
-        var operation = CombatOperationManager.CreateOperation<SpellSkillOperation>(this.CombatEntity);
-        operation.Target = monster.GetComponent<Monster>().CombatEntity;
+        var action = CombatActionManager.CreateAction<SpellSkillAction>(this.CombatEntity);
+        action.Target = monster.GetComponent<Monster>().CombatEntity;
         var skill = CombatSkillManager.CreateSkill<Skill_1002>();
         skill.SpellCaster = this.CombatEntity;
         skill.SkillConfigObject = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
-        operation.SkillEntity = skill;
-        operation.SpellSkill();
+        action.SkillEntity = skill;
+        action.SpellSkill();
     }
 }

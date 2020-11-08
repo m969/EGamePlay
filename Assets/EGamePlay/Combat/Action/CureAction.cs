@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 治疗行动
     /// </summary>
-    public class CureOperation : CombatOperation
+    public class CureAction : CombatAction
     {
         //治疗数值
         public int CureValue { get; set; }

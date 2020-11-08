@@ -9,7 +9,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 施放技能行动
     /// </summary>
-    public class SpellSkillOperation : CombatOperation
+    public class SpellSkillAction : CombatAction
     {
         public int SkillID { get; set; }
         public SkillEntity SkillEntity { get; set; }

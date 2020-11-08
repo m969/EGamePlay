@@ -19,7 +19,7 @@ public sealed class Monster : MonoBehaviour
     {
         CombatEntity = Entity.Create<CombatEntity>();
         CombatEntity.Initialize();
-        CombatEntity.AddListener(CombatActionType.ReceiveDamage, OnReceiveDamage);
+        CombatEntity.AddListener(ActionPointType.ReceiveDamage, OnReceiveDamage);
     }
 
     // Update is called once per frame
@@ -28,9 +28,9 @@ public sealed class Monster : MonoBehaviour
 
     }
 
-    private void OnReceiveDamage(CombatOperation combatAction)
+    private void OnReceiveDamage(CombatAction combatAction)
     {
-        var damageAction = combatAction as DamageOperation;
+        var damageAction = combatAction as DamageAction;
         HealthBarImage.fillAmount = CombatEntity.HealthPoint.Percent();
         DamageText.text = damageAction.DamageValue.ToString();
         DamageText.GetComponent<DOTweenAnimation>().DORestart();

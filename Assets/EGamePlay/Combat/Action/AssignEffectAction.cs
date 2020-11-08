@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 赋给效果行动
     /// </summary>
-    public class AssignEffectOperation : CombatOperation
+    public class AssignEffectAction : CombatAction
     {
         //效果类型
         public EffectType EffectType { get; set; }
@@ -21,7 +21,7 @@ namespace EGamePlay.Combat
 
         }
 
-        public void ApplyAssignOperation()
+        public void ApplyAssignEffect()
         {
             BeforeAssign();
 

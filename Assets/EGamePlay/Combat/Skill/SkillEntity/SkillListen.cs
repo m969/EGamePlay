@@ -28,7 +28,7 @@ namespace EGamePlay.Combat.Skill
                 if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
                 {
                     //SkillEntity.EndListen();
-                    var operation = CombatOperationManager.CreateOperation<SpellSkillOperation>(SkillEntity.SpellCaster);
+                    var operation = CombatActionManager.CreateAction<SpellSkillAction>(SkillEntity.SpellCaster);
                     operation.SpellSkill();
                 }
             }

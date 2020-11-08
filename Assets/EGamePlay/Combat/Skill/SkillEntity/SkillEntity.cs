@@ -67,7 +67,7 @@ namespace EGamePlay.Combat.Skill
             {
                 if (item is DamageEffect damageEffect)
                 {
-                    var operation = CombatOperationManager.CreateOperation<DamageOperation>(this.SpellCaster);
+                    var operation = CombatActionManager.CreateAction<DamageAction>(this.SpellCaster);
                     operation.Target = SkillTarget;
                     operation.DamageSource = DamageSource.Skill;
                     operation.Expression = damageEffect.DamageValue;
@@ -75,15 +75,15 @@ namespace EGamePlay.Combat.Skill
                 }
                 else if (item is CureEffect cureEffect)
                 {
-                    var operation = CombatOperationManager.CreateOperation<CureOperation>(this.SpellCaster);
+                    var operation = CombatActionManager.CreateAction<CureAction>(this.SpellCaster);
                     operation.Target = SkillTarget;
                     operation.ApplyCure();
                 }
                 else
                 {
-                    var operation = CombatOperationManager.CreateOperation<AssignEffectOperation>(this.SpellCaster);
+                    var operation = CombatActionManager.CreateAction<AssignEffectAction>(this.SpellCaster);
                     operation.Target = SkillTarget;
-                    operation.ApplyAssignOperation();
+                    operation.ApplyAssignEffect();
                 }
             }
         }

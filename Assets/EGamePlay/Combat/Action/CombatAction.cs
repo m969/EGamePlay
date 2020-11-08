@@ -6,7 +6,8 @@ using Sirenix.OdinInspector;
 
 namespace EGamePlay.Combat
 {
-    public enum OperationType
+    [LabelText("行动类型")]
+    public enum ActionType
     {
         [LabelText("施放技能")]
         SpellSkill,
@@ -19,17 +20,16 @@ namespace EGamePlay.Combat
     }
 
     /// <summary>
-    /// 战斗行动概念，造成伤害、治疗英雄、赋给效果等都属于战斗行动，需要继承自CombatOperation
-    /// 战斗行动由战斗实体主动创建并应用，包含本次行动所需要用到的所有数据，并且会触发一系列战斗行为表现
-    /// 战斗行动是可以嵌套调用的，比如 施放技能 触发 造成伤害 触发 赋给效果 
+    /// 战斗行动概念，造成伤害、治疗英雄、赋给效果等属于战斗行动，需要继承自CombatAction
+    /// 战斗行动由战斗实体主动发起，包含本次行动所需要用到的所有数据，并且会触发一系列行动点事件
     /// </summary>
-    public class CombatOperation
+    public class CombatAction
     {
-        public OperationType OperationType { get; set; }
+        public ActionType ActionType { get; set; }
         public CombatEntity Creator { get; set; }
         public CombatEntity Target { get; set; }
 
-        public virtual void ApplyOperation()
+        public virtual void ApplyAction()
         {
 
         }
