@@ -1,4 +1,5 @@
 ﻿using EGamePlay.Combat.Skill;
+using EGamePlay.Combat.Status;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,6 +48,18 @@ namespace EGamePlay.Combat
         {
             var cureAction = combatAction as CureAction;
             HealthPoint.Add(cureAction.CureValue);
+        }
+
+        public void AddStatusEffect(StatusConfigObject statusConfig)
+        {
+            StatusEntity status;
+            status = CombatStatusManager.CreateStatus<StatusEntity>();
+            if (statusConfig.DurationConfig.Enabled)
+            {
+                status.AddComponent<StatusLifeTimeComponent>();
+                status.AddComponent<StatusIntervalTriggerComponent>();
+                this.AddChild(status);
+            }
         }
     }
 }

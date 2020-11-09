@@ -70,19 +70,21 @@ namespace EGamePlay.Combat.Skill
                     var operation = CombatActionManager.CreateAction<DamageAction>(this.SpellCaster);
                     operation.Target = SkillTarget;
                     operation.DamageSource = DamageSource.Skill;
-                    operation.Expression = damageEffect.DamageValue;
+                    operation.DamageEffect = damageEffect;
                     operation.ApplyDamage();
                 }
                 else if (item is CureEffect cureEffect)
                 {
                     var operation = CombatActionManager.CreateAction<CureAction>(this.SpellCaster);
                     operation.Target = SkillTarget;
+                    operation.CureEffect = cureEffect;
                     operation.ApplyCure();
                 }
                 else
                 {
                     var operation = CombatActionManager.CreateAction<AssignEffectAction>(this.SpellCaster);
                     operation.Target = SkillTarget;
+                    operation.Effect = item;
                     operation.ApplyAssignEffect();
                 }
             }

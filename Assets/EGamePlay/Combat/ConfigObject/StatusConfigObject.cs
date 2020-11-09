@@ -31,7 +31,7 @@ namespace EGamePlay.Combat
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
         public int MaxStack = 1;
 
-        public DurationToggleGroup DurationToggleGroup = new DurationToggleGroup();
+        public DurationConfig DurationConfig = new DurationConfig();
 
         [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
@@ -136,7 +136,7 @@ namespace EGamePlay.Combat
     [Serializable]
     [HideLabel]
     //[LabelText("持续时间")]
-    public class DurationToggleGroup
+    public class DurationConfig
     {
         [ToggleGroup("Enabled", "持续时间")]
         public bool Enabled;
@@ -148,16 +148,16 @@ namespace EGamePlay.Combat
         public uint Duration;
     }
     
-    [Serializable]
-    [HideLabel]
-    //[LabelText("设置状态")]
-    public class StateToggleGroup
-    {
-        [ToggleGroup("Enabled", "设置状态")]
-        public bool Enabled;
+    //[Serializable]
+    //[HideLabel]
+    ////[LabelText("设置状态")]
+    //public class StateConfig
+    //{
+    //    [ToggleGroup("Enabled", "设置状态")]
+    //    public bool Enabled;
 
-        [ToggleGroup("Enabled")]
-        [LabelText("设置")]
-        public StateType StateType;
-    }
+    //    [ToggleGroup("Enabled")]
+    //    [LabelText("设置")]
+    //    public StateType StateType;
+    //}
 }

@@ -15,9 +15,9 @@ namespace EGamePlay.Combat
 
         public static T CreateSkill<T>() where T: SkillEntity, new()
         {
-            var operation = new T();
-            CombatSkills.Add(operation);
-            return operation;
+            var skill = Entity.Create<T>();
+            CombatSkills.Add(skill);
+            return skill;
         }
     }
 }

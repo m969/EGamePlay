@@ -11,18 +11,13 @@ namespace EGamePlay.Combat
     /// </summary>
     public class DamageAction : CombatAction
     {
-        //伤害类型
-        public DamageType DamageType { get; set; }
+        public DamageEffect DamageEffect { get; set; }
         //伤害来源
         public DamageSource DamageSource { get; set; }
-        //伤害公式
-        public string Expression { get; set; }
         //伤害数值
         public int DamageValue { get; set; }
         //是否是暴击
         public bool IsCritical { get; set; }
-        //是否能暴击
-        public bool CanCritical { get; set; }
 
 
         //前置处理
@@ -32,11 +27,18 @@ namespace EGamePlay.Combat
             {
                 IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.NumericBox.CriticalProb_F.Value;
                 DamageValue = Mathf.Max(1, Creator.NumericBox.PhysicAttack_I.Value - Target.NumericBox.PhysicDefense_I.Value);
-                if (IsCritical) DamageValue = (int)(DamageValue * 1.5f);
+                if (IsCritical)
+                {
+                    DamageValue = (int)(DamageValue * 1.5f);
+                }
             }
             if (DamageSource == DamageSource.Skill)
             {
-                DamageValue = int.Parse(Expression);
+                if (DamageEffect.CanCrit)
+                {
+                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.NumericBox.CriticalProb_F.Value;
+                }
+                DamageValue = int.Parse(DamageEffect.DamageValueFormula);
             }
         }
 

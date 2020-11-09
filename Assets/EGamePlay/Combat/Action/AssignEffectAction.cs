@@ -10,6 +10,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class AssignEffectAction : CombatAction
     {
+        public Effect Effect { get; set; }
         //效果类型
         public EffectType EffectType { get; set; }
         //效果数值
@@ -24,7 +25,10 @@ namespace EGamePlay.Combat
         public void ApplyAssignEffect()
         {
             BeforeAssign();
-
+            if (Effect is AddStatusEffect addStatusEffect)
+            {
+                Target.AddStatusEffect(addStatusEffect.AddStatus);
+            }
             AfterAssign();
         }
 

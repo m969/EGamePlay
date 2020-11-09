@@ -10,13 +10,14 @@ namespace EGamePlay.Combat
     /// </summary>
     public class CureAction : CombatAction
     {
+        public CureEffect CureEffect { get; set; }
         //治疗数值
         public int CureValue { get; set; }
 
 
         private void BeforeCure()
         {
-
+            CureValue = int.Parse(CureEffect.CureValueFormula);
         }
 
         public void ApplyCure()

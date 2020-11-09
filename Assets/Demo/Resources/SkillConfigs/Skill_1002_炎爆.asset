@@ -49,9 +49,9 @@ MonoBehaviour:
     - Name: DamageType
       Entry: 3
       Data: 0
-    - Name: DamageValue
+    - Name: DamageValueFormula
       Entry: 1
-      Data: 860
+      Data: 800
     - Name: CanCrit
       Entry: 5
       Data: true

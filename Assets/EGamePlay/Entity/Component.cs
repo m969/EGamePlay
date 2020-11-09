@@ -17,5 +17,10 @@ namespace EGamePlay
         {
 
         }
+
+        public virtual void Update()
+        {
+
+        }
     }
 }

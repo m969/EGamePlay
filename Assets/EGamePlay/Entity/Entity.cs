@@ -7,10 +7,11 @@ namespace EGamePlay
 {
     public abstract class Entity
     {
-        private static Dictionary<Type, List<Entity>> Entities = new Dictionary<Type, List<Entity>>();
+        public static Dictionary<Type, List<Entity>> Entities = new Dictionary<Type, List<Entity>>();
         public Entity Parent { get; private set; }
-        private Dictionary<Type, Component> Components { get; set; } = new Dictionary<Type, Component>();
+        public Dictionary<Type, Component> Components { get; set; } = new Dictionary<Type, Component>();
         private List<Entity> Children { get; set; } = new List<Entity>();
+        private Dictionary<Type, List<Entity>> Type2Children { get; set; } = new Dictionary<Type, List<Entity>>();
 
 
         public static T Create<T>()where T : Entity, new()
@@ -25,6 +26,16 @@ namespace EGamePlay
         }
 
         public static void Destroy(Entity entity)
+        {
+
+        }
+
+        public virtual void Awake()
+        {
+
+        }
+
+        public virtual void Destroy()
         {
 
         }
@@ -61,11 +72,26 @@ namespace EGamePlay
         public void AddChild(Entity child)
         {
             Children.Add(child);
+            if (!Type2Children.ContainsKey(child.GetType()))
+            {
+                Type2Children.Add(child.GetType(), new List<Entity>());
+            }
+            Type2Children[child.GetType()].Add(child);
         }
 
         public void RemoveChild(Entity child)
         {
             Children.Remove(child);
+        }
+
+        public Entity[] GetChildren()
+        {
+            return Children.ToArray();
+        }
+
+        public Entity[] GetTypeChildren<T>() where T : Entity
+        {
+            return Type2Children[typeof(T)].ToArray();
         }
     }
 }
