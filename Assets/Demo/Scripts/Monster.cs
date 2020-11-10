@@ -12,6 +12,7 @@ public sealed class Monster : MonoBehaviour
     public float MoveSpeed = 0.2f;
     public Text DamageText;
     public Image HealthBarImage;
+    public Transform CanvasTrm;
 
 
     // Start is called before the first frame update
@@ -31,8 +32,14 @@ public sealed class Monster : MonoBehaviour
     private void OnReceiveDamage(CombatAction combatAction)
     {
         var damageAction = combatAction as DamageAction;
-        HealthBarImage.fillAmount = CombatEntity.HealthPoint.Percent();
-        DamageText.text = damageAction.DamageValue.ToString();
-        DamageText.GetComponent<DOTweenAnimation>().DORestart();
+        HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        var damageText = GameObject.Instantiate(DamageText);
+        damageText.transform.SetParent(CanvasTrm);
+        damageText.transform.localPosition = Vector3.up * 120;
+        damageText.transform.localScale = Vector3.one;
+        damageText.transform.localEulerAngles = Vector3.zero;
+        damageText.text = $"-{damageAction.DamageValue.ToString()}";
+        damageText.GetComponent<DOTweenAnimation>().DORestart();
+        GameObject.Destroy(damageText.gameObject, 0.5f);
     }
 }

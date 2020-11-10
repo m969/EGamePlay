@@ -13,6 +13,9 @@ namespace EGamePlay.Combat
         public List<Action<CombatAction>> Listeners { get; set; } = new List<Action<CombatAction>>();
     }
 
+    /// <summary>
+    /// 行动点类型
+    /// </summary>
     public enum ActionPointType
     {
         PreCauseDamage,//造成伤害前

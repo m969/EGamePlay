@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public class HealthPoint
+    public sealed class HealthPoint
     {
         public int Value { get; private set; }
         public int MaxValue { get; private set; }

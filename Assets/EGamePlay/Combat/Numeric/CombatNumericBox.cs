@@ -7,6 +7,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class CombatNumericBox
 	{
+        public IntNumeric HealthPoint_I = new IntNumeric();
         public IntNumeric PhysicAttack_I = new IntNumeric();
         public IntNumeric PhysicDefense_I = new IntNumeric();
         public FloatNumeric CriticalProb_F = new FloatNumeric();
@@ -15,6 +16,7 @@ namespace EGamePlay.Combat
         public void Initialize()
 		{
             // 这里初始化base值
+            HealthPoint_I.SetBase(99_999);
             PhysicAttack_I.SetBase(1000);
             PhysicDefense_I.SetBase(300);
             CriticalProb_F.SetBase(0.5f);

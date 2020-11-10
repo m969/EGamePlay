@@ -7,20 +7,22 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
+    /// <summary>
+    /// 战斗实体
+    /// </summary>
     public sealed class CombatEntity : Entity
     {
-        public HealthPoint HealthPoint { get; private set; } = new HealthPoint();
+        public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
         public CombatNumericBox NumericBox { get; private set; } = new CombatNumericBox();
         public ActionPointManager ActionPointManager { get; set; } = new ActionPointManager();
-        public CombatSkillComponent SkillComponent { get { return GetComponent<CombatSkillComponent>(); } }
 
 
         public void Initialize()
         {
             NumericBox.Initialize();
             ActionPointManager.Initialize();
-            HealthPoint.SetMaxValue(99_999);
-            HealthPoint.Reset();
+            CurrentHealth.SetMaxValue(NumericBox.HealthPoint_I.Value);
+            CurrentHealth.Reset();
         }
 
         public void AddListener(ActionPointType actionPointType, Action<CombatAction> action)
@@ -41,13 +43,13 @@ namespace EGamePlay.Combat
         public void ReceiveDamage(CombatAction combatAction)
         {
             var damageAction = combatAction as DamageAction;
-            HealthPoint.Minus(damageAction.DamageValue);
+            CurrentHealth.Minus(damageAction.DamageValue);
         }
 
         public void ReceiveCure(CombatAction combatAction)
         {
             var cureAction = combatAction as CureAction;
-            HealthPoint.Add(cureAction.CureValue);
+            CurrentHealth.Add(cureAction.CureValue);
         }
     }
 }

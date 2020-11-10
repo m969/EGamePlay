@@ -61,8 +61,10 @@ namespace EGamePlay.Combat
         //后置处理
         private void PostProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PostCauseDamage, this);//造成伤害后
-            Target.TriggerActionPoint(ActionPointType.PostReceiveDamage, this);//承受伤害后
+            //触发 造成伤害后 行动点
+            Creator.TriggerActionPoint(ActionPointType.PostCauseDamage, this);
+            //触发 承受伤害后 行动点
+            Target.TriggerActionPoint(ActionPointType.PostReceiveDamage, this);
         }
     }
 
