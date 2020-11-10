@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using EGamePlay.Combat.Status;
 
 namespace EGamePlay.Combat
 {
@@ -25,9 +26,16 @@ namespace EGamePlay.Combat
         public void ApplyAssignEffect()
         {
             BeforeAssign();
+            if (Effect is DamageEffect damageEffect)
+            {
+
+            }
             if (Effect is AddStatusEffect addStatusEffect)
             {
-                Target.AddStatusEffect(addStatusEffect.AddStatus);
+                StatusEntity status = EntityFactory.CreateWithParent<StatusEntity>(Target, addStatusEffect.AddStatus);
+                status.Caster = Creator;
+                status.Enable();
+                status.AddComponent<StatusLifeTimeComponent>();
             }
             AfterAssign();
         }

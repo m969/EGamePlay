@@ -170,14 +170,14 @@
     [LabelText("效果触发机制")]
     public enum EffectTriggerType
     {
-        [LabelText("立即触发")]
-        Immediate,
+        //[LabelText("立即触发")]
+        //Immediate,
         [LabelText("条件触发")]
-        Condition,
+        Condition = 0,
         [LabelText("行为触发")]
-        Action,
+        Action = 1,
         [LabelText("间隔触发")]
-        Interval,
+        Interval = 2,
     }
 
     //[LabelText("动作类型")]

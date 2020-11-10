@@ -20,21 +20,7 @@ namespace EGamePlay.Combat
         [LabelText("效果名称")]
         [DelayedProperty]
         public string Name = "效果1";
-        //[LabelText("效果类型")]
-        //public StatusType StatusType;
-        //[LabelText("是否在状态栏显示")]
-        //public bool ShowInStatusIconList;
-        //[LabelText("最高叠加层数")]
-        //[Range(1, 99)]
-        //public int MaxStack = 1;
 
-        //[Toggle("Enabled")]
-        //public DurationToggleGroup DurationToggleGroup = new DurationToggleGroup();
-
-        //[Space(30)]
-        //[LabelText("效果列表")]
-        //[ListDrawerSettings(Expanded = true, DraggableItems = false, /*HideAddButton = true, */ShowItemCount = false)]
-        //public SkillEffectGroup[] RunningEffectGroupList;
 
         private void BeginBox()
         {

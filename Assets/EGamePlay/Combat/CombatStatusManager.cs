@@ -13,9 +13,9 @@ namespace EGamePlay.Combat
         private static List<StatusEntity> CombatStatuses = new List<StatusEntity>();
 
 
-        public static T CreateStatus<T>() where T: StatusEntity, new()
+        public static T CreateStatus<T>(CombatEntity combatEntity) where T: StatusEntity, new()
         {
-            var status = Entity.Create<T>();
+            var status = EntityFactory.CreateWithParent<T>(combatEntity);
             CombatStatuses.Add(status);
             return status;
         }

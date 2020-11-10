@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace EGamePlay.Combat.Status
 {
+    /// <summary>
+    /// 状态的生命周期组件
+    /// </summary>
     public class StatusLifeTimeComponent : Component
     {
         public GameTimer LifeTimer { get; set; }
@@ -11,15 +14,18 @@ namespace EGamePlay.Combat.Status
 
         public override void Setup()
         {
-            var status = Parent as StatusEntity;
-            var lifeTime = status.StatusConfigObject.DurationConfig.Duration / 1000f;
+            var status = Master as StatusEntity;
+            var lifeTime = status.StatusConfigObject.Duration / 1000f;
             LifeTimer = new GameTimer(lifeTime);
-            LifeTimer.OnFinish(() => { Parent.Destroy(); });
+            LifeTimer.OnFinish(() => { Master.Dispose(); });
         }
 
         public override void Update()
         {
-            LifeTimer.UpdateAsFinish(Time.deltaTime);
+            if (LifeTimer.IsRunning)
+            {
+                LifeTimer.UpdateAsFinish(Time.deltaTime);
+            }
         }
     }
 }

@@ -42,11 +42,11 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 3
+      Data: 2
     - Name: Interval
       Entry: 3
       Data: 841
-    - Name: CureValue
+    - Name: CureValueFormula
       Entry: 6
       Data: 
     - Name: 
@@ -61,12 +61,10 @@ MonoBehaviour:
   ID: KMFC
   Name: "\u67AF\u6728\u9022\u6625"
   StatusType: 0
+  Duration: 0
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
-  DurationToggleGroup:
-    Enabled: 1
-    Duration: 3000
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

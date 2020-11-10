@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 
 namespace EGamePlay
 {
-    public class Component
+    public class Component : IDisposable
     {
-        public Entity Parent { get; private set; }
+        public Entity Master { get; private set; }
+        public bool IsDispose { get; set; }
 
-        public void SetParent(Entity parent)
+
+        public void SetMaster(Entity master)
         {
-            Parent = parent;
+            Master = master;
         }
 
         public virtual void Setup()
@@ -21,6 +21,11 @@ namespace EGamePlay
         public virtual void Update()
         {
 
+        }
+
+        public virtual void Dispose()
+        {
+            IsDispose = true;
         }
     }
 }

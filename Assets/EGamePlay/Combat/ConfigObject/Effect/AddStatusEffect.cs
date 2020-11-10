@@ -29,5 +29,8 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("Enabled")]
         public StatusConfigObject AddStatus;
+
+        [ToggleGroup("Enabled"), LabelText("持续时间"), SuffixLabel("毫秒", true)]
+        public uint Duration;
     }
 }

@@ -7,6 +7,7 @@ public class GameTimer
     private Action _onFinish;
 
     public bool IsFinished => _time >= _maxTime;
+    public bool IsRunning => _time < _maxTime;
 
     public float Time => _time;
 
@@ -27,11 +28,15 @@ public class GameTimer
         _time = 0f;
     }
 
-    public GameTimer UpdateAsFinish(float delta)
+    public GameTimer UpdateAsFinish(float delta, Action action = null)
     {
         if (!IsFinished)
         {
             _time += delta;
+            if (action != null)
+            {
+                _onFinish = action;
+            }
             if (IsFinished)
             {
                 _onFinish?.Invoke();
@@ -40,9 +45,13 @@ public class GameTimer
         return this;
     }
 
-    public void UpdateAsRepeat(float delta)
+    public void UpdateAsRepeat(float delta, Action action = null)
     {
         _time += delta;
+        if (action != null)
+        {
+            _onFinish = action;
+        }
         while (_time >= _maxTime)
         {
             _time -= _maxTime;

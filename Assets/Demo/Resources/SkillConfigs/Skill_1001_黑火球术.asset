@@ -16,7 +16,7 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 11400000, guid: e9f6e9afe434d2b47b41c70f8c214017, type: 2}
+    - {fileID: 11400000, guid: b8c91eb546ede34438b6e5f3aefa1734, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -80,12 +80,15 @@ MonoBehaviour:
     - Name: AddStatus
       Entry: 10
       Data: 0
+    - Name: Duration
+      Entry: 3
+      Data: 3000
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|EGamePlay.Combat.NumericModifyEffect, EGamePlay
+      Data: 3|EGamePlay.Combat.StackTagEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -101,12 +104,15 @@ MonoBehaviour:
     - Name: Interval
       Entry: 3
       Data: 0
-    - Name: NumericType
+    - Name: TagType
       Entry: 3
-      Data: 1002
-    - Name: NumericValue
-      Entry: 1
-      Data: -50
+      Data: 0
+    - Name: TagCount
+      Entry: 3
+      Data: 1
+    - Name: TagDuration
+      Entry: 3
+      Data: 10000
     - Name: 
       Entry: 8
       Data: 

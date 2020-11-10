@@ -40,6 +40,14 @@ namespace EGamePlay.Combat
                 }
                 DamageValue = int.Parse(DamageEffect.DamageValueFormula);
             }
+            if (DamageSource == DamageSource.Buff)
+            {
+                if (DamageEffect.CanCrit)
+                {
+                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.NumericBox.CriticalProb_F.Value;
+                }
+                DamageValue = int.Parse(DamageEffect.DamageValueFormula);
+            }
         }
 
         //应用伤害
@@ -60,8 +68,8 @@ namespace EGamePlay.Combat
 
     public enum DamageSource
     {
-        Attack = 1,//普攻
-        Skill = 2,//技能
-        Buff = 3,//Buff
+        Attack,//普攻
+        Skill,//技能
+        Buff,//Buff
     }
 }

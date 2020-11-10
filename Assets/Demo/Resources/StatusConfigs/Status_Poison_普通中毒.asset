@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Poison_\u4E2D\u6BD2"
+  m_Name: "Status_Poison_\u666E\u901A\u4E2D\u6BD2"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -42,16 +42,16 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 3
+      Data: 2
     - Name: Interval
       Entry: 3
-      Data: 1078
+      Data: 500
     - Name: DamageType
       Entry: 3
       Data: 0
-    - Name: DamageValue
-      Entry: 6
-      Data: 
+    - Name: DamageValueFormula
+      Entry: 1
+      Data: 280
     - Name: CanCrit
       Entry: 5
       Data: false
@@ -65,14 +65,12 @@ MonoBehaviour:
       Entry: 8
       Data: 
   ID: Poison
-  Name: "\u4E2D\u6BD2"
+  Name: "\u666E\u901A\u4E2D\u6BD2"
   StatusType: 1
+  Duration: 4000
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
-  DurationToggleGroup:
-    Enabled: 1
-    Duration: 10000
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

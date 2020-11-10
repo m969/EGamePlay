@@ -6,7 +6,7 @@ using System;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 行动点，一次战斗行动会触发战斗实体一系列的行动点
+    /// 行动点，一次战斗行动<see cref="CombatAction"/>会触发战斗实体一系列的行动点
     /// </summary>
     public sealed class ActionPoint
     {

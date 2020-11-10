@@ -30,7 +30,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.NumericModifyEffect, EGamePlay
+      Data: 1|EGamePlay.Combat.AttributeNumericModifyEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: false
@@ -50,8 +50,8 @@ MonoBehaviour:
       Entry: 3
       Data: 1001
     - Name: NumericValue
-      Entry: 1
-      Data: +100
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -64,12 +64,10 @@ MonoBehaviour:
   ID: PhysicAttackAdd
   Name: "\u7269\u7406\u653B\u51FB\u53D8\u52A8"
   StatusType: 0
+  Duration: 0
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
-  DurationToggleGroup:
-    Enabled: 1
-    Duration: 4222
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

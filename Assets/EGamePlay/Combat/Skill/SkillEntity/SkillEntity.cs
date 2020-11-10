@@ -85,6 +85,10 @@ namespace EGamePlay.Combat.Skill
                     var operation = CombatActionManager.CreateAction<AssignEffectAction>(this.SpellCaster);
                     operation.Target = SkillTarget;
                     operation.Effect = item;
+                    if (item is AddStatusEffect addStatusEffect)
+                    {
+                        addStatusEffect.AddStatus.Duration = addStatusEffect.Duration;
+                    }
                     operation.ApplyAssignEffect();
                 }
             }

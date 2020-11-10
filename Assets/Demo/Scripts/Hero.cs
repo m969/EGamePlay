@@ -20,9 +20,9 @@ public sealed class Hero : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CombatEntity = Entity.Create<CombatEntity>();
+        CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.Initialize();
-        CombatEntity.AddComponent<CombatSkillComponent>().Setup();
+        CombatEntity.AddComponent<CombatSkillComponent>();
         AnimTimer.MaxTime = AnimTime;
     }
 

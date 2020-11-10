@@ -132,7 +132,7 @@
             {
                 if (EffectType == SkillEffectType.AddStatus) Effects.Add(new AddStatusEffect() { Enabled = true });
                 if (EffectType == SkillEffectType.RemoveStatus) Effects.Add(new RemoveStatusEffect() { Enabled = true });
-                if (EffectType == SkillEffectType.NumericModify) Effects.Add(new NumericModifyEffect() { Enabled = true });
+                if (EffectType == SkillEffectType.NumericModify) Effects.Add(new AttributeNumericModifyEffect() { Enabled = true });
                 if (EffectType == SkillEffectType.CauseDamage) Effects.Add(new DamageEffect() { Enabled = true });
                 if (EffectType == SkillEffectType.CureHero) Effects.Add(new CureEffect() { Enabled = true });
                 if (EffectType == SkillEffectType.AddShield) Effects.Add(new AddShieldEffect() { Enabled = true });

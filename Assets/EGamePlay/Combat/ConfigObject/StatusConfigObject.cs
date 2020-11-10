@@ -16,14 +16,16 @@ namespace EGamePlay.Combat
     [LabelText("状态配置")]
     public class StatusConfigObject : SerializedScriptableObject
     {
-        [LabelText("状态ID")]
-        [DelayedProperty]
+        [LabelText("状态ID"), DelayedProperty]
         public string ID = "Status1";
-        [LabelText("状态名称")]
-        [DelayedProperty]
+        [LabelText("状态名称"), DelayedProperty]
         public string Name = "状态1";
         [LabelText("状态类型")]
         public StatusType StatusType;
+        //[Tooltip("不勾即代表永久，0也代表永久")]
+        //[LabelText("持续时间"), SuffixLabel("毫秒", true)]
+        [HideInInspector]
+        public uint Duration;
         [LabelText("是否在状态栏显示")]
         public bool ShowInStatusIconList;
         [LabelText("是否可叠加")]
@@ -31,7 +33,7 @@ namespace EGamePlay.Combat
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
         public int MaxStack = 1;
 
-        public DurationConfig DurationConfig = new DurationConfig();
+        //public DurationConfig DurationConfig = new DurationConfig();
 
         [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
