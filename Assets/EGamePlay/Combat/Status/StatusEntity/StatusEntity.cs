@@ -5,15 +5,6 @@ using UnityEngine;
 
 namespace EGamePlay.Combat.Status
 {
-    //public partial class StatusEntity
-    //{
-    //    public static StatusEntity Create()
-    //    {
-    //        var entity = EntityFactory.Create<StatusEntity>();
-    //        return entity;
-    //    }
-    //}
-
     public partial class StatusEntity : Entity
     {
         public bool Enabled { get; private set; }
@@ -31,14 +22,16 @@ namespace EGamePlay.Combat.Status
                 var effectEntity = EntityFactory.CreateWithParent<EffectEntity>(this, item);
                 if (item is DamageEffect damageEffect)
                 {
-                    if (damageEffect.EffectTriggerType == EffectTriggerType.Interval)
-                    {
-                        effectEntity.AddComponent<EffectIntervalTriggerComponent>();
-                    }
+
                 }
                 if (item is AddStatusEffect addStatusEffect)
                 {
 
+                }
+
+                if (item.EffectTriggerType == EffectTriggerType.Interval)
+                {
+                    effectEntity.AddComponent<EffectIntervalTriggerComponent>();
                 }
             }
         }

@@ -21,7 +21,6 @@ namespace EGamePlay.Combat.Status
                 case EffectTriggerType.Action:
                     break;
                 case EffectTriggerType.Interval:
-                    AddComponent<StatusIntervalTriggerComponent>();
                     break;
                 default:
                     break;

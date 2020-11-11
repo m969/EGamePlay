@@ -13,35 +13,7 @@ namespace EGamePlay.Combat.Skill
 
         public override void Setup()
         {
-            var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
-            SkillConfigs.Add(1002, config);
-            //var skill1002 = Entity.Create<SkillEntity>();
-            //skill1002.SkillConfigObject = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
-            //Skills.Add(skill1002);
-            //foreach (var item in Skills)
-            //{
-            //    item.SpellCaster = Parent as CombatEntity;
-            //    item.Start();
-            //}
-        }
 
-        public void Update()
-        {
-            //if (Input.GetKeyDown(KeyCode.Alpha1))
-            //{
-            //    Skills[0].StartListen();
-            //}
-
-            foreach (var item in Skills)
-            {
-                item.Update();
-            }
-        }
-
-        public T CreateSkill<T>() where T : SkillEntity, new()
-        {
-            var skill = EntityFactory.Create<T>();
-            return skill;
         }
     }
 }
