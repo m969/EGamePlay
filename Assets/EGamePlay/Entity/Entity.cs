@@ -4,9 +4,22 @@ using System.Diagnostics;
 
 namespace EGamePlay
 {
-    public abstract class Entity : IDisposable
+    //public abstract partial class Entity
+    //{
+    //    public static void Create()
+    //    {
+
+    //    }
+
+    //    public static void Destroy()
+    //    {
+
+    //    }
+    //}
+    public abstract partial class Entity : IDisposable
     {
-        public Entity Parent { get; private set; }
+        private Entity parent;
+        public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
         public bool IsDispose { get; set; }
         public Dictionary<Type, Component> Components { get; set; } = new Dictionary<Type, Component>();
         private List<Entity> Children { get; set; } = new List<Entity>();
@@ -40,7 +53,12 @@ namespace EGamePlay
             IsDispose = true;
         }
 
-        public virtual void Destroy()
+        public virtual void OnDestroy()
+        {
+
+        }
+
+        public virtual void OnSetParent(Entity parent)
         {
 
         }

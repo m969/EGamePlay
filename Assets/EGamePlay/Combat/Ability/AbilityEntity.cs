@@ -11,6 +11,15 @@ namespace EGamePlay.Combat.Skill
         public SkillConfigObject SkillConfigObject { get; set; }
 
 
+        public override void OnSetParent(Entity parent)
+        {
+            base.OnSetParent(parent);
+            if (parent is CombatEntity)
+            {
+                TryActivateAbility();
+            }
+        }
+
         public void TryActivateAbility()
         {
 
@@ -18,7 +27,7 @@ namespace EGamePlay.Combat.Skill
 
         public void ActivateAbility()
         {
-
+            ApplyAbilityEffect();
         }
 
         public void EndAbility()

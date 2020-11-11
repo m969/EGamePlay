@@ -8,24 +8,6 @@ namespace EGamePlay
         public static GlobalEntity GlobalEntity { get; set; }
 
 
-        ///// <summary>
-        ///// 创建自治的实体，自治实体不需要依赖于父实体
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <returns></returns>
-        //public static T CreateIndependent<T>() where T : Entity, new()
-        //{
-        //    var entity = new T();
-        //    if (!GlobalEntity.Entities.ContainsKey(typeof(T)))
-        //    {
-        //        GlobalEntity.Entities.Add(typeof(T), new List<Entity>());
-        //    }
-        //    GlobalEntity.Entities[typeof(T)].Add(entity);
-        //    entity.IsIndependent = true;
-        //    entity.Awake();
-        //    return entity;
-        //}
-
         private static T New<T>() where T : Entity, new()
         {
             var entity = new T();
