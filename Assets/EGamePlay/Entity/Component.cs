@@ -4,14 +4,9 @@ namespace EGamePlay
 {
     public class Component : IDisposable
     {
-        public Entity Master { get; private set; }
+        public Entity Entity { get; set; }
         public bool IsDispose { get; set; }
 
-
-        public void SetMaster(Entity master)
-        {
-            Master = master;
-        }
 
         public virtual void Setup()
         {

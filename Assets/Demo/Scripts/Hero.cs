@@ -5,6 +5,7 @@ using EGamePlay;
 using EGamePlay.Combat;
 using UnityEngine.UIElements;
 using EGamePlay.Combat.Skill;
+using EGamePlay.Combat.Ability;
 
 public sealed class Hero : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public sealed class Hero : MonoBehaviour
     {
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.Initialize();
-        CombatEntity.AddComponent<CombatSkillComponent>();
+
         AnimTimer.MaxTime = AnimTime;
     }
 
@@ -81,18 +82,22 @@ public sealed class Hero : MonoBehaviour
 
     public void SpellSkillA()
     {
-        var monster = GameObject.Find("/Monster");
+        var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
+        var abilityA = EntityFactory.CreateWithParent<AbilityEntity>(CombatEntity, config);
+        abilityA.TryActivateAbility();
 
-        SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
-        SpawnHitEffect(transform.position, monster.transform.position);
+        //var monster = GameObject.Find("/Monster");
 
-        var action = CombatActionManager.CreateAction<SpellSkillAction>(this.CombatEntity);
-        action.Target = monster.GetComponent<Monster>().CombatEntity;
-        var skill = CombatSkillManager.CreateSkill<Skill_1001>();
-        skill.SpellCaster = this.CombatEntity;
-        skill.SkillConfigObject = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        action.SkillEntity = skill;
-        action.SpellSkill();
+        //SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
+        //SpawnHitEffect(transform.position, monster.transform.position);
+
+        //var action = CombatActionManager.CreateAction<SpellSkillAction>(this.CombatEntity);
+        //action.Target = monster.GetComponent<Monster>().CombatEntity;
+        //var skill = CombatSkillManager.CreateSkill<Skill_1001>();
+        //skill.SpellCaster = this.CombatEntity;
+        //skill.SkillConfigObject = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
+        //action.SkillEntity = skill;
+        //action.SpellSkill();
     }
 
     public void SpellSkillB()

@@ -6,6 +6,8 @@ namespace EGamePlay.Combat.Status
 {
     public partial class EffectEntity : Entity
     {
+        public bool Enabled { get; private set; }
+        public CombatEntity Caster { get; set; }
         public Effect Effect { get; set; }
 
 
@@ -24,6 +26,19 @@ namespace EGamePlay.Combat.Status
                     break;
                 default:
                     break;
+            }
+        }
+
+        public void ApplyEffect()
+        {
+            var combatEntity = Parent as CombatEntity;
+            if (Effect is DamageEffect damageEffect)
+            {
+                var damageAction = CombatActionManager.CreateAction<DamageAction>(Caster);
+                damageAction.DamageEffect = damageEffect;
+                damageAction.Target = combatEntity; ;
+                damageAction.DamageSource = DamageSource.Buff;
+                damageAction.ApplyDamage();
             }
         }
     }

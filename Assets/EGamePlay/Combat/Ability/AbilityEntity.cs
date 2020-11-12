@@ -2,19 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EGamePlay.Combat.Skill
+namespace EGamePlay.Combat.Ability
 {
-    public abstract class AbilityEntity : Entity
+    public enum PassiveAbilityExcutionType
+    {
+
+    }
+
+    public class AbilityEntity : Entity
     {
         public CombatEntity SpellCaster { get; set; }
         public CombatEntity SkillTarget { get; set; }
         public SkillConfigObject SkillConfigObject { get; set; }
+        public CombatEntity InputCombatEntity { get; set; }
+        public Vector3 InputPoint { get; set; }
+        public float InputDirection { get; set; }
 
 
-        public override void OnSetParent(Entity parent)
+        public override void Awake(object paramObject)
         {
-            base.OnSetParent(parent);
-            if (parent is CombatEntity)
+            SkillConfigObject = paramObject as SkillConfigObject;
+            if (SkillConfigObject.SkillSpellType == SkillSpellType.Passive)
             {
                 TryActivateAbility();
             }
@@ -22,20 +30,22 @@ namespace EGamePlay.Combat.Skill
 
         public void TryActivateAbility()
         {
-
+            ActivateAbility();
         }
-
-        public void ActivateAbility()
+        //////////////////////////
+        public virtual void ActivateAbility()
         {
-            ApplyAbilityEffect();
+            
         }
-
-        public void EndAbility()
+        /////////////
+        // 技能表现
+        /////////////
+        public virtual void EndAbility()
         {
 
         }
-
-        public void ApplyAbilityEffect()
+        //////////////////////////
+        public virtual void ApplyAbilityEffect()
         {
             foreach (var item in SkillConfigObject.Effects)
             {

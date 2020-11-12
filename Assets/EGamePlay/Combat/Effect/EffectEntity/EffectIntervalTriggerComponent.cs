@@ -15,29 +15,30 @@ namespace EGamePlay.Combat.Status
 
         public override void Setup()
         {
-            var effectEntity = Master as EffectEntity;
+            var effectEntity = Entity as EffectEntity;
             var interval = effectEntity.Effect.Interval / 1000f;
             IntervalTimer = new GameTimer(interval);
         }
 
         public override void Update()
         {
-            IntervalTimer.UpdateAsRepeat(Time.deltaTime, TriggerEffect);
+            var effectEntity = Entity as EffectEntity;
+            IntervalTimer.UpdateAsRepeat(Time.deltaTime, effectEntity.ApplyEffect);
         }
 
-        private void TriggerEffect()
-        {
-            var effectEntity = Master as EffectEntity;
-            var statusEntity = effectEntity.Parent as StatusEntity;
-            var combatEntity = statusEntity.Parent as CombatEntity;
-            if (effectEntity.Effect is DamageEffect damageEffect)
-            {
-                var damageAction = CombatActionManager.CreateAction<DamageAction>(statusEntity.Caster);
-                damageAction.DamageEffect = damageEffect;
-                damageAction.Target = combatEntity; ;
-                damageAction.DamageSource = DamageSource.Buff;
-                damageAction.ApplyDamage();
-            }
-        }
+        //private void TriggerEffect()
+        //{
+        //    var effectEntity = Master as EffectEntity;
+        //    //var statusEntity = effectEntity.Parent as StatusEntity;
+        //    var combatEntity = effectEntity.Parent as CombatEntity;
+        //    if (effectEntity.Effect is DamageEffect damageEffect)
+        //    {
+        //        var damageAction = CombatActionManager.CreateAction<DamageAction>(effectEntity.Caster);
+        //        damageAction.DamageEffect = damageEffect;
+        //        damageAction.Target = combatEntity; ;
+        //        damageAction.DamageSource = DamageSource.Buff;
+        //        damageAction.ApplyDamage();
+        //    }
+        //}
     }
 }

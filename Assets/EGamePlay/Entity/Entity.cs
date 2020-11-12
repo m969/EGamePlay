@@ -66,7 +66,7 @@ namespace EGamePlay
         public T AddComponent<T>() where T : Component, new()
         {
             var c = new T();
-            c.SetMaster(this);
+            c.Entity = this;
             c.IsDispose = false;
             this.Components.Add(typeof(T), c);
             EntityFactory.GlobalEntity.AllComponents.Add(c);

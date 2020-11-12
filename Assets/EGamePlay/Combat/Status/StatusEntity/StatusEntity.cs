@@ -19,7 +19,7 @@ namespace EGamePlay.Combat.Status
             StatusConfigObject = paramObject as StatusConfigObject;
             foreach (var item in StatusConfigObject.Effects)
             {
-                var effectEntity = EntityFactory.CreateWithParent<EffectEntity>(this, item);
+                var effectEntity = EntityFactory.CreateWithParent<EffectEntity>(Caster, item);
                 if (item is DamageEffect damageEffect)
                 {
 

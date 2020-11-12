@@ -14,10 +14,10 @@ namespace EGamePlay.Combat.Status
 
         public override void Setup()
         {
-            var status = Master as StatusEntity;
+            var status = Entity as StatusEntity;
             var lifeTime = status.StatusConfigObject.Duration / 1000f;
             LifeTimer = new GameTimer(lifeTime);
-            LifeTimer.OnFinish(() => { Master.Dispose(); });
+            LifeTimer.OnFinish(() => { Entity.Dispose(); });
         }
 
         public override void Update()
