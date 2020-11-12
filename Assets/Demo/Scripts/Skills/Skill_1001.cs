@@ -14,6 +14,8 @@ public class Skill_1001 : AbilityEntity
         var task = EntityFactory.CreateWithParent<CastProjectileAbilityTask>(this);
         await task.ExecuteTaskAsync();
 
+        ApplyAbilityEffect();
+
         EndAbility();
     }
 

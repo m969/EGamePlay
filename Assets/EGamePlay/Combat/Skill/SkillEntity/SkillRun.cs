@@ -34,7 +34,7 @@ namespace EGamePlay.Combat.Skill
             if (SkillConfigObject.TargetSelectType == SkillTargetSelectType.AreaSelect)
             {
                 SkillColliderObj = GameObject.Instantiate(SkillConfigObject.AreaCollider.gameObject);
-                SkillEffectObj = GameObject.Instantiate(SkillConfigObject.SkillEffectObject.SkillParticleEffect);
+                SkillEffectObj = GameObject.Instantiate(SkillConfigObject.SkillEffectObject);
             }
 
             //SkillColliderObj.transform.position = SkillEntity.SkillListen.SkillGuideTrm.position;

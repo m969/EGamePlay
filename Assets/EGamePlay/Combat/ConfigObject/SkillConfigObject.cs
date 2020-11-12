@@ -111,7 +111,7 @@ namespace EGamePlay.Combat
         [LabelText("技能动作")]
         public AnimationClip SkillAnimationClip;
         [LabelText("技能特效")]
-        public SkillEffectObject SkillEffectObject;
+        public GameObject SkillEffectObject;
         [LabelText("技能音效")]
         [OnInspectorGUI("EndBox", append: true)]
         public AudioClip SkillAudio;

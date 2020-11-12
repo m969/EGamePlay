@@ -15,6 +15,7 @@ namespace EGamePlay.Combat
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
         public CombatNumericBox NumericBox { get; private set; } = new CombatNumericBox();
         public ActionPointManager ActionPointManager { get; set; } = new ActionPointManager();
+        public Vector3 Position { get; set; }
 
 
         public void Initialize()

@@ -136,5 +136,6 @@ MonoBehaviour:
   ColdTime: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   SkillAnimationClip: {fileID: 0}
-  SkillEffectObject: {fileID: 0}
+  SkillEffectObject: {fileID: 8055077527788061986, guid: 20ac05806cd85ab40944060644de7f91,
+    type: 3}
   SkillAudio: {fileID: 0}
