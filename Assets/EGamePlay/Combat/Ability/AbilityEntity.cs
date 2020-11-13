@@ -9,6 +9,9 @@ namespace EGamePlay.Combat.Ability
 
     }
 
+    /// <summary>
+    /// 能力实体，存储着某个英雄某个能力的数据和状态
+    /// </summary>
     public class AbilityEntity : Entity
     {
         public CombatEntity SpellCaster { get; set; }
@@ -33,27 +36,25 @@ namespace EGamePlay.Combat.Ability
         {
             ActivateAbility();
         }
-        //////////////////////////
+        
         public virtual void ActivateAbility()
         {
             
         }
-        /////////////
-        // 技能表现
-        /////////////
+
         public virtual void EndAbility()
         {
 
         }
-        //////////////////////////
-        public virtual void ApplyAbilityEffect()
+        
+        public virtual void ApplyAbilityEffect(CombatEntity targetEntity)
         {
             foreach (var item in SkillConfigObject.Effects)
             {
                 if (item is DamageEffect damageEffect)
                 {
                     var operation = CombatActionManager.CreateAction<DamageAction>(this.SpellCaster);
-                    operation.Target = AbilityTarget;
+                    operation.Target = targetEntity;
                     operation.DamageSource = DamageSource.Skill;
                     operation.DamageEffect = damageEffect;
                     operation.ApplyDamage();
@@ -61,14 +62,14 @@ namespace EGamePlay.Combat.Ability
                 else if (item is CureEffect cureEffect)
                 {
                     var operation = CombatActionManager.CreateAction<CureAction>(this.SpellCaster);
-                    operation.Target = AbilityTarget;
+                    operation.Target = targetEntity;
                     operation.CureEffect = cureEffect;
                     operation.ApplyCure();
                 }
                 else
                 {
                     var operation = CombatActionManager.CreateAction<AssignEffectAction>(this.SpellCaster);
-                    operation.Target = AbilityTarget;
+                    operation.Target = targetEntity;
                     operation.Effect = item;
                     if (item is AddStatusEffect addStatusEffect)
                     {

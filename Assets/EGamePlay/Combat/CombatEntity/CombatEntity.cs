@@ -1,4 +1,4 @@
-﻿using EGamePlay.Combat.Skill;
+﻿using EGamePlay.Combat.Ability;
 using EGamePlay.Combat.Status;
 using System;
 using System.Collections;
@@ -15,6 +15,7 @@ namespace EGamePlay.Combat
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
         public CombatNumericBox NumericBox { get; private set; } = new CombatNumericBox();
         public ActionPointManager ActionPointManager { get; set; } = new ActionPointManager();
+        public Dictionary<int, AbilityEntity> IndexAbilitys { get; set; } = new Dictionary<int, AbilityEntity>();
         public Vector3 Position { get; set; }
 
 

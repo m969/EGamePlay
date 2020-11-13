@@ -7,14 +7,9 @@ using EGamePlay;
 
 public class Skill_1001 : AbilityEntity
 {
-    public override async void ActivateAbility()
+    public override void ActivateAbility()
     {
         base.ActivateAbility();
-
-        var task = EntityFactory.CreateWithParent<CastProjectileAbilityTask>(this);
-        await task.ExecuteTaskAsync();
-
-        ApplyAbilityEffect();
 
         EndAbility();
     }
@@ -23,5 +18,26 @@ public class Skill_1001 : AbilityEntity
     {
         base.EndAbility();
 
+    }
+}
+
+
+public class Skill_1001_Execution : AbilityExecution
+{
+    public override async void BeginExecute()
+    {
+        base.BeginExecute();
+
+        var task = EntityFactory.CreateWithParent<CastProjectileAbilityTask>(this, InputPoint);
+        await task.ExecuteTaskAsync();
+
+        AbilityEntity.ApplyAbilityEffect(AbilityExecutionTarget);
+
+        EndExecute();
+    }
+
+    public override void EndExecute()
+    {
+        base.EndExecute();
     }
 }

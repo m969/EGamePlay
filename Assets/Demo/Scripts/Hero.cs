@@ -24,6 +24,12 @@ public sealed class Hero : MonoBehaviour
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.Initialize();
 
+        var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
+        var abilityA = EntityFactory.CreateWithParent<Skill_1001>(CombatEntity, config);
+        abilityA.AddComponent<AbilityPreviewComponent>();
+        CombatEntity.IndexAbilitys.Add(1, abilityA);
+        abilityA.TryActivateAbility();
+
         AnimTimer.MaxTime = AnimTime;
     }
 
@@ -82,13 +88,16 @@ public sealed class Hero : MonoBehaviour
 
     public void SpellSkillA()
     {
-        var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        var abilityA = EntityFactory.CreateWithParent<Skill_1001>(CombatEntity, config);
+        //var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
+        //var abilityA = EntityFactory.CreateWithParent<Skill_1001>(CombatEntity, config);
+        var abilityA = CombatEntity.IndexAbilitys[1];
         var monster = GameObject.Find("/Monster");
         CombatEntity.Position = transform.position;
-        abilityA.AbilityTarget = monster.GetComponent<Monster>().CombatEntity;
-        abilityA.InputPoint = monster.transform.position;
-        abilityA.TryActivateAbility();
+
+        var abilityExecution = EntityFactory.CreateWithParent<Skill_1001_Execution>(CombatEntity, abilityA);
+        abilityExecution.AbilityExecutionTarget = monster.GetComponent<Monster>().CombatEntity;
+        abilityExecution.InputPoint = monster.transform.position;
+        abilityExecution.BeginExecute();
 
         //SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
         //SpawnHitEffect(transform.position, monster.transform.position);
