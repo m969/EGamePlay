@@ -6,9 +6,9 @@ using UnityEngine;
 namespace EGamePlay.Combat.Ability
 {
     /// <summary>
-    /// 能力执行体，这里是实际创建处理能力表现，应用能力效果的地方
+    /// 能力执行体，能力执行体是实际创建处理能力表现，应用能力效果的地方
     /// </summary>
-    public class AbilityExecution : Entity
+    public abstract class AbilityExecution : Entity
     {
         public AbilityEntity AbilityEntity { get; set; }
         public CombatEntity AbilityExecutionTarget { get; set; }

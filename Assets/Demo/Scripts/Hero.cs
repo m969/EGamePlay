@@ -25,7 +25,7 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.Initialize();
 
         var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        var abilityA = EntityFactory.CreateWithParent<Skill_1001>(CombatEntity, config);
+        var abilityA = EntityFactory.CreateWithParent<Skill1001Entity>(CombatEntity, config);
         abilityA.AddComponent<AbilityPreviewComponent>();
         CombatEntity.IndexAbilitys.Add(1, abilityA);
         abilityA.TryActivateAbility();
@@ -94,7 +94,7 @@ public sealed class Hero : MonoBehaviour
         var monster = GameObject.Find("/Monster");
         CombatEntity.Position = transform.position;
 
-        var abilityExecution = EntityFactory.CreateWithParent<Skill_1001_Execution>(CombatEntity, abilityA);
+        var abilityExecution = EntityFactory.CreateWithParent<Skill1001Execution>(CombatEntity, abilityA);
         abilityExecution.AbilityExecutionTarget = monster.GetComponent<Monster>().CombatEntity;
         abilityExecution.InputPoint = monster.transform.position;
         abilityExecution.BeginExecute();

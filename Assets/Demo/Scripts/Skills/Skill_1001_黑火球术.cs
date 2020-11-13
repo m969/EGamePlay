@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using EGamePlay.Combat.Ability;
 using EGamePlay;
 
-public class Skill_1001 : AbilityEntity
+public class Skill1001Entity : AbilityEntity
 {
     public override void ActivateAbility()
     {
@@ -22,7 +22,7 @@ public class Skill_1001 : AbilityEntity
 }
 
 
-public class Skill_1001_Execution : AbilityExecution
+public class Skill1001Execution : AbilityExecution
 {
     public override async void BeginExecute()
     {
