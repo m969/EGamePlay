@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_KMFC_\u67AF\u6728\u9022\u6625"
+  m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
+  m_Name: "Skill_1004_\u575A\u97E7"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -33,13 +33,13 @@ MonoBehaviour:
       Data: 1|EGamePlay.Combat.CureEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
-      Data: false
+      Data: true
     - Name: Enabled
       Entry: 5
       Data: true
     - Name: AddSkillEffectTargetType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: EffectTriggerType
       Entry: 3
       Data: 0
@@ -51,13 +51,13 @@ MonoBehaviour:
       Data: 0
     - Name: Interval
       Entry: 3
-      Data: 824
+      Data: 0
     - Name: ConditionParam
-      Entry: 1
-      Data: 2
-    - Name: CureValueFormula
       Entry: 6
       Data: 
+    - Name: CureValueFormula
+      Entry: 1
+      Data: '2 '
     - Name: 
       Entry: 8
       Data: 
@@ -67,13 +67,20 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: KMFC
-  Name: "\u67AF\u6728\u9022\u6625"
-  StatusType: 0
-  Duration: 0
-  ShowInStatusIconList: 1
-  CanStack: 0
-  MaxStack: 1
+  ID: 1004
+  Name: "\u575A\u97E7"
+  SkillSpellType: 1
+  TargetSelectType: 0
+  AffectAreaType: 0
+  CircleAreaRadius: 0
+  AreaGuideObj: {fileID: 0}
+  AreaCollider: {fileID: 0}
+  AffectTargetType: 0
+  Cold: 0
+  ColdGroupTitle: "\u6280\u80FD\u51B7\u5374"
+  ColdTime: 3000
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 0}
-  Audio: {fileID: 0}
+  SkillAnimationClip: {fileID: 0}
+  SkillEffectObject: {fileID: 0}
+  SkillAudio: {fileID: 0}
+  SkillDescription: "\u5982\u679C\u82F1\u96C4\u57284\u79D2\u5185\u6CA1\u6709\u53D7\u5230\u4EFB\u4F55\u4F24\u5BB3\uFF0C\u5C31\u4F1A\u6BCF\u4E24\u79D2\u56DE\u590D2%\u7684\u6700\u5927\u751F\u547D\u503C\u3002"

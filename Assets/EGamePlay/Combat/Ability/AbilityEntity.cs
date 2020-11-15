@@ -14,8 +14,7 @@ namespace EGamePlay.Combat.Ability
     /// </summary>
     public class AbilityEntity : Entity
     {
-        public CombatEntity SpellCaster { get; set; }
-        public CombatEntity AbilityTarget { get; set; }
+        public CombatEntity AbilityOwner { get; set; }
         public SkillConfigObject SkillConfigObject { get; set; }
         public CombatEntity InputCombatEntity { get; set; }
         public Vector3 InputPoint { get; set; }
@@ -25,7 +24,7 @@ namespace EGamePlay.Combat.Ability
         public override void Awake(object paramObject)
         {
             SkillConfigObject = paramObject as SkillConfigObject;
-            this.SpellCaster = Parent as CombatEntity;
+            this.AbilityOwner = Parent as CombatEntity;
             if (SkillConfigObject.SkillSpellType == SkillSpellType.Passive)
             {
                 TryActivateAbility();
@@ -34,6 +33,7 @@ namespace EGamePlay.Combat.Ability
 
         public void TryActivateAbility()
         {
+            Log.Debug($"{GetType().Name} TryActivateAbility");
             ActivateAbility();
         }
         
@@ -53,7 +53,7 @@ namespace EGamePlay.Combat.Ability
             {
                 if (item is DamageEffect damageEffect)
                 {
-                    var operation = CombatActionManager.CreateAction<DamageAction>(this.SpellCaster);
+                    var operation = CombatActionManager.CreateAction<DamageAction>(this.AbilityOwner);
                     operation.Target = targetEntity;
                     operation.DamageSource = DamageSource.Skill;
                     operation.DamageEffect = damageEffect;
@@ -61,14 +61,14 @@ namespace EGamePlay.Combat.Ability
                 }
                 else if (item is CureEffect cureEffect)
                 {
-                    var operation = CombatActionManager.CreateAction<CureAction>(this.SpellCaster);
+                    var operation = CombatActionManager.CreateAction<CureAction>(this.AbilityOwner);
                     operation.Target = targetEntity;
                     operation.CureEffect = cureEffect;
                     operation.ApplyCure();
                 }
                 else
                 {
-                    var operation = CombatActionManager.CreateAction<AssignEffectAction>(this.SpellCaster);
+                    var operation = CombatActionManager.CreateAction<AssignEffectAction>(this.AbilityOwner);
                     operation.Target = targetEntity;
                     operation.Effect = item;
                     if (item is AddStatusEffect addStatusEffect)

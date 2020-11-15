@@ -153,6 +153,8 @@ MonoBehaviour:
   MoveSpeed: 0.2
   DamageText: {fileID: 2775314110139268195, guid: fef2d5154c0a41f408062c8936aad86a,
     type: 3}
+  CureText: {fileID: 2775314110139268195, guid: 225c7ccd75271454fa9d6d87aedd0a78,
+    type: 3}
   HealthBarImage: {fileID: 1992393458}
   CanvasTrm: {fileID: 1375251074}
 --- !u!4 &3783440
@@ -518,7 +520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!119 &325967166
 Projector:
   m_ObjectHideFlags: 0
@@ -546,7 +548,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 325967165}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -7.26, y: 9.44, z: 0.76}
+  m_LocalPosition: {x: -6.54, y: 9.44, z: -1.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

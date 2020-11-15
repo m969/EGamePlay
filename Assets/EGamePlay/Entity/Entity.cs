@@ -63,6 +63,11 @@ namespace EGamePlay
 
         }
 
+        public T GetParent<T>() where T : Entity
+        {
+            return parent as T;
+        }
+
         public T AddComponent<T>() where T : Component, new()
         {
             var c = new T();

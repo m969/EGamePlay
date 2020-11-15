@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.OdinInspector;
 
 namespace EGamePlay.Combat
 {
@@ -13,21 +14,27 @@ namespace EGamePlay.Combat
         public List<Action<CombatAction>> Listeners { get; set; } = new List<Action<CombatAction>>();
     }
 
-    /// <summary>
-    /// 行动点类型
-    /// </summary>
+    //[LabelText("行动点类型")]
     public enum ActionPointType
     {
-        PreCauseDamage,//造成伤害前
-        PreReceiveDamage,//承受伤害前
+        [LabelText("造成伤害前")]
+        PreCauseDamage,
+        [LabelText("承受伤害前")]
+        PreReceiveDamage,
 
-        PostCauseDamage,//造成伤害后
-        PostReceiveDamage,//承受伤害后
+        [LabelText("造成伤害后")]
+        PostCauseDamage,
+        [LabelText("承受伤害后")]
+        PostReceiveDamage,
 
-        GiveCure,
-        ReceiveCure,
+        [LabelText("给予治疗后")]
+        PostGiveCure,
+        [LabelText("接受治疗后")]
+        PostReceiveCure,
 
+        [LabelText("赋给效果")]
         AssignEffect,
+        [LabelText("接受效果")]
         ReceiveEffect,
 
         Max,
@@ -43,25 +50,34 @@ namespace EGamePlay.Combat
 
         public void Initialize()
         {
-            ActionPoints.Add(ActionPointType.PostCauseDamage, new ActionPoint());
-            ActionPoints.Add(ActionPointType.PostReceiveDamage, new ActionPoint());
         }
 
         public void AddListener(ActionPointType actionPointType, Action<CombatAction> action)
         {
+            if (!ActionPoints.ContainsKey(actionPointType))
+            {
+                ActionPoints.Add(actionPointType, new ActionPoint());
+            }
             ActionPoints[actionPointType].Listeners.Add(action);
         }
 
         public void RemoveListener(ActionPointType actionPointType, Action<CombatAction> action)
         {
-            ActionPoints[actionPointType].Listeners.Remove(action);
+            if (ActionPoints.ContainsKey(actionPointType))
+            {
+                ActionPoints[actionPointType].Listeners.Remove(action);
+            }
         }
 
         public void TriggerActionPoint(ActionPointType actionPointType, CombatAction action)
         {
-            foreach (var item in ActionPoints[actionPointType].Listeners)
+            if (ActionPoints.ContainsKey(actionPointType) && ActionPoints[actionPointType].Listeners.Count > 0)
             {
-                item.Invoke(action);
+                for (int i = ActionPoints[actionPointType].Listeners.Count - 1; i >= 0; i--)
+                {
+                    var item = ActionPoints[actionPointType].Listeners[i];
+                    item.Invoke(action);
+                }
             }
         }
     }

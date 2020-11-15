@@ -11,6 +11,7 @@ public sealed class Monster : MonoBehaviour
     public CombatEntity CombatEntity;
     public float MoveSpeed = 0.2f;
     public Text DamageText;
+    public Text CureText;
     public Image HealthBarImage;
     public Transform CanvasTrm;
 
@@ -21,6 +22,10 @@ public sealed class Monster : MonoBehaviour
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.Initialize();
         CombatEntity.AddListener(ActionPointType.PostReceiveDamage, OnReceiveDamage);
+        CombatEntity.AddListener(ActionPointType.PostReceiveCure, OnReceiveCure);
+
+        var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_坚韧");
+        var abilityA = EntityFactory.CreateWithParent<PassiveSkill1004Entity>(CombatEntity, config);
     }
 
     // Update is called once per frame
@@ -41,5 +46,20 @@ public sealed class Monster : MonoBehaviour
         damageText.text = $"-{damageAction.DamageValue.ToString()}";
         damageText.GetComponent<DOTweenAnimation>().DORestart();
         GameObject.Destroy(damageText.gameObject, 0.5f);
+    }
+
+    private void OnReceiveCure(CombatAction combatAction)
+    {
+        var action = combatAction as CureAction;
+        HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+
+        var cureText = GameObject.Instantiate(CureText);
+        cureText.transform.SetParent(CanvasTrm);
+        cureText.transform.localPosition = Vector3.up * 120;
+        cureText.transform.localScale = Vector3.one;
+        cureText.transform.localEulerAngles = Vector3.zero;
+        cureText.text = $"+{action.CureValue.ToString()}";
+        cureText.GetComponent<DOTweenAnimation>().DORestart();
+        GameObject.Destroy(cureText.gameObject, 0.5f);
     }
 }

@@ -118,7 +118,13 @@ namespace EGamePlay.Combat
         private void EndBox()
         {
             SirenixEditorGUI.EndBox();
+            GUILayout.Space(30);
+            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            GUILayout.Space(10);
         }
+
+        [TextArea, LabelText("技能描述")]
+        public string SkillDescription;
 
         [OnInspectorGUI]
         private void OnInspectorGUI()

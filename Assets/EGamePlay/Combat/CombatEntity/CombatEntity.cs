@@ -15,6 +15,7 @@ namespace EGamePlay.Combat
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
         public CombatNumericBox NumericBox { get; private set; } = new CombatNumericBox();
         public ActionPointManager ActionPointManager { get; set; } = new ActionPointManager();
+        public Dictionary<string, AbilityEntity> NameAbilitys { get; set; } = new Dictionary<string, AbilityEntity>();
         public Dictionary<int, AbilityEntity> IndexAbilitys { get; set; } = new Dictionary<int, AbilityEntity>();
         public Vector3 Position { get; set; }
 
@@ -53,5 +54,11 @@ namespace EGamePlay.Combat
             var cureAction = combatAction as CureAction;
             CurrentHealth.Add(cureAction.CureValue);
         }
+
+        //public void GrantAbility(AbilityEntity abilityEntity)
+        //{
+        //    NameAbilitys.Add(abilityEntity.SkillConfigObject.Name, abilityEntity);
+        //    abilityEntity.OnSetParent(this);
+        //}
     }
 }

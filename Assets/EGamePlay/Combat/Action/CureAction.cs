@@ -15,21 +15,27 @@ namespace EGamePlay.Combat
         public int CureValue { get; set; }
 
 
-        private void BeforeCure()
+        //前置处理
+        private void PreProcess()
         {
-            CureValue = int.Parse(CureEffect.CureValueFormula);
+            if (CureEffect != null)
+            {
+                CureValue = int.Parse(CureEffect.CureValueFormula);
+            }
         }
 
         public void ApplyCure()
         {
-            BeforeCure();
+            PreProcess();
             Target.ReceiveCure(this);
-            AfterCure();
+            PostProcess();
         }
 
-        private void AfterCure()
+        //后置处理
+        private void PostProcess()
         {
-
+            Creator.TriggerActionPoint(ActionPointType.PostGiveCure, this);
+            Target.TriggerActionPoint(ActionPointType.PostReceiveCure, this);
         }
     }
 }

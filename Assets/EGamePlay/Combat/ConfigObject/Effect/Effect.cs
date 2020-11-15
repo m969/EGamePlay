@@ -46,15 +46,33 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled", "$Label")]
         public bool Enabled;
 
+        //[FoldoutGroup("Enabled/触发机制")]
         [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
         public AddSkillEffetTargetType AddSkillEffectTargetType;
 
-        //[GUIColor(0, 1, 0)]
-        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true)]
+        [HorizontalGroup("Enabled/Hor")]
+        //[FoldoutGroup("Enabled/触发机制")]
+        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), HideLabel]
         public EffectTriggerType EffectTriggerType;
 
-        [ToggleGroup("Enabled"), LabelText("间隔时间"), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true)]
+        [HorizontalGroup("Enabled/Hor")]
+        //[FoldoutGroup("Enabled/触发机制")]
+        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Condition), HideLabel]
+        public ConditionType ConditionType;
+
+        [HorizontalGroup("Enabled/Hor")]
+        //[FoldoutGroup("Enabled/触发机制")]
+        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Action), HideLabel]
+        public ActionPointType ActionPointType;
+
+        [HorizontalGroup("Enabled/Hor")]
+        //[FoldoutGroup("Enabled/触发机制")]
+        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true), HideLabel]
         public uint Interval;
+
+        //[FoldoutGroup("Enabled/触发机制")]
+        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("条件参数 x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
+        public string ConditionParam;
     }
 
     public abstract class OnceEffect : Effect
