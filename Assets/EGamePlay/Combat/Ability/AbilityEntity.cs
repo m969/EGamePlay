@@ -16,9 +16,6 @@ namespace EGamePlay.Combat.Ability
     {
         public CombatEntity AbilityOwner { get; set; }
         public SkillConfigObject SkillConfigObject { get; set; }
-        public CombatEntity InputCombatEntity { get; set; }
-        public Vector3 InputPoint { get; set; }
-        public float InputDirection { get; set; }
 
 
         public override void Awake(object paramObject)
@@ -45,6 +42,11 @@ namespace EGamePlay.Combat.Ability
         public virtual void EndAbility()
         {
 
+        }
+
+        public virtual AbilityExecution CreateAbilityExecution()
+        {
+            return null;
         }
         
         public virtual void ApplyAbilityEffect(CombatEntity targetEntity)

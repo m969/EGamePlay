@@ -16,7 +16,7 @@ namespace EGamePlay.Combat
         public CombatNumericBox NumericBox { get; private set; } = new CombatNumericBox();
         public ActionPointManager ActionPointManager { get; set; } = new ActionPointManager();
         public Dictionary<string, AbilityEntity> NameAbilitys { get; set; } = new Dictionary<string, AbilityEntity>();
-        public Dictionary<int, AbilityEntity> IndexAbilitys { get; set; } = new Dictionary<int, AbilityEntity>();
+        public Dictionary<KeyCode, AbilityEntity> InputAbilitys { get; set; } = new Dictionary<KeyCode, AbilityEntity>();
         public Vector3 Position { get; set; }
 
 
@@ -24,10 +24,12 @@ namespace EGamePlay.Combat
         {
             NumericBox.Initialize();
             ActionPointManager.Initialize();
+            AddComponent<ConditionEventManagerComponent>();
             CurrentHealth.SetMaxValue(NumericBox.HealthPoint_I.Value);
             CurrentHealth.Reset();
         }
 
+        #region 行动点事件
         public void AddListener(ActionPointType actionPointType, Action<CombatAction> action)
         {
             ActionPointManager.AddListener(actionPointType, action);
@@ -42,6 +44,14 @@ namespace EGamePlay.Combat
         {
             ActionPointManager.TriggerActionPoint(actionPointType, action);
         }
+        #endregion
+
+        #region 条件事件
+        public void AddListener(ConditionType conditionType, Action action, object paramObj = null)
+        {
+            GetComponent<ConditionEventManagerComponent>().AddListener(conditionType, action, paramObj);
+        }
+        #endregion
 
         public void ReceiveDamage(CombatAction combatAction)
         {
@@ -55,10 +65,16 @@ namespace EGamePlay.Combat
             CurrentHealth.Add(cureAction.CureValue);
         }
 
-        //public void GrantAbility(AbilityEntity abilityEntity)
-        //{
-        //    NameAbilitys.Add(abilityEntity.SkillConfigObject.Name, abilityEntity);
-        //    abilityEntity.OnSetParent(this);
-        //}
+        public void GrantAbility(AbilityEntity abilityEntity)
+        {
+            NameAbilitys.Add(abilityEntity.SkillConfigObject.Name, abilityEntity);
+            abilityEntity.OnSetParent(this);
+        }
+
+        public void BindAbilityInput(AbilityEntity abilityEntity, KeyCode keyCode)
+        {
+            InputAbilitys.Add(keyCode, abilityEntity);
+            abilityEntity.TryActivateAbility();
+        }
     }
 }

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 public class PassiveSkill1004Entity : AbilityEntity
 {
-    private GameTimer NoDamageTimer { get; set; } = new GameTimer(4f);
     private GameTimer HealthReplyTimer { get; set; } = new GameTimer(1f);
     private bool CanReplyHealth { get; set; }
 
@@ -20,22 +19,26 @@ public class PassiveSkill1004Entity : AbilityEntity
         base.ActivateAbility();
         CanReplyHealth = true;
         AbilityOwner.AddListener(ActionPointType.PostReceiveDamage, EndReplyHealth);
+        AbilityOwner.AddListener(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
         Coroutine();
     }
 
-    //协程计时
+    //协程
     private async void Coroutine()
     {
         while (true)
         {
+            if (IsDispose)
+            {
+                break;
+            }
             await Task.Delay(100);
             if (CanReplyHealth)
             {
-                HealthReplyTimer.UpdateAsRepeat(0.1f, ReplyHealth);
-            }
-            else
-            {
-                NoDamageTimer.UpdateAsFinish(0.1f, StartReplyHealth);
+                if (AbilityOwner.CurrentHealth.Percent() < 1f)
+                {
+                    HealthReplyTimer.UpdateAsRepeat(0.1f, ReplyHealth);
+                }
             }
         }
     }
@@ -45,7 +48,6 @@ public class PassiveSkill1004Entity : AbilityEntity
     {
         Log.Debug($"{GetType().Name} EndReplyHealth");
         CanReplyHealth = false;
-        NoDamageTimer.Reset();
     }
 
     //开始生命回复
@@ -58,19 +60,10 @@ public class PassiveSkill1004Entity : AbilityEntity
     //生命回复
     private void ReplyHealth()
     {
-        if (AbilityOwner.CurrentHealth.Percent() >= 1f)
-        {
-            return;
-        }
         Log.Debug($"{GetType().Name} ReplyHealth");
         var action = CombatActionManager.CreateAction<CureAction>(AbilityOwner);
         action.Target = AbilityOwner;
         action.CureValue = AbilityOwner.CurrentHealth.PercentHealth(1);
         action.ApplyCure();
-    }
-
-    public override void EndAbility()
-    {
-        base.EndAbility();
     }
 }

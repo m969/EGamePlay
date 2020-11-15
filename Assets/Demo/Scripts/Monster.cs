@@ -31,7 +31,7 @@ public sealed class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        CombatEntity.Position = transform.position;
     }
 
     private void OnReceiveDamage(CombatAction combatAction)

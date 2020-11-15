@@ -19,7 +19,7 @@ public class Skill1002Execution : AbilityExecution
         var task = EntityFactory.CreateWithParent<CastProjectileAbilityTask>(this, InputPoint);
         await task.ExecuteTaskAsync();
 
-        AbilityEntity.ApplyAbilityEffect(AbilityExecutionTarget);
+        AbilityEntity.ApplyAbilityEffect(InputCombatEntity);
 
         EndExecute();
     }

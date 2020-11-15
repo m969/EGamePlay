@@ -3,24 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using EGamePlay.Combat.Ability;
+using EGamePlay.Combat;
 using EGamePlay;
 
 public class Skill1001Entity : AbilityEntity
 {
-    public override void ActivateAbility()
+    public override AbilityExecution CreateAbilityExecution()
     {
-        base.ActivateAbility();
-
-        EndAbility();
-    }
-
-    public override void EndAbility()
-    {
-        base.EndAbility();
-
+        var abilityExecution = EntityFactory.CreateWithParent<Skill1001Execution>(this.GetParent<CombatEntity>(), this);
+        return abilityExecution;
     }
 }
-
 
 public class Skill1001Execution : AbilityExecution
 {
@@ -28,16 +21,11 @@ public class Skill1001Execution : AbilityExecution
     {
         base.BeginExecute();
 
-        var task = EntityFactory.CreateWithParent<CastProjectileAbilityTask>(this, InputPoint);
+        var task = EntityFactory.CreateWithParent<CastProjectileAbilityTask>(this, InputCombatEntity.Position);
         await task.ExecuteTaskAsync();
 
-        AbilityEntity.ApplyAbilityEffect(AbilityExecutionTarget);
+        AbilityEntity.ApplyAbilityEffect(InputCombatEntity);
 
         EndExecute();
-    }
-
-    public override void EndExecute()
-    {
-        base.EndExecute();
     }
 }

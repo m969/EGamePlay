@@ -6,11 +6,12 @@ using EGamePlay.Combat;
 using UnityEngine.UIElements;
 using EGamePlay.Combat.Skill;
 using EGamePlay.Combat.Ability;
+using DG.Tweening;
 
 public sealed class Hero : MonoBehaviour
 {
     public CombatEntity CombatEntity;
-    public float MoveSpeed = 0.2f;
+    public float MoveSpeed = 1f;
     public float AnimTime = 0.05f;
     public GameTimer AnimTimer = new GameTimer(0.1f);
     public GameObject AttackPrefab;
@@ -23,12 +24,11 @@ public sealed class Hero : MonoBehaviour
     {
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.Initialize();
+        CombatEntity.AddComponent<AbilityPreviewComponent>();
 
         var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
         var abilityA = EntityFactory.CreateWithParent<Skill1001Entity>(CombatEntity, config);
-        abilityA.AddComponent<AbilityPreviewComponent>();
-        CombatEntity.IndexAbilitys.Add(1, abilityA);
-        abilityA.TryActivateAbility();
+        CombatEntity.BindAbilityInput(abilityA, KeyCode.Q);
 
         AnimTimer.MaxTime = AnimTime;
     }
@@ -36,20 +36,32 @@ public sealed class Hero : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CombatEntity.Position = transform.position;
+
         AnimTimer.UpdateAsFinish(Time.deltaTime);
         if (!AnimTimer.IsFinished)
         {
             //return;
         }
 
-        var h = Input.GetAxis("Horizontal") * MoveSpeed;
-        var v = Input.GetAxis("Vertical") * MoveSpeed;
-        var p = transform.position;
-        transform.position = new Vector3(p.x + h, 0, p.z + v);
-
-        if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
+        var h = Input.GetAxis("Horizontal");
+        var v = Input.GetAxis("Vertical");
+        if (h != 0f || v != 0f)
         {
-            AnimTimer.Reset();
+            transform.DOKill();
+            h *= MoveSpeed * 0.02f;
+            v *= MoveSpeed * 0.02f;
+            var p = transform.position;
+            transform.position = new Vector3(p.x + h, 0, p.z + v);
+        }
+
+        if (Input.GetMouseButtonDown((int)MouseButton.RightMouse))
+        {
+            if (RaycastHelper.CastMapPoint(out var point))
+            {
+                var time = Vector3.Distance(transform.position, point) * MoveSpeed * 0.5f;
+                transform.DOMove(point, time);
+            }
         }
     }
 
@@ -88,42 +100,18 @@ public sealed class Hero : MonoBehaviour
 
     public void SpellSkillA()
     {
-        //var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        //var abilityA = EntityFactory.CreateWithParent<Skill_1001>(CombatEntity, config);
-        var abilityA = CombatEntity.IndexAbilitys[1];
-        var monster = GameObject.Find("/Monster");
-        CombatEntity.Position = transform.position;
+        //var abilityA = CombatEntity.IndexAbilitys[1];
+        //var monster = GameObject.Find("/Monster");
+        //CombatEntity.Position = transform.position;
 
-        var abilityExecution = EntityFactory.CreateWithParent<Skill1001Execution>(CombatEntity, abilityA);
-        abilityExecution.AbilityExecutionTarget = monster.GetComponent<Monster>().CombatEntity;
-        abilityExecution.InputPoint = monster.transform.position;
-        abilityExecution.BeginExecute();
-
-        //SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
-        //SpawnHitEffect(transform.position, monster.transform.position);
-
-        //var action = CombatActionManager.CreateAction<SpellSkillAction>(this.CombatEntity);
-        //action.Target = monster.GetComponent<Monster>().CombatEntity;
-        //var skill = CombatSkillManager.CreateSkill<Skill_1001>();
-        //skill.SpellCaster = this.CombatEntity;
-        //skill.SkillConfigObject = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        //action.SkillEntity = skill;
-        //action.SpellSkill();
+        //var abilityExecution = EntityFactory.CreateWithParent<Skill1001Execution>(CombatEntity, abilityA);
+        //abilityExecution.AbilityExecutionTarget = monster.GetComponent<Monster>().CombatEntity;
+        //abilityExecution.InputPoint = monster.transform.position;
+        //abilityExecution.BeginExecute();
     }
 
     public void SpellSkillB()
     {
-        //var monster = GameObject.Find("/Monster");
 
-        //SpawnLineEffect(SkillEffectPrefab, transform.position, monster.transform.position);
-        //SpawnHitEffect(transform.position, monster.transform.position);
-
-        //var action = CombatActionManager.CreateAction<SpellSkillAction>(this.CombatEntity);
-        //action.Target = monster.GetComponent<Monster>().CombatEntity;
-        //var skill = CombatSkillManager.CreateSkill<Skill_1002>();
-        //skill.SpellCaster = this.CombatEntity;
-        //skill.SkillConfigObject = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
-        //action.SkillEntity = skill;
-        //action.SpellSkill();
     }
 }

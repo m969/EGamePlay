@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace EGamePlay.Combat.Ability
+namespace EGamePlay.Combat
 {
-    public class AbilityPreviewComponent : Component
+    public abstract class ConditionEntity : Entity
     {
 
     }

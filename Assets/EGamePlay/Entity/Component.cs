@@ -8,6 +8,11 @@ namespace EGamePlay
         public bool IsDispose { get; set; }
 
 
+        public T GetEntity<T>() where T : Entity
+        {
+            return Entity as T;
+        }
+
         public virtual void Setup()
         {
 

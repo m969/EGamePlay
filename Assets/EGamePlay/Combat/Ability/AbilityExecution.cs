@@ -11,7 +11,6 @@ namespace EGamePlay.Combat.Ability
     public abstract class AbilityExecution : Entity
     {
         public AbilityEntity AbilityEntity { get; set; }
-        public CombatEntity AbilityExecutionTarget { get; set; }
         public CombatEntity InputCombatEntity { get; set; }
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
