@@ -15,7 +15,6 @@ public class PassiveSkill1004Entity : AbilityEntity
 
     public override void ActivateAbility()
     {
-        Log.Debug($"{GetType().Name} ActivateAbility");
         base.ActivateAbility();
         CanReplyHealth = true;
         AbilityOwner.AddListener(ActionPointType.PostReceiveDamage, EndReplyHealth);
@@ -46,21 +45,18 @@ public class PassiveSkill1004Entity : AbilityEntity
     //结束生命回复
     private void EndReplyHealth(CombatAction combatAction)
     {
-        Log.Debug($"{GetType().Name} EndReplyHealth");
         CanReplyHealth = false;
     }
 
     //开始生命回复
     private void StartReplyHealth()
     {
-        Log.Debug($"{GetType().Name} StartReplyHealth");
         CanReplyHealth = true;
     }
 
     //生命回复
     private void ReplyHealth()
     {
-        Log.Debug($"{GetType().Name} ReplyHealth");
         var action = CombatActionManager.CreateAction<CureAction>(AbilityOwner);
         action.Target = AbilityOwner;
         action.CureValue = AbilityOwner.CurrentHealth.PercentHealth(1);

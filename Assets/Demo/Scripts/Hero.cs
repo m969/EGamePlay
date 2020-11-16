@@ -17,6 +17,7 @@ public sealed class Hero : MonoBehaviour
     public GameObject AttackPrefab;
     public GameObject SkillEffectPrefab;
     public GameObject HitEffectPrefab;
+    private Tweener MoveTweener { get; set; }
 
 
     // Start is called before the first frame update
@@ -48,7 +49,7 @@ public sealed class Hero : MonoBehaviour
         var v = Input.GetAxis("Vertical");
         if (h != 0f || v != 0f)
         {
-            transform.DOKill();
+            MoveTweener?.Kill();
             h *= MoveSpeed * 0.02f;
             v *= MoveSpeed * 0.02f;
             var p = transform.position;
@@ -60,7 +61,8 @@ public sealed class Hero : MonoBehaviour
             if (RaycastHelper.CastMapPoint(out var point))
             {
                 var time = Vector3.Distance(transform.position, point) * MoveSpeed * 0.5f;
-                transform.DOMove(point, time);
+                MoveTweener?.Kill();
+                MoveTweener = transform.DOMove(point, time);
             }
         }
     }

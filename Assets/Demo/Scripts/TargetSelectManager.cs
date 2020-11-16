@@ -12,6 +12,8 @@ public class TargetSelectManager : MonoBehaviour
     private Action<GameObject> OnSelectTargetCallback { get; set; }
     public Image CursorImage { get; set; }
     public Color CursorColor { get; set; }
+    public GameObject HeroObj;
+    public GameObject RangeCircleObj;
 
 
     private void Awake()
@@ -26,11 +28,15 @@ public class TargetSelectManager : MonoBehaviour
     {
         if (RaycastHelper.CastEnemyObj(out var enemyObj))
         {
-            if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
+            if (Vector3.Distance(enemyObj.transform.position, HeroObj.transform.position) < 10f)
             {
-                OnSelectTargetCallback?.Invoke(enemyObj);
+                if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
+                {
+                    Hide();
+                    OnSelectTargetCallback?.Invoke(enemyObj);
+                }
+                CursorImage.color = Color.red;
             }
-            CursorImage.color = Color.red;
         }
         else
         {
@@ -42,6 +48,7 @@ public class TargetSelectManager : MonoBehaviour
     {
         Cursor.visible = false;
         gameObject.SetActive(true);
+        RangeCircleObj.SetActive(true);
         OnSelectTargetCallback = onSelectTargetCallback;
     }
 
@@ -49,5 +56,6 @@ public class TargetSelectManager : MonoBehaviour
     {
         Cursor.visible = true;
         gameObject.SetActive(false);
+        RangeCircleObj.SetActive(false);
     }
 }
