@@ -76,9 +76,7 @@ MonoBehaviour:
   AreaGuideObj: {fileID: 0}
   AreaCollider: {fileID: 0}
   AffectTargetType: 0
-  Cold: 0
-  ColdGroupTitle: "\u6280\u80FD\u51B7\u5374"
-  ColdTime: 3000
+  ColdTime: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   SkillAnimationClip: {fileID: 0}
   SkillEffectObject: {fileID: 0}

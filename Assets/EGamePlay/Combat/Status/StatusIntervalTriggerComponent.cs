@@ -29,7 +29,7 @@ namespace EGamePlay.Combat.Status
 
         private void TriggerEffect()
         {
-            var status = Entity as StatusEntity;
+            var status = Entity as StatusAbilityEntity;
             var combatEntity = status.Parent as CombatEntity;
             if (Effects[0] is DamageEffect damageEffect)
             {

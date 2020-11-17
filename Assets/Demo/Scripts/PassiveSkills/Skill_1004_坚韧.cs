@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using EGamePlay.Combat.Ability;
+using EGamePlay.Combat.Skill;
 using EGamePlay.Combat;
 using EGamePlay;
 using System.Threading.Tasks;
 
-public class PassiveSkill1004Entity : AbilityEntity
+public class PassiveSkill1004Entity : SkillAbilityEntity
 {
     private GameTimer HealthReplyTimer { get; set; } = new GameTimer(1f);
     private bool CanReplyHealth { get; set; }

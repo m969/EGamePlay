@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using EGamePlay.Combat.Ability;
+using EGamePlay.Combat.Skill;
 using EGamePlay;
 
-public class Skill1002Entity : AbilityEntity
+public class Skill1002Entity : SkillAbilityEntity
 {
 
 }

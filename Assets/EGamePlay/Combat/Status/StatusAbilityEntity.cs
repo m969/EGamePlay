@@ -1,22 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
-using UnityEngine;
+﻿using EGamePlay.Combat.Ability;
 
 namespace EGamePlay.Combat.Status
 {
-    public partial class StatusEntity : Entity
+    public partial class StatusAbilityEntity : AbilityEntity
     {
-        public bool Enabled { get; private set; }
         public CombatEntity Caster { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
-        public StatusListen StatusListen { get; set; }
-        public StatusRun StatusRun { get; set; }
 
 
         public override void Awake(object paramObject)
         {
+            base.Awake(paramObject);
+
             StatusConfigObject = paramObject as StatusConfigObject;
+        }
+
+        public override void ActivateAbility()
+        {
+            base.ActivateAbility();
             foreach (var item in StatusConfigObject.Effects)
             {
                 var effectEntity = EntityFactory.CreateWithParent<EffectEntity>(Caster, item);
@@ -29,21 +30,11 @@ namespace EGamePlay.Combat.Status
 
                 }
 
-                if (item.EffectTriggerType == EffectTriggerType.Interval)
-                {
-                    effectEntity.AddComponent<EffectIntervalTriggerComponent>();
-                }
+                //if (item.EffectTriggerType == EffectTriggerType.Interval)
+                //{
+                //    effectEntity.AddComponent<EffectIntervalTriggerComponent>();
+                //}
             }
-        }
-
-        public void Enable()
-        {
-            Enabled = true;
-        }
-
-        public void Disable()
-        {
-            Enabled = false;
         }
     }
 }

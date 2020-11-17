@@ -6,14 +6,14 @@ using EGamePlay.Combat.Status;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 战斗技能管理器
+    /// 战斗状态管理器
     /// </summary>
     public static class CombatStatusManager
     {
-        private static List<StatusEntity> CombatStatuses = new List<StatusEntity>();
+        private static List<StatusAbilityEntity> CombatStatuses = new List<StatusAbilityEntity>();
 
 
-        public static T CreateStatus<T>(CombatEntity combatEntity) where T: StatusEntity, new()
+        public static T CreateStatus<T>(CombatEntity combatEntity) where T: StatusAbilityEntity, new()
         {
             var status = EntityFactory.CreateWithParent<T>(combatEntity);
             CombatStatuses.Add(status);

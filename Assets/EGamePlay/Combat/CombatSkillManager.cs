@@ -10,10 +10,10 @@ namespace EGamePlay.Combat
     /// </summary>
     public static class CombatSkillManager
     {
-        private static List<SkillEntity> CombatSkills = new List<SkillEntity>();
+        private static List<SkillAbilityEntity> CombatSkills = new List<SkillAbilityEntity>();
 
 
-        public static T CreateSkill<T>() where T: SkillEntity, new()
+        public static T CreateSkill<T>() where T: SkillAbilityEntity, new()
         {
             var skill = EntityFactory.Create<T>();
             CombatSkills.Add(skill);

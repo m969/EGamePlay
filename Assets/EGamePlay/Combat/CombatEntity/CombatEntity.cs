@@ -1,5 +1,6 @@
 ﻿using EGamePlay.Combat.Ability;
 using EGamePlay.Combat.Status;
+using EGamePlay.Combat.Skill;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -65,10 +66,22 @@ namespace EGamePlay.Combat
             CurrentHealth.Add(cureAction.CureValue);
         }
 
-        public void GrantAbility(AbilityEntity abilityEntity)
+        /// <summary>
+        /// 挂载能力，技能、被动、buff都通过这个接口挂载
+        /// </summary>
+        /// <param name="abilityEntity"></param>
+        public T AttachAbility<T>(object configObject) where T : AbilityEntity, new()
         {
-            NameAbilitys.Add(abilityEntity.SkillConfigObject.Name, abilityEntity);
-            abilityEntity.OnSetParent(this);
+            var ability = EntityFactory.CreateWithParent<T>(this, configObject);
+            ability.OnSetParent(this);
+            return ability;
+        }
+
+        public T AttachSkill<T>(object configObject) where T : SkillAbilityEntity, new()
+        {
+            var skill = AttachAbility<T>(configObject);
+            NameAbilitys.Add(skill.SkillConfigObject.Name, skill);
+            return skill;
         }
 
         public void BindAbilityInput(AbilityEntity abilityEntity, KeyCode keyCode)

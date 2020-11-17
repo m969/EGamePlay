@@ -12,20 +12,20 @@ namespace EGamePlay.Combat
     public class SpellSkillAction : CombatAction
     {
         public int SkillID { get; set; }
-        public SkillEntity SkillEntity { get; set; }
+        public SkillAbilityEntity SkillEntity { get; set; }
 
 
         private void BeforeSpell()
         {
-            SkillEntity.SkillTarget = Target;
-            SkillEntity.Start();
+            //SkillEntity.SkillTarget = Target;
+            //SkillEntity.Start();
         }
 
         public void SpellSkill()
         {
             BeforeSpell();
             //SkillEntity.StartRun();
-            SkillEntity.AssignSkillEffect();
+            SkillEntity.ApplyAbilityEffect(Target);
             //SkillEntity.EndRun();
             AfterSpell();
         }

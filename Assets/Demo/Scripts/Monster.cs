@@ -25,7 +25,7 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.AddListener(ActionPointType.PostReceiveCure, OnReceiveCure);
 
         var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_坚韧");
-        var abilityA = EntityFactory.CreateWithParent<PassiveSkill1004Entity>(CombatEntity, config);
+        var abilityA = CombatEntity.AttachSkill<PassiveSkill1004Entity>(config);
     }
 
     // Update is called once per frame

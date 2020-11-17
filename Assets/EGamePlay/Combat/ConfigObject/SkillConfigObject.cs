@@ -25,7 +25,7 @@ namespace EGamePlay.Combat
         [DelayedProperty]
         public string Name = "技能1";
         public SkillSpellType SkillSpellType;
-        [LabelText("技能目标检测方式")]
+        [LabelText("技能目标检测方式"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillTargetSelectType TargetSelectType;
         [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         [LabelText("区域场类型")]
@@ -43,17 +43,12 @@ namespace EGamePlay.Combat
         [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         public GameObject AreaCollider;
 
-        [LabelText("技能作用对象")]
+        [LabelText("技能作用对象"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillAffectTargetType AffectTargetType;
 
-        [ToggleGroup("Cold", "$ColdGroupTitle")]
-        public bool Cold = false;
-        [ToggleGroup("Cold")]
-        [HideInInspector]
-        public string ColdGroupTitle = "技能冷却";
-        [ToggleGroup("Cold")]
-        [LabelText("冷却时间")]
-        [SuffixLabel("毫秒", true)]
+        //[ToggleGroup("Cold", "技能冷却")]
+        //public bool Cold = false;
+        [/*ToggleGroup("Cold"), */LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public uint ColdTime;
 
         [LabelText("效果列表"), Space(30)]

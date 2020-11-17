@@ -4,31 +4,22 @@ using UnityEngine;
 
 namespace EGamePlay.Combat.Ability
 {
-    public enum PassiveAbilityExcutionType
-    {
-
-    }
-
     /// <summary>
     /// 能力实体，存储着某个英雄某个能力的数据和状态
     /// </summary>
-    public class AbilityEntity : Entity
+    public abstract class AbilityEntity : Entity
     {
         public CombatEntity AbilityOwner { get; set; }
-        public SkillConfigObject SkillConfigObject { get; set; }
+        public object ConfigObject { get; set; }
 
 
         public override void Awake(object paramObject)
         {
-            SkillConfigObject = paramObject as SkillConfigObject;
+            ConfigObject = paramObject;
             this.AbilityOwner = Parent as CombatEntity;
-            if (SkillConfigObject.SkillSpellType == SkillSpellType.Passive)
-            {
-                TryActivateAbility();
-            }
         }
 
-        public void TryActivateAbility()
+        public virtual void TryActivateAbility()
         {
             Log.Debug($"{GetType().Name} TryActivateAbility");
             ActivateAbility();
@@ -51,7 +42,16 @@ namespace EGamePlay.Combat.Ability
         
         public virtual void ApplyAbilityEffect(CombatEntity targetEntity)
         {
-            foreach (var item in SkillConfigObject.Effects)
+            List<Effect> Effects = null;
+            if (ConfigObject is SkillConfigObject skillConfigObject)
+            {
+                Effects = skillConfigObject.Effects;
+            }
+            if (ConfigObject is StatusConfigObject statusConfigObject)
+            {
+                Effects = statusConfigObject.Effects;
+            }
+            foreach (var item in Effects)
             {
                 if (item is DamageEffect damageEffect)
                 {

@@ -32,10 +32,10 @@ namespace EGamePlay.Combat
             }
             if (Effect is AddStatusEffect addStatusEffect)
             {
-                //StatusEntity status = EntityFactory.CreateWithParent<StatusEntity>(Target, addStatusEffect.AddStatus);
-                //status.Caster = Creator;
-                //status.Enable();
-                //status.AddComponent<StatusLifeTimeComponent>();
+                StatusAbilityEntity status = EntityFactory.CreateWithParent<StatusAbilityEntity>(Target, addStatusEffect.AddStatus);
+                status.Caster = Creator;
+                status.AddComponent<StatusLifeTimeComponent>();
+                status.TryActivateAbility();
             }
             AfterAssign();
         }

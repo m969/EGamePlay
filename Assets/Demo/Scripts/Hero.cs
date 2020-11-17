@@ -28,7 +28,7 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.AddComponent<AbilityPreviewComponent>();
 
         var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        var abilityA = EntityFactory.CreateWithParent<Skill1001Entity>(CombatEntity, config);
+        var abilityA = CombatEntity.AttachSkill<Skill1001Entity>(config);
         CombatEntity.BindAbilityInput(abilityA, KeyCode.Q);
 
         AnimTimer.MaxTime = AnimTime;

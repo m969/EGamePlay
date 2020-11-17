@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using EGamePlay.Combat.Ability;
 using EGamePlay;
 
-public class Buff1001Entity : AbilityEntity
+public class DurationBuffAbility : AbilityEntity
 {
     public override void ActivateAbility()
     {

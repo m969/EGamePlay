@@ -7,6 +7,7 @@ namespace EGamePlay.Combat.Ability
 {
     /// <summary>
     /// 能力执行体，能力执行体是实际创建处理能力表现，应用能力效果的地方
+    /// 这里会存一些表现执行相关的临时的状态数据
     /// </summary>
     public abstract class AbilityExecution : Entity
     {
