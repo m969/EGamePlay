@@ -30,10 +30,10 @@ namespace EGamePlay.Combat.Status
 
                 }
 
-                //if (item.EffectTriggerType == EffectTriggerType.Interval)
-                //{
-                //    effectEntity.AddComponent<EffectIntervalTriggerComponent>();
-                //}
+                if (item.EffectTriggerType == EffectTriggerType.Interval)
+                {
+                    effectEntity.AddComponent<EffectIntervalTriggerComponent>();
+                }
             }
         }
     }

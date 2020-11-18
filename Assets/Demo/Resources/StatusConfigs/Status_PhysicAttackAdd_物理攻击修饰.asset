@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Poison_\u666E\u901A\u4E2D\u6BD2"
+  m_Name: "Status_PhysicAttackAdd_\u7269\u7406\u653B\u51FB\u4FEE\u9970"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -30,7 +30,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.DamageEffect, EGamePlay
+      Data: 1|EGamePlay.Combat.AttributeNumericModifyEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: false
@@ -42,7 +42,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -51,19 +51,16 @@ MonoBehaviour:
       Data: 0
     - Name: Interval
       Entry: 3
-      Data: 500
+      Data: 0
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: DamageType
+    - Name: NumericType
       Entry: 3
-      Data: 0
-    - Name: DamageValueFormula
-      Entry: 1
-      Data: 280
-    - Name: CanCrit
-      Entry: 5
-      Data: false
+      Data: 1001
+    - Name: NumericValue
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -73,18 +70,18 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Poison
-  Name: "\u666E\u901A\u4E2D\u6BD2"
-  StatusType: 1
-  Duration: 4000
+  ID: PhysicAttackAdd
+  Name: "\u7269\u7406\u653B\u51FB\u4FEE\u9970"
+  StatusType: 2
+  Duration: 0
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
-  EnabledNumericModify: 0
-  NumericType: 0
-  NumericValue: 
-  EnabledLogicTrigger: 1
-  EffectTriggerType: 2
+  EnabledNumericModify: 1
+  NumericType: 1001
+  EnabledLogicTrigger: 0
+  EffectTriggerType: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
+  StatusDescription: 

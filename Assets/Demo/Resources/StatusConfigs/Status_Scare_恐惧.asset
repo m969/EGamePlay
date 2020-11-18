@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_PhysicAttackAdd_\u7269\u7406\u653B\u51FB\u53D8\u52A8"
+  m_Name: "Status_Scare_\u6050\u60E7"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -27,47 +27,26 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|EGamePlay.Combat.AttributeNumericModifyEffect, EGamePlay
-    - Name: IsSkillEffect
-      Entry: 5
-      Data: false
-    - Name: Enabled
-      Entry: 5
-      Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
       Data: 0
-    - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 3
-      Data: 0
-    - Name: NumericType
-      Entry: 3
-      Data: 1001
-    - Name: NumericValue
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
-  ID: PhysicAttackAdd
-  Name: "\u7269\u7406\u653B\u51FB\u53D8\u52A8"
-  StatusType: 0
+  ID: Scare
+  Name: "\u6050\u60E7"
+  StatusType: 1
   Duration: 0
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
+  EnabledNumericModify: 0
+  NumericType: 0
+  NumericValue: 
+  EnabledLogicTrigger: 0
+  EffectTriggerType: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
+  StatusDescription: "\u6050\u60E7\uFF1A\u4F7F\u82F1\u96C4\u5931\u53BB\u63A7\u5236\uFF0C\u65E0\u76EE\u7684\u7684\u8D70\u52A8\u3002"

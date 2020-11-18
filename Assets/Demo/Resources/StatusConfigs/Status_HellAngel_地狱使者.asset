@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Poison_\u666E\u901A\u4E2D\u6BD2"
+  m_Name: "Status_HellAngel_\u5730\u72F1\u4F7F\u8005"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: babc008db9b9ec14ca9bd31a1f62f624, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -30,7 +31,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.DamageEffect, EGamePlay
+      Data: 1|EGamePlay.Combat.AddStatusEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: false
@@ -42,7 +43,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -51,19 +52,16 @@ MonoBehaviour:
       Data: 0
     - Name: Interval
       Entry: 3
-      Data: 500
+      Data: 0
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: DamageType
-      Entry: 3
+    - Name: AddStatus
+      Entry: 10
       Data: 0
-    - Name: DamageValueFormula
-      Entry: 1
-      Data: 280
-    - Name: CanCrit
-      Entry: 5
-      Data: false
+    - Name: Duration
+      Entry: 3
+      Data: 2000
     - Name: 
       Entry: 8
       Data: 
@@ -73,11 +71,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Poison
-  Name: "\u666E\u901A\u4E2D\u6BD2"
-  StatusType: 1
-  Duration: 4000
-  ShowInStatusIconList: 1
+  ID: HellAngel
+  Name: "\u5730\u72F1\u4F7F\u8005"
+  StatusType: 0
+  Duration: 0
+  ShowInStatusIconList: 0
   CanStack: 0
   MaxStack: 1
   EnabledNumericModify: 0
@@ -88,3 +86,4 @@ MonoBehaviour:
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
+  StatusDescription: "\u5730\u72F1\u4F7F\u8005\uFF1A\u6BCF\u96943\u79D2\u4F1A\u65BD\u52A0\u4E00\u4E2A\u6301\u7EED2\u79D2\u7684\u6050\u60E7\u72B6\u6001\u3002"

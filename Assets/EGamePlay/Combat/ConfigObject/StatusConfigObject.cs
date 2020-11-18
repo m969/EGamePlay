@@ -33,14 +33,29 @@ namespace EGamePlay.Combat
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
         public int MaxStack = 1;
 
-        //public DurationConfig DurationConfig = new DurationConfig();
+        //[ToggleGroup("EnabledStateModify", "状态修改")]
+        //public bool EnabledStateModify;
+        //[ToggleGroup("EnabledStateModify")]
+        //public StateType StateType;
 
-        [LabelText("效果列表"), Space(30)]
+        [ToggleGroup("EnabledNumericModify", "属性修饰")]
+        public bool EnabledNumericModify;
+        [ToggleGroup("EnabledNumericModify")]
+        public NumericType NumericType;
+        //[ToggleGroup("EnabledNumericModify"), LabelText("数值参数")]
+        //public string NumericValue;
+
+        [ToggleGroup("EnabledLogicTrigger", "逻辑触发")]
+        public bool EnabledLogicTrigger;
+        [ToggleGroup("EnabledLogicTrigger")]
+        [LabelText("效果触发机制")]
+        public EffectTriggerType EffectTriggerType;
+        [ToggleGroup("EnabledLogicTrigger")]
+        [LabelText("效果列表")/*, Space(30)*/]
         [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
-
-        [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
+        [HorizontalGroup("EnabledLogicTrigger/Hor", PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel]
         [OnValueChanged("AddEffect")]
         [ValueDropdown("EffectTypeSelect")]
@@ -96,7 +111,13 @@ namespace EGamePlay.Combat
         private void EndBox()
         {
             SirenixEditorGUI.EndBox();
+            GUILayout.Space(30);
+            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            GUILayout.Space(10);
         }
+
+        [TextArea, LabelText("状态描述")]
+        public string StatusDescription;
 
         //private bool NeedClearLog;
         [OnInspectorGUI]
