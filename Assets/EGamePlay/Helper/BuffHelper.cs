@@ -170,8 +170,6 @@
     //[LabelText("效果触发机制")]
     public enum EffectTriggerType
     {
-        //[LabelText("立即触发")]
-        //Immediate,
         [LabelText("条件触发")]
         Condition = 0,
         [LabelText("行动点触发")]

@@ -57,7 +57,7 @@ MonoBehaviour:
       Data: 
     - Name: DamageType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: DamageValueFormula
       Entry: 1
       Data: 280
@@ -76,15 +76,16 @@ MonoBehaviour:
   ID: Poison
   Name: "\u666E\u901A\u4E2D\u6BD2"
   StatusType: 1
-  Duration: 4000
+  Duration: 3000
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
+  EnabledStateModify: 0
+  StateType: 0
   EnabledNumericModify: 0
   NumericType: 0
-  NumericValue: 
   EnabledLogicTrigger: 1
-  EffectTriggerType: 2
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
+  StatusDescription: 

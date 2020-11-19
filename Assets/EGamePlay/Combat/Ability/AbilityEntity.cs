@@ -21,7 +21,7 @@ namespace EGamePlay.Combat.Ability
 
         public virtual void TryActivateAbility()
         {
-            Log.Debug($"{GetType().Name} TryActivateAbility");
+            Log.Debug($"{GetType().Name}->TryActivateAbility");
             ActivateAbility();
         }
         
@@ -30,9 +30,9 @@ namespace EGamePlay.Combat.Ability
             
         }
 
-        public virtual void EndAbility()
+        public virtual void EndActivate()
         {
-
+            Dispose();
         }
 
         public virtual AbilityExecution CreateAbilityExecution()
@@ -76,6 +76,7 @@ namespace EGamePlay.Combat.Ability
                     if (item is AddStatusEffect addStatusEffect)
                     {
                         addStatusEffect.AddStatus.Duration = addStatusEffect.Duration;
+                        addStatusEffect.AddStatus.NumericValue = addStatusEffect.ParamValue;
                     }
                     operation.ApplyAssignEffect();
                 }

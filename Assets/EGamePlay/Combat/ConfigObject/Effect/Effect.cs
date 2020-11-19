@@ -49,27 +49,27 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
         public AddSkillEffetTargetType AddSkillEffectTargetType;
 
-        [HideInInspector]
+        //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), HideLabel]
         public EffectTriggerType EffectTriggerType;
 
-        [HideInInspector]
+        //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Condition), HideLabel]
         public ConditionType ConditionType;
 
-        [HideInInspector]
+        //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Action), HideLabel]
         public ActionPointType ActionPointType;
 
-        [HideInInspector]
+        //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true), HideLabel]
         public uint Interval;
 
-        [HideInInspector]
+        //[HideInInspector]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("条件参数 x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
         public string ConditionParam;
     }

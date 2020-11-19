@@ -10,11 +10,11 @@ public class DurationBuffAbility : AbilityEntity
     public override void ActivateAbility()
     {
         base.ActivateAbility();
-        EndAbility();
+        EndActivate();
     }
 
-    public override void EndAbility()
+    public override void EndActivate()
     {
-        base.EndAbility();
+        base.EndActivate();
     }
 }

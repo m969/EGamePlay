@@ -43,19 +43,37 @@ namespace EGamePlay.Combat
         [ToggleGroup("EnabledNumericModify")]
         public NumericType NumericType;
         //[ToggleGroup("EnabledNumericModify"), LabelText("数值参数")]
-        //public string NumericValue;
+        [HideInInspector]
+        public string NumericValue;
 
         [ToggleGroup("EnabledLogicTrigger", "逻辑触发")]
         public bool EnabledLogicTrigger;
-        [ToggleGroup("EnabledLogicTrigger")]
-        [LabelText("效果触发机制")]
-        public EffectTriggerType EffectTriggerType;
+        //[HorizontalGroup("EnabledLogicTrigger/Hor")]
+        //[ToggleGroup("EnabledLogicTrigger"), /*LabelText("效果触发机制")*/ HideLabel]
+        //public EffectTriggerType EffectTriggerType;
+
+        //[HorizontalGroup("EnabledLogicTrigger/Hor")]
+        //[ToggleGroup("EnabledLogicTrigger"), ShowIf("EffectTriggerType", EffectTriggerType.Condition), HideLabel]
+        //public ConditionType ConditionType;
+
+        //[HorizontalGroup("EnabledLogicTrigger/Hor")]
+        //[ToggleGroup("EnabledLogicTrigger"), ShowIf("EffectTriggerType", EffectTriggerType.Action), HideLabel]
+        //public ActionPointType ActionPointType;
+
+        //[HorizontalGroup("EnabledLogicTrigger/Hor")]
+        //[ToggleGroup("EnabledLogicTrigger"),  ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true), HideLabel]
+        //public uint Interval;
+
+        //[ToggleGroup("EnabledLogicTrigger"),  LabelText("条件参数 x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
+        //public string ConditionParam;
+
+
         [ToggleGroup("EnabledLogicTrigger")]
         [LabelText("效果列表")/*, Space(30)*/]
         [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
-        [HorizontalGroup("EnabledLogicTrigger/Hor", PaddingLeft = 40, PaddingRight = 40)]
+        [HorizontalGroup("EnabledLogicTrigger/Hor2", PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel]
         [OnValueChanged("AddEffect")]
         [ValueDropdown("EffectTypeSelect")]

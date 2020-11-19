@@ -84,10 +84,27 @@ namespace EGamePlay.Combat
             return skill;
         }
 
+        public T ReceiveStatus<T>(object configObject) where T : StatusAbilityEntity, new()
+        {
+            var status = AttachAbility<T>(configObject);
+            return status;
+        }
+
+        public void OnStatusRemove(StatusAbilityEntity statusAbilityEntity)
+        {
+            this.Publish(new StatusRemoveEvent() { CombatEntity = this, StatusAbilityEntity = statusAbilityEntity });
+        }
+
         public void BindAbilityInput(AbilityEntity abilityEntity, KeyCode keyCode)
         {
             InputAbilitys.Add(keyCode, abilityEntity);
             abilityEntity.TryActivateAbility();
         }
+    }
+
+    public class StatusRemoveEvent
+    {
+        public CombatEntity CombatEntity { get; set; }
+        public StatusAbilityEntity StatusAbilityEntity { get; set; }
     }
 }

@@ -44,9 +44,18 @@ MonoBehaviour:
     - Name: EffectTriggerType
       Entry: 3
       Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
     - Name: Interval
       Entry: 3
       Data: 0
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
     - Name: DamageType
       Entry: 3
       Data: 1
@@ -74,15 +83,27 @@ MonoBehaviour:
     - Name: EffectTriggerType
       Entry: 3
       Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
     - Name: Interval
       Entry: 3
       Data: 0
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
     - Name: AddStatus
       Entry: 10
       Data: 0
     - Name: Duration
       Entry: 3
-      Data: 3000
+      Data: 4000
+    - Name: ParamValue
+      Entry: 1
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -94,16 +115,25 @@ MonoBehaviour:
       Data: true
     - Name: Enabled
       Entry: 5
-      Data: true
+      Data: false
     - Name: AddSkillEffectTargetType
       Entry: 3
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
       Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
     - Name: Interval
       Entry: 3
       Data: 0
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
     - Name: TagType
       Entry: 3
       Data: 0
@@ -131,11 +161,10 @@ MonoBehaviour:
   AreaGuideObj: {fileID: 0}
   AreaCollider: {fileID: 0}
   AffectTargetType: 2
-  Cold: 0
-  ColdGroupTitle: "\u51B7\u5374\u65F6\u95F4"
   ColdTime: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   SkillAnimationClip: {fileID: 0}
   SkillEffectObject: {fileID: 8055077527788061986, guid: 20ac05806cd85ab40944060644de7f91,
     type: 3}
   SkillAudio: {fileID: 0}
+  SkillDescription: 

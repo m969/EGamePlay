@@ -25,6 +25,7 @@ namespace EGamePlay
 
         public virtual void Dispose()
         {
+            Log.Debug($"{GetType().Name}->Dispose");
             IsDispose = true;
         }
     }

@@ -37,6 +37,11 @@ namespace EGamePlay.Combat
         [LabelText("接受效果")]
         ReceiveEffect,
 
+        [LabelText("赋加状态后")]
+        PostGiveStatus,
+        [LabelText("承受状态后")]
+        PostReceiveStatus,
+
         Max,
     }
 

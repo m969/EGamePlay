@@ -18,31 +18,37 @@ namespace EGamePlay.Combat
         public string EffectValue { get; set; }
 
 
-        private void BeforeAssign()
+        //前置处理
+        private void PreProcess()
         {
 
         }
 
         public void ApplyAssignEffect()
         {
-            BeforeAssign();
+            PreProcess();
             if (Effect is DamageEffect damageEffect)
             {
 
             }
             if (Effect is AddStatusEffect addStatusEffect)
             {
-                StatusAbilityEntity status = EntityFactory.CreateWithParent<StatusAbilityEntity>(Target, addStatusEffect.AddStatus);
+                StatusAbilityEntity status = Target.ReceiveStatus<StatusAbilityEntity>(addStatusEffect.AddStatus);
                 status.Caster = Creator;
                 status.AddComponent<StatusLifeTimeComponent>();
                 status.TryActivateAbility();
             }
-            AfterAssign();
+            PostProcess();
         }
 
-        private void AfterAssign()
+        //后置处理
+        private void PostProcess()
         {
-
+            if (Effect is AddStatusEffect addStatusEffect)
+            {
+                Creator.TriggerActionPoint(ActionPointType.PostGiveStatus, this);
+                Target.TriggerActionPoint(ActionPointType.PostReceiveStatus, this);
+            }
         }
     }
 

@@ -54,6 +54,7 @@ namespace EGamePlay.Combat
         public void ApplyDamage()
         {
             PreProcess();
+            //Log.Debug("DamageAction ApplyDamage");
             Target.ReceiveDamage(this);
             PostProcess();
         }

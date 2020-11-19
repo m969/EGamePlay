@@ -6,6 +6,7 @@ namespace EGamePlay.Combat.Status
     {
         public CombatEntity Caster { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
+        public IntModifier IntModifier { get; set; }
 
 
         public override void Awake(object paramObject)
@@ -18,23 +19,80 @@ namespace EGamePlay.Combat.Status
         public override void ActivateAbility()
         {
             base.ActivateAbility();
-            foreach (var item in StatusConfigObject.Effects)
+            if (StatusConfigObject.EnabledStateModify)
             {
-                var effectEntity = EntityFactory.CreateWithParent<EffectEntity>(Caster, item);
-                if (item is DamageEffect damageEffect)
-                {
 
-                }
-                if (item is AddStatusEffect addStatusEffect)
+            }
+            if (StatusConfigObject.EnabledNumericModify)
+            {
+                switch (StatusConfigObject.NumericType)
                 {
-
-                }
-
-                if (item.EffectTriggerType == EffectTriggerType.Interval)
-                {
-                    effectEntity.AddComponent<EffectIntervalTriggerComponent>();
+                    case NumericType.None:
+                        break;
+                    case NumericType.PhysicAttack:
+                        var value = int.Parse(StatusConfigObject.NumericValue);
+                        IntModifier = new IntModifier() { Value = value };
+                        GetParent<CombatEntity>().NumericBox.PhysicAttack_I.AddAddModifier(IntModifier);
+                        break;
+                    case NumericType.Defense:
+                        break;
+                    case NumericType.SpellPower:
+                        break;
+                    case NumericType.MagicDefense:
+                        break;
+                    case NumericType.CriticalProb:
+                        break;
+                    default:
+                        break;
                 }
             }
+            if (StatusConfigObject.EnabledLogicTrigger)
+            {
+                foreach (var item in StatusConfigObject.Effects)
+                {
+                    var logicEntity = EntityFactory.CreateWithParent<LogicEntity>(this, item);
+                    if (item.EffectTriggerType == EffectTriggerType.Interval)
+                    {
+                        logicEntity.AddComponent<LogicIntervalTriggerComponent>();
+                    }
+                    if (item.EffectTriggerType == EffectTriggerType.Condition)
+                    {
+                        logicEntity.AddComponent<LogicConditionTriggerComponent>();
+                    }
+                    if (item.EffectTriggerType == EffectTriggerType.Action)
+                    {
+                        logicEntity.AddComponent<LogicActionTriggerComponent>();
+                    }
+                }
+            }
+        }
+
+        public override void EndActivate()
+        {
+            if (StatusConfigObject.EnabledNumericModify)
+            {
+                switch (StatusConfigObject.NumericType)
+                {
+                    case NumericType.None:
+                        break;
+                    case NumericType.PhysicAttack:
+                        GetParent<CombatEntity>().NumericBox.PhysicAttack_I.RemoveAddModifier(IntModifier);
+                        break;
+                    case NumericType.Defense:
+                        break;
+                    case NumericType.SpellPower:
+                        break;
+                    case NumericType.MagicDefense:
+                        break;
+                    case NumericType.CriticalProb:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            IntModifier = null;
+            GetParent<CombatEntity>().OnStatusRemove(this);
+            base.EndActivate();
         }
     }
 }

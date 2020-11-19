@@ -14,6 +14,8 @@ public sealed class Monster : MonoBehaviour
     public Text CureText;
     public Image HealthBarImage;
     public Transform CanvasTrm;
+    public Transform StatusSlotsTrm;
+    public GameObject StatusIconPrefab;
 
 
     // Start is called before the first frame update
@@ -23,7 +25,10 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.Initialize();
         CombatEntity.AddListener(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.AddListener(ActionPointType.PostReceiveCure, OnReceiveCure);
+        CombatEntity.AddListener(ActionPointType.PostReceiveStatus, ReceiveStatus);
 
+        this.Subscribe<StatusRemoveEvent>(OnStatusRemove);
+        
         var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_坚韧");
         var abilityA = CombatEntity.AttachSkill<PassiveSkill1004Entity>(config);
     }
@@ -61,5 +66,21 @@ public sealed class Monster : MonoBehaviour
         cureText.text = $"+{action.CureValue.ToString()}";
         cureText.GetComponent<DOTweenAnimation>().DORestart();
         GameObject.Destroy(cureText.gameObject, 0.5f);
+    }
+
+    private void ReceiveStatus(CombatAction combatAction)
+    {
+        var action = combatAction as AssignEffectAction;
+        var obj = GameObject.Instantiate(StatusIconPrefab);
+        obj.transform.SetParent(StatusSlotsTrm);
+        if (action.Effect is AddStatusEffect addStatusEffect)
+        {
+            obj.GetComponentInChildren<Text>().text = addStatusEffect.AddStatus.Name;
+        }
+    }
+
+    private void OnStatusRemove(StatusRemoveEvent eventData)
+    {
+
     }
 }

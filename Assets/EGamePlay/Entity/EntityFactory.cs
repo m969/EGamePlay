@@ -25,7 +25,7 @@ namespace EGamePlay
             var entity = New<T>();
             GlobalEntity.AddChild(entity);
             entity.Awake();
-            Log.Debug($"EntityFactory: Create {entity}");
+            Log.Debug($"EntityFactory->Create, {typeof(T).Name}");
             return entity;
         }
 
@@ -34,7 +34,7 @@ namespace EGamePlay
             var entity = New<T>();
             GlobalEntity.AddChild(entity);
             entity.Awake(paramObject);
-            Log.Debug($"EntityFactory: Create {entity} {paramObject}");
+            Log.Debug($"EntityFactory->Create, {typeof(T).Name}, {paramObject}");
             return entity;
         }
 
@@ -43,7 +43,7 @@ namespace EGamePlay
             var entity = New<T>();
             parent.AddChild(entity);
             entity.Awake();
-            Log.Debug($"EntityFactory: CreateWithParent {parent} {entity}");
+            Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}");
             return entity;
         }
 
@@ -52,7 +52,7 @@ namespace EGamePlay
             var entity = New<T>();
             parent.AddChild(entity);
             entity.Awake(paramObject);
-            Log.Debug($"EntityFactory: CreateWithParent {parent} {entity}");
+            Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}");
             return entity;
         }
     }

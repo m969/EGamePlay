@@ -24,6 +24,15 @@ namespace EGamePlay
         public Dictionary<Type, Component> Components { get; set; } = new Dictionary<Type, Component>();
         private List<Entity> Children { get; set; } = new List<Entity>();
         private Dictionary<Type, List<Entity>> Type2Children { get; set; } = new Dictionary<Type, List<Entity>>();
+        private EventAggregator eventAggregator;
+        public EventAggregator EventAggregator
+        {
+            get
+            {
+                if (eventAggregator == null) eventAggregator = EntityFactory.CreateWithParent<EventAggregator>(this);
+                return eventAggregator;
+            }
+        }
 
 
         public virtual void Awake()
@@ -38,7 +47,7 @@ namespace EGamePlay
 
         public virtual void Dispose()
         {
-            Log.Debug($"{GetType()}: Dispose");
+            Log.Debug($"{GetType().Name}->Dispose");
             foreach (var child in Children)
             {
                 child.Dispose();
@@ -75,6 +84,7 @@ namespace EGamePlay
             c.IsDispose = false;
             this.Components.Add(typeof(T), c);
             EntityFactory.GlobalEntity.AllComponents.Add(c);
+            Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             c.Setup();
             return c;
         }
