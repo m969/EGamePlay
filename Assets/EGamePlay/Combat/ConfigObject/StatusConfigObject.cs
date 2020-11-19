@@ -33,10 +33,10 @@ namespace EGamePlay.Combat
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
         public int MaxStack = 1;
 
-        //[ToggleGroup("EnabledStateModify", "状态修改")]
-        //public bool EnabledStateModify;
-        //[ToggleGroup("EnabledStateModify")]
-        //public StateType StateType;
+        [ToggleGroup("EnabledStateModify", "行为禁止")]
+        public bool EnabledStateModify;
+        [ToggleGroup("EnabledStateModify")]
+        public StateType StateType;
 
         [ToggleGroup("EnabledNumericModify", "属性修饰")]
         public bool EnabledNumericModify;
