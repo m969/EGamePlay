@@ -13,4 +13,9 @@ public class EGamePlayInit : MonoBehaviour
     {
         EntityFactory.GlobalEntity.Update();
     }
+
+    private void OnApplicationQuit()
+    {
+        EntityFactory.GlobalEntity.Dispose();
+    }
 }

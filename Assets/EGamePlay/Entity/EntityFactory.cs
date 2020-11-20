@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EGamePlay
 {
-    public sealed class EntityFactory
+    public static class EntityFactory
     {
         public static GlobalEntity GlobalEntity { get; set; }
 
@@ -11,12 +11,12 @@ namespace EGamePlay
         private static T New<T>() where T : Entity, new()
         {
             var entity = new T();
+            entity.Id = IdFactory.NewId();
             if (!GlobalEntity.Entities.ContainsKey(typeof(T)))
             {
                 GlobalEntity.Entities.Add(typeof(T), new List<Entity>());
             }
             GlobalEntity.Entities[typeof(T)].Add(entity);
-            entity.IsDispose = false;
             return entity;
         }
 

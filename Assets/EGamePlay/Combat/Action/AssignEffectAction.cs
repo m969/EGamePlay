@@ -16,6 +16,7 @@ namespace EGamePlay.Combat
         public EffectType EffectType { get; set; }
         //效果数值
         public string EffectValue { get; set; }
+        public StatusAbilityEntity Status { get; set; }
 
 
         //前置处理
@@ -33,10 +34,10 @@ namespace EGamePlay.Combat
             }
             if (Effect is AddStatusEffect addStatusEffect)
             {
-                StatusAbilityEntity status = Target.ReceiveStatus<StatusAbilityEntity>(addStatusEffect.AddStatus);
-                status.Caster = Creator;
-                status.AddComponent<StatusLifeTimeComponent>();
-                status.TryActivateAbility();
+                Status = Target.ReceiveStatus<StatusAbilityEntity>(addStatusEffect.AddStatus);
+                Status.Caster = Creator;
+                Status.AddComponent<StatusLifeTimeComponent>();
+                Status.TryActivateAbility();
             }
             PostProcess();
         }

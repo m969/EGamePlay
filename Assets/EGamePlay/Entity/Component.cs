@@ -38,5 +38,10 @@ namespace EGamePlay
         {
             Entity.Subscribe(action);
         }
+
+        public void UnSubscribe<T>(Action<T> action) where T : class
+        {
+            Entity.UnSubscribe(action);
+        }
     }
 }

@@ -76,11 +76,14 @@ public sealed class Monster : MonoBehaviour
         if (action.Effect is AddStatusEffect addStatusEffect)
         {
             obj.GetComponentInChildren<Text>().text = addStatusEffect.AddStatus.Name;
+            obj.name = action.Status.Id.ToString();
         }
     }
 
     private void OnStatusRemove(StatusRemoveEvent eventData)
     {
-
+        Log.Debug($"Monster->OnStatusRemove, {eventData.Status.StatusConfigObject.Name}");
+        var obj = StatusSlotsTrm.Find(eventData.Status.Id.ToString()).gameObject;
+        GameObject.Destroy(obj);
     }
 }

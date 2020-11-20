@@ -4,36 +4,26 @@ using System.Diagnostics;
 
 namespace EGamePlay
 {
-    //public abstract partial class Entity
-    //{
-    //    public static void Create()
-    //    {
-
-    //    }
-
-    //    public static void Destroy()
-    //    {
-
-    //    }
-    //}
     public abstract partial class Entity : IDisposable
     {
+#if !SERVER
+        public UnityEngine.GameObject GameObject { get; set; }
+#endif
+        public long Id { get; set; }
         private Entity parent;
         public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
-        public bool IsDispose { get; set; }
+        public bool IsDispose { get { return Id == 0; } }
         public Dictionary<Type, Component> Components { get; set; } = new Dictionary<Type, Component>();
         private List<Entity> Children { get; set; } = new List<Entity>();
         private Dictionary<Type, List<Entity>> Type2Children { get; set; } = new Dictionary<Type, List<Entity>>();
-        private EventAggregator eventAggregator;
-        public EventAggregator EventAggregator
-        {
-            get
-            {
-                if (eventAggregator == null) eventAggregator = EntityFactory.CreateWithParent<EventAggregator>(this);
-                return eventAggregator;
-            }
-        }
 
+
+        public Entity()
+        {
+#if !SERVER
+            GameObject = new UnityEngine.GameObject(GetType().Name);
+#endif
+        }
 
         public virtual void Awake()
         {
@@ -59,7 +49,10 @@ namespace EGamePlay
                 component.Dispose();
             }
             this.Components.Clear();
-            IsDispose = true;
+            Id = 0;
+#if !SERVER
+            UnityEngine.GameObject.Destroy(GameObject);
+#endif
         }
 
         public virtual void OnDestroy()
@@ -91,7 +84,7 @@ namespace EGamePlay
 
         public void RemoveComponent<T>() where T : Component
         {
-            this.Components[typeof(T)].IsDispose = true;
+            this.Components[typeof(T)].Dispose();
             this.Components.Remove(typeof(T));
         }
 
@@ -119,6 +112,9 @@ namespace EGamePlay
             }
             Type2Children[child.GetType()].Add(child);
             child.Parent = this;
+#if !SERVER
+            child.GameObject.transform.SetParent(GameObject.transform);
+#endif
         }
 
         public void RemoveChild(Entity child)
@@ -129,6 +125,9 @@ namespace EGamePlay
                 Type2Children[child.GetType()].Remove(child);
             }
             child.Parent = null;
+#if !SERVER
+            child.GameObject.transform.SetParent(null);
+#endif
         }
 
         public Entity[] GetChildren()
@@ -159,6 +158,15 @@ namespace EGamePlay
                 eventComponent = AddComponent<EventComponent>();
             }
             eventComponent.Subscribe(action);
+        }
+
+        public void UnSubscribe<T>(Action<T> action) where T : class
+        {
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent != null)
+            {
+                eventComponent.UnSubscribe(action);
+            }
         }
     }
 }
