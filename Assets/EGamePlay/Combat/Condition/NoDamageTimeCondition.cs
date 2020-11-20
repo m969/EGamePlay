@@ -16,7 +16,7 @@ namespace EGamePlay.Combat
         {
             var time = (float)paramObject;
             NoDamageTimer = new GameTimer(time);
-            GetParent<CombatEntity>().AddListener(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
+            GetParent<CombatEntity>().ListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
         public async void StartListen(Action whenNoDamageInTimeCallback)

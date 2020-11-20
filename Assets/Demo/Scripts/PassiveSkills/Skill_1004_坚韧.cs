@@ -18,7 +18,7 @@ public class PassiveSkill1004Entity : SkillAbilityEntity
     {
         base.ActivateAbility();
         CanReplyHealth = true;
-        AbilityOwner.AddListener(ActionPointType.PostReceiveDamage, EndReplyHealth);
+        AbilityOwner.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
         AbilityOwner.AddListener(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
         Coroutine();
     }

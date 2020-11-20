@@ -23,11 +23,11 @@ public sealed class Monster : MonoBehaviour
     {
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.Initialize();
-        CombatEntity.AddListener(ActionPointType.PostReceiveDamage, OnReceiveDamage);
-        CombatEntity.AddListener(ActionPointType.PostReceiveCure, OnReceiveCure);
-        CombatEntity.AddListener(ActionPointType.PostReceiveStatus, ReceiveStatus);
+        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
+        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
+        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, ReceiveStatus);
 
-        this.Subscribe<StatusRemoveEvent>(OnStatusRemove);
+        CombatEntity.Subscribe<StatusRemoveEvent>(OnStatusRemove);
         
         var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_坚韧");
         var abilityA = CombatEntity.AttachSkill<PassiveSkill1004Entity>(config);

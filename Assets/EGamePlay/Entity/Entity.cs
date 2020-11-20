@@ -140,5 +140,25 @@ namespace EGamePlay
         {
             return Type2Children[typeof(T)].ToArray();
         }
+
+        public void Publish<T>(T TEvent) where T : class
+        {
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent == null)
+            {
+                eventComponent = AddComponent<EventComponent>();
+            }
+            eventComponent.Publish(TEvent);
+        }
+
+        public void Subscribe<T>(Action<T> action) where T : class
+        {
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent == null)
+            {
+                eventComponent = AddComponent<EventComponent>();
+            }
+            eventComponent.Subscribe(action);
+        }
     }
 }

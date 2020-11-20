@@ -31,12 +31,12 @@ namespace EGamePlay.Combat
         }
 
         #region 行动点事件
-        public void AddListener(ActionPointType actionPointType, Action<CombatAction> action)
+        public void ListenActionPoint(ActionPointType actionPointType, Action<CombatAction> action)
         {
             ActionPointManager.AddListener(actionPointType, action);
         }
 
-        public void RemoveListener(ActionPointType actionPointType, Action<CombatAction> action)
+        public void UnListenActionPoint(ActionPointType actionPointType, Action<CombatAction> action)
         {
             ActionPointManager.RemoveListener(actionPointType, action);
         }

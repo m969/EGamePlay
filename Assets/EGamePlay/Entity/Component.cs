@@ -28,5 +28,15 @@ namespace EGamePlay
             Log.Debug($"{GetType().Name}->Dispose");
             IsDispose = true;
         }
+
+        public void Publish<T>(T TEvent) where T : class
+        {
+            Entity.Publish(TEvent);
+        }
+
+        public void Subscribe<T>(Action<T> action) where T : class
+        {
+            Entity.Subscribe(action);
+        }
     }
 }
