@@ -28,7 +28,7 @@ public class PassiveSkill1004Entity : SkillAbilityEntity
     {
         while (true)
         {
-            if (IsDispose)
+            if (IsDisposed)
             {
                 break;
             }

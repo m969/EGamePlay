@@ -92,7 +92,7 @@ namespace EGamePlay.Combat
 
         public void OnStatusRemove(StatusAbilityEntity statusAbilityEntity)
         {
-            this.Publish(new StatusRemoveEvent() { CombatEntity = this, Status = statusAbilityEntity });
+            this.Publish(new StatusRemoveEvent() { CombatEntity = this, Status = statusAbilityEntity, StatusId = statusAbilityEntity.Id });
         }
 
         public void BindAbilityInput(AbilityEntity abilityEntity, KeyCode keyCode)
@@ -106,5 +106,6 @@ namespace EGamePlay.Combat
     {
         public CombatEntity CombatEntity { get; set; }
         public StatusAbilityEntity Status { get; set; }
+        public long StatusId { get; set; }
     }
 }

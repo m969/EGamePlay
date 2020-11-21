@@ -23,7 +23,7 @@ namespace EGamePlay.Combat
         {
             while (true)
             {
-                if (IsDispose)
+                if (IsDisposed)
                 {
                     break;
                 }

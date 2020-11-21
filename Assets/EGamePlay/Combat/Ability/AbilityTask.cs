@@ -7,7 +7,7 @@ namespace EGamePlay.Combat.Ability
 {
     public class AbilityTask : Entity
     {
-        public virtual async Task ExecuteTaskAsync()
+        public virtual async ET.ETTask ExecuteTaskAsync()
         {
             await Task.Delay(1000);
         }

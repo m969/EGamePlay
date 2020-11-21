@@ -9,7 +9,7 @@ namespace EGamePlay
         public static long BaseRevertTicks { get; set; }
 
 
-        public static long NewId()
+        public static long NewInstanceId()
         {
             if (BaseRevertTicks == 0)
             {

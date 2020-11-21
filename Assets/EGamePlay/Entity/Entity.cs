@@ -4,15 +4,29 @@ using System.Diagnostics;
 
 namespace EGamePlay
 {
+    public abstract partial class Entity
+    {
+        public static T Create<T>() where T : Entity, new()
+        {
+            return EntityFactory.Create<T>();
+        }
+
+        public static void Destroy(Entity entity)
+        {
+            entity.OnDestroy();
+            entity.Dispose();
+        }
+    }
     public abstract partial class Entity : IDisposable
     {
 #if !SERVER
         public UnityEngine.GameObject GameObject { get; set; }
 #endif
         public long Id { get; set; }
+        public long InstanceId { get; set; }
         private Entity parent;
         public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
-        public bool IsDispose { get { return Id == 0; } }
+        public bool IsDisposed { get { return InstanceId == 0; } }
         public Dictionary<Type, Component> Components { get; set; } = new Dictionary<Type, Component>();
         private List<Entity> Children { get; set; } = new List<Entity>();
         private Dictionary<Type, List<Entity>> Type2Children { get; set; } = new Dictionary<Type, List<Entity>>();
@@ -35,29 +49,38 @@ namespace EGamePlay
 
         }
 
+        public virtual void OnDestroy()
+        {
+
+        }
+
         public virtual void Dispose()
         {
             Log.Debug($"{GetType().Name}->Dispose");
-            foreach (var child in Children)
+            if (Children.Count > 0)
             {
-                child.Dispose();
+                for (int i = Children.Count - 1; i >= 0; i--)
+                {
+                    Entity.Destroy(Children[i]);
+                }
+                //foreach (var child in Children)
+                //{
+                //    Entity.Destroy(child);
+                //}
+                Children.Clear();
+                Type2Children.Clear();
             }
-            Children.Clear();
-            Type2Children.Clear();
+
             foreach (Component component in this.Components.Values)
             {
                 component.Dispose();
             }
             this.Components.Clear();
-            Id = 0;
+            Parent?.RemoveChild(this);
+            InstanceId = 0;
 #if !SERVER
             UnityEngine.GameObject.Destroy(GameObject);
 #endif
-        }
-
-        public virtual void OnDestroy()
-        {
-
         }
 
         public virtual void OnSetParent(Entity parent)
@@ -74,7 +97,7 @@ namespace EGamePlay
         {
             var c = new T();
             c.Entity = this;
-            c.IsDispose = false;
+            c.IsDisposed = false;
             this.Components.Add(typeof(T), c);
             EntityFactory.GlobalEntity.AllComponents.Add(c);
             Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
@@ -84,6 +107,7 @@ namespace EGamePlay
 
         public void RemoveComponent<T>() where T : Component
         {
+            this.Components[typeof(T)].OnDestroy();
             this.Components[typeof(T)].Dispose();
             this.Components.Remove(typeof(T));
         }

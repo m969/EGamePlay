@@ -15,7 +15,7 @@ namespace EGamePlay
         {
             foreach (var item in AllComponents)
             {
-                if (item.IsDispose)
+                if (item.IsDisposed)
                 {
                     RemoveComponents.Add(item);
                     continue;

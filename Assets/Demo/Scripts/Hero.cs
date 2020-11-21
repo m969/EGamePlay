@@ -27,9 +27,13 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.Initialize();
         CombatEntity.AddComponent<AbilityPreviewComponent>();
 
-        var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        var abilityA = CombatEntity.AttachSkill<Skill1001Entity>(config);
+        SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
+        AbilityEntity abilityA = CombatEntity.AttachSkill<Skill1001Entity>(config);
         CombatEntity.BindAbilityInput(abilityA, KeyCode.Q);
+
+        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
+        abilityA = CombatEntity.AttachSkill<Skill1002Entity>(config);
+        CombatEntity.BindAbilityInput(abilityA, KeyCode.W);
 
         AnimTimer.MaxTime = AnimTime;
     }
@@ -45,16 +49,16 @@ public sealed class Hero : MonoBehaviour
             //return;
         }
 
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
-        if (h != 0f || v != 0f)
-        {
-            MoveTweener?.Kill();
-            h *= MoveSpeed * 0.02f;
-            v *= MoveSpeed * 0.02f;
-            var p = transform.position;
-            transform.position = new Vector3(p.x + h, 0, p.z + v);
-        }
+        //var h = Input.GetAxis("Horizontal");
+        //var v = Input.GetAxis("Vertical");
+        //if (h != 0f || v != 0f)
+        //{
+        //    MoveTweener?.Kill();
+        //    h *= MoveSpeed * 0.02f;
+        //    v *= MoveSpeed * 0.02f;
+        //    var p = transform.position;
+        //    transform.position = new Vector3(p.x + h, 0, p.z + v);
+        //}
 
         if (Input.GetMouseButtonDown((int)MouseButton.RightMouse))
         {

@@ -5,7 +5,7 @@ namespace EGamePlay
     public class Component : IDisposable
     {
         public Entity Entity { get; set; }
-        public bool IsDispose { get; set; }
+        public bool IsDisposed { get; set; }
 
 
         public T GetEntity<T>() where T : Entity
@@ -23,10 +23,15 @@ namespace EGamePlay
 
         }
 
+        public virtual void OnDestroy()
+        {
+
+        }
+
         public virtual void Dispose()
         {
             Log.Debug($"{GetType().Name}->Dispose");
-            IsDispose = true;
+            IsDisposed = true;
         }
 
         public T Publish<T>(T TEvent) where T : class

@@ -28,6 +28,12 @@ public class AbilityPreviewComponent : EGamePlay.Component
             PreviewingAbility = GetEntity<CombatEntity>().InputAbilitys[KeyCode.Q];
             EnterPreview();
         }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            UnityEngine.Cursor.visible = false;
+            PreviewingAbility = GetEntity<CombatEntity>().InputAbilitys[KeyCode.W];
+            EnterPreview();
+        }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
         {
             CancelPreview();

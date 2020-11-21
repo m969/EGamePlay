@@ -32,7 +32,7 @@ namespace EGamePlay.Combat.Ability
 
         public virtual void EndActivate()
         {
-            Dispose();
+            Entity.Destroy(this);
         }
 
         public virtual AbilityExecution CreateAbilityExecution()

@@ -82,8 +82,7 @@ public sealed class Monster : MonoBehaviour
 
     private void OnStatusRemove(StatusRemoveEvent eventData)
     {
-        Log.Debug($"Monster->OnStatusRemove, {eventData.Status.StatusConfigObject.Name}");
-        var obj = StatusSlotsTrm.Find(eventData.Status.Id.ToString()).gameObject;
+        var obj = StatusSlotsTrm.Find(eventData.StatusId.ToString()).gameObject;
         GameObject.Destroy(obj);
     }
 }

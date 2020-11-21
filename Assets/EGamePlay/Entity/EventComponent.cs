@@ -24,16 +24,22 @@ namespace EGamePlay
     {
         private Dictionary<Type, object> EventSubscribeCollections = new Dictionary<Type, object>();
         private Dictionary<object, object> CoroutineEventSubscribeQueue = new Dictionary<object, object>();
+        private Dictionary<object, object> SwapCoroutineEventSubscribeQueue = new Dictionary<object, object>();
 
 
         public override void Update()
         {
-            foreach (var item in CoroutineEventSubscribeQueue)
+            if (CoroutineEventSubscribeQueue.Count > 0)
             {
-                var TEvent = item.Value;
-                var eventSubscribe = item.Key;
-                var field = eventSubscribe.GetType().GetField("EventAction");
-                field.GetValue(eventSubscribe).GetType().GetMethod("Invoke").Invoke(field, new object[] { TEvent });
+                foreach (var item in CoroutineEventSubscribeQueue)
+                {
+                    var TEvent = item.Value;
+                    var eventSubscribe = item.Key;
+                    var field = eventSubscribe.GetType().GetField("EventAction");
+                    var value = field.GetValue(eventSubscribe);
+                    value.GetType().GetMethod("Invoke").Invoke(value, new object[] { TEvent });
+                }
+                CoroutineEventSubscribeQueue.Clear();
             }
         }
 
