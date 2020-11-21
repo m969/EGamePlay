@@ -27,7 +27,7 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, ReceiveStatus);
 
-        CombatEntity.Subscribe<StatusRemoveEvent>(OnStatusRemove);
+        CombatEntity.Subscribe<StatusRemoveEvent>(OnStatusRemove).AsCoroutine();
         
         var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_坚韧");
         var abilityA = CombatEntity.AttachSkill<PassiveSkill1004Entity>(config);

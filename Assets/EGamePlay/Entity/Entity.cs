@@ -140,7 +140,7 @@ namespace EGamePlay
             return Type2Children[typeof(T)].ToArray();
         }
 
-        public void Publish<T>(T TEvent) where T : class
+        public T Publish<T>(T TEvent) where T : class
         {
             var eventComponent = GetComponent<EventComponent>();
             if (eventComponent == null)
@@ -148,16 +148,17 @@ namespace EGamePlay
                 eventComponent = AddComponent<EventComponent>();
             }
             eventComponent.Publish(TEvent);
+            return TEvent;
         }
 
-        public void Subscribe<T>(Action<T> action) where T : class
+        public EventSubscribe<T> Subscribe<T>(Action<T> action) where T : class
         {
             var eventComponent = GetComponent<EventComponent>();
             if (eventComponent == null)
             {
                 eventComponent = AddComponent<EventComponent>();
             }
-            eventComponent.Subscribe(action);
+            return eventComponent.Subscribe(action);
         }
 
         public void UnSubscribe<T>(Action<T> action) where T : class

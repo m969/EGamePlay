@@ -6,48 +6,83 @@ namespace EGamePlay
 {
     public sealed class EventSubscribeCollection<T> where T : class
     {
-        public List<Action<T>> Subscribes = new List<Action<T>>();
+        public List<EventSubscribe<T>> Subscribes = new List<EventSubscribe<T>>();
+    }
+
+    public sealed class EventSubscribe<T>
+    {
+        public Action<T> EventAction;
+        public bool Coroutine;
+
+        public void AsCoroutine()
+        {
+            Coroutine = true;
+        }
     }
 
     public sealed class EventComponent : Component
     {
         private Dictionary<Type, object> EventSubscribeCollections = new Dictionary<Type, object>();
+        private Dictionary<object, object> CoroutineEventSubscribeQueue = new Dictionary<object, object>();
 
 
-        public new void Publish<T>(T TEvent) where T : class
+        public override void Update()
+        {
+            foreach (var item in CoroutineEventSubscribeQueue)
+            {
+                var TEvent = item.Value;
+                var eventSubscribe = item.Key;
+                var field = eventSubscribe.GetType().GetField("EventAction");
+                field.GetValue(eventSubscribe).GetType().GetMethod("Invoke").Invoke(field, new object[] { TEvent });
+            }
+        }
+
+        public new T Publish<T>(T TEvent) where T : class
         {
             if (EventSubscribeCollections.TryGetValue(typeof(T), out var collection))
             {
                 var eventSubscribeCollection = collection as EventSubscribeCollection<T>;
                 for (int i = 0; i < eventSubscribeCollection.Subscribes.Count; i++)
                 {
-                    eventSubscribeCollection.Subscribes[i].Invoke(TEvent);
+                    var eventSubscribe = eventSubscribeCollection.Subscribes[i];
+                    if (eventSubscribe.Coroutine == false)
+                    {
+                        eventSubscribe.EventAction.Invoke(TEvent);
+                    }
+                    else
+                    {
+                        CoroutineEventSubscribeQueue.Add(eventSubscribe, TEvent);
+                    }
                 }
             }
+            return TEvent;
         }
 
-        public new void Subscribe<T>(Action<T> action) where T : class
+        public new EventSubscribe<T> Subscribe<T>(Action<T> action) where T : class
         {
+            var eventSubscribe = new EventSubscribe<T>();
+            eventSubscribe.EventAction = action;
             if (EventSubscribeCollections.TryGetValue(typeof(T), out var collection))
             {
                 var eventSubscribeCollection = collection as EventSubscribeCollection<T>;
-                eventSubscribeCollection.Subscribes.Add(action);
+                eventSubscribeCollection.Subscribes.Add(eventSubscribe);
             }
             else
             {
                 var eventSubscribeCollection = new EventSubscribeCollection<T>();
                 EventSubscribeCollections.Add(typeof(T), eventSubscribeCollection);
-                eventSubscribeCollection.Subscribes.Add(action);
+                eventSubscribeCollection.Subscribes.Add(eventSubscribe);
             }
+            return eventSubscribe;
         }
 
         public new void UnSubscribe<T>(Action<T> action) where T : class
         {
-            if (EventSubscribeCollections.TryGetValue(typeof(T), out var collection))
-            {
-                var eventSubscribeCollection = collection as EventSubscribeCollection<T>;
-                eventSubscribeCollection.Subscribes.Remove(action);
-            }
+            //if (EventSubscribeCollections.TryGetValue(typeof(T), out var collection))
+            //{
+            //    var eventSubscribeCollection = collection as EventSubscribeCollection<T>;
+            //    eventSubscribeCollection.Subscribes.Remove(action);
+            //}
         }
     }
 }

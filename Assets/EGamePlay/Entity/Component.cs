@@ -29,9 +29,10 @@ namespace EGamePlay
             IsDispose = true;
         }
 
-        public void Publish<T>(T TEvent) where T : class
+        public T Publish<T>(T TEvent) where T : class
         {
             Entity.Publish(TEvent);
+            return TEvent;
         }
 
         public void Subscribe<T>(Action<T> action) where T : class
