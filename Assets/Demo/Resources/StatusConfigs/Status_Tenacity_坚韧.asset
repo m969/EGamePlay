@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Poison_\u666E\u901A\u4E2D\u6BD2"
+  m_Name: "Status_Tenacity_\u575A\u97E7"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 97749e4f656aecc49a164555ee9394ba, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -27,10 +28,10 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.DamageEffect, EGamePlay
+      Data: 1|EGamePlay.Combat.AddStatusEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: false
@@ -40,9 +41,12 @@ MonoBehaviour:
     - Name: AddSkillEffectTargetType
       Entry: 3
       Data: 0
+    - Name: EffectValueParam
+      Entry: 6
+      Data: 
     - Name: EffectTriggerType
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -51,19 +55,55 @@ MonoBehaviour:
       Data: 0
     - Name: Interval
       Entry: 3
-      Data: 500
+      Data: 0
+    - Name: ConditionParam
+      Entry: 1
+      Data: 4
+    - Name: AddStatus
+      Entry: 10
+      Data: 0
+    - Name: Duration
+      Entry: 3
+      Data: 0
+    - Name: ParamValue
+      Entry: 1
+      Data: 2%*HealthPoint
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.RemoveStatusEffect, EGamePlay
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: false
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectValueParam
+      Entry: 6
+      Data: 
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 1
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 3
+    - Name: Interval
+      Entry: 3
+      Data: 0
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: DamageType
-      Entry: 3
-      Data: 1
-    - Name: DamageValueFormula
-      Entry: 1
-      Data: 
-    - Name: CanCrit
-      Entry: 5
-      Data: false
+    - Name: RemoveStatus
+      Entry: 10
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -73,11 +113,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Poison
-  Name: "\u666E\u901A\u4E2D\u6BD2"
-  StatusType: 1
-  Duration: 3000
-  ShowInStatusIconList: 1
+  ID: Tenacity
+  Name: "\u575A\u97E7"
+  StatusType: 0
+  Duration: 0
+  ShowInStatusIconList: 0
   CanStack: 0
   MaxStack: 1
   EnabledStateModify: 0
@@ -89,4 +129,4 @@ MonoBehaviour:
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
-  StatusDescription: 
+  StatusDescription: "\u5982\u679C\u82F1\u96C4\u57284\u79D2\u5185\u6CA1\u6709\u53D7\u5230\u4EFB\u4F55\u4F24\u5BB3\uFF0C\u5C31\u4F1A\u6BCF\u4E24\u79D2\u56DE\u590D2%\u7684\u6700\u5927\u751F\u547D\u503C\u3002"

@@ -43,15 +43,24 @@ MonoBehaviour:
     - Name: EffectTriggerType
       Entry: 3
       Data: 2
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
     - Name: Interval
       Entry: 3
       Data: 350
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
     - Name: DamageType
       Entry: 3
       Data: 0
     - Name: DamageValueFormula
       Entry: 1
-      Data: 150
+      Data: 
     - Name: CanCrit
       Entry: 5
       Data: false
@@ -67,10 +76,17 @@ MonoBehaviour:
   ID: Burn
   Name: "\u666E\u901A\u707C\u70E7"
   StatusType: 1
-  Duration: 3003
+  Duration: 5000
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 99
+  EnabledStateModify: 0
+  StateType: 0
+  EnabledNumericModify: 0
+  NumericType: 0
+  NumericValue: 
+  EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
+  StatusDescription: 

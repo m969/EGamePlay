@@ -103,8 +103,8 @@ MonoBehaviour:
       Entry: 3
       Data: 5000
     - Name: ParamValue
-      Entry: 6
-      Data: 
+      Entry: 1
+      Data: 150
     - Name: 
       Entry: 8
       Data: 

@@ -38,7 +38,7 @@ namespace EGamePlay.Combat
                 {
                     IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.NumericBox.CriticalProb_F.Value;
                 }
-                DamageValue = int.Parse(DamageEffect.DamageValueFormula);
+                DamageValue = int.Parse(DamageEffect.EffectValueParam);
             }
             if (DamageSource == DamageSource.Buff)
             {
@@ -46,7 +46,7 @@ namespace EGamePlay.Combat
                 {
                     IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.NumericBox.CriticalProb_F.Value;
                 }
-                DamageValue = int.Parse(DamageEffect.DamageValueFormula);
+                DamageValue = int.Parse(DamageEffect.EffectValueParam);
             }
         }
 

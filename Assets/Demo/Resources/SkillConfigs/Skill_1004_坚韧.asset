@@ -15,7 +15,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 395a404e7e666f241a8308dbacc153d9, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -30,7 +31,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.CureEffect, EGamePlay
+      Data: 1|EGamePlay.Combat.AddStatusEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -55,9 +56,15 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: CureValueFormula
-      Entry: 1
-      Data: '2 '
+    - Name: AddStatus
+      Entry: 10
+      Data: 0
+    - Name: Duration
+      Entry: 3
+      Data: 0
+    - Name: ParamValue
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 

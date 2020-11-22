@@ -20,8 +20,8 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled")]
         public ShieldType ShieldType;
 
-        [ToggleGroup("Enabled"), LabelText("护盾值")]
-        public uint ShieldValue;
+        //[ToggleGroup("Enabled"), LabelText("护盾值")]
+        //public uint ShieldValue;
 
         [ToggleGroup("Enabled"), LabelText("护盾持续时间"), SuffixLabel("毫秒", true)]
         public uint ShieldDuration;

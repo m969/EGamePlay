@@ -49,6 +49,9 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
         public AddSkillEffetTargetType AddSkillEffectTargetType;
 
+        [HideInInspector]
+        public string EffectValueParam;
+
         //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), HideLabel]

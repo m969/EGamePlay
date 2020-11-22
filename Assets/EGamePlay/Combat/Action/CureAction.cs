@@ -20,7 +20,7 @@ namespace EGamePlay.Combat
         {
             if (CureEffect != null)
             {
-                CureValue = int.Parse(CureEffect.CureValueFormula);
+                CureValue = int.Parse(CureEffect.EffectValueParam);
             }
         }
 

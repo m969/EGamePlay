@@ -49,36 +49,43 @@ namespace EGamePlay.Combat.Ability
             }
             if (ConfigObject is StatusConfigObject statusConfigObject)
             {
-                Effects = statusConfigObject.Effects;
+                if (statusConfigObject.EnabledLogicTrigger)
+                {
+                    Effects = statusConfigObject.Effects;
+                }
+            }
+            if (Effects == null)
+            {
+                return;
             }
             foreach (var item in Effects)
             {
                 if (item is DamageEffect damageEffect)
                 {
-                    var operation = CombatActionManager.CreateAction<DamageAction>(this.AbilityOwner);
-                    operation.Target = targetEntity;
-                    operation.DamageSource = DamageSource.Skill;
-                    operation.DamageEffect = damageEffect;
-                    operation.ApplyDamage();
+                    var action = CombatActionManager.CreateAction<DamageAction>(this.AbilityOwner);
+                    action.Target = targetEntity;
+                    action.DamageSource = DamageSource.Skill;
+                    action.DamageEffect = damageEffect;
+                    action.ApplyDamage();
                 }
                 else if (item is CureEffect cureEffect)
                 {
-                    var operation = CombatActionManager.CreateAction<CureAction>(this.AbilityOwner);
-                    operation.Target = targetEntity;
-                    operation.CureEffect = cureEffect;
-                    operation.ApplyCure();
+                    var action = CombatActionManager.CreateAction<CureAction>(this.AbilityOwner);
+                    action.Target = targetEntity;
+                    action.CureEffect = cureEffect;
+                    action.ApplyCure();
                 }
                 else
                 {
-                    var operation = CombatActionManager.CreateAction<AssignEffectAction>(this.AbilityOwner);
-                    operation.Target = targetEntity;
-                    operation.Effect = item;
+                    var action = CombatActionManager.CreateAction<AssignEffectAction>(this.AbilityOwner);
+                    action.Target = targetEntity;
+                    action.Effect = item;
                     if (item is AddStatusEffect addStatusEffect)
                     {
                         addStatusEffect.AddStatus.Duration = addStatusEffect.Duration;
                         addStatusEffect.AddStatus.NumericValue = addStatusEffect.ParamValue;
                     }
-                    operation.ApplyAssignEffect();
+                    action.ApplyAssignEffect();
                 }
             }
         }

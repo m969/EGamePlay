@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_KMFC_\u67AF\u6728\u9022\u6625"
+  m_Name: "Status_HealthRecovery_\u751F\u547D\u56DE\u590D"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -42,7 +42,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -51,12 +51,12 @@ MonoBehaviour:
       Data: 0
     - Name: Interval
       Entry: 3
-      Data: 824
+      Data: 2000
     - Name: ConditionParam
       Entry: 1
       Data: 2
     - Name: CureValueFormula
-      Entry: 6
+      Entry: 1
       Data: 
     - Name: 
       Entry: 8
@@ -67,13 +67,20 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: KMFC
-  Name: "\u67AF\u6728\u9022\u6625"
+  ID: HealthRecovery
+  Name: "\u751F\u547D\u56DE\u590D"
   StatusType: 0
   Duration: 0
-  ShowInStatusIconList: 1
+  ShowInStatusIconList: 0
   CanStack: 0
   MaxStack: 1
+  EnabledStateModify: 0
+  StateType: 0
+  EnabledNumericModify: 0
+  NumericType: 0
+  NumericValue: 
+  EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
+  StatusDescription: 
