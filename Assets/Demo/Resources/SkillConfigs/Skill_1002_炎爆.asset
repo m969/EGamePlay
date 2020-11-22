@@ -52,8 +52,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 3
-      Data: 0
+      Entry: 6
+      Data: 
     - Name: ConditionParam
       Entry: 6
       Data: 
@@ -91,8 +91,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 3
-      Data: 0
+      Entry: 6
+      Data: 
     - Name: ConditionParam
       Entry: 6
       Data: 
@@ -102,7 +102,26 @@ MonoBehaviour:
     - Name: Duration
       Entry: 3
       Data: 5000
-    - Name: ParamValue
+    - Name: Params
+      Entry: 7
+      Data: 3|NUnit.Framework.Interfaces.AttributeDictionary, nunit.framework
+    - Name: comparer
+      Entry: 7
+      Data: 4|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u4F24\u5BB3\u503C"
+    - Name: $v
       Entry: 1
       Data: 150
     - Name: 
@@ -110,7 +129,28 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|EGamePlay.Combat.AddStatusEffect, EGamePlay
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u95F4\u9694\u65F6\u95F4"
+    - Name: $v
+      Entry: 1
+      Data: 300
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|EGamePlay.Combat.AddStatusEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -130,8 +170,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 3
-      Data: 0
+      Entry: 6
+      Data: 
     - Name: ConditionParam
       Entry: 6
       Data: 
@@ -141,9 +181,34 @@ MonoBehaviour:
     - Name: Duration
       Entry: 3
       Data: 3000
-    - Name: ParamValue
+    - Name: Params
+      Entry: 7
+      Data: 6|UnityEngine.Rendering.SerializedDictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], Unity.RenderPipelines.Core.Runtime
+    - Name: comparer
+      Entry: 9
+      Data: 4
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
       Entry: 1
-      Data: -100
+      Data: "\u53D8\u52A8\u6570\u503C"
+    - Name: $v
+      Entry: 1
+      Data: -20
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 

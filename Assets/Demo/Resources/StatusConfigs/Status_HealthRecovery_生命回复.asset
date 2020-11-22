@@ -40,6 +40,9 @@ MonoBehaviour:
     - Name: AddSkillEffectTargetType
       Entry: 3
       Data: 0
+    - Name: EffectValueParam
+      Entry: 6
+      Data: 
     - Name: EffectTriggerType
       Entry: 3
       Data: 2
@@ -50,14 +53,14 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 3
-      Data: 2000
+      Entry: 1
+      Data: "\u95F4\u9694\u65F6\u95F4"
     - Name: ConditionParam
       Entry: 1
       Data: 2
     - Name: CureValueFormula
       Entry: 1
-      Data: 
+      Data: "\u56DE\u590D\u91CF"
     - Name: 
       Entry: 8
       Data: 

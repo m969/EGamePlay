@@ -49,8 +49,8 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
         public AddSkillEffetTargetType AddSkillEffectTargetType;
 
-        [HideInInspector]
-        public string EffectValueParam;
+        //[HideInInspector]
+        //public string EffectValueParam;
 
         //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
@@ -70,7 +70,7 @@ namespace EGamePlay.Combat
         //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true), HideLabel]
-        public uint Interval;
+        public string Interval;
 
         //[HideInInspector]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("条件参数 x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]

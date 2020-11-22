@@ -65,7 +65,27 @@ MonoBehaviour:
     - Name: Duration
       Entry: 3
       Data: 0
-    - Name: ParamValue
+    - Name: Params
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u56DE\u590D\u91CF"
+    - Name: $v
       Entry: 1
       Data: 2%*HealthPoint
     - Name: 
@@ -73,7 +93,28 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 2|EGamePlay.Combat.RemoveStatusEffect, EGamePlay
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u95F4\u9694\u65F6\u95F4"
+    - Name: $v
+      Entry: 1
+      Data: 2000
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|EGamePlay.Combat.RemoveStatusEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: false

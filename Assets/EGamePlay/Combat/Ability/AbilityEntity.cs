@@ -82,8 +82,59 @@ namespace EGamePlay.Combat.Ability
                     action.Effect = item;
                     if (item is AddStatusEffect addStatusEffect)
                     {
-                        addStatusEffect.AddStatus.Duration = addStatusEffect.Duration;
-                        addStatusEffect.AddStatus.NumericValue = addStatusEffect.ParamValue;
+                        var statusConfig = addStatusEffect.AddStatus;
+                        statusConfig.Duration = addStatusEffect.Duration;
+                        if (addStatusEffect.Params != null && statusConfig.Effects != null)
+                        {
+                            if (statusConfig.EnabledNumericModify)
+                            {
+                                foreach (var item3 in addStatusEffect.Params)
+                                {
+                                    if (statusConfig.NumericValue != null)
+                                    {
+                                        statusConfig.NumericValue = statusConfig.NumericValue.Replace(item3.Key, item3.Value);
+                                    }
+                                }
+                            }
+                            if (statusConfig.EnabledLogicTrigger)
+                            {
+                                foreach (var item6 in statusConfig.Effects)
+                                {
+                                    foreach (var item3 in addStatusEffect.Params)
+                                    {
+                                        if (item6.Interval != null)
+                                        {
+                                            item6.Interval = item6.Interval.Replace(item3.Key, item3.Value);
+                                        }
+                                        if (item6.ConditionParam != null)
+                                        {
+                                            item6.ConditionParam = item6.ConditionParam.Replace(item3.Key, item3.Value);
+                                        }
+                                    }
+                                    if (item6 is DamageEffect damage)
+                                    {
+                                        foreach (var item4 in addStatusEffect.Params)
+                                        {
+                                            if (damage.DamageValueFormula != null)
+                                            {
+                                                damage.DamageValueFormula = damage.DamageValueFormula.Replace(item4.Key, item4.Value);
+                                            }
+                                        }
+                                    }
+                                    else if (item6 is CureEffect cure)
+                                    {
+                                        foreach (var item5 in addStatusEffect.Params)
+                                        {
+                                            if (cure.CureValueFormula != null)
+                                            {
+                                                cure.CureValueFormula = cure.CureValueFormula.Replace(item5.Key, item5.Value);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                     }
                     action.ApplyAssignEffect();
                 }

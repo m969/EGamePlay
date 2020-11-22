@@ -41,6 +41,9 @@ MonoBehaviour:
     - Name: AddSkillEffectTargetType
       Entry: 3
       Data: 1
+    - Name: EffectValueParam
+      Entry: 6
+      Data: 
     - Name: EffectTriggerType
       Entry: 3
       Data: 0
@@ -62,8 +65,25 @@ MonoBehaviour:
     - Name: Duration
       Entry: 3
       Data: 0
-    - Name: ParamValue
-      Entry: 6
+    - Name: Params
+      Entry: 7
+      Data: 2|UnityEngine.Rendering.SerializedDictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], Unity.RenderPipelines.Core.Runtime
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: 
       Entry: 8

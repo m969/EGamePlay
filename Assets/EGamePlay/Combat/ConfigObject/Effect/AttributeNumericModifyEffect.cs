@@ -20,7 +20,7 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled")]
         public NumericType NumericType;
 
-        //[ToggleGroup("Enabled"), LabelText("数值参数")]
-        //public string NumericValue;
+        [ToggleGroup("Enabled"), LabelText("数值参数")]
+        public string NumericValue;
     }
 }

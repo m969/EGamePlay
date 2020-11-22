@@ -42,31 +42,12 @@ namespace EGamePlay.Combat
         public bool EnabledNumericModify;
         [ToggleGroup("EnabledNumericModify")]
         public NumericType NumericType;
-        //[ToggleGroup("EnabledNumericModify"), LabelText("数值参数")]
-        [HideInInspector]
+        [ToggleGroup("EnabledNumericModify"), LabelText("数值参数")]
+        //[HideInInspector]
         public string NumericValue;
 
         [ToggleGroup("EnabledLogicTrigger", "逻辑触发")]
         public bool EnabledLogicTrigger;
-        //[HorizontalGroup("EnabledLogicTrigger/Hor")]
-        //[ToggleGroup("EnabledLogicTrigger"), /*LabelText("效果触发机制")*/ HideLabel]
-        //public EffectTriggerType EffectTriggerType;
-
-        //[HorizontalGroup("EnabledLogicTrigger/Hor")]
-        //[ToggleGroup("EnabledLogicTrigger"), ShowIf("EffectTriggerType", EffectTriggerType.Condition), HideLabel]
-        //public ConditionType ConditionType;
-
-        //[HorizontalGroup("EnabledLogicTrigger/Hor")]
-        //[ToggleGroup("EnabledLogicTrigger"), ShowIf("EffectTriggerType", EffectTriggerType.Action), HideLabel]
-        //public ActionPointType ActionPointType;
-
-        //[HorizontalGroup("EnabledLogicTrigger/Hor")]
-        //[ToggleGroup("EnabledLogicTrigger"),  ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true), HideLabel]
-        //public uint Interval;
-
-        //[ToggleGroup("EnabledLogicTrigger"),  LabelText("条件参数 x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
-        //public string ConditionParam;
-
 
         [ToggleGroup("EnabledLogicTrigger")]
         [LabelText("效果列表")/*, Space(30)*/]

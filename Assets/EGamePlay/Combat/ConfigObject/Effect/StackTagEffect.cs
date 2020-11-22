@@ -20,8 +20,8 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled")]
         public TagType TagType;
 
-        //[ToggleGroup("Enabled"), LabelText("叠加数量")]
-        //public uint TagCount = 1;
+        [ToggleGroup("Enabled"), LabelText("叠加数量")]
+        public uint TagCount = 1;
 
         [ToggleGroup("Enabled"), LabelText("标记停留时间"), SuffixLabel("毫秒", true)]
         public uint TagDuration;

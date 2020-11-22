@@ -50,8 +50,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 3
-      Data: 500
+      Entry: 1
+      Data: 200
     - Name: ConditionParam
       Entry: 6
       Data: 
@@ -60,7 +60,7 @@ MonoBehaviour:
       Data: 1
     - Name: DamageValueFormula
       Entry: 1
-      Data: 
+      Data: 280
     - Name: CanCrit
       Entry: 5
       Data: false
@@ -76,7 +76,7 @@ MonoBehaviour:
   ID: Poison
   Name: "\u666E\u901A\u4E2D\u6BD2"
   StatusType: 1
-  Duration: 3000
+  Duration: 4000
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1

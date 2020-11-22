@@ -27,43 +27,7 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|EGamePlay.Combat.AttributeNumericModifyEffect, EGamePlay
-    - Name: IsSkillEffect
-      Entry: 5
-      Data: false
-    - Name: Enabled
-      Entry: 5
-      Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
       Data: 0
-    - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: ConditionType
-      Entry: 3
-      Data: 0
-    - Name: ActionPointType
-      Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 3
-      Data: 0
-    - Name: ConditionParam
-      Entry: 6
-      Data: 
-    - Name: NumericType
-      Entry: 3
-      Data: 1001
-    - Name: NumericValue
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -73,14 +37,16 @@ MonoBehaviour:
   ID: PhysicAttackAdd
   Name: "\u7269\u7406\u653B\u51FB\u4FEE\u9970"
   StatusType: 2
-  Duration: 0
+  Duration: 3000
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
+  EnabledStateModify: 0
+  StateType: 0
   EnabledNumericModify: 1
   NumericType: 1001
+  NumericValue: "\u53D8\u52A8\u6570\u503C"
   EnabledLogicTrigger: 0
-  EffectTriggerType: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

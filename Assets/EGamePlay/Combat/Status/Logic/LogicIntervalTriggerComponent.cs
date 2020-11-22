@@ -15,7 +15,8 @@ namespace EGamePlay.Combat.Status
 
         public override void Setup()
         {
-            var interval = GetEntity<LogicEntity>().Effect.Interval / 1000f;
+            Log.Debug(GetEntity<LogicEntity>().Effect.Interval);
+            var interval = int.Parse(GetEntity<LogicEntity>().Effect.Interval) / 1000f;
             IntervalTimer = new GameTimer(interval);
         }
 

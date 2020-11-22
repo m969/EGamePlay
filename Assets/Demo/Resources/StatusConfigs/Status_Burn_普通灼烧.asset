@@ -21,6 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: Params
+      Entry: 6
+      Data: 
     - Name: Effects
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
@@ -50,8 +53,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 3
-      Data: 350
+      Entry: 1
+      Data: "\u95F4\u9694\u65F6\u95F4"
     - Name: ConditionParam
       Entry: 6
       Data: 
@@ -60,7 +63,7 @@ MonoBehaviour:
       Data: 0
     - Name: DamageValueFormula
       Entry: 1
-      Data: 
+      Data: "\u4F24\u5BB3\u503C"
     - Name: CanCrit
       Entry: 5
       Data: false
