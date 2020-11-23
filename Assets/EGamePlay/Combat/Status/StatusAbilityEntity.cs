@@ -9,11 +9,11 @@ namespace EGamePlay.Combat.Status
         public IntModifier IntModifier { get; set; }
 
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-            base.Awake(paramObject);
+            base.Awake(initData);
 
-            StatusConfigObject = paramObject as StatusConfigObject;
+            StatusConfigObject = initData as StatusConfigObject;
         }
 
         public override void ActivateAbility()

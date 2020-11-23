@@ -25,7 +25,7 @@ public sealed class Hero : MonoBehaviour
     {
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.Initialize();
-        CombatEntity.AddComponent<AbilityPreviewComponent>();
+        CombatEntity.AddComponent<SkillPreviewComponent>();
 
         SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
         AbilityEntity abilityA = CombatEntity.AttachSkill<Skill1001Entity>(config);

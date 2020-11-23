@@ -17,9 +17,9 @@ namespace EGamePlay.Combat.Ability
         public CastProjectileTaskData CastProjectileData { get; set; }
 
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-            CastProjectileData = (CastProjectileTaskData)paramObject;
+            CastProjectileData = (CastProjectileTaskData)initData;
         }
 
         public override async ET.ETTask ExecuteTaskAsync()

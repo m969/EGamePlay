@@ -22,13 +22,20 @@ public class Skill1002Execution : AbilityExecution
     {
         base.BeginExecute();
 
+        var taskData2 = new CreateTriggerTaskData();
+        taskData2.TargetPoint = InputPoint;
+        taskData2.TriggerPrefab = (AbilityEntity as Skill1002Entity).SkillConfigObject.AreaCollider;
+        var task2 = EntityFactory.CreateWithParent<CreateTriggerTask>(this, taskData2);
+        task2.OnTriggerEnterCallbackAction = (other) => {
+            AbilityEntity.ApplyAbilityEffect(other.GetComponent<Monster>().CombatEntity);
+        };
+        task2.ExecuteTaskAsync().Coroutine();
+
         var taskData = new CreateExplosionTaskData();
         taskData.TargetPoint = InputPoint;
         taskData.ExplosionPrefab = (AbilityEntity as Skill1002Entity).SkillConfigObject.SkillEffectObject;
         var task = EntityFactory.CreateWithParent<CreateExplosionTask>(this, taskData);
         await task.ExecuteTaskAsync();
-
-        AbilityEntity.ApplyAbilityEffect(InputCombatEntity);
 
         EndExecute();
     }

@@ -51,7 +51,7 @@ MonoBehaviour:
       Data: 0
     - Name: Interval
       Entry: 1
-      Data: 200
+      Data: "\u95F4\u9694\u65F6\u95F4"
     - Name: ConditionParam
       Entry: 6
       Data: 
@@ -60,7 +60,7 @@ MonoBehaviour:
       Data: 1
     - Name: DamageValueFormula
       Entry: 1
-      Data: 280
+      Data: "\u4F24\u5BB3\u503C"
     - Name: CanCrit
       Entry: 5
       Data: false

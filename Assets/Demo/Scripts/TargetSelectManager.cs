@@ -26,9 +26,10 @@ public class TargetSelectManager : MonoBehaviour
 
     private void Update()
     {
+        transform.position = Input.mousePosition;
         if (RaycastHelper.CastEnemyObj(out var enemyObj))
         {
-            if (Vector3.Distance(enemyObj.transform.position, HeroObj.transform.position) < 10f)
+            //if (Vector3.Distance(enemyObj.transform.position, HeroObj.transform.position) < 10f)
             {
                 if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
                 {

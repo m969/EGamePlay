@@ -6,7 +6,30 @@ namespace EGamePlay
 {
     public sealed class EventSubscribeCollection<T> where T : class
     {
-        public List<EventSubscribe<T>> Subscribes = new List<EventSubscribe<T>>();
+        public readonly List<EventSubscribe<T>> Subscribes = new List<EventSubscribe<T>>();
+        public readonly Dictionary<Action<T>, EventSubscribe<T>> Action2Subscribes = new Dictionary<Action<T>, EventSubscribe<T>>();
+        //public readonly List<Action<T>> RemoveActions = new List<Action<T>>();
+
+
+        public EventSubscribe<T> Add(Action<T> action)
+        {
+            var eventSubscribe = new EventSubscribe<T>();
+            eventSubscribe.EventAction = action;
+            Subscribes.Add(eventSubscribe);
+            Action2Subscribes.Add(action, eventSubscribe);
+            return eventSubscribe;
+        }
+
+        //public void AddRemove(Action<T> action)
+        //{
+        //    RemoveActions.Add(action);
+        //}
+
+        public void Remove(Action<T> action)
+        {
+            Subscribes.Remove(Action2Subscribes[action]);
+            Action2Subscribes.Remove(action);
+        }
     }
 
     public sealed class EventSubscribe<T>
@@ -24,7 +47,7 @@ namespace EGamePlay
     {
         private Dictionary<Type, object> EventSubscribeCollections = new Dictionary<Type, object>();
         private Dictionary<object, object> CoroutineEventSubscribeQueue = new Dictionary<object, object>();
-        private Dictionary<object, object> SwapCoroutineEventSubscribeQueue = new Dictionary<object, object>();
+        public static bool DebugLog { get; set; } = false;
 
 
         public override void Update()
@@ -48,9 +71,13 @@ namespace EGamePlay
             if (EventSubscribeCollections.TryGetValue(typeof(T), out var collection))
             {
                 var eventSubscribeCollection = collection as EventSubscribeCollection<T>;
-                for (int i = 0; i < eventSubscribeCollection.Subscribes.Count; i++)
+                if (eventSubscribeCollection.Subscribes.Count == 0)
                 {
-                    var eventSubscribe = eventSubscribeCollection.Subscribes[i];
+                    return TEvent;
+                }
+                var arr = eventSubscribeCollection.Subscribes.ToArray();
+                foreach (EventSubscribe<T> eventSubscribe in arr)
+                {
                     if (eventSubscribe.Coroutine == false)
                     {
                         eventSubscribe.EventAction.Invoke(TEvent);
@@ -60,35 +87,54 @@ namespace EGamePlay
                         CoroutineEventSubscribeQueue.Add(eventSubscribe, TEvent);
                     }
                 }
+
+                //for (int i = eventSubscribeCollection.Subscribes.Count - 1; i >= 0; i--)
+                //{
+                //    var eventSubscribe = eventSubscribeCollection.Subscribes[i];
+                //    if (eventSubscribe.Coroutine == false)
+                //    {
+                //        eventSubscribe.EventAction.Invoke(TEvent);
+                //    }
+                //    else
+                //    {
+                //        CoroutineEventSubscribeQueue.Add(eventSubscribe, TEvent);
+                //    }
+                //}
+
+                //if (eventSubscribeCollection.RemoveActions.Count > 0)
+                //{
+                //    foreach (var item in eventSubscribeCollection.RemoveActions)
+                //    {
+                //        eventSubscribeCollection.Remove(item);
+                //    }
+                //    eventSubscribeCollection.RemoveActions.Clear();
+                //}
             }
             return TEvent;
         }
 
         public new EventSubscribe<T> Subscribe<T>(Action<T> action) where T : class
         {
-            var eventSubscribe = new EventSubscribe<T>();
-            eventSubscribe.EventAction = action;
+            EventSubscribeCollection<T> eventSubscribeCollection;
             if (EventSubscribeCollections.TryGetValue(typeof(T), out var collection))
             {
-                var eventSubscribeCollection = collection as EventSubscribeCollection<T>;
-                eventSubscribeCollection.Subscribes.Add(eventSubscribe);
+                eventSubscribeCollection = collection as EventSubscribeCollection<T>;
             }
             else
             {
-                var eventSubscribeCollection = new EventSubscribeCollection<T>();
+                eventSubscribeCollection = new EventSubscribeCollection<T>();
                 EventSubscribeCollections.Add(typeof(T), eventSubscribeCollection);
-                eventSubscribeCollection.Subscribes.Add(eventSubscribe);
             }
-            return eventSubscribe;
+            return eventSubscribeCollection.Add(action);
         }
 
         public new void UnSubscribe<T>(Action<T> action) where T : class
         {
-            //if (EventSubscribeCollections.TryGetValue(typeof(T), out var collection))
-            //{
-            //    var eventSubscribeCollection = collection as EventSubscribeCollection<T>;
-            //    eventSubscribeCollection.Subscribes.Remove(action);
-            //}
+            if (EventSubscribeCollections.TryGetValue(typeof(T), out var collection))
+            {
+                var eventSubscribeCollection = collection as EventSubscribeCollection<T>;
+                eventSubscribeCollection.Remove(action);
+            }
         }
     }
 }

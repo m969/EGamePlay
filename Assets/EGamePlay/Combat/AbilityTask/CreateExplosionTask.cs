@@ -17,9 +17,9 @@ namespace EGamePlay.Combat.Ability
         public CreateExplosionTaskData CreateExplosionTaskData { get; set; }
 
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-            CreateExplosionTaskData = (CreateExplosionTaskData)paramObject;
+            CreateExplosionTaskData = (CreateExplosionTaskData)initData;
         }
 
         public override async ET.ETTask ExecuteTaskAsync()

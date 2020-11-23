@@ -9,9 +9,9 @@ namespace EGamePlay.Combat.Status
         public Effect Effect { get; set; }
 
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-            Effect = paramObject as Effect;
+            Effect = initData as Effect;
         }
 
         public void ApplyEffect()

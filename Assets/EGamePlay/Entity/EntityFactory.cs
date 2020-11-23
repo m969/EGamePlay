@@ -6,7 +6,7 @@ namespace EGamePlay
     public static class EntityFactory
     {
         public static GlobalEntity GlobalEntity { get; set; }
-
+        public static bool DebugLog { get; set; } = false;
 
         private static T New<T>() where T : Entity, new()
         {
@@ -26,17 +26,17 @@ namespace EGamePlay
             entity.Id = entity.InstanceId;
             GlobalEntity.AddChild(entity);
             entity.Awake();
-            Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}");
+            if (DebugLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
 
-        public static T Create<T>(object paramObject) where T : Entity, new()
+        public static T Create<T>(object initData) where T : Entity, new()
         {
             var entity = New<T>();
             entity.Id = entity.InstanceId;
             GlobalEntity.AddChild(entity);
-            entity.Awake(paramObject);
-            Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}, {paramObject}");
+            entity.Awake(initData);
+            if (DebugLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}, {initData}");
             return entity;
         }
 
@@ -46,17 +46,17 @@ namespace EGamePlay
             entity.Id = entity.InstanceId;
             parent.AddChild(entity);
             entity.Awake();
-            Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
+            if (DebugLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
 
-        public static T CreateWithParent<T>(Entity parent, object paramObject) where T : Entity, new()
+        public static T CreateWithParent<T>(Entity parent, object initData) where T : Entity, new()
         {
             var entity = New<T>();
             entity.Id = entity.InstanceId;
             parent.AddChild(entity);
-            entity.Awake(paramObject);
-            Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
+            entity.Awake(initData);
+            if (DebugLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
     }

@@ -44,7 +44,7 @@ namespace EGamePlay
 
         }
 
-        public virtual void Awake(object paramObject)
+        public virtual void Awake(object initData)
         {
 
         }
@@ -56,17 +56,13 @@ namespace EGamePlay
 
         public virtual void Dispose()
         {
-            Log.Debug($"{GetType().Name}->Dispose");
+            if (EntityFactory.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
             if (Children.Count > 0)
             {
                 for (int i = Children.Count - 1; i >= 0; i--)
                 {
                     Entity.Destroy(Children[i]);
                 }
-                //foreach (var child in Children)
-                //{
-                //    Entity.Destroy(child);
-                //}
                 Children.Clear();
                 Type2Children.Clear();
             }
@@ -99,8 +95,8 @@ namespace EGamePlay
             c.Entity = this;
             c.IsDisposed = false;
             this.Components.Add(typeof(T), c);
-            EntityFactory.GlobalEntity.AllComponents.Add(c);
-            Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
+            EntityFactory.GlobalEntity.AddComponents.Add(c);
+            if (EntityFactory.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             c.Setup();
             return c;
         }

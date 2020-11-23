@@ -14,9 +14,9 @@ namespace ET
 	{
 		public ETTaskCompletionSource<bool> Callback { get; set; }
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-			Callback = paramObject as ETTaskCompletionSource<bool>;
+			Callback = initData as ETTaskCompletionSource<bool>;
 		}
 
         public void Run(bool isTimeout)
@@ -32,9 +32,9 @@ namespace ET
 	{
 		public Action<bool> Callback { get; set; }
 
-		public override void Awake(object paramObject)
+		public override void Awake(object initData)
 		{
-			Callback = paramObject as Action<bool>;
+			Callback = initData as Action<bool>;
 		}
 
 		public void Run(bool isTimeout)
@@ -58,9 +58,9 @@ namespace ET
 
 	public class RepeatedTimer: Entity, ITimer
 	{
-		public override void Awake(object paramObject)
+		public override void Awake(object initData)
 		{
-			var awakeData = paramObject as RepeatedTimerAwakeData;
+			var awakeData = initData as RepeatedTimerAwakeData;
 			this.StartTime = TimeHelper.Now();
 			this.RepeatedTime = awakeData.RepeatedTime;
 			this.Callback = awakeData.Callback;

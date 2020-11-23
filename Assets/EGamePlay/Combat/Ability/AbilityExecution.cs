@@ -17,9 +17,9 @@ namespace EGamePlay.Combat.Ability
         public float InputDirection { get; set; }
 
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-            AbilityEntity = paramObject as AbilityEntity;
+            AbilityEntity = initData as AbilityEntity;
         }
 
         //////////////////////////
@@ -32,7 +32,7 @@ namespace EGamePlay.Combat.Ability
         /////////////
         public virtual void EndExecute()
         {
-            
+            Destroy(this);
         }
         //////////////////////////
     }

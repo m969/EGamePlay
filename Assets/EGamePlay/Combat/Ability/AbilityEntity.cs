@@ -13,9 +13,9 @@ namespace EGamePlay.Combat.Ability
         public object ConfigObject { get; set; }
 
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-            ConfigObject = paramObject;
+            ConfigObject = initData;
             this.AbilityOwner = Parent as CombatEntity;
         }
 

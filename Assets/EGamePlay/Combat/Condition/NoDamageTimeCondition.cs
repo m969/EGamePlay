@@ -12,9 +12,9 @@ namespace EGamePlay.Combat
         private GameTimer NoDamageTimer { get; set; }
 
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-            var time = (float)paramObject;
+            var time = (float)initData;
             NoDamageTimer = new GameTimer(time);
             GetParent<CombatEntity>().ListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }

@@ -7,11 +7,11 @@ namespace EGamePlay.Combat.Skill
         public SkillConfigObject SkillConfigObject { get; set; }
 
 
-        public override void Awake(object paramObject)
+        public override void Awake(object initData)
         {
-            base.Awake(paramObject);
+            base.Awake(initData);
 
-            SkillConfigObject = paramObject as SkillConfigObject;
+            SkillConfigObject = initData as SkillConfigObject;
             if (SkillConfigObject.SkillSpellType == SkillSpellType.Passive)
             {
                 TryActivateAbility();

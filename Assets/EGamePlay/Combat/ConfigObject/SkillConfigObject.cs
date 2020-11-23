@@ -18,29 +18,23 @@ namespace EGamePlay.Combat
     [LabelText("技能配置")]
     public class SkillConfigObject : SerializedScriptableObject
     {
-        [LabelText("技能ID")]
-        [DelayedProperty]
+        [LabelText("技能ID"), DelayedProperty]
         public uint ID;
-        [LabelText("技能名称")]
-        [DelayedProperty]
+        [LabelText("技能名称"), DelayedProperty]
         public string Name = "技能1";
         public SkillSpellType SkillSpellType;
         [LabelText("技能目标检测方式"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillTargetSelectType TargetSelectType;
-        [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
-        [LabelText("区域场类型")]
+        [LabelText("区域场类型"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         public SkillAffectAreaType AffectAreaType;
 
-        [LabelText("圆形区域场半径")]
-        [ShowIf("ShowCircleAreaRadius")]
+        [LabelText("圆形区域场半径"), ShowIf("ShowCircleAreaRadius")]
         public float CircleAreaRadius;
         public bool ShowCircleAreaRadius { get { return AffectAreaType == SkillAffectAreaType.Circle && TargetSelectType == SkillTargetSelectType.AreaSelect; } }
 
-        [LabelText("区域场引导配置")]
-        [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
-        public GameObject AreaGuideObj;
-        [LabelText("区域场配置")]
-        [ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
+        //[LabelText("区域场引导配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
+        //public GameObject AreaGuideObj;
+        [LabelText("区域场配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         public GameObject AreaCollider;
 
         [LabelText("技能作用对象"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]

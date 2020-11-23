@@ -9,7 +9,7 @@ using EGamePlay.Combat.Ability;
 /// <summary>
 /// 主动技能的预览组件，预览功能不是所有游戏都会有，moba类游戏一般会有技能预览的功能，部分mmorpg游戏也可能有，回合制、卡牌、arpg动作游戏一般没有
 /// </summary>
-public class AbilityPreviewComponent : EGamePlay.Component
+public class SkillPreviewComponent : EGamePlay.Component
 {
     private bool Previewing { get; set; }
     private AbilityEntity PreviewingAbility { get; set; }
@@ -40,26 +40,34 @@ public class AbilityPreviewComponent : EGamePlay.Component
         }
         if (Previewing)
         {
-            TargetSelectManager.Instance.transform.position = Input.mousePosition;
         }
     }
 
     public void EnterPreview()
     {
+        CancelPreview();
         Previewing = true;
-        TargetSelectManager.Instance.Show(OnSelectedTarget);
+        if (PreviewingAbility is Skill1001Entity)
+        {
+            TargetSelectManager.Instance.Show(OnSelectedTarget);
+        }
+        if (PreviewingAbility is Skill1002Entity)
+        {
+            PointSelectManager.Instance.Show(OnInputPoint);
+        }
     }
 
     public void CancelPreview()
     {
         Previewing = false;
         TargetSelectManager.Instance.Hide();
+        PointSelectManager.Instance.Hide();
     }
 
     private void OnSelectedTarget(GameObject selectObject)
     {
         CancelPreview();
-        var combatEntity = selectObject.transform.parent.GetComponent<Monster>().CombatEntity;
+        var combatEntity = selectObject.transform.GetComponent<Monster>().CombatEntity;
         OnInputTarget(combatEntity);
     }
 
@@ -67,6 +75,13 @@ public class AbilityPreviewComponent : EGamePlay.Component
     {
         var abilityExecution = PreviewingAbility.CreateAbilityExecution();
         abilityExecution.InputCombatEntity = combatEntity;
+        abilityExecution.BeginExecute();
+    }
+
+    private void OnInputPoint(Vector3 point)
+    {
+        var abilityExecution = PreviewingAbility.CreateAbilityExecution();
+        abilityExecution.InputPoint = point;
         abilityExecution.BeginExecute();
     }
 }
