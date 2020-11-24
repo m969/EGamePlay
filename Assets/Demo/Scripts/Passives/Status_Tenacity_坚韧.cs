@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using EGamePlay.Combat.Status;
 using EGamePlay.Combat.Ability;
-using EGamePlay.Combat.Skill;
 using EGamePlay.Combat;
 using EGamePlay;
-using System.Threading.Tasks;
 
-public class PassiveSkill1004Entity : SkillAbilityEntity
+public class StatusTenacityAbility : StatusAbilityEntity
 {
     private GameTimer HealthReplyTimer { get; set; } = new GameTimer(1f);
     private bool CanReplyHealth { get; set; }
@@ -32,7 +31,7 @@ public class PassiveSkill1004Entity : SkillAbilityEntity
             {
                 break;
             }
-            await Task.Delay(100);
+            await ET.TimerComponent.Instance.WaitAsync(100);
             if (CanReplyHealth)
             {
                 if (AbilityOwner.CurrentHealth.Percent() < 1f)

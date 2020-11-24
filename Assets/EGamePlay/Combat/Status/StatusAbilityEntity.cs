@@ -12,7 +12,6 @@ namespace EGamePlay.Combat.Status
         public override void Awake(object initData)
         {
             base.Awake(initData);
-
             StatusConfigObject = initData as StatusConfigObject;
         }
 

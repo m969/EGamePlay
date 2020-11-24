@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
+using EGamePlay.Combat.Status;
 using UnityEngine.UI;
 using DG.Tweening;
 
@@ -31,8 +32,10 @@ public sealed class Monster : MonoBehaviour
             CombatEntity.Subscribe<StatusRemoveEvent>(OnStatusRemove).AsCoroutine();
         }
 
-        var config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_坚韧");
-        var abilityA = CombatEntity.AttachSkill<PassiveSkill1004Entity>(config);
+        var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity_坚韧");
+        var Status = CombatEntity.ReceiveStatus<StatusTenacityAbility>(config);
+        Status.Caster = CombatEntity;
+        Status.TryActivateAbility();
     }
 
     // Update is called once per frame

@@ -21,7 +21,6 @@ namespace ET
 
         public void Run(bool isTimeout)
 		{
-			Log.Debug($"OnceWaitTimer->Run {InstanceId}");
 			ETTaskCompletionSource<bool> tcs = this.Callback;
 			this.GetParent<TimerComponent>().Remove(this.Id);
 			tcs.SetResult(isTimeout);

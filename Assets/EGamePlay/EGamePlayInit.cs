@@ -9,11 +9,12 @@ public class EGamePlayInit : MonoBehaviour
     private void Awake()
     {
         EntityFactory.GlobalEntity = new GlobalEntity();
+        EntityFactory.CreateWithParent<ET.TimerComponent>(EntityFactory.GlobalEntity);
     }
 
     private void Start()
     {
-        EntityFactory.CreateWithParent<ET.TimerComponent>(EntityFactory.GlobalEntity);
+
     }
 
     private void Update()
