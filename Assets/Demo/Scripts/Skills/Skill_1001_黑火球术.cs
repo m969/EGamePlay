@@ -16,7 +16,7 @@ public class Skill1001Entity : SkillAbilityEntity
     }
 }
 
-public class Skill1001Execution : AbilityExecution
+public class Skill1001Execution : SkillAbilityExecution
 {
     public override async void BeginExecute()
     {

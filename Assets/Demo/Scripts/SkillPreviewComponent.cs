@@ -73,14 +73,14 @@ public class SkillPreviewComponent : EGamePlay.Component
 
     private void OnInputTarget(CombatEntity combatEntity)
     {
-        var abilityExecution = PreviewingAbility.CreateAbilityExecution();
+        var abilityExecution = PreviewingAbility.CreateAbilityExecution() as SkillAbilityExecution;
         abilityExecution.InputCombatEntity = combatEntity;
         abilityExecution.BeginExecute();
     }
 
     private void OnInputPoint(Vector3 point)
     {
-        var abilityExecution = PreviewingAbility.CreateAbilityExecution();
+        var abilityExecution = PreviewingAbility.CreateAbilityExecution() as SkillAbilityExecution;
         abilityExecution.InputPoint = point;
         abilityExecution.BeginExecute();
     }

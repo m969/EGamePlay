@@ -27,8 +27,8 @@ namespace EGamePlay.Combat.Ability
             try
             {
                 var projectile = GameObject.Instantiate(CastProjectileData.ProjectilePrefab);
-                projectile.transform.position = GetParent<AbilityExecution>().GetParent<CombatEntity>().Position + Vector3.up;
-                projectile.transform.DOMove(GetParent<AbilityExecution>().InputCombatEntity.Position + Vector3.up, 0.8f).SetEase(Ease.Linear);
+                projectile.transform.position = GetParent<SkillAbilityExecution>().GetParent<CombatEntity>().Position + Vector3.up;
+                projectile.transform.DOMove(GetParent<SkillAbilityExecution>().InputCombatEntity.Position + Vector3.up, 0.8f).SetEase(Ease.Linear);
                 await ET.TimerComponent.Instance.WaitAsync(800);
                 GameObject.Destroy(projectile);
                 Entity.Destroy(this);

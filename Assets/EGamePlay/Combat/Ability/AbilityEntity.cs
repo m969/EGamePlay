@@ -19,27 +19,32 @@ namespace EGamePlay.Combat.Ability
             this.AbilityOwner = Parent as CombatEntity;
         }
 
+        //尝试激活能力
         public virtual void TryActivateAbility()
         {
             Log.Debug($"{GetType().Name}->TryActivateAbility");
             ActivateAbility();
         }
         
+        //激活能力
         public virtual void ActivateAbility()
         {
             
         }
 
+        //结束能力
         public virtual void EndActivate()
         {
             Entity.Destroy(this);
         }
 
+        //创建能力执行体
         public virtual AbilityExecution CreateAbilityExecution()
         {
             return null;
         }
         
+        //应用能力效果
         public virtual void ApplyAbilityEffect(CombatEntity targetEntity)
         {
             List<Effect> Effects = null;
