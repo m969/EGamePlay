@@ -6,7 +6,7 @@ namespace EGamePlay.Combat.Status
     {
         public CombatEntity Caster { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
-        public IntModifier IntModifier { get; set; }
+        public FloatModifier NumericModifier { get; set; }
 
 
         public override void Awake(object initData)
@@ -30,8 +30,8 @@ namespace EGamePlay.Combat.Status
                         break;
                     case NumericType.PhysicAttack:
                         var value = int.Parse(StatusConfigObject.NumericValue);
-                        IntModifier = new IntModifier() { Value = value };
-                        GetParent<CombatEntity>().NumericBox.PhysicAttack_I.AddAddModifier(IntModifier);
+                        NumericModifier = new FloatModifier() { Value = value };
+                        GetParent<CombatEntity>().AttributeComponent.AttackPower.AddAddModifier(NumericModifier);
                         break;
                     case NumericType.Defense:
                         break;
@@ -75,7 +75,7 @@ namespace EGamePlay.Combat.Status
                     case NumericType.None:
                         break;
                     case NumericType.PhysicAttack:
-                        GetParent<CombatEntity>().NumericBox.PhysicAttack_I.RemoveAddModifier(IntModifier);
+                        GetParent<CombatEntity>().AttributeComponent.AttackPower.RemoveAddModifier(NumericModifier);
                         break;
                     case NumericType.Defense:
                         break;
@@ -89,7 +89,7 @@ namespace EGamePlay.Combat.Status
                         break;
                 }
             }
-            IntModifier = null;
+            NumericModifier = null;
             GetParent<CombatEntity>().OnStatusRemove(this);
             base.EndActivate();
         }

@@ -12,24 +12,24 @@ namespace EGamePlay.Combat
         public const string SpellDefense = "魔法抗性";
     }
     /// <summary>
-    /// 战斗数值匣子，在这里管理所有角色战斗属性数值的存储、变更、刷新等
+    /// 战斗属性数值匣子，在这里管理所有角色战斗属性数值的存储、变更、刷新等
     /// </summary>
-    public class CombatNumericBox
+    public class CombatAttributeComponent : Component
 	{
         public Dictionary<string, FloatNumeric> TypeNumerics = new Dictionary<string, FloatNumeric>();
-        public IntNumeric HealthPoint_I = new IntNumeric();
-        public IntNumeric PhysicAttack_I = new IntNumeric();
-        public IntNumeric PhysicDefense_I = new IntNumeric();
-        public FloatNumeric CriticalProb_F = new FloatNumeric();
+        public FloatNumeric HealthPoint { get { return TypeNumerics[AttributeType.HealthPoint]; } }
+        public FloatNumeric AttackPower { get { return TypeNumerics[AttributeType.AttackPower]; } }
+        public FloatNumeric AttackDefense { get { return TypeNumerics[AttributeType.AttackDefense]; } }
+        public FloatNumeric CriticalProb { get { return TypeNumerics[AttributeType.CriticalProb]; } }
 
+
+        public override void Setup()
+        {
+            Initialize();
+        }
 
         public void Initialize()
         {
-            // 这里初始化base值
-            HealthPoint_I.SetBase(99_999);
-            PhysicAttack_I.SetBase(1000);
-            PhysicDefense_I.SetBase(300);
-            CriticalProb_F.SetBase(0.5f);
             AddNumeric(AttributeType.HealthPoint, 99_999);
             AddNumeric(AttributeType.AttackPower, 1000);
             AddNumeric(AttributeType.AttackDefense, 300);

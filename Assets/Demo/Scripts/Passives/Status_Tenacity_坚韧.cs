@@ -18,7 +18,7 @@ public class StatusTenacityAbility : StatusAbilityEntity
         base.ActivateAbility();
         CanReplyHealth = true;
         AbilityOwner.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
-        AbilityOwner.AddListener(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
+        AbilityOwner.ListenerCondition(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
         Coroutine();
     }
 

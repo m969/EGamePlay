@@ -48,7 +48,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 行动点管理器，在这里管理一个战斗实体所有行动点的添加监听、移除监听、触发流程
     /// </summary>
-    public sealed class ActionPointManager
+    public sealed class ActionPointManagerComponent : Component
     {
         private Dictionary<ActionPointType, ActionPoint> ActionPoints { get; set; } = new Dictionary<ActionPointType, ActionPoint>();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
+using ET;
 
 namespace EGamePlay.Combat.Ability
 {
@@ -22,11 +23,11 @@ namespace EGamePlay.Combat.Ability
             CreateExplosionTaskData = (CreateExplosionTaskData)initData;
         }
 
-        public override async ET.ETTask ExecuteTaskAsync()
+        public override async ETTask ExecuteTaskAsync()
         {
             var explosion = GameObject.Instantiate(CreateExplosionTaskData.ExplosionPrefab);
             explosion.transform.position = CreateExplosionTaskData.TargetPoint;
-            await ET.TimerComponent.Instance.WaitAsync(800);
+            await TimerComponent.Instance.WaitAsync(800);
             GameObject.Destroy(explosion);
             Entity.Destroy(this);
         }

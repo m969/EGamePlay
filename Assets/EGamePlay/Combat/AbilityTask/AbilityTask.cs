@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using ET;
 
 namespace EGamePlay.Combat.Ability
 {
@@ -15,7 +16,7 @@ namespace EGamePlay.Combat.Ability
             taskInitData = initData;
         }
 
-        public virtual async ET.ETTask ExecuteTaskAsync()
+        public virtual async ETTask ExecuteTaskAsync()
         {
             await Task.Delay(1000);
         }

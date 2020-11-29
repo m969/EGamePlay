@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
+using ET;
 
 namespace EGamePlay.Combat.Ability
 {
@@ -22,14 +23,14 @@ namespace EGamePlay.Combat.Ability
             CastProjectileData = (CastProjectileTaskData)initData;
         }
 
-        public override async ET.ETTask ExecuteTaskAsync()
+        public override async ETTask ExecuteTaskAsync()
         {
             try
             {
                 var projectile = GameObject.Instantiate(CastProjectileData.ProjectilePrefab);
                 projectile.transform.position = GetParent<SkillAbilityExecution>().GetParent<CombatEntity>().Position + Vector3.up;
                 projectile.transform.DOMove(GetParent<SkillAbilityExecution>().InputCombatEntity.Position + Vector3.up, 0.8f).SetEase(Ease.Linear);
-                await ET.TimerComponent.Instance.WaitAsync(800);
+                await TimerComponent.Instance.WaitAsync(800);
                 GameObject.Destroy(projectile);
                 Entity.Destroy(this);
             }

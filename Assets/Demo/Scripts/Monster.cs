@@ -23,7 +23,6 @@ public sealed class Monster : MonoBehaviour
     void Start()
     {
         CombatEntity = EntityFactory.Create<CombatEntity>();
-        CombatEntity.Initialize();
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         if (name != "Monster")

@@ -37,26 +37,13 @@ namespace EGamePlay.Combat
             }
         }
 
-
-
-        public void RemoveListener(ActionPointType actionPointType, Action<CombatAction> action)
+        public void RemoveListener(ConditionType conditionType, Action action)
         {
-            //if (Conditions.ContainsKey(actionPointType))
-            //{
-            //    Conditions[actionPointType].Listeners.Remove(action);
-            //}
-        }
-
-        public void TriggerActionPoint(ActionPointType actionPointType, CombatAction action)
-        {
-            //if (Conditions.ContainsKey(actionPointType) && Conditions[actionPointType].Listeners.Count > 0)
-            //{
-            //    for (int i = Conditions[actionPointType].Listeners.Count - 1; i >= 0; i--)
-            //    {
-            //        var item = Conditions[actionPointType].Listeners[i];
-            //        item.Invoke(action);
-            //    }
-            //}
+            if (Conditions.ContainsKey(action))
+            {
+                Entity.Destroy(Conditions[action]);
+                Conditions.Remove(action);
+            }
         }
     }
 }
