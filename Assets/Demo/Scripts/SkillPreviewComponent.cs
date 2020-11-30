@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
+using EGamePlay.Combat.Skill;
 using EGamePlay.Combat.Ability;
 
 /// <summary>
@@ -12,7 +13,7 @@ using EGamePlay.Combat.Ability;
 public class SkillPreviewComponent : EGamePlay.Component
 {
     private bool Previewing { get; set; }
-    private AbilityEntity PreviewingAbility { get; set; }
+    private SkillAbilityEntity PreviewingSkill { get; set; }
 
 
     public override void Setup()
@@ -25,13 +26,13 @@ public class SkillPreviewComponent : EGamePlay.Component
         if (Input.GetKeyDown(KeyCode.Q))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingAbility = GetEntity<CombatEntity>().InputAbilitys[KeyCode.Q];
+            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.Q] as SkillAbilityEntity;
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingAbility = GetEntity<CombatEntity>().InputAbilitys[KeyCode.W];
+            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.W] as SkillAbilityEntity;
             EnterPreview();
         }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
@@ -47,11 +48,11 @@ public class SkillPreviewComponent : EGamePlay.Component
     {
         CancelPreview();
         Previewing = true;
-        if (PreviewingAbility is Skill1001Entity)
+        if (PreviewingSkill is Skill1001Entity)
         {
             TargetSelectManager.Instance.Show(OnSelectedTarget);
         }
-        if (PreviewingAbility is Skill1002Entity)
+        if (PreviewingSkill is Skill1002Entity)
         {
             PointSelectManager.Instance.Show(OnInputPoint);
         }
@@ -73,15 +74,19 @@ public class SkillPreviewComponent : EGamePlay.Component
 
     private void OnInputTarget(CombatEntity combatEntity)
     {
-        var abilityExecution = PreviewingAbility.CreateAbilityExecution() as SkillAbilityExecution;
-        abilityExecution.InputCombatEntity = combatEntity;
-        abilityExecution.BeginExecute();
+        var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
+        action.SkillAbility = PreviewingSkill;
+        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
+        action.SkillAbilityExecution.InputCombatEntity = combatEntity;
+        action.SpellSkill();
     }
 
     private void OnInputPoint(Vector3 point)
     {
-        var abilityExecution = PreviewingAbility.CreateAbilityExecution() as SkillAbilityExecution;
-        abilityExecution.InputPoint = point;
-        abilityExecution.BeginExecute();
+        var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
+        action.SkillAbility = PreviewingSkill;
+        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
+        action.SkillAbilityExecution.InputPoint = point;
+        action.SpellSkill();
     }
 }

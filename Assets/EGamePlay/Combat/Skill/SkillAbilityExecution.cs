@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using EGamePlay.Combat.Ability;
 
-namespace EGamePlay.Combat.Ability
+namespace EGamePlay.Combat.Skill
 {
     /// <summary>
     /// 技能执行体

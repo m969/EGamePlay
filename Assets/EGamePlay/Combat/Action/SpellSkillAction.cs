@@ -12,27 +12,35 @@ namespace EGamePlay.Combat
     public class SpellSkillAction : CombatAction
     {
         public int SkillID { get; set; }
-        public SkillAbilityEntity SkillEntity { get; set; }
+        public SkillAbilityEntity SkillAbility { get; set; }
+        public SkillAbilityExecution SkillAbilityExecution { get; set; }
 
 
-        private void BeforeSpell()
+        //前置处理
+        private void PreProcess()
         {
-            //SkillEntity.SkillTarget = Target;
-            //SkillEntity.Start();
+
         }
 
         public void SpellSkill()
         {
-            BeforeSpell();
-            //SkillEntity.StartRun();
-            SkillEntity.ApplyAbilityEffect(Target);
-            //SkillEntity.EndRun();
-            AfterSpell();
+            PreProcess();
+            if (SkillAbilityExecution == null)
+            {
+                SkillAbility.ApplyAbilityEffect(Target);
+            }
+            else
+            {
+                SkillAbilityExecution.BeginExecute();
+            }
+            PostProcess();
         }
 
-        private void AfterSpell()
+        //后置处理
+        private void PostProcess()
         {
-
+            //Creator.TriggerActionPoint(ActionPointType.PostGiveCure, this);
+            //Target.TriggerActionPoint(ActionPointType.PostReceiveCure, this);
         }
     }
 }

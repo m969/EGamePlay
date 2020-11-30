@@ -25,7 +25,7 @@ public sealed class Monster : MonoBehaviour
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
-        if (name != "Monster")
+        if (name == "Monster")
         {
             CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, ReceiveStatus);
             CombatEntity.Subscribe<StatusRemoveEvent>(OnStatusRemove).AsCoroutine();
