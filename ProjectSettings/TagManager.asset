@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Collide
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - Map
   - Hero
   - Enemy
-  - 
-  - 
+  - TempCast
+  - Walkable
   - 
   - 
   - 
