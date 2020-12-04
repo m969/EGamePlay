@@ -4502,8 +4502,8 @@ MonoBehaviour:
   HitEffectPrefab: {fileID: 945749897893569834, guid: 84c1f0cb74706bb41953794e56b77676,
     type: 3}
   AnimancerComponent: {fileID: 128457700}
-  IdleAnimation: {fileID: 7400000, guid: 8370b4128ccb08c4a8944d3f0d66cebc, type: 3}
-  RunAnimation: {fileID: 7400000, guid: 0000872662c8fb241bf2ab6cc00dd461, type: 3}
+  IdleAnimation: {fileID: 7400000, guid: 0147e212f97e3d449a4b9e4f5d057180, type: 3}
+  RunAnimation: {fileID: 7400000, guid: e52be2fa48716194ea1d9d76686005f8, type: 3}
   JumpAnimation: {fileID: 7400002, guid: afd3b10eb71eaf54bb564f6cc703f2cc, type: 3}
   AttackAnimation: {fileID: 7400000, guid: 7b5b17e2d42e0424f9c36012595dc9b6, type: 3}
 --- !u!136 &1127498802

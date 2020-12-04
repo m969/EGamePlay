@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 94c75858633b4e04f9e28db3b52b2bba
 ModelImporter:
-  serializedVersion: 25
+  serializedVersion: 19301
   internalIDToNameTable:
   - first:
       1: 100000
@@ -702,168 +702,9 @@ ModelImporter:
   - first:
       41386430: 2186277476908879412
     second: ImportLogs
-  - first:
-      74: -3392327717221160788
-    second: Unarmed-Idle //// Motion
-  - first:
-      74: 8184548833701860516
-    second: Unarmed-Idle //// B_Pelvis
-  - first:
-      74: 1631725402010398522
-    second: Unarmed-Idle //// B_Spine
-  - first:
-      74: -8567224915517707356
-    second: Unarmed-Idle //// B_Spine1
-  - first:
-      74: -3792893976009535150
-    second: Unarmed-Idle //// B_Spine2
-  - first:
-      74: 4903989180372614350
-    second: Unarmed-Idle //// B_L_Clavicle
-  - first:
-      74: 954890318267104013
-    second: Unarmed-Idle //// B_L_UpperArm
-  - first:
-      74: 9006939540446822161
-    second: Unarmed-Idle //// B_L_Forearm
-  - first:
-      74: 1725661601240827395
-    second: Unarmed-Idle //// B_L_Hand
-  - first:
-      74: -2244779958874765182
-    second: Unarmed-Idle //// B_L_Finger0
-  - first:
-      74: 4107023602086874843
-    second: Unarmed-Idle //// B_L_Finger01
-  - first:
-      74: 6453554536212237085
-    second: Unarmed-Idle //// B_L_Finger02
-  - first:
-      74: -147359078978007608
-    second: Unarmed-Idle //// B_L_Finger1
-  - first:
-      74: -4430308406064755976
-    second: Unarmed-Idle //// B_L_Finger11
-  - first:
-      74: 5304443068812902862
-    second: Unarmed-Idle //// B_L_Finger12
-  - first:
-      74: 5149433632037250664
-    second: Unarmed-Idle //// B_L_Finger2
-  - first:
-      74: -5502563683003477862
-    second: Unarmed-Idle //// B_L_Finger21
-  - first:
-      74: 6435603232403379076
-    second: Unarmed-Idle //// B_L_Finger22
-  - first:
-      74: 786691528794505597
-    second: Unarmed-Idle //// B_L_Finger3
-  - first:
-      74: -8601942528005170933
-    second: Unarmed-Idle //// B_L_Finger31
-  - first:
-      74: 4848867290462178836
-    second: Unarmed-Idle //// B_L_Finger32
-  - first:
-      74: 4942909185538382824
-    second: Unarmed-Idle //// B_L_Finger4
-  - first:
-      74: 1174440084546576092
-    second: Unarmed-Idle //// B_L_Finger41
-  - first:
-      74: -5853575292141323664
-    second: Unarmed-Idle //// B_L_Finger42
-  - first:
-      74: 3691131354625469206
-    second: Unarmed-Idle //// B_R_Clavicle
-  - first:
-      74: 1654674618629137799
-    second: Unarmed-Idle //// B_R_UpperArm
-  - first:
-      74: 2989965272635134511
-    second: Unarmed-Idle //// B_R_Forearm
-  - first:
-      74: 5657731302290891710
-    second: Unarmed-Idle //// B_R_Hand
-  - first:
-      74: 666641127616307687
-    second: Unarmed-Idle //// B_R_Finger0
-  - first:
-      74: 4955269579846015347
-    second: Unarmed-Idle //// B_R_Finger01
-  - first:
-      74: -8943634206801461844
-    second: Unarmed-Idle //// B_R_Finger02
-  - first:
-      74: 8622359041205944377
-    second: Unarmed-Idle //// B_R_Finger1
-  - first:
-      74: 3584894233884996478
-    second: Unarmed-Idle //// B_R_Finger11
-  - first:
-      74: 3339572230061507088
-    second: Unarmed-Idle //// B_R_Finger12
-  - first:
-      74: -4650479115482172695
-    second: Unarmed-Idle //// B_R_Finger2
-  - first:
-      74: -6272980786792763986
-    second: Unarmed-Idle //// B_R_Finger21
-  - first:
-      74: 1298311249582328008
-    second: Unarmed-Idle //// B_R_Finger22
-  - first:
-      74: 3458539688476468914
-    second: Unarmed-Idle //// B_R_Finger3
-  - first:
-      74: -3094341521619285110
-    second: Unarmed-Idle //// B_R_Finger31
-  - first:
-      74: -2497029501440530052
-    second: Unarmed-Idle //// B_R_Finger32
-  - first:
-      74: -7365979424914667122
-    second: Unarmed-Idle //// B_R_Finger4
-  - first:
-      74: 2229432485844734425
-    second: Unarmed-Idle //// B_R_Finger41
-  - first:
-      74: 7735550688925163601
-    second: Unarmed-Idle //// B_R_Finger42
-  - first:
-      74: 8460277656137271677
-    second: Unarmed-Idle //// B_Neck
-  - first:
-      74: -5426779569060025046
-    second: Unarmed-Idle //// B_Head
-  - first:
-      74: -5814936504228554423
-    second: Unarmed-Idle //// B_L_Thigh
-  - first:
-      74: 7169447776105504753
-    second: Unarmed-Idle //// B_L_Calf
-  - first:
-      74: 4501782544282289984
-    second: Unarmed-Idle //// B_L_Foot
-  - first:
-      74: 1650957146574824800
-    second: Unarmed-Idle //// B_L_Toe0
-  - first:
-      74: 953502355031086044
-    second: Unarmed-Idle //// B_R_Thigh
-  - first:
-      74: -5455707171817490380
-    second: Unarmed-Idle //// B_R_Calf
-  - first:
-      74: 3234598969240348456
-    second: Unarmed-Idle //// B_R_Foot
-  - first:
-      74: 8724372397678836571
-    second: Unarmed-Idle //// B_R_Toe0
   externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -877,8 +718,8 @@ ModelImporter:
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
-      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
-      improve retargeting quality.\n\t'B_Spine2' is inbetween humanoid transforms
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'B_Spine2' is inbetween humanoid transforms
       and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftUpperArm
       average position error 21.4 mm and maximum position error 33.0 mm at time 1:14
@@ -921,7 +762,7 @@ ModelImporter:
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -938,10 +779,12 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
     importLights: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -968,7 +811,6 @@ ModelImporter:
     normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
-  copyAvatar: 1
   humanDescription:
     serializedVersion: 3
     human:
@@ -1670,8 +1512,10 @@ ModelImporter:
     skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: e57e9b8cd5e115f4f8d7736473e5c7fd,
     type: 3}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 2
   additionalBone: 0
   userData: 
   assetBundleName: 
