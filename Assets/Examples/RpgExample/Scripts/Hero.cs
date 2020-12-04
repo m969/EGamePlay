@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using EGamePlay.Combat.Skill;
 using EGamePlay.Combat.Ability;
 using DG.Tweening;
+using ET;
 
 public sealed class Hero : MonoBehaviour
 {
@@ -18,11 +19,22 @@ public sealed class Hero : MonoBehaviour
     public GameObject SkillEffectPrefab;
     public GameObject HitEffectPrefab;
     private Tweener MoveTweener { get; set; }
+    public Animancer.AnimancerComponent AnimancerComponent;
+    public AnimationClip IdleAnimation;
+    public AnimationClip RunAnimation;
+    public AnimationClip JumpAnimation;
+    public AnimationClip AttackAnimation;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        AnimancerComponent.Animator.fireEvents = false;
+        AnimancerComponent.States.CreateIfNew(IdleAnimation);
+        AnimancerComponent.States.CreateIfNew(RunAnimation);
+        AnimancerComponent.States.CreateIfNew(JumpAnimation);
+        AnimancerComponent.States.CreateIfNew(AttackAnimation);
+
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.AddComponent<SkillPreviewComponent>();
 
@@ -91,6 +103,8 @@ public sealed class Hero : MonoBehaviour
 
     public void Attack()
     {
+        PlayThenIdleAsync(AttackAnimation).Coroutine();
+
         var monster = GameObject.Find("/Monster");
 
         SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
@@ -99,8 +113,15 @@ public sealed class Hero : MonoBehaviour
         var action = CombatActionManager.CreateAction<DamageAction>(CombatEntity);
         action.Target = monster.GetComponent<Monster>().CombatEntity;
         action.DamageSource = DamageSource.Attack;
-        CombatEntity.AttributeComponent.AttackPower.SetBase(RandomHelper.RandomNumber(600, 999));
+        CombatEntity.AttributeComponent.AttackPower.SetBase(ET.RandomHelper.RandomNumber(600, 999));
         action.ApplyDamage();
+    }
+
+    public async ETVoid PlayThenIdleAsync(AnimationClip animation)
+    {
+        AnimancerComponent.Play(animation, 0.25f);
+        await TimerComponent.Instance.WaitAsync((int)(animation.length * 1000));
+        AnimancerComponent.Play(IdleAnimation, 0.25f);
     }
 
     public void SpellSkillA()
