@@ -24,6 +24,7 @@ namespace EGamePlay
 #endif
         public long Id { get; set; }
         public long InstanceId { get; set; }
+        public GlobalEntity Global => EntityFactory.Global;
         private Entity parent;
         public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
         public bool IsDisposed { get { return InstanceId == 0; } }
@@ -95,7 +96,7 @@ namespace EGamePlay
             c.Entity = this;
             c.IsDisposed = false;
             this.Components.Add(typeof(T), c);
-            EntityFactory.GlobalEntity.AddComponents.Add(c);
+            Global.AddComponents.Add(c);
             if (EntityFactory.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             c.Setup();
             return c;

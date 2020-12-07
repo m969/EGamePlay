@@ -5,18 +5,18 @@ namespace EGamePlay
 {
     public static class EntityFactory
     {
-        public static GlobalEntity GlobalEntity { get; set; }
+        public static GlobalEntity Global { get; set; }
         public static bool DebugLog { get; set; } = false;
 
         private static T New<T>() where T : Entity, new()
         {
             var entity = new T();
             entity.InstanceId = IdFactory.NewInstanceId();
-            if (!GlobalEntity.Entities.ContainsKey(typeof(T)))
+            if (!Global.Entities.ContainsKey(typeof(T)))
             {
-                GlobalEntity.Entities.Add(typeof(T), new List<Entity>());
+                Global.Entities.Add(typeof(T), new List<Entity>());
             }
-            GlobalEntity.Entities[typeof(T)].Add(entity);
+            Global.Entities[typeof(T)].Add(entity);
             return entity;
         }
 
@@ -24,7 +24,7 @@ namespace EGamePlay
         {
             var entity = New<T>();
             entity.Id = entity.InstanceId;
-            GlobalEntity.AddChild(entity);
+            Global.AddChild(entity);
             entity.Awake();
             if (DebugLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}");
             return entity;
@@ -34,7 +34,7 @@ namespace EGamePlay
         {
             var entity = New<T>();
             entity.Id = entity.InstanceId;
-            GlobalEntity.AddChild(entity);
+            Global.AddChild(entity);
             entity.Awake(initData);
             if (DebugLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}, {initData}");
             return entity;
