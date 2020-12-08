@@ -38,13 +38,15 @@ namespace EGamePlay.Combat
         [ToggleGroup("EnabledStateModify")]
         public StateType StateType;
 
-        [ToggleGroup("EnabledNumericModify", "属性修饰")]
-        public bool EnabledNumericModify;
-        [ToggleGroup("EnabledNumericModify")]
-        public NumericType NumericType;
-        [ToggleGroup("EnabledNumericModify"), LabelText("数值参数")]
-        //[HideInInspector]
+        [ToggleGroup("EnabledAttributeModify", "属性修饰")]
+        public bool EnabledAttributeModify;
+        [ToggleGroup("EnabledAttributeModify")]
+        public AttributeType AttributeType;
+        [ToggleGroup("EnabledAttributeModify"), LabelText("数值参数")]
         public string NumericValue;
+        //[ToggleGroup("EnabledAttributeModify"), LabelText("属性修饰")]
+        //[DictionaryDrawerSettings(KeyLabel =)]
+        //public Dictionary<NumericType, string> AttributeChanges = new Dictionary<NumericType, string>();
 
         [ToggleGroup("EnabledLogicTrigger", "逻辑触发")]
         public bool EnabledLogicTrigger;

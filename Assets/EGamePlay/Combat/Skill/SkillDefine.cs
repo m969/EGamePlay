@@ -168,15 +168,18 @@
     }
 
     [LabelText("属性类型")]
-    public enum NumericType
+    //[LabelWidth(50)]
+    public enum AttributeType
     {
         [LabelText("（空）")]
         None = 0,
 
-        [LabelText("物理攻击")]
-        PhysicAttack = 1001,
-        [LabelText("物理护甲")]
-        Defense = 1002,
+        [LabelText("生命值")]
+        HealthPoint = 1000,
+        [LabelText("攻击力")]
+        AttackPower = 1001,
+        [LabelText("护甲值")]
+        AttackDefense = 1002,
         [LabelText("法术强度")]
         SpellPower = 1003,
         [LabelText("魔法抗性")]

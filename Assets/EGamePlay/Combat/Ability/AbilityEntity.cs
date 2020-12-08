@@ -91,7 +91,7 @@ namespace EGamePlay.Combat.Ability
                         statusConfig.Duration = addStatusEffect.Duration;
                         if (addStatusEffect.Params != null && statusConfig.Effects != null)
                         {
-                            if (statusConfig.EnabledNumericModify)
+                            if (statusConfig.EnabledAttributeModify)
                             {
                                 foreach (var item3 in addStatusEffect.Params)
                                 {

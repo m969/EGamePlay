@@ -18,7 +18,7 @@ namespace EGamePlay.Combat
         public override string Label => "属性数值修饰";
 
         [ToggleGroup("Enabled")]
-        public NumericType NumericType;
+        public AttributeType NumericType;
 
         [ToggleGroup("Enabled"), LabelText("数值参数")]
         public string NumericValue;

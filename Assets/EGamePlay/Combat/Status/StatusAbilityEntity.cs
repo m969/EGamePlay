@@ -22,24 +22,24 @@ namespace EGamePlay.Combat.Status
             {
 
             }
-            if (StatusConfigObject.EnabledNumericModify)
+            if (StatusConfigObject.EnabledAttributeModify)
             {
-                switch (StatusConfigObject.NumericType)
+                switch (StatusConfigObject.AttributeType)
                 {
-                    case NumericType.None:
+                    case AttributeType.None:
                         break;
-                    case NumericType.PhysicAttack:
+                    case AttributeType.AttackPower:
                         var value = int.Parse(StatusConfigObject.NumericValue);
                         NumericModifier = new FloatModifier() { Value = value };
                         GetParent<CombatEntity>().AttributeComponent.AttackPower.AddAddModifier(NumericModifier);
                         break;
-                    case NumericType.Defense:
+                    case AttributeType.AttackDefense:
                         break;
-                    case NumericType.SpellPower:
+                    case AttributeType.SpellPower:
                         break;
-                    case NumericType.MagicDefense:
+                    case AttributeType.MagicDefense:
                         break;
-                    case NumericType.CriticalProb:
+                    case AttributeType.CriticalProb:
                         break;
                     default:
                         break;
@@ -68,22 +68,22 @@ namespace EGamePlay.Combat.Status
 
         public override void EndActivate()
         {
-            if (StatusConfigObject.EnabledNumericModify)
+            if (StatusConfigObject.EnabledAttributeModify)
             {
-                switch (StatusConfigObject.NumericType)
+                switch (StatusConfigObject.AttributeType)
                 {
-                    case NumericType.None:
+                    case AttributeType.None:
                         break;
-                    case NumericType.PhysicAttack:
+                    case AttributeType.AttackPower:
                         GetParent<CombatEntity>().AttributeComponent.AttackPower.RemoveAddModifier(NumericModifier);
                         break;
-                    case NumericType.Defense:
+                    case AttributeType.AttackDefense:
                         break;
-                    case NumericType.SpellPower:
+                    case AttributeType.SpellPower:
                         break;
-                    case NumericType.MagicDefense:
+                    case AttributeType.MagicDefense:
                         break;
-                    case NumericType.CriticalProb:
+                    case AttributeType.CriticalProb:
                         break;
                     default:
                         break;
