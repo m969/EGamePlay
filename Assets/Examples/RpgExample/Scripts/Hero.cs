@@ -77,7 +77,8 @@ public sealed class Hero : MonoBehaviour
             {
                 var time = Vector3.Distance(transform.position, point) * MoveSpeed * 0.5f;
                 MoveTweener?.Kill();
-                MoveTweener = transform.DOMove(point, time);
+                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear).OnUpdate(()=> { transform.GetChild(0).DOLookAt(point, 0.2f); }).OnComplete(()=>{ AnimancerComponent.Play(IdleAnimation, 0.25f); });
+                AnimancerComponent.Play(RunAnimation, 0.25f);
             }
         }
     }
