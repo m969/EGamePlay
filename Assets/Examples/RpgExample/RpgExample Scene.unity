@@ -4506,6 +4506,7 @@ MonoBehaviour:
   RunAnimation: {fileID: 7400000, guid: e52be2fa48716194ea1d9d76686005f8, type: 3}
   JumpAnimation: {fileID: 7400002, guid: afd3b10eb71eaf54bb564f6cc703f2cc, type: 3}
   AttackAnimation: {fileID: 7400000, guid: 7b5b17e2d42e0424f9c36012595dc9b6, type: 3}
+  SkillAnimation: {fileID: 7400000, guid: e2538d48c03da46a8b0c3b59d39a4cab, type: 3}
 --- !u!136 &1127498802
 CapsuleCollider:
   m_ObjectHideFlags: 0

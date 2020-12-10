@@ -30,5 +30,10 @@ namespace EGamePlay.Combat.Ability
         {
             Destroy(this);
         }
+
+        public T GetAbilityEntity<T>() where T : AbilityEntity
+        {
+            return AbilityEntity as T;
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace EGamePlay.Combat
         public Dictionary<string, AbilityEntity> NameAbilitys { get; set; } = new Dictionary<string, AbilityEntity>();
         public Dictionary<KeyCode, AbilityEntity> InputAbilitys { get; set; } = new Dictionary<KeyCode, AbilityEntity>();
         public Vector3 Position { get; set; }
+        public float Direction { get; set; }
 
 
         public override void Awake()

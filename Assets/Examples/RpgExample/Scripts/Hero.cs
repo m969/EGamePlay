@@ -19,11 +19,13 @@ public sealed class Hero : MonoBehaviour
     public GameObject SkillEffectPrefab;
     public GameObject HitEffectPrefab;
     private Tweener MoveTweener { get; set; }
+    [Space(10)]
     public Animancer.AnimancerComponent AnimancerComponent;
     public AnimationClip IdleAnimation;
     public AnimationClip RunAnimation;
     public AnimationClip JumpAnimation;
     public AnimationClip AttackAnimation;
+    public AnimationClip SkillAnimation;
 
 
     // Start is called before the first frame update
@@ -34,6 +36,7 @@ public sealed class Hero : MonoBehaviour
         AnimancerComponent.States.CreateIfNew(RunAnimation);
         AnimancerComponent.States.CreateIfNew(JumpAnimation);
         AnimancerComponent.States.CreateIfNew(AttackAnimation);
+        AnimancerComponent.States.CreateIfNew(SkillAnimation);
 
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.AddComponent<SkillPreviewComponent>();
@@ -45,6 +48,10 @@ public sealed class Hero : MonoBehaviour
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
         abilityA = CombatEntity.AttachSkill<Skill1002Entity>(config);
         CombatEntity.BindAbilityInput(abilityA, KeyCode.W);
+
+        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
+        abilityA = CombatEntity.AttachSkill<Skill1002Entity>(config);
+        CombatEntity.BindAbilityInput(abilityA, KeyCode.E);
 
         AnimTimer.MaxTime = AnimTime;
     }

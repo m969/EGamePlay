@@ -10,8 +10,10 @@ namespace EGamePlay.Combat.Ability
 {
     public class CreateTriggerTaskData
     {
-        public Vector3 TargetPoint;
+        public Vector3 Position;
+        public float Direction;
         public GameObject TriggerPrefab;
+        public int LifeTime;
     }
 
     public class CreateTriggerTask : AbilityTask
@@ -23,7 +25,7 @@ namespace EGamePlay.Combat.Ability
         public override async ETTask ExecuteTaskAsync()
         {
             var taskData = taskInitData as CreateTriggerTaskData;
-            TriggerObj = GameObject.Instantiate(taskData.TriggerPrefab, taskData.TargetPoint, Quaternion.identity);
+            TriggerObj = GameObject.Instantiate(taskData.TriggerPrefab, taskData.Position, Quaternion.identity);
             TriggerObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => { OnTriggerEnterCallbackAction?.Invoke(other); };
             TriggerObj.GetComponent<Collider>().enabled = true;
             await TimerComponent.Instance.WaitAsync(100);

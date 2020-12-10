@@ -23,7 +23,7 @@ public class Skill1002Execution : SkillAbilityExecution
         base.BeginExecute();
 
         var taskData2 = new CreateTriggerTaskData();
-        taskData2.TargetPoint = InputPoint;
+        taskData2.Position = InputPoint;
         taskData2.TriggerPrefab = (AbilityEntity as Skill1002Entity).SkillConfigObject.AreaCollider;
         var task2 = EntityFactory.CreateWithParent<CreateTriggerTask>(this, taskData2);
         task2.OnTriggerEnterCallbackAction = (other) => {

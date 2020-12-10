@@ -11,6 +11,7 @@ namespace EGamePlay.Combat.Ability
     {
         public Vector3 TargetPoint;
         public GameObject ExplosionPrefab;
+        public int LifeTime;
     }
 
     public class CreateExplosionTask : AbilityTask
