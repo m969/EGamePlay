@@ -35,6 +35,12 @@ public class SkillPreviewComponent : EGamePlay.Component
             PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.W] as SkillAbilityEntity;
             EnterPreview();
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            UnityEngine.Cursor.visible = false;
+            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.E] as SkillAbilityEntity;
+            EnterPreview();
+        }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
         {
             CancelPreview();
@@ -53,6 +59,10 @@ public class SkillPreviewComponent : EGamePlay.Component
             TargetSelectManager.Instance.Show(OnSelectedTarget);
         }
         if (PreviewingSkill is Skill1002Entity)
+        {
+            PointSelectManager.Instance.Show(OnInputPoint);
+        }
+        if (PreviewingSkill is Skill1004Entity)
         {
             PointSelectManager.Instance.Show(OnInputPoint);
         }
@@ -87,6 +97,15 @@ public class SkillPreviewComponent : EGamePlay.Component
         action.SkillAbility = PreviewingSkill;
         action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
         action.SkillAbilityExecution.InputPoint = point;
+        action.SpellSkill();
+    }
+
+    private void OnInputDirect(float direction)
+    {
+        var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
+        action.SkillAbility = PreviewingSkill;
+        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
+        action.SkillAbilityExecution.InputDirection = direction;
         action.SpellSkill();
     }
 }

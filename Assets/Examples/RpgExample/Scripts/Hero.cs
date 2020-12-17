@@ -50,7 +50,7 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.BindAbilityInput(abilityA, KeyCode.W);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
-        abilityA = CombatEntity.AttachSkill<Skill1002Entity>(config);
+        abilityA = CombatEntity.AttachSkill<Skill1004Entity>(config);
         CombatEntity.BindAbilityInput(abilityA, KeyCode.E);
 
         AnimTimer.MaxTime = AnimTime;
