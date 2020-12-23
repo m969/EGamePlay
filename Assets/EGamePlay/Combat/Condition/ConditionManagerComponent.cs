@@ -7,9 +7,9 @@ using Sirenix.OdinInspector;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 条件事件管理器，在这里管理一个战斗实体所有条件达成事件的添加监听、移除监听、触发流程
+    /// 条件管理器，在这里管理一个战斗实体所有条件达成事件的添加监听、移除监听、触发流程
     /// </summary>
-    public sealed class ConditionEventManagerComponent : Component
+    public sealed class ConditionManagerComponent : Component
     {
         private Dictionary<Action, ConditionEntity> Conditions { get; set; } = new Dictionary<Action, ConditionEntity>();
 
@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
             {
                 case ConditionType.WhenInTimeNoDamage:
                     var time = (float)paramObj;
-                    var condition = EntityFactory.CreateWithParent<NoDamageTimeCondition>(Entity, time);
+                    var condition = EntityFactory.CreateWithParent<WhenInTimeNoDamageCondition>(Entity, time);
                     Conditions.Add(action, condition);
                     condition.StartListen(action);
                     break;

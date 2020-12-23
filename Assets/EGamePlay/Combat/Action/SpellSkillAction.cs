@@ -12,7 +12,7 @@ namespace EGamePlay.Combat
     public class SpellSkillAction : CombatAction
     {
         public int SkillID { get; set; }
-        public SkillAbilityEntity SkillAbility { get; set; }
+        public SkillAbility SkillAbility { get; set; }
         public SkillAbilityExecution SkillAbilityExecution { get; set; }
 
 

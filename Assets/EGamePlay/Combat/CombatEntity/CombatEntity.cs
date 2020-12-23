@@ -25,7 +25,7 @@ namespace EGamePlay.Combat
         {
             AddComponent<CombatAttributeComponent>();
             AddComponent<ActionPointManagerComponent>();
-            AddComponent<ConditionEventManagerComponent>();
+            AddComponent<ConditionManagerComponent>();
             CurrentHealth.SetMaxValue((int)AttributeComponent.HealthPoint.Value);
             CurrentHealth.Reset();
         }
@@ -50,12 +50,12 @@ namespace EGamePlay.Combat
         #region 条件事件
         public void ListenerCondition(ConditionType conditionType, Action action, object paramObj = null)
         {
-            GetComponent<ConditionEventManagerComponent>().AddListener(conditionType, action, paramObj);
+            GetComponent<ConditionManagerComponent>().AddListener(conditionType, action, paramObj);
         }
 
         public void UnListenCondition(ConditionType conditionType, Action action)
         {
-            GetComponent<ConditionEventManagerComponent>().RemoveListener(conditionType, action);
+            GetComponent<ConditionManagerComponent>().RemoveListener(conditionType, action);
         }
         #endregion
 
@@ -82,20 +82,20 @@ namespace EGamePlay.Combat
             return ability;
         }
 
-        public T AttachSkill<T>(object configObject) where T : SkillAbilityEntity, new()
+        public T AttachSkill<T>(object configObject) where T : SkillAbility, new()
         {
             var skill = AttachAbility<T>(configObject);
             NameAbilitys.Add(skill.SkillConfigObject.Name, skill);
             return skill;
         }
 
-        public T ReceiveStatus<T>(object configObject) where T : StatusAbilityEntity, new()
+        public T ReceiveStatus<T>(object configObject) where T : StatusAbility, new()
         {
             var status = AttachAbility<T>(configObject);
             return status;
         }
 
-        public void OnStatusRemove(StatusAbilityEntity statusAbilityEntity)
+        public void OnStatusRemove(StatusAbility statusAbilityEntity)
         {
             this.Publish(new StatusRemoveEvent() { CombatEntity = this, Status = statusAbilityEntity, StatusId = statusAbilityEntity.Id });
         }
@@ -110,7 +110,7 @@ namespace EGamePlay.Combat
     public class StatusRemoveEvent
     {
         public CombatEntity CombatEntity { get; set; }
-        public StatusAbilityEntity Status { get; set; }
+        public StatusAbility Status { get; set; }
         public long StatusId { get; set; }
     }
 }

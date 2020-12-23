@@ -56,6 +56,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
+    - Name: TriggerProhibit
+      Entry: 6
+      Data: 
     - Name: DamageType
       Entry: 3
       Data: 1
@@ -93,6 +96,9 @@ MonoBehaviour:
       Entry: 6
       Data: 
     - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProhibit
       Entry: 6
       Data: 
     - Name: AddStatus
@@ -175,6 +181,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
+    - Name: TriggerProhibit
+      Entry: 6
+      Data: 
     - Name: TagType
       Entry: 3
       Data: 0
@@ -199,7 +208,6 @@ MonoBehaviour:
   TargetSelectType: 0
   AffectAreaType: 0
   CircleAreaRadius: 0
-  AreaGuideObj: {fileID: 0}
   AreaCollider: {fileID: 0}
   AffectTargetType: 2
   ColdTime: 0

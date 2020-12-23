@@ -7,7 +7,7 @@ using EGamePlay.Combat.Ability;
 
 namespace EGamePlay.Combat
 {
-    public sealed class NoDamageTimeCondition : ConditionEntity 
+    public sealed class WhenInTimeNoDamageCondition : ConditionEntity 
     {
         private GameTimer NoDamageTimer { get; set; }
 

@@ -2,8 +2,9 @@
 
 namespace EGamePlay.Combat.Status
 {
-    public partial class StatusAbilityEntity : AbilityEntity
+    public class StatusAbility : AbilityEntity
     {
+        //投放者、施术者
         public CombatEntity Caster { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
         public FloatModifier NumericModifier { get; set; }
@@ -15,6 +16,7 @@ namespace EGamePlay.Combat.Status
             StatusConfigObject = initData as StatusConfigObject;
         }
 
+        //激活
         public override void ActivateAbility()
         {
             base.ActivateAbility();
@@ -66,7 +68,8 @@ namespace EGamePlay.Combat.Status
             }
         }
 
-        public override void EndActivate()
+        //结束
+        public override void EndAbility()
         {
             if (StatusConfigObject.EnabledAttributeModify)
             {
@@ -91,7 +94,13 @@ namespace EGamePlay.Combat.Status
             }
             NumericModifier = null;
             GetParent<CombatEntity>().OnStatusRemove(this);
-            base.EndActivate();
+            base.EndAbility();
+        }
+
+        //应用能力效果
+        public override void ApplyAbilityEffect(CombatEntity targetEntity)
+        {
+            base.ApplyAbilityEffect(targetEntity);
         }
     }
 }

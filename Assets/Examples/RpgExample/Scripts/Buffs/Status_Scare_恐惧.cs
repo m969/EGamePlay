@@ -7,7 +7,7 @@ using EGamePlay.Combat.Ability;
 using EGamePlay.Combat;
 using EGamePlay;
 
-public class StatusScareAbility : StatusAbilityEntity
+public class StatusScareAbility : StatusAbility
 {
     public override void ActivateAbility()
     {

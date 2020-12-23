@@ -19,9 +19,9 @@ namespace EGamePlay.Combat.Status
             //Log.Debug("LogicEntity ApplyEffect");
             if (Effect is DamageEffect damageEffect)
             {
-                var damageAction = CombatActionManager.CreateAction<DamageAction>(GetParent<StatusAbilityEntity>().Caster);
+                var damageAction = CombatActionManager.CreateAction<DamageAction>(GetParent<StatusAbility>().Caster);
                 damageAction.DamageEffect = damageEffect;
-                damageAction.Target = GetParent<StatusAbilityEntity>().GetParent<CombatEntity>();
+                damageAction.Target = GetParent<StatusAbility>().GetParent<CombatEntity>();
                 damageAction.DamageSource = DamageSource.Buff;
                 damageAction.ApplyDamage();
             }

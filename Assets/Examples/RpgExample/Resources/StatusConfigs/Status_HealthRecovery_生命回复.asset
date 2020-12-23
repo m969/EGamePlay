@@ -40,12 +40,9 @@ MonoBehaviour:
     - Name: AddSkillEffectTargetType
       Entry: 3
       Data: 0
-    - Name: EffectValueParam
-      Entry: 6
-      Data: 
     - Name: EffectTriggerType
       Entry: 3
-      Data: 2
+      Data: 3
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -58,6 +55,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 1
       Data: 2
+    - Name: TriggerProhibit
+      Entry: 1
+      Data: 100%
     - Name: CureValueFormula
       Entry: 1
       Data: "\u56DE\u590D\u91CF"
@@ -78,9 +78,9 @@ MonoBehaviour:
   CanStack: 0
   MaxStack: 1
   EnabledStateModify: 0
-  StateType: 0
-  EnabledNumericModify: 0
-  NumericType: 0
+  ActionControlType: 0
+  EnabledAttributeModify: 0
+  AttributeType: 0
   NumericValue: 
   EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

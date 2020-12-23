@@ -7,9 +7,9 @@ using EGamePlay.Combat.Ability;
 using EGamePlay.Combat;
 using EGamePlay;
 
-public class StatusTenacityAbility : StatusAbilityEntity
+public class StatusTenacity : StatusAbility
 {
-    private GameTimer HealthReplyTimer { get; set; } = new GameTimer(1f);
+    private GameTimer HealthReplyTimer { get; set; } = new GameTimer(2f);
     private bool CanReplyHealth { get; set; }
 
 
@@ -59,7 +59,7 @@ public class StatusTenacityAbility : StatusAbilityEntity
     {
         var action = CombatActionManager.CreateAction<CureAction>(AbilityOwner);
         action.Target = AbilityOwner;
-        action.CureValue = AbilityOwner.CurrentHealth.PercentHealth(1);
+        action.CureValue = AbilityOwner.CurrentHealth.PercentHealth(2);
         action.ApplyCure();
     }
 }

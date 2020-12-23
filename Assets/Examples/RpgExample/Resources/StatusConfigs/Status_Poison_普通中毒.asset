@@ -42,7 +42,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 2
+      Data: 3
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -51,16 +51,19 @@ MonoBehaviour:
       Data: 0
     - Name: Interval
       Entry: 1
-      Data: "\u95F4\u9694\u65F6\u95F4"
+      Data: 400
     - Name: ConditionParam
       Entry: 6
       Data: 
+    - Name: TriggerProhibit
+      Entry: 1
+      Data: 100%
     - Name: DamageType
       Entry: 3
       Data: 1
     - Name: DamageValueFormula
       Entry: 1
-      Data: "\u4F24\u5BB3\u503C"
+      Data: 280
     - Name: CanCrit
       Entry: 5
       Data: false
@@ -81,9 +84,9 @@ MonoBehaviour:
   CanStack: 0
   MaxStack: 1
   EnabledStateModify: 0
-  StateType: 0
-  EnabledNumericModify: 0
-  NumericType: 0
+  ActionControlType: 0
+  EnabledAttributeModify: 0
+  AttributeType: 0
   NumericValue: 
   EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

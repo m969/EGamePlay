@@ -13,7 +13,7 @@ using EGamePlay.Combat.Ability;
 public class SkillPreviewComponent : EGamePlay.Component
 {
     private bool Previewing { get; set; }
-    private SkillAbilityEntity PreviewingSkill { get; set; }
+    private SkillAbility PreviewingSkill { get; set; }
 
 
     public override void Setup()
@@ -26,19 +26,19 @@ public class SkillPreviewComponent : EGamePlay.Component
         if (Input.GetKeyDown(KeyCode.Q))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.Q] as SkillAbilityEntity;
+            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.Q] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.W] as SkillAbilityEntity;
+            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.W] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.E] as SkillAbilityEntity;
+            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.E] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))

@@ -46,7 +46,7 @@ MonoBehaviour:
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 
-  EnabledLogicTrigger: 1
+  EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

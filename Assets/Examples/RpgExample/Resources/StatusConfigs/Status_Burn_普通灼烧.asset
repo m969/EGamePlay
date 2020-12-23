@@ -21,9 +21,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: Params
-      Entry: 6
-      Data: 
     - Name: Effects
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
@@ -45,7 +42,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 2
+      Data: 3
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -54,8 +51,11 @@ MonoBehaviour:
       Data: 0
     - Name: Interval
       Entry: 1
-      Data: "\u95F4\u9694\u65F6\u95F4"
+      Data: 300
     - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProhibit
       Entry: 6
       Data: 
     - Name: DamageType
@@ -63,7 +63,7 @@ MonoBehaviour:
       Data: 0
     - Name: DamageValueFormula
       Entry: 1
-      Data: "\u4F24\u5BB3\u503C"
+      Data: 150
     - Name: CanCrit
       Entry: 5
       Data: false
@@ -84,9 +84,9 @@ MonoBehaviour:
   CanStack: 0
   MaxStack: 99
   EnabledStateModify: 0
-  StateType: 0
-  EnabledNumericModify: 0
-  NumericType: 0
+  ActionControlType: 0
+  EnabledAttributeModify: 0
+  AttributeType: 0
   NumericValue: 
   EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

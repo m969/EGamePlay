@@ -3,7 +3,7 @@ using System;
 
 namespace EGamePlay.Combat.Skill
 {
-    public abstract class SkillAbilityEntity : AbilityEntity
+    public abstract class SkillAbility : AbilityEntity
     {
         public SkillConfigObject SkillConfigObject { get; set; }
 

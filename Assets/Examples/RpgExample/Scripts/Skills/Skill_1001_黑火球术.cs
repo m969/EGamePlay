@@ -7,7 +7,7 @@ using EGamePlay.Combat.Skill;
 using EGamePlay.Combat;
 using EGamePlay;
 
-public class Skill1001Entity : SkillAbilityEntity
+public class Skill1001Entity : SkillAbility
 {
     public override AbilityExecution CreateAbilityExecution()
     {
