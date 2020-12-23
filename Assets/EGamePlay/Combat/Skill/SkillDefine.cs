@@ -143,8 +143,8 @@
     }
 
     [Flags]
-    [LabelText("行为禁止")]
-    public enum StateType
+    [LabelText("行为禁制")]
+    public enum ActionControlType
     {
         [LabelText("（空）")]
         None = 0,
@@ -154,17 +154,10 @@
         SkillForbid = 1 << 2,
         [LabelText("攻击禁止")]
         AttackForbid = 1 << 3,
-
-        //[LabelText("禁锢")]
-        //Immobility = MoveForbid,
-        //[LabelText("眩晕")]
-        //Vertigo = MoveForbid | SkillForbid,
-        //[LabelText("沉默")]
-        //Silent = SkillForbid,
-        //[LabelText("中毒")]
-        //Poison = 1 << 21,
-        //[LabelText("灼烧")]
-        //Burn = 1 << 22,
+        [LabelText("移动控制")]
+        MoveControl = 1 << 4,
+        [LabelText("攻击控制")]
+        AttackControl = 1 << 5,
     }
 
     [LabelText("属性类型")]

@@ -33,10 +33,10 @@ namespace EGamePlay.Combat
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
         public int MaxStack = 1;
 
-        [ToggleGroup("EnabledStateModify", "行为禁止")]
+        [ToggleGroup("EnabledStateModify", "行为禁制")]
         public bool EnabledStateModify;
         [ToggleGroup("EnabledStateModify")]
-        public StateType StateType;
+        public ActionControlType ActionControlType;
 
         [ToggleGroup("EnabledAttributeModify", "属性修饰")]
         public bool EnabledAttributeModify;
@@ -67,10 +67,18 @@ namespace EGamePlay.Combat
             var types = typeof(Effect).Assembly.GetTypes()
                 .Where(x => !x.IsAbstract)
                 .Where(x => typeof(Effect).IsAssignableFrom(x))
+                //.Where(x => x != typeof(AttributeNumericModifyEffect))
                 .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
                 .OrderBy(x => x.GetCustomAttribute<EffectAttribute>().Order)
                 .Select(x => x.GetCustomAttribute<EffectAttribute>().EffectType);
+
+            //var status = AssetDatabase.FindAssets("t:StatusConfigObject", new string[] { "Assets" })
+            //    .Select(guid => AssetDatabase.GUIDToAssetPath(guid))
+            //    .Select(path => AssetDatabase.LoadAssetAtPath<StatusConfigObject>(path).Name)
+            //    .Select(name => $"施加状态效果 [{name}]");
+
             var results = types.ToList();
+            //results.AddRange(status);
             results.Insert(0, "(添加效果)");
             return results;
         }
@@ -79,16 +87,33 @@ namespace EGamePlay.Combat
         {
             if (EffectTypeName != "(添加效果)")
             {
-                var effectType = typeof(Effect).Assembly.GetTypes()
-                    .Where(x => !x.IsAbstract)
-                    .Where(x => typeof(Effect).IsAssignableFrom(x))
-                    .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
-                    .Where(x => x.GetCustomAttribute<EffectAttribute>().EffectType == EffectTypeName)
-                    .First();
-
-                var effect = Activator.CreateInstance(effectType) as Effect;
-                effect.Enabled = true;
-                Effects.Add(effect);
+                //if (EffectTypeName.Contains("施加状态效果 ["))
+                //{
+                //    var effect = Activator.CreateInstance<AddStatusEffect>() as Effect;
+                //    effect.Enabled = true;
+                //    if (effect is AddStatusEffect addStatusEffect)
+                //    {
+                //        var status = AssetDatabase.FindAssets("t:StatusConfigObject", new string[] { "Assets" })
+                //            .Select(guid => AssetDatabase.GUIDToAssetPath(guid))
+                //            .Select(path => AssetDatabase.LoadAssetAtPath<StatusConfigObject>(path).Name)
+                //            .Select(name => $"施加状态效果 [{name}]")
+                //            .Where(name => name == $"施加状态效果 [{name}]");
+                //        //addStatusEffect.AddStatus = AssetDatabase.load
+                //    }
+                //    Effects.Add(effect);
+                //}
+                //else
+                {
+                    var effectType = typeof(Effect).Assembly.GetTypes()
+                        .Where(x => !x.IsAbstract)
+                        .Where(x => typeof(Effect).IsAssignableFrom(x))
+                        .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
+                        .Where(x => x.GetCustomAttribute<EffectAttribute>().EffectType == EffectTypeName)
+                        .First();
+                    var effect = Activator.CreateInstance(effectType) as Effect;
+                    effect.Enabled = true;
+                    Effects.Add(effect);
+                }
 
                 EffectTypeName = "(添加效果)";
             }

@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace EGamePlay.Combat
 {
-    [Effect("移除状态", 40)]
+    [Effect("移除状态效果", 40)]
     public class RemoveStatusEffect : Effect
     {
         public override string Label
@@ -21,9 +21,9 @@ namespace EGamePlay.Combat
             {
                 if (this.RemoveStatus != null)
                 {
-                    return $"移除 [ {this.RemoveStatus.Name} ] 状态";
+                    return $"移除 [ {this.RemoveStatus.Name} ] 状态效果";
                 }
-                return "移除状态";
+                return "移除状态效果";
             }
         }
 

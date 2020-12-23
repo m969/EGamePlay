@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace EGamePlay.Combat
 {
-    [Effect("施加状态", 30)]
+    [Effect("施加状态效果", 30)]
     public class AddStatusEffect : Effect
     {
         public override string Label
@@ -21,9 +21,9 @@ namespace EGamePlay.Combat
             {
                 if (this.AddStatus != null)
                 {
-                    return $"施加 [ {this.AddStatus.Name} ] 状态";
+                    return $"施加 [ {this.AddStatus.Name} ] 状态效果";
                 }
-                return "施加状态";
+                return "施加状态效果";
             }
         }
 

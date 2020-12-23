@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace EGamePlay.Combat
 {
-    [Effect("属性数值修饰", 50)]
+    //[Effect("属性数值修饰", 50)]
     public class AttributeNumericModifyEffect : Effect
     {
         public override string Label => "属性数值修饰";

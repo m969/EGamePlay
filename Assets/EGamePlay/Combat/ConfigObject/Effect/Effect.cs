@@ -75,6 +75,9 @@ namespace EGamePlay.Combat
         //[HideInInspector]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("条件参数 x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
         public string ConditionParam;
+
+        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("触发概率")]
+        public string TriggerProhibit = "100%";
     }
 
     public abstract class OnceEffect : Effect
