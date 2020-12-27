@@ -50,7 +50,7 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.BindAbilityInput(abilityA, KeyCode.W);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
-        abilityA = CombatEntity.AttachSkill<Skill1004Entity>(config);
+        abilityA = CombatEntity.AttachSkill<Skill1004Ability>(config);
         CombatEntity.BindAbilityInput(abilityA, KeyCode.E);
 
         AnimTimer.MaxTime = AnimTime;
@@ -113,7 +113,7 @@ public sealed class Hero : MonoBehaviour
     {
         PlayThenIdleAsync(AttackAnimation).Coroutine();
 
-        var monster = GameObject.Find("/Monster");
+        var monster = GameObject.Find("Monster");
 
         SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
         SpawnHitEffect(transform.position, monster.transform.position);

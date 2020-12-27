@@ -8,7 +8,7 @@ using EGamePlay.Combat;
 using EGamePlay;
 using ET;
 
-public class Skill1004Entity : SkillAbility
+public class Skill1004Ability : SkillAbility
 {
     public override AbilityExecution CreateAbilityExecution()
     {
@@ -27,17 +27,17 @@ public class Skill1004Execution : SkillAbilityExecution
         taskData.Position = GetParent<CombatEntity>().Position;
         taskData.Direction = InputDirection;
         taskData.LifeTime = 2000;
-        taskData.EffectPrefab = GetAbilityEntity<Skill1004Entity>().SkillConfigObject.SkillEffectObject;
+        taskData.EffectPrefab = GetAbilityEntity<Skill1004Ability>().SkillConfigObject.SkillEffectObject;
         var task = EntityFactory.CreateWithParent<CreateEffectTask>(this, taskData);
         task.ExecuteTaskAsync().Coroutine();
 
-        await TimerComponent.Instance.WaitAsync(1000);
+        await TimerComponent.Instance.WaitAsync(1500);
 
         var taskData2 = new CreateTriggerTaskData();
         taskData2.Position = GetParent<CombatEntity>().Position;
         taskData2.Direction = InputDirection;
         taskData2.LifeTime = 200;
-        taskData2.TriggerPrefab = GetAbilityEntity<Skill1004Entity>().SkillConfigObject.AreaCollider;
+        taskData2.TriggerPrefab = GetAbilityEntity<Skill1004Ability>().SkillConfigObject.AreaCollider;
         var task2 = EntityFactory.CreateWithParent<CreateTriggerTask>(this, taskData2);
         task2.OnTriggerEnterCallbackAction = (other) => {
             AbilityEntity.ApplyAbilityEffect(other.GetComponent<Monster>().CombatEntity);

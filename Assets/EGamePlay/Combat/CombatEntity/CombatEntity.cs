@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
     public sealed class CombatEntity : Entity
     {
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
-        public CombatAttributeComponent AttributeComponent { get { return GetComponent<CombatAttributeComponent>(); } }
+        public AttributeManageComponent AttributeComponent { get { return GetComponent<AttributeManageComponent>(); } }
         public Dictionary<string, AbilityEntity> NameAbilitys { get; set; } = new Dictionary<string, AbilityEntity>();
         public Dictionary<KeyCode, AbilityEntity> InputAbilitys { get; set; } = new Dictionary<KeyCode, AbilityEntity>();
         public Vector3 Position { get; set; }
@@ -23,9 +23,9 @@ namespace EGamePlay.Combat
 
         public override void Awake()
         {
-            AddComponent<CombatAttributeComponent>();
-            AddComponent<ActionPointManagerComponent>();
-            AddComponent<ConditionManagerComponent>();
+            AddComponent<AttributeManageComponent>();
+            AddComponent<ActionPointManageComponent>();
+            AddComponent<ConditionManageComponent>();
             CurrentHealth.SetMaxValue((int)AttributeComponent.HealthPoint.Value);
             CurrentHealth.Reset();
         }
@@ -33,29 +33,29 @@ namespace EGamePlay.Combat
         #region 行动点事件
         public void ListenActionPoint(ActionPointType actionPointType, Action<CombatAction> action)
         {
-            GetComponent<ActionPointManagerComponent>().AddListener(actionPointType, action);
+            GetComponent<ActionPointManageComponent>().AddListener(actionPointType, action);
         }
 
         public void UnListenActionPoint(ActionPointType actionPointType, Action<CombatAction> action)
         {
-            GetComponent<ActionPointManagerComponent>().RemoveListener(actionPointType, action);
+            GetComponent<ActionPointManageComponent>().RemoveListener(actionPointType, action);
         }
 
         public void TriggerActionPoint(ActionPointType actionPointType, CombatAction action)
         {
-            GetComponent<ActionPointManagerComponent>().TriggerActionPoint(actionPointType, action);
+            GetComponent<ActionPointManageComponent>().TriggerActionPoint(actionPointType, action);
         }
         #endregion
 
         #region 条件事件
         public void ListenerCondition(ConditionType conditionType, Action action, object paramObj = null)
         {
-            GetComponent<ConditionManagerComponent>().AddListener(conditionType, action, paramObj);
+            GetComponent<ConditionManageComponent>().AddListener(conditionType, action, paramObj);
         }
 
         public void UnListenCondition(ConditionType conditionType, Action action)
         {
-            GetComponent<ConditionManagerComponent>().RemoveListener(conditionType, action);
+            GetComponent<ConditionManageComponent>().RemoveListener(conditionType, action);
         }
         #endregion
 

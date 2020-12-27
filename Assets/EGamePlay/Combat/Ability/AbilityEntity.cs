@@ -22,7 +22,7 @@ namespace EGamePlay.Combat.Ability
         //尝试激活能力
         public virtual void TryActivateAbility()
         {
-            Log.Debug($"{GetType().Name}->TryActivateAbility");
+            //Log.Debug($"{GetType().Name}->TryActivateAbility");
             ActivateAbility();
         }
         

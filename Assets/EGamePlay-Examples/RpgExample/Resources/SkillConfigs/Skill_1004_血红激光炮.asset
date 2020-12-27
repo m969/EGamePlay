@@ -63,7 +63,7 @@ MonoBehaviour:
       Data: 1
     - Name: DamageValueFormula
       Entry: 1
-      Data: 1000
+      Data: 10000
     - Name: CanCrit
       Entry: 5
       Data: false
@@ -79,10 +79,11 @@ MonoBehaviour:
   ID: 1004
   Name: "\u8840\u7EA2\u6FC0\u5149\u70AE"
   SkillSpellType: 0
-  TargetSelectType: 0
-  AffectAreaType: 0
+  TargetSelectType: 3
+  AffectAreaType: 1
   CircleAreaRadius: 0
-  AreaCollider: {fileID: 0}
+  AreaCollider: {fileID: 7427793808108117812, guid: 9a3cb84c6b8a07d4b901ee026f22a2dc,
+    type: 3}
   AffectTargetType: 2
   ColdTime: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

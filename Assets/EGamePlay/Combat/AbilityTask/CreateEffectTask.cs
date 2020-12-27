@@ -28,6 +28,7 @@ namespace EGamePlay.Combat.Ability
         public override async ETTask ExecuteTaskAsync()
         {
             var explosion = GameObject.Instantiate(TaskData.EffectPrefab);
+            explosion.transform.position = TaskData.Position;
             explosion.transform.eulerAngles = new Vector3(0, TaskData.Direction, 0);
             await TimerComponent.Instance.WaitAsync(TaskData.LifeTime);
             GameObject.Destroy(explosion);

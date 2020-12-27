@@ -42,7 +42,7 @@ MonoBehaviour:
   CanStack: 0
   MaxStack: 1
   EnabledStateModify: 1
-  ActionControlType: 0
+  ActionControlType: 14
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 

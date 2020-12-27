@@ -10,23 +10,24 @@ public class TargetSelectManager : MonoBehaviour
 {
     public static TargetSelectManager Instance { get; set; }
     private Action<GameObject> OnSelectTargetCallback { get; set; }
-    public Image CursorImage { get; set; }
     public Color CursorColor { get; set; }
     public GameObject HeroObj;
     public GameObject RangeCircleObj;
+    public Image CursorImage;
 
 
     private void Awake()
     {
         Instance = this;
-        CursorImage = GetComponent<Image>();
+        //CursorImage = GetComponent<Image>();
         CursorColor = CursorImage.color;
         Hide();
     }
 
     private void Update()
     {
-        transform.position = Input.mousePosition;
+        RangeCircleObj.transform.position = new Vector3(HeroObj.transform.position.x, 0.1f, HeroObj.transform.position.z);
+        CursorImage.transform.position = Input.mousePosition;
         if (RaycastHelper.CastEnemyObj(out var enemyObj))
         {
             //if (Vector3.Distance(enemyObj.transform.position, HeroObj.transform.position) < 10f)
@@ -48,7 +49,7 @@ public class TargetSelectManager : MonoBehaviour
     public void Show(Action<GameObject> onSelectTargetCallback)
     {
         Cursor.visible = false;
-        gameObject.SetActive(true);
+        CursorImage.gameObject.SetActive(true);
         RangeCircleObj.SetActive(true);
         OnSelectTargetCallback = onSelectTargetCallback;
     }
@@ -56,7 +57,7 @@ public class TargetSelectManager : MonoBehaviour
     public void Hide()
     {
         Cursor.visible = true;
-        gameObject.SetActive(false);
+        CursorImage.gameObject.SetActive(false);
         RangeCircleObj.SetActive(false);
     }
 }

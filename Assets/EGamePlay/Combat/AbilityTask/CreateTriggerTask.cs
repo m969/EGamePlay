@@ -26,6 +26,8 @@ namespace EGamePlay.Combat.Ability
         {
             var taskData = taskInitData as CreateTriggerTaskData;
             TriggerObj = GameObject.Instantiate(taskData.TriggerPrefab, taskData.Position, Quaternion.identity);
+            TriggerObj.GetComponent<Collider>().enabled = false;
+            TriggerObj.transform.eulerAngles = new Vector3(0, taskData.Direction, 0);
             TriggerObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => { OnTriggerEnterCallbackAction?.Invoke(other); };
             TriggerObj.GetComponent<Collider>().enabled = true;
             await TimerComponent.Instance.WaitAsync(100);

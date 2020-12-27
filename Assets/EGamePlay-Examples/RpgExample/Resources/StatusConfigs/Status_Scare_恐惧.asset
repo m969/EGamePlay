@@ -41,11 +41,12 @@ MonoBehaviour:
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
-  EnabledNumericModify: 0
-  NumericType: 0
+  EnabledStateModify: 1
+  ActionControlType: 28
+  EnabledAttributeModify: 0
+  AttributeType: 0
   NumericValue: 
   EnabledLogicTrigger: 0
-  EffectTriggerType: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

@@ -5,7 +5,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 战斗属性数值匣子，在这里管理所有角色战斗属性数值的存储、变更、刷新等
     /// </summary>
-    public class CombatAttributeComponent : Component
+    public class AttributeManageComponent : Component
 	{
         public Dictionary<string, FloatNumeric> TypeNumerics = new Dictionary<string, FloatNumeric>();
         public FloatNumeric HealthPoint { get { return TypeNumerics[nameof(AttributeType.HealthPoint)]; } }

@@ -62,9 +62,9 @@ public class SkillPreviewComponent : EGamePlay.Component
         {
             PointSelectManager.Instance.Show(OnInputPoint);
         }
-        if (PreviewingSkill is Skill1004Entity)
+        if (PreviewingSkill is Skill1004Ability)
         {
-            PointSelectManager.Instance.Show(OnInputPoint);
+            DirectRectSelectManager.Instance.Show(OnInputDirect);
         }
     }
 
@@ -73,6 +73,7 @@ public class SkillPreviewComponent : EGamePlay.Component
         Previewing = false;
         TargetSelectManager.Instance.Hide();
         PointSelectManager.Instance.Hide();
+        DirectRectSelectManager.Instance.Hide();
     }
 
     private void OnSelectedTarget(GameObject selectObject)

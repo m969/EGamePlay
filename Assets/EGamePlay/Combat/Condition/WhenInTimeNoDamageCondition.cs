@@ -27,7 +27,7 @@ namespace EGamePlay.Combat
                 {
                     break;
                 }
-                await Task.Delay(100);
+                await ET.TimerComponent.Instance.WaitAsync(100);
                 NoDamageTimer.UpdateAsFinish(0.1f, whenNoDamageInTimeCallback);
             }
         }
