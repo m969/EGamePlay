@@ -25,7 +25,7 @@ namespace EGamePlay.Combat
         {
             if (DamageSource == DamageSource.Attack)
             {
-                IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProb.Value;
+                IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
                 DamageValue = (int)Mathf.Max(1, Creator.AttributeComponent.AttackPower.Value - Target.AttributeComponent.AttackDefense.Value);
                 if (IsCritical)
                 {
@@ -36,7 +36,7 @@ namespace EGamePlay.Combat
             {
                 if (DamageEffect.CanCrit)
                 {
-                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProb.Value;
+                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
                 }
                 DamageValue = int.Parse(DamageEffect.DamageValueFormula);
             }
@@ -44,7 +44,7 @@ namespace EGamePlay.Combat
             {
                 if (DamageEffect.CanCrit)
                 {
-                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProb.Value;
+                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
                 }
                 DamageValue = int.Parse(DamageEffect.DamageValueFormula);
             }

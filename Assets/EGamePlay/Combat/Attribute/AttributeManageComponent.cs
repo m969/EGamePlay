@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
         public FloatNumeric HealthPoint { get { return TypeNumerics[nameof(AttributeType.HealthPoint)]; } }
         public FloatNumeric AttackPower { get { return TypeNumerics[nameof(AttributeType.AttackPower)]; } }
         public FloatNumeric AttackDefense { get { return TypeNumerics[nameof(AttributeType.AttackDefense)]; } }
-        public FloatNumeric CriticalProb { get { return TypeNumerics[nameof(AttributeType.CriticalProb)]; } }
+        public FloatNumeric CriticalProbability { get { return TypeNumerics[nameof(AttributeType.CriticalProbability)]; } }
 
 
         public override void Setup()
@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
             AddNumeric(nameof(AttributeType.HealthPoint), 99_999);
             AddNumeric(nameof(AttributeType.AttackPower), 1000);
             AddNumeric(nameof(AttributeType.AttackDefense), 300);
-            AddNumeric(nameof(AttributeType.CriticalProb), 0.5f);
+            AddNumeric(nameof(AttributeType.CriticalProbability), 0.5f);
         }
 
         public FloatNumeric AddNumeric(string type, float baseValue)

@@ -41,7 +41,7 @@ namespace EGamePlay.Combat.Status
                         break;
                     case AttributeType.MagicDefense:
                         break;
-                    case AttributeType.CriticalProb:
+                    case AttributeType.CriticalProbability:
                         break;
                     default:
                         break;
@@ -86,7 +86,7 @@ namespace EGamePlay.Combat.Status
                         break;
                     case AttributeType.MagicDefense:
                         break;
-                    case AttributeType.CriticalProb:
+                    case AttributeType.CriticalProbability:
                         break;
                     default:
                         break;
