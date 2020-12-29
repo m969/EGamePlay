@@ -6,6 +6,7 @@ namespace EGamePlay.Combat.Skill
     public abstract class SkillAbility : AbilityEntity
     {
         public SkillConfigObject SkillConfigObject { get; set; }
+        public bool Spelling { get; set; }
 
 
         public override void Awake(object initData)

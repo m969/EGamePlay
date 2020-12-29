@@ -6,6 +6,7 @@ using EGamePlay.Combat.Ability;
 using EGamePlay.Combat.Skill;
 using EGamePlay.Combat;
 using EGamePlay;
+using DG.Tweening;
 using ET;
 
 public class Skill1004Ability : SkillAbility
@@ -27,9 +28,14 @@ public class Skill1004Execution : SkillAbilityExecution
         taskData.Position = GetParent<CombatEntity>().Position;
         taskData.Direction = InputDirection;
         taskData.LifeTime = 2000;
-        taskData.EffectPrefab = GetAbilityEntity<Skill1004Ability>().SkillConfigObject.SkillEffectObject;
+        taskData.EffectPrefab = GetAbility<Skill1004Ability>().SkillConfigObject.SkillEffectObject;
         var task = EntityFactory.CreateWithParent<CreateEffectTask>(this, taskData);
         task.ExecuteTaskAsync().Coroutine();
+
+        Hero.Instance.StopMove();
+        Hero.Instance.PlayThenIdleAsync(Hero.Instance.SkillAnimation).Coroutine();
+        Hero.Instance.SkillPlaying = true;
+        Hero.Instance.transform.GetChild(0).eulerAngles = new Vector3(0, taskData.Direction, 0);
 
         await TimerComponent.Instance.WaitAsync(1500);
 
@@ -37,7 +43,7 @@ public class Skill1004Execution : SkillAbilityExecution
         taskData2.Position = GetParent<CombatEntity>().Position;
         taskData2.Direction = InputDirection;
         taskData2.LifeTime = 200;
-        taskData2.TriggerPrefab = GetAbilityEntity<Skill1004Ability>().SkillConfigObject.AreaCollider;
+        taskData2.TriggerPrefab = GetAbility<Skill1004Ability>().SkillConfigObject.AreaCollider;
         var task2 = EntityFactory.CreateWithParent<CreateTriggerTask>(this, taskData2);
         task2.OnTriggerEnterCallbackAction = (other) => {
             AbilityEntity.ApplyAbilityEffect(other.GetComponent<Monster>().CombatEntity);
@@ -45,5 +51,6 @@ public class Skill1004Execution : SkillAbilityExecution
         await task2.ExecuteTaskAsync();
 
         EndExecute();
+        Hero.Instance.SkillPlaying = false;
     }
 }

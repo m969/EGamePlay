@@ -11,6 +11,7 @@ using ET;
 
 public sealed class Hero : MonoBehaviour
 {
+    public static Hero Instance { get; set; }
     public CombatEntity CombatEntity;
     public float MoveSpeed = 1f;
     public float AnimTime = 0.05f;
@@ -31,6 +32,7 @@ public sealed class Hero : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
         AnimancerComponent.Animator.fireEvents = false;
         AnimancerComponent.States.CreateIfNew(IdleAnimation);
         AnimancerComponent.States.CreateIfNew(RunAnimation);
@@ -61,11 +63,11 @@ public sealed class Hero : MonoBehaviour
     {
         CombatEntity.Position = transform.position;
 
-        AnimTimer.UpdateAsFinish(Time.deltaTime);
-        if (!AnimTimer.IsFinished)
-        {
-            //return;
-        }
+        //AnimTimer.UpdateAsFinish(Time.deltaTime);
+        //if (!AnimTimer.IsFinished)
+        //{
+        //    return;
+        //}
 
         //var h = Input.GetAxis("Horizontal");
         //var v = Input.GetAxis("Vertical");
@@ -78,16 +80,26 @@ public sealed class Hero : MonoBehaviour
         //    transform.position = new Vector3(p.x + h, 0, p.z + v);
         //}
 
+        if (SkillPlaying)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown((int)MouseButton.RightMouse))
         {
             if (RaycastHelper.CastMapPoint(out var point))
             {
                 var time = Vector3.Distance(transform.position, point) * MoveSpeed * 0.5f;
-                MoveTweener?.Kill();
-                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear).OnUpdate(()=> { transform.GetChild(0).DOLookAt(point, 0.2f); }).OnComplete(()=>{ AnimancerComponent.Play(IdleAnimation, 0.25f); });
+                StopMove();
+                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear).OnUpdate(()=> { if (!SkillPlaying) { transform.GetChild(0).DOLookAt(point, 0.2f); } }).OnComplete(()=>{ AnimancerComponent.Play(IdleAnimation, 0.25f); });
                 AnimancerComponent.Play(RunAnimation, 0.25f);
             }
         }
+    }
+
+    public void StopMove()
+    {
+        MoveTweener?.Kill();
     }
 
     private void SpawnLineEffect(GameObject lineEffectPrefab, Vector3 p1, Vector3 p2)
@@ -125,11 +137,26 @@ public sealed class Hero : MonoBehaviour
         action.ApplyDamage();
     }
 
+    private ETCancellationToken token;
+    public bool SkillPlaying;
     public async ETVoid PlayThenIdleAsync(AnimationClip animation)
     {
+        if (SkillPlaying)
+        {
+            return;
+        }
+        AnimancerComponent.Play(IdleAnimation);
         AnimancerComponent.Play(animation, 0.25f);
-        await TimerComponent.Instance.WaitAsync((int)(animation.length * 1000));
-        AnimancerComponent.Play(IdleAnimation, 0.25f);
+        if (token != null)
+        {
+            token.Cancel();
+        }
+        token = new ETCancellationToken();
+        var isTimeout = await TimerComponent.Instance.WaitAsync((int)(animation.length * 1000), token);
+        if (isTimeout)
+        {
+            AnimancerComponent.Play(IdleAnimation, 0.25f);
+        }
     }
 
     public void SpellSkillA()

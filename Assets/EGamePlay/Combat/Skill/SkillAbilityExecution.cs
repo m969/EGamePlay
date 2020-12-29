@@ -14,5 +14,18 @@ namespace EGamePlay.Combat.Skill
         public CombatEntity InputCombatEntity { get; set; }
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
+
+
+        public override void BeginExecute()
+        {
+            base.BeginExecute();
+            GetAbility<SkillAbility>().Spelling = true;
+        }
+
+        public override void EndExecute()
+        {
+            base.EndExecute();
+            GetAbility<SkillAbility>().Spelling = false;
+        }
     }
 }

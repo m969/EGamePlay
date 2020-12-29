@@ -74,7 +74,7 @@ namespace EGamePlay.Combat
         /// <summary>
         /// 挂载能力，技能、被动、buff都通过这个接口挂载
         /// </summary>
-        /// <param name="abilityEntity"></param>
+        /// <param name="configObject"></param>
         public T AttachAbility<T>(object configObject) where T : AbilityEntity, new()
         {
             var ability = EntityFactory.CreateWithParent<T>(this, configObject);
