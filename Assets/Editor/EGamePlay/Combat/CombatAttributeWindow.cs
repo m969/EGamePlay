@@ -32,24 +32,25 @@
 		[LabelText("状态配置")]
         [ListDrawerSettings(Expanded = true, DraggableItems = false)]
 		public List<StateConfig> StateConfigs;
-		//[Button("+")]
-		//private void AddStateConfig()
-		//{
-		//	var arr = System.DateTime.Now.Ticks.ToString().Reverse();
-		//	StateConfigs.Add(new StateConfig() { Guid = string.Concat(arr) });
-		//}
+        //[Button("+")]
+        //private void AddStateConfig()
+        //{
+        //	var arr = System.DateTime.Now.Ticks.ToString().Reverse();
+        //	StateConfigs.Add(new StateConfig() { Guid = string.Concat(arr) });
+        //}
 
-		//[HideLabel]
-		//[ReadOnly]
-		//[OnInspectorGUI(PrependMethodName = "DrawStateList"/*, AppendMethodName = "EndDrawStateMatrix"*/)]
-		//public string SplitTitle = "";
+        //[HideLabel]
+        //[ReadOnly]
+        //[OnInspectorGUI(PrependMethodName = "DrawStateList"/*, AppendMethodName = "EndDrawStateMatrix"*/)]
+        //public string SplitTitle = "";
 
-		private void OnEnable()
+        protected override void OnEnable()
         {
-			attributeConfigObject = AssetDatabase.LoadAssetAtPath<AttributeConfigObject>("Assets/EGamePlay/Demo/Resources/战斗属性配置.asset");
+            base.OnEnable();
+			attributeConfigObject = AssetDatabase.LoadAssetAtPath<AttributeConfigObject>("Assets/EGamePlay-Examples/战斗属性配置.asset");
 			if (attributeConfigObject == null)
             {
-
+				return;
             }
 			AttributeConfigs = attributeConfigObject.AttributeConfigs;
 			StateConfigs = attributeConfigObject.StateConfigs;
@@ -83,6 +84,10 @@
 			//}
 			EditorGUILayout.EndHorizontal();
 			EditorGUILayout.BeginVertical();
+			if (attributeConfigObject.StateMutexTable == null)
+            {
+				attributeConfigObject.StateMutexTable = new List<List<bool>>();
+			}
 			attributeConfigObject.StateMutexTable.SetLength(StateConfigs.Count);
 			for (int i = 0; i < StateConfigs.Count; i++)
 			{
@@ -171,7 +176,7 @@
 		}
 
 
-		[MenuItem("Tools/EGamePlay/战斗属性编辑界面")]
+		//[MenuItem("Tools/EGamePlay/战斗属性编辑界面")]
 		private static void ShowWindow()
 		{
 			var window = GetWindowWithRect<CombatAttributeWindow>(new Rect(0, 0, 800, 600), true, "战斗属性编辑界面");

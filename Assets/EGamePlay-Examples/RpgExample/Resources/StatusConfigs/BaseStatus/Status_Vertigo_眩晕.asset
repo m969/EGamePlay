@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Mute_\u6C89\u9ED8"
+  m_Name: "Status_Vertigo_\u7729\u6655"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -34,15 +34,16 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Mute
-  Name: "\u6C89\u9ED8"
+  ID: Vertigo
+  Name: "\u7729\u6655"
   StatusType: 1
   Duration: 0
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
+  ChildrenStatuses: []
   EnabledStateModify: 1
-  ActionControlType: 4
+  ActionControlType: 14
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 

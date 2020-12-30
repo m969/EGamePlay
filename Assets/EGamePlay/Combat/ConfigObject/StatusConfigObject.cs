@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define EGamePlay_ZN
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,11 +18,11 @@ namespace EGamePlay.Combat
     //[LabelText("状态配置")]
     public class StatusConfigObject : SerializedScriptableObject
     {
-        [LabelText("状态ID"), DelayedProperty]
+        [LabelText(StatusIdLabel), DelayedProperty]
         public string ID = "Status1";
-        [LabelText("状态名称"), DelayedProperty]
+        [LabelText(StatusNameLabel), DelayedProperty]
         public string Name = "状态1";
-        [LabelText("状态类型")]
+        [LabelText(StatusTypeLabel)]
         public StatusType StatusType;
         //[Tooltip("不勾即代表永久，0也代表永久")]
         //[LabelText("持续时间"), SuffixLabel("毫秒", true)]
@@ -183,5 +185,45 @@ namespace EGamePlay.Combat
                 }
             }
         }
+
+
+#if EGamePlay_ZN
+        private const string StatusIdLabel = "状态ID";
+        private const string StatusNameLabel = "状态名称";
+        private const string StatusTypeLabel = "状态类型";
+#else
+#endif
+    }
+
+    public enum StatusType
+    {
+        [LabelText("Buff(增益)")]
+        Buff,
+        [LabelText("Debuff(减益)")]
+        Debuff,
+        [LabelText("其他")]
+        Other,
+    }
+
+    public enum EffectTriggerType
+    {
+        [LabelText("立即触发")]
+        Immediate = 0,
+        [LabelText("条件触发")]
+        Condition = 1,
+        [LabelText("行动点触发")]
+        Action = 2,
+        [LabelText("间隔触发")]
+        Interval = 3,
+    }
+
+    public enum ConditionType
+    {
+        [LabelText("当x秒内没有受伤")]
+        WhenInTimeNoDamage = 0,
+        [LabelText("当生命值低于x")]
+        WhenHPLower = 1,
+        [LabelText("当生命值低于百分比x")]
+        WhenHPPctLower = 2,
     }
 }

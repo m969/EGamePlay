@@ -1,5 +1,4 @@
 ﻿using EGamePlay;
-using EGamePlay.IoC;
 using ET;
 using System.Threading;
 using UnityEngine;
@@ -10,7 +9,6 @@ public class EGamePlayInit : MonoBehaviour
     private void Awake()
     {
         EntityFactory.Global = new GlobalEntity();
-        EntityFactory.Global.Kernel = EntityFactory.Create<KernelEntity>();
         EntityFactory.CreateWithParent<TimerComponent>(EntityFactory.Global);
     }
 

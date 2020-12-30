@@ -10,7 +10,6 @@ namespace EGamePlay
         public List<Component> AllComponents { get; private set; } = new List<Component>();
         public List<Component> RemoveComponents { get; private set; } = new List<Component>();
         public List<Component> AddComponents { get; private set; } = new List<Component>();
-        public IoC.KernelEntity Kernel { get; set; }
 
 
         public void Update()

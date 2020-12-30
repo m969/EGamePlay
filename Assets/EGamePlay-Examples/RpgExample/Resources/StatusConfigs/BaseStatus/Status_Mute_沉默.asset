@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Scare_\u6050\u60E7"
+  m_Name: "Status_Mute_\u6C89\u9ED8"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -34,15 +34,16 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Scare
-  Name: "\u6050\u60E7"
+  ID: Mute
+  Name: "\u6C89\u9ED8"
   StatusType: 1
   Duration: 0
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
+  ChildrenStatuses: []
   EnabledStateModify: 1
-  ActionControlType: 28
+  ActionControlType: 4
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 
@@ -50,4 +51,4 @@ MonoBehaviour:
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
-  StatusDescription: "\u6050\u60E7\uFF1A\u4F7F\u82F1\u96C4\u5931\u53BB\u63A7\u5236\uFF0C\u65E0\u76EE\u7684\u7684\u8D70\u52A8\u3002"
+  StatusDescription: 
