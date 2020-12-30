@@ -41,8 +41,9 @@ MonoBehaviour:
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
+  ChildrenStatuses: []
   EnabledStateModify: 0
-  StateType: 0
+  ActionControlType: 0
   EnabledAttributeModify: 1
   AttributeType: 1001
   NumericValue: "\u53D8\u52A8\u6570\u503C"

@@ -28,6 +28,7 @@ namespace EGamePlay.Combat
         }
 
         [ToggleGroup("Enabled")]
+        [LabelText("状态配置")]
         public StatusConfigObject RemoveStatus;
     }
 }

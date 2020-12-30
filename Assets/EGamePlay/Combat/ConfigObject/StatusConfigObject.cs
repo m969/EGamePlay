@@ -13,7 +13,7 @@ using System.Reflection;
 namespace EGamePlay.Combat
 {
     [CreateAssetMenu(fileName = "状态配置", menuName = "技能|状态/状态配置")]
-    [LabelText("状态配置")]
+    //[LabelText("状态配置")]
     public class StatusConfigObject : SerializedScriptableObject
     {
         [LabelText("状态ID"), DelayedProperty]
@@ -32,6 +32,9 @@ namespace EGamePlay.Combat
         public bool CanStack;
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
         public int MaxStack = 1;
+
+        [LabelText("子状态效果列表")]
+        public List<StatusConfigObject> ChildrenStatuses;
 
         [ToggleGroup("EnabledStateModify", "行为禁制")]
         public bool EnabledStateModify;
@@ -181,32 +184,4 @@ namespace EGamePlay.Combat
             }
         }
     }
-
-    [Serializable]
-    [HideLabel]
-    //[LabelText("持续时间")]
-    public class DurationConfig
-    {
-        [ToggleGroup("Enabled", "持续时间")]
-        public bool Enabled;
-
-        [ToggleGroup("Enabled")]
-        [Tooltip("不勾即代表永久，0也代表永久")]
-        [LabelText("持续时间")]
-        [SuffixLabel("毫秒", true)]
-        public uint Duration;
-    }
-    
-    //[Serializable]
-    //[HideLabel]
-    ////[LabelText("设置状态")]
-    //public class StateConfig
-    //{
-    //    [ToggleGroup("Enabled", "设置状态")]
-    //    public bool Enabled;
-
-    //    [ToggleGroup("Enabled")]
-    //    [LabelText("设置")]
-    //    public StateType StateType;
-    //}
 }
