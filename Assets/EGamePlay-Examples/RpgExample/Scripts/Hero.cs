@@ -11,7 +11,6 @@ using ET;
 
 public sealed class Hero : MonoBehaviour
 {
-    public static Hero Instance { get; set; }
     public CombatEntity CombatEntity;
     public float MoveSpeed = 1f;
     public float AnimTime = 0.05f;
@@ -20,6 +19,7 @@ public sealed class Hero : MonoBehaviour
     public GameObject SkillEffectPrefab;
     public GameObject HitEffectPrefab;
     private Tweener MoveTweener { get; set; }
+    private Tweener LookAtTweener { get; set; }
     [Space(10)]
     public Animancer.AnimancerComponent AnimancerComponent;
     public AnimationClip IdleAnimation;
@@ -27,6 +27,11 @@ public sealed class Hero : MonoBehaviour
     public AnimationClip JumpAnimation;
     public AnimationClip AttackAnimation;
     public AnimationClip SkillAnimation;
+
+    public static Hero Instance { get; set; }
+    public Vector3 Position { get; set; }
+    public Vector3 Rotation { get; set; }
+    public bool SkillPlaying { get; set; }
 
 
     // Start is called before the first frame update
@@ -91,7 +96,8 @@ public sealed class Hero : MonoBehaviour
             {
                 var time = Vector3.Distance(transform.position, point) * MoveSpeed * 0.5f;
                 StopMove();
-                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear).OnUpdate(()=> { if (!SkillPlaying) { transform.GetChild(0).DOLookAt(point, 0.2f); } }).OnComplete(()=>{ AnimancerComponent.Play(IdleAnimation, 0.25f); });
+                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear)/*.OnUpdate(()=> { if (!SkillPlaying) {  } })*/.OnComplete(()=>{ AnimancerComponent.Play(IdleAnimation, 0.25f); });
+                LookAtTweener = transform.GetChild(0).DOLookAt(point, 0.2f);
                 AnimancerComponent.Play(RunAnimation, 0.25f);
             }
         }
@@ -100,6 +106,7 @@ public sealed class Hero : MonoBehaviour
     public void StopMove()
     {
         MoveTweener?.Kill();
+        LookAtTweener?.Kill();
     }
 
     private void SpawnLineEffect(GameObject lineEffectPrefab, Vector3 p1, Vector3 p2)
@@ -138,13 +145,8 @@ public sealed class Hero : MonoBehaviour
     }
 
     private ETCancellationToken token;
-    public bool SkillPlaying;
     public async ETVoid PlayThenIdleAsync(AnimationClip animation)
     {
-        if (SkillPlaying)
-        {
-            return;
-        }
         AnimancerComponent.Play(IdleAnimation);
         AnimancerComponent.Play(animation, 0.25f);
         if (token != null)

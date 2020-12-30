@@ -7,6 +7,7 @@ namespace EGamePlay.Combat.Skill
     {
         public SkillConfigObject SkillConfigObject { get; set; }
         public bool Spelling { get; set; }
+        public GameTimer CooldownTimer { get; } = new GameTimer(1f);
 
 
         public override void Awake(object initData)

@@ -14,12 +14,12 @@ namespace EGamePlay.Combat.Ability
         public float Direction;
         public GameObject TriggerPrefab;
         public int LifeTime;
+        public Action<Collider> OnTriggerEnterCallback;
     }
 
     public class CreateTriggerTask : AbilityTask
     {
         public GameObject TriggerObj { get; set; }
-        public Action<Collider> OnTriggerEnterCallbackAction { get; set; }
 
 
         public override async ETTask ExecuteTaskAsync()
@@ -28,7 +28,7 @@ namespace EGamePlay.Combat.Ability
             TriggerObj = GameObject.Instantiate(taskData.TriggerPrefab, taskData.Position, Quaternion.identity);
             TriggerObj.GetComponent<Collider>().enabled = false;
             TriggerObj.transform.eulerAngles = new Vector3(0, taskData.Direction, 0);
-            TriggerObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => { OnTriggerEnterCallbackAction?.Invoke(other); };
+            TriggerObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => { taskData.OnTriggerEnterCallback?.Invoke(other); };
             TriggerObj.GetComponent<Collider>().enabled = true;
             await TimerComponent.Instance.WaitAsync(100);
             GameObject.Destroy(TriggerObj);

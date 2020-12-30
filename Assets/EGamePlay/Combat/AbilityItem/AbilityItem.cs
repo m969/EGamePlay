@@ -7,9 +7,9 @@ using ET;
 namespace EGamePlay.Combat.Ability
 {
     /// <summary>
-    /// 能力单位
+    /// 能力单元体
     /// </summary>
-    public class AbilityUnit : AbilityEntity
+    public class AbilityItem : AbilityEntity
     {
         public object unitInitData { get; set; }
 
