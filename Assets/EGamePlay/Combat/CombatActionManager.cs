@@ -14,10 +14,10 @@ namespace EGamePlay.Combat
 
         public static T CreateAction<T>(CombatEntity combatEntity) where T : CombatAction, new()
         {
-            var operation = new T();
-            operation.Creator = combatEntity;
-            CombatActions.Add(operation);
-            return operation;
+            var action = new T();
+            action.Creator = combatEntity;
+            CombatActions.Add(action);
+            return action;
         }
     }
 }

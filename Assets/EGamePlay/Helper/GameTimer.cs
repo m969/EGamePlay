@@ -28,14 +28,14 @@ public class GameTimer
         _time = 0f;
     }
 
-    public GameTimer UpdateAsFinish(float delta, Action action = null)
+    public GameTimer UpdateAsFinish(float delta, Action onFinish = null)
     {
         if (!IsFinished)
         {
             _time += delta;
-            if (action != null)
+            if (onFinish != _onFinish)
             {
-                _onFinish = action;
+                _onFinish = onFinish;
             }
             if (IsFinished)
             {
@@ -45,12 +45,12 @@ public class GameTimer
         return this;
     }
 
-    public void UpdateAsRepeat(float delta, Action action = null)
+    public void UpdateAsRepeat(float delta, Action onRepeat = null)
     {
         _time += delta;
-        if (action != null)
+        if (onRepeat != _onFinish)
         {
-            _onFinish = action;
+            _onFinish = onRepeat;
         }
         while (_time >= _maxTime)
         {

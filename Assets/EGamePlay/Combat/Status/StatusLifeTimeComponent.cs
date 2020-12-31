@@ -17,14 +17,13 @@ namespace EGamePlay.Combat.Status
             var status = Entity as StatusAbility;
             var lifeTime = status.StatusConfigObject.Duration / 1000f;
             LifeTimer = new GameTimer(lifeTime);
-            LifeTimer.OnFinish(() => { GetEntity<StatusAbility>().EndAbility(); });
         }
 
         public override void Update()
         {
             if (LifeTimer.IsRunning)
             {
-                LifeTimer.UpdateAsFinish(Time.deltaTime);
+                LifeTimer.UpdateAsFinish(Time.deltaTime, GetEntity<StatusAbility>().EndAbility);
             }
         }
     }

@@ -34,7 +34,7 @@ namespace EGamePlay.Combat
             }
             if (Effect is AddStatusEffect addStatusEffect)
             {
-                Status = Target.ReceiveStatus<StatusAbility>(addStatusEffect.AddStatus);
+                Status = Target.AttachStatus<StatusAbility>(addStatusEffect.AddStatus);
                 Status.Caster = Creator;
                 Status.AddComponent<StatusLifeTimeComponent>();
                 Status.TryActivateAbility();

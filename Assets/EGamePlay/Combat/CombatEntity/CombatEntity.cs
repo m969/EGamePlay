@@ -89,7 +89,7 @@ namespace EGamePlay.Combat
             return skill;
         }
 
-        public T ReceiveStatus<T>(object configObject) where T : StatusAbility, new()
+        public T AttachStatus<T>(object configObject) where T : StatusAbility, new()
         {
             var status = AttachAbility<T>(configObject);
             return status;
