@@ -24,6 +24,11 @@ public class Skill1004Execution : SkillAbilityExecution
     {
         base.BeginExecute();
 
+        Hero.Instance.StopMove();
+        Hero.Instance.PlayThenIdleAsync(Hero.Instance.SkillAnimation).Coroutine();
+        Hero.Instance.SkillPlaying = true;
+        Hero.Instance.transform.GetChild(0).eulerAngles = new Vector3(0, InputDirection, 0);
+
         var taskData = new CreateEffectTaskData();
         taskData.Position = GetParent<CombatEntity>().Position;
         taskData.Direction = InputDirection;
@@ -31,11 +36,6 @@ public class Skill1004Execution : SkillAbilityExecution
         taskData.EffectPrefab = GetAbility<Skill1004Ability>().SkillConfigObject.SkillEffectObject;
         var task = EntityFactory.CreateWithParent<CreateEffectTask>(this, taskData);
         task.ExecuteTaskAsync().Coroutine();
-
-        Hero.Instance.StopMove();
-        Hero.Instance.PlayThenIdleAsync(Hero.Instance.SkillAnimation).Coroutine();
-        Hero.Instance.SkillPlaying = true;
-        Hero.Instance.transform.GetChild(0).eulerAngles = new Vector3(0, taskData.Direction, 0);
 
         await TimerComponent.Instance.WaitAsync(1500);
 
@@ -48,7 +48,6 @@ public class Skill1004Execution : SkillAbilityExecution
             AbilityEntity.ApplyAbilityEffect(other.GetComponent<Monster>().CombatEntity);
         };
         var task2 = EntityFactory.CreateWithParent<CreateTriggerTask>(this, taskData2);
-
         await task2.ExecuteTaskAsync();
 
         EndExecute();

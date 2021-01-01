@@ -28,7 +28,7 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 2
     - Name: 
       Entry: 7
       Data: 1|EGamePlay.Combat.DamageEffect, EGamePlay
@@ -155,48 +155,6 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 7
-      Data: 5|EGamePlay.Combat.StackTagEffect, EGamePlay
-    - Name: IsSkillEffect
-      Entry: 5
-      Data: true
-    - Name: Enabled
-      Entry: 5
-      Data: false
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
-    - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: ConditionType
-      Entry: 3
-      Data: 0
-    - Name: ActionPointType
-      Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
-    - Name: ConditionParam
-      Entry: 6
-      Data: 
-    - Name: TriggerProhibit
-      Entry: 6
-      Data: 
-    - Name: TagType
-      Entry: 3
-      Data: 0
-    - Name: TagCount
-      Entry: 3
-      Data: 1
-    - Name: TagDuration
-      Entry: 3
-      Data: 10000
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -205,7 +163,7 @@ MonoBehaviour:
   ID: 1001
   Name: "\u9ED1\u706B\u7403\u672F"
   SkillSpellType: 0
-  TargetSelectType: 0
+  TargetSelectType: 1
   AffectAreaType: 0
   CircleAreaRadius: 0
   AreaCollider: {fileID: 0}
