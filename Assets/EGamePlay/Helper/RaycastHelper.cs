@@ -5,9 +5,10 @@ public static class RaycastHelper
     public static bool CastMapPoint(out Vector3 hitPoint)
     {
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, 500, LayerMask.GetMask(new string[] { "Map" })))
+        if (Physics.Raycast(ray, out RaycastHit hit, 500, 1 << LayerMask.NameToLayer("Map")))
         {
             hitPoint = hit.point;
+            //Debug.Log($"{hit.collider.name}");
             return true;
         }
         hitPoint = Vector3.zero;
@@ -17,7 +18,7 @@ public static class RaycastHelper
     public static bool CastEnemyObj(out GameObject castObj)
     {
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, 500, LayerMask.GetMask(new string[] { "Enemy" })))
+        if (Physics.Raycast(ray, out RaycastHit hit, 500, 1 << LayerMask.NameToLayer("Enemy")))
         {
             castObj = hit.collider.gameObject;
             return true;

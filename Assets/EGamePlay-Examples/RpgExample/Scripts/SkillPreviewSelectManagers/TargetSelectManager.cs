@@ -48,6 +48,7 @@ public class TargetSelectManager : MonoBehaviour
 
     public void Show(Action<GameObject> onSelectTargetCallback)
     {
+        gameObject.SetActive(true);
         Cursor.visible = false;
         CursorImage.gameObject.SetActive(true);
         RangeCircleObj.SetActive(true);
@@ -59,5 +60,6 @@ public class TargetSelectManager : MonoBehaviour
         Cursor.visible = true;
         CursorImage.gameObject.SetActive(false);
         RangeCircleObj.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

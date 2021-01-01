@@ -89,6 +89,7 @@ public class SkillPreviewComponent : EGamePlay.Component
         {
             return;
         }
+        //Log.Debug($"OnInputTarget {combatEntity}");
         var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
         action.SkillAbility = PreviewingSkill;
         action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
@@ -102,6 +103,7 @@ public class SkillPreviewComponent : EGamePlay.Component
         {
             return;
         }
+        //Log.Debug($"OnInputPoint {point}");
         var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
         action.SkillAbility = PreviewingSkill;
         action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
@@ -115,6 +117,7 @@ public class SkillPreviewComponent : EGamePlay.Component
         {
             return;
         }
+        //Log.Debug($"OnInputDirect {direction}");
         var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
         action.SkillAbility = PreviewingSkill;
         action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
