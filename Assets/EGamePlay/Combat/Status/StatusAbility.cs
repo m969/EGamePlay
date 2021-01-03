@@ -1,4 +1,5 @@
 ﻿using EGamePlay.Combat.Ability;
+using System.Collections.Generic;
 
 namespace EGamePlay.Combat.Status
 {
@@ -8,6 +9,7 @@ namespace EGamePlay.Combat.Status
         public CombatEntity Caster { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
         public FloatModifier NumericModifier { get; set; }
+        private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
 
 
         public override void Awake(object initData)
@@ -66,11 +68,21 @@ namespace EGamePlay.Combat.Status
                     }
                 }
             }
+            foreach (var item in StatusConfigObject.ChildrenStatuses)
+            {
+                var status = AbilityOwner.AttachStatus<StatusAbility>(item);
+                status.Caster = AbilityOwner;
+                status.TryActivateAbility();
+            }
         }
 
         //结束
         public override void EndAbility()
         {
+            if (StatusConfigObject.EnabledStateModify)
+            {
+
+            }
             if (StatusConfigObject.EnabledAttributeModify)
             {
                 switch (StatusConfigObject.AttributeType)
@@ -92,6 +104,15 @@ namespace EGamePlay.Combat.Status
                         break;
                 }
             }
+            if (StatusConfigObject.EnabledLogicTrigger)
+            {
+
+            }
+            foreach (var item in ChildrenStatuses)
+            {
+                item.EndAbility();
+            }
+            ChildrenStatuses.Clear();
             NumericModifier = null;
             GetParent<CombatEntity>().OnStatusRemove(this);
             base.EndAbility();

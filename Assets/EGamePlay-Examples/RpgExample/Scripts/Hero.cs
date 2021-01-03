@@ -137,7 +137,7 @@ public sealed class Hero : MonoBehaviour
         SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
         SpawnHitEffect(transform.position, monster.transform.position);
 
-        var action = CombatActionManager.CreateAction<DamageAction>(CombatEntity);
+        var action = CombatEntity.CreateCombatAction<DamageAction>();
         action.Target = monster.GetComponent<Monster>().CombatEntity;
         action.DamageSource = DamageSource.Attack;
         CombatEntity.AttributeComponent.AttackPower.SetBase(ET.RandomHelper.RandomNumber(600, 999));

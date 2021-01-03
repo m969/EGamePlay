@@ -64,7 +64,7 @@ MonoBehaviour:
       Data: 1
     - Name: DamageValueFormula
       Entry: 1
-      Data: 700
+      Data: "300+\u81EA\u8EAB\u653B\u51FB\u529B*0.4"
     - Name: CanCrit
       Entry: 5
       Data: false

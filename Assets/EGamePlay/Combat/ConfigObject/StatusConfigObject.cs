@@ -32,8 +32,8 @@ namespace EGamePlay.Combat
         public bool ShowInStatusIconList;
         [LabelText("是否可叠加")]
         public bool CanStack;
-        [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(1, 99)]
-        public int MaxStack = 1;
+        [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
+        public int MaxStack = 0;
 
         [LabelText("子状态效果列表")]
         public List<StatusConfigObject> ChildrenStatuses;

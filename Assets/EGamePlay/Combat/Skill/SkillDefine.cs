@@ -124,24 +124,6 @@
         //Burn = 10,
     }
 
-    public class SkillHelper
-    {
-        public static void AddEffect(List<Effect> Effects, SkillEffectType EffectType)
-        {
-            if (EffectType != SkillEffectType.None)
-            {
-                if (EffectType == SkillEffectType.AddStatus) Effects.Add(new AddStatusEffect() { Enabled = true });
-                if (EffectType == SkillEffectType.RemoveStatus) Effects.Add(new RemoveStatusEffect() { Enabled = true });
-                if (EffectType == SkillEffectType.NumericModify) Effects.Add(new AttributeNumericModifyEffect() { Enabled = true });
-                if (EffectType == SkillEffectType.CauseDamage) Effects.Add(new DamageEffect() { Enabled = true });
-                if (EffectType == SkillEffectType.CureHero) Effects.Add(new CureEffect() { Enabled = true });
-                if (EffectType == SkillEffectType.AddShield) Effects.Add(new AddShieldEffect() { Enabled = true });
-                if (EffectType == SkillEffectType.StackTag) Effects.Add(new StackTagEffect() { Enabled = true });
-                EffectType = SkillEffectType.None;
-            }
-        }
-    }
-
     [Flags]
     [LabelText("行为禁制")]
     public enum ActionControlType
@@ -180,6 +162,9 @@
 
         [LabelText("暴击概率")]
         CriticalProbability = 2001,
+
+        [LabelText("护盾值")]
+        ShieldValue = 3001,
     }
 
     [LabelText("整形数值")]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EGamePlay;
 using System;
+using B83.ExpressionParser;
 
 namespace EGamePlay.Combat
 {
@@ -11,6 +12,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class DamageAction : CombatAction
     {
+        private static ExpressionParser ExpressionParser { get; set; } = new ExpressionParser();
         public DamageEffect DamageEffect { get; set; }
         //伤害来源
         public DamageSource DamageSource { get; set; }
@@ -19,6 +21,16 @@ namespace EGamePlay.Combat
         //是否是暴击
         public bool IsCritical { get; set; }
 
+
+        private int ParseDamage()
+        {
+            var expression = ExpressionParser.EvaluateExpression(DamageEffect.DamageValueFormula);
+            if (expression.Parameters.ContainsKey("自身攻击力"))
+            {
+                expression.Parameters["自身攻击力"].Value = Creator.AttributeComponent.AttackPower.Value;
+            }
+            return (int)expression.Value;
+        }
 
         //前置处理
         private void PreProcess()
@@ -38,7 +50,7 @@ namespace EGamePlay.Combat
                 {
                     IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
                 }
-                DamageValue = int.Parse(DamageEffect.DamageValueFormula);
+                DamageValue = ParseDamage();
             }
             if (DamageSource == DamageSource.Buff)
             {
@@ -46,7 +58,7 @@ namespace EGamePlay.Combat
                 {
                     IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
                 }
-                DamageValue = int.Parse(DamageEffect.DamageValueFormula);
+                DamageValue = ParseDamage();
             }
         }
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Burn_\u666E\u901A\u707C\u70E7"
+  m_Name: "Status_Shield_\u62A4\u76FE"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -27,69 +27,27 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|EGamePlay.Combat.DamageEffect, EGamePlay
-    - Name: IsSkillEffect
-      Entry: 5
-      Data: false
-    - Name: Enabled
-      Entry: 5
-      Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
       Data: 0
-    - Name: EffectTriggerType
-      Entry: 3
-      Data: 3
-    - Name: ConditionType
-      Entry: 3
-      Data: 0
-    - Name: ActionPointType
-      Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 1
-      Data: 300
-    - Name: ConditionParam
-      Entry: 6
-      Data: 
-    - Name: TriggerProhibit
-      Entry: 1
-      Data: 100%
-    - Name: DamageType
-      Entry: 3
-      Data: 0
-    - Name: DamageValueFormula
-      Entry: 1
-      Data: 150
-    - Name: CanCrit
-      Entry: 5
-      Data: false
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
-  ID: Burn
-  Name: "\u666E\u901A\u707C\u70E7"
-  StatusType: 1
-  Duration: 5000
-  ShowInStatusIconList: 1
+  ID: Shield
+  Name: "\u62A4\u76FE"
+  StatusType: 0
+  Duration: 0
+  ShowInStatusIconList: 0
   CanStack: 0
-  MaxStack: 99
+  MaxStack: 0
   ChildrenStatuses: []
   EnabledStateModify: 0
   ActionControlType: 0
-  EnabledAttributeModify: 0
-  AttributeType: 0
-  NumericValue: 
-  EnabledLogicTrigger: 1
+  EnabledAttributeModify: 1
+  AttributeType: 3001
+  NumericValue: "\u62A4\u76FE\u503C"
+  EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

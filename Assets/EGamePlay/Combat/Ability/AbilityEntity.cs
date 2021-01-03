@@ -35,7 +35,7 @@ namespace EGamePlay.Combat.Ability
         //结束能力
         public virtual void EndAbility()
         {
-            Entity.Destroy(this);
+            Destroy(this);
         }
 
         //创建能力执行体

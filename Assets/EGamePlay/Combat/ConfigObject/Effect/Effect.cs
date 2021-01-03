@@ -79,19 +79,4 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("触发概率")]
         public string TriggerProhibit = "100%";
     }
-
-    public abstract class OnceEffect : Effect
-    {
-
-    }
-
-    public abstract class RepeatedEffect : Effect
-    {
-
-    }
-
-    public abstract class TriggerEffect : Effect
-    {
-
-    }
 }

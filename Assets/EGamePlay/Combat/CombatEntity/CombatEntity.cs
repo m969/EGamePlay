@@ -30,6 +30,12 @@ namespace EGamePlay.Combat
             CurrentHealth.Reset();
         }
 
+        public T CreateCombatAction<T>() where T : CombatAction, new()
+        {
+            var action = CombatActionManager.CreateAction<T>(this);
+            return action;
+        }
+
         #region 行动点事件
         public void ListenActionPoint(ActionPointType actionPointType, Action<CombatAction> action)
         {
