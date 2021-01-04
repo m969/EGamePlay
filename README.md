@@ -31,15 +31,17 @@
 
 ![StatusConfigImage.png](StatusConfigImage.png)
 
+---
 GamePlay战斗框架技术讨论交流qq群：763696367
 ===
-对战斗感兴趣的同学可以进群与群友一起探讨更合适的战斗框架实现
+对战斗感兴趣的同学可以进群一起探讨更合适的战斗框架实现
 
 ---
 对EGamePlay有任何疑问或建议可以进群反馈，或是提在[Discussions](https://github.com/m969/EGamePlay/discussions)
 
 ---
 ## 其他类似项目
+- https://github.com/KrazyL/SkillSystem-3 (Dota2 alike Skill System Implementation for KnightPhone)
 - https://github.com/weichx/AbilitySystem
 - https://github.com/dongweiPeng/SkillSystem (丰富的接口可便于使用扩展 完整的技能效果流程【如流程图】 配套的技能管理器 自定义的技能数据表)
 - https://github.com/sjai013/UnityGameplayAbilitySystem (The approach for this is taken from that used by Unreal's Gameplay Ability System, but implemented in Unity using the Data-Oriented Technology Stack (DOTS) where possible.)

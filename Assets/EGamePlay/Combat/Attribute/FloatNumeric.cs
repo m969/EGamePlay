@@ -9,6 +9,7 @@ namespace EGamePlay.Combat
     {
         public float Value;
     }
+
     /// <summary>
     /// 浮点型修饰器集合
     /// </summary>

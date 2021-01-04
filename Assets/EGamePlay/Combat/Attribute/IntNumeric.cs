@@ -117,3 +117,69 @@
 //        }
 //    }
 //}
+
+
+//using System.Text;
+//using System.Numerics;
+//using System;
+///// <summary>
+///// 整形数值
+///// </summary>
+//public class Numeric<T> 
+//{
+//    public T Value { get; private set; }
+//    public T baseValue { get; private set; }
+//    public T add { get; private set; }
+//    public int pctAdd { get; private set; }
+//    public T finalAdd { get; private set; }
+//    public int finalPctAdd { get; private set; }
+
+//    public void Initialize()
+//    {
+//        //baseValue = add = pctAdd = finalAdd = finalPctAdd = 0;
+//    }
+//    public T SetBase(T value)
+//    {
+//        baseValue = value;
+//        Update();
+//        return baseValue;
+//    }
+//    public T Add(T value)
+//    {
+//        if (typeof(T) == typeof(int))
+//        {
+//            //var i = (T)(object)((int)add + (int)value);
+
+//            add = (T)(object)(Convert.ToSingle(add) + Convert.ToSingle(value));
+//            add = (T)Convert.ChangeType(Convert.ToSingle(add) + Convert.ToSingle(value), typeof(T));
+//        }
+//        Update();
+//        return add;
+//    }
+//    public int PctAdd(int value)
+//    {
+//        pctAdd += value;
+//        Update();
+//        return pctAdd;
+//    }
+//    public int FinalAdd(int value)
+//    {
+//        finalAdd += value;
+//        Update();
+//        return finalAdd;
+//    }
+//    public int FinalPctAdd(int value)
+//    {
+//        finalPctAdd += value;
+//        Update();
+//        return finalPctAdd;
+//    }
+
+//    public void Update()
+//    {
+//        var value1 = baseValue;
+//        var value2 = (value1 + add) * (100 + pctAdd) / 100f;
+//        var value3 = (value2 + finalAdd) * (100 + finalPctAdd) / 100f;
+//        Value = (int)value3;
+//    }
+//}
