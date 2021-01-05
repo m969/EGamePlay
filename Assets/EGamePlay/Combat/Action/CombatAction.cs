@@ -25,7 +25,7 @@ namespace EGamePlay.Combat
     /// <remarks>
     /// 战斗行动由战斗实体主动发起，包含本次行动所需要用到的所有数据，并且会触发一系列行动点事件 <see cref="ActionPoint"/>
     /// </remarks>
-    public class CombatAction
+    public abstract class CombatAction : Entity
     {
         public ActionType ActionType { get; set; }
         public CombatEntity Creator { get; set; }

@@ -45,7 +45,7 @@ public class Skill1004Execution : SkillAbilityExecution
         taskData2.LifeTime = 200;
         taskData2.TriggerPrefab = GetAbility<Skill1004Ability>().SkillConfigObject.AreaCollider;
         taskData2.OnTriggerEnterCallback = (other) => {
-            AbilityEntity.ApplyAbilityEffect(other.GetComponent<Monster>().CombatEntity);
+            AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity);
         };
         var task2 = EntityFactory.CreateWithParent<CreateTriggerTask>(this, taskData2);
         await task2.ExecuteTaskAsync();

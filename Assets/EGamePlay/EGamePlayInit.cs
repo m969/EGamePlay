@@ -1,4 +1,5 @@
 ﻿using EGamePlay;
+using EGamePlay.Combat;
 using ET;
 using System.Threading;
 using UnityEngine;
@@ -10,11 +11,11 @@ public class EGamePlayInit : MonoBehaviour
     {
         EntityFactory.Global = new GlobalEntity();
         EntityFactory.CreateWithParent<TimerComponent>(EntityFactory.Global);
+        EntityFactory.Create<CombatContext>();
     }
 
     private void Start()
     {
-
     }
 
     private void Update()

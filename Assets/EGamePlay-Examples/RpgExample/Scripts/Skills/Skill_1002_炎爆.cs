@@ -26,7 +26,7 @@ public class Skill1002Execution : SkillAbilityExecution
         taskData2.Position = InputPoint;
         taskData2.TriggerPrefab = (AbilityEntity as Skill1002Entity).SkillConfigObject.AreaCollider;
         taskData2.OnTriggerEnterCallback = (other) => {
-            AbilityEntity.ApplyAbilityEffect(other.GetComponent<Monster>().CombatEntity);
+            AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity);
         };
         var task2 = EntityFactory.CreateWithParent<CreateTriggerTask>(this, taskData2);
 

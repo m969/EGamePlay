@@ -3,15 +3,15 @@
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 战斗属性数值匣子，在这里管理所有角色战斗属性数值的存储、变更、刷新等
+    /// 战斗属性数值管理组件，在这里管理所有角色战斗属性数值的存储、变更、刷新等
     /// </summary>
     public class AttributeManageComponent : Component
 	{
-        public Dictionary<string, FloatNumeric> TypeNumerics = new Dictionary<string, FloatNumeric>();
-        public FloatNumeric HealthPoint { get { return TypeNumerics[nameof(AttributeType.HealthPoint)]; } }
-        public FloatNumeric AttackPower { get { return TypeNumerics[nameof(AttributeType.AttackPower)]; } }
-        public FloatNumeric AttackDefense { get { return TypeNumerics[nameof(AttributeType.AttackDefense)]; } }
-        public FloatNumeric CriticalProbability { get { return TypeNumerics[nameof(AttributeType.CriticalProbability)]; } }
+        private readonly Dictionary<string, FloatNumeric> attributeNumerics = new Dictionary<string, FloatNumeric>();
+        public FloatNumeric HealthPoint { get { return attributeNumerics[nameof(AttributeType.HealthPoint)]; } }
+        public FloatNumeric AttackPower { get { return attributeNumerics[nameof(AttributeType.AttackPower)]; } }
+        public FloatNumeric AttackDefense { get { return attributeNumerics[nameof(AttributeType.AttackDefense)]; } }
+        public FloatNumeric CriticalProbability { get { return attributeNumerics[nameof(AttributeType.CriticalProbability)]; } }
 
 
         public override void Setup()
@@ -31,7 +31,7 @@ namespace EGamePlay.Combat
         {
             var numeric = new FloatNumeric();
             numeric.SetBase(baseValue);
-            TypeNumerics.Add(type, numeric);
+            attributeNumerics.Add(type, numeric);
             return numeric;
         }
 	}

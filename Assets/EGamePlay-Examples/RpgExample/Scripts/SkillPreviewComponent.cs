@@ -90,7 +90,7 @@ public class SkillPreviewComponent : EGamePlay.Component
             return;
         }
         //Log.Debug($"OnInputTarget {combatEntity}");
-        var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
+        var action = GetEntity<CombatEntity>().CreateCombatAction<SpellSkillAction>();
         action.SkillAbility = PreviewingSkill;
         action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
         action.SkillAbilityExecution.InputCombatEntity = combatEntity;
@@ -104,7 +104,7 @@ public class SkillPreviewComponent : EGamePlay.Component
             return;
         }
         //Log.Debug($"OnInputPoint {point}");
-        var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
+        var action = GetEntity<CombatEntity>().CreateCombatAction<SpellSkillAction>();
         action.SkillAbility = PreviewingSkill;
         action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
         action.SkillAbilityExecution.InputPoint = point;
@@ -118,7 +118,7 @@ public class SkillPreviewComponent : EGamePlay.Component
             return;
         }
         //Log.Debug($"OnInputDirect {direction}");
-        var action = CombatActionManager.CreateAction<SpellSkillAction>(GetEntity<CombatEntity>());
+        var action = GetEntity<CombatEntity>().CreateCombatAction<SpellSkillAction>();
         action.SkillAbility = PreviewingSkill;
         action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
         action.SkillAbilityExecution.InputDirection = direction;

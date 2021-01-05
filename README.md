@@ -27,14 +27,17 @@
 
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具
 
-![SkillConfigImage.png](SkillConfigImage.png)
+![SkillConfigImage.png](ConfigImage.png)
 
-![StatusConfigImage.png](StatusConfigImage.png)
+---
+## 该项目使用了以下收费插件：
+- [Odin Inspector](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041) （编辑器扩展、工作流改善）
+- [Animancer Pro](https://assetstore.unity.com/packages/tools/animation/animancer-pro-116514) （基于Playable的简单强大的动画解决方案）
 
 ---
 GamePlay战斗框架技术讨论交流qq群：763696367
 ===
-对战斗感兴趣的同学可以进群一起探讨更合适的战斗框架实现
+对战斗感兴趣的同学可以进群一起探讨更合适、高效的战斗框架实现
 
 ---
 对EGamePlay有任何疑问或建议可以进群反馈，或是提在[Discussions](https://github.com/m969/EGamePlay/discussions)

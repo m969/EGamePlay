@@ -35,8 +35,18 @@ namespace EGamePlay.Combat
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
         public int MaxStack = 0;
 
+        //[ToggleGroup("EnableChildrenStatuses", "子状态效果")]
+        //public bool EnableChildrenStatuses;
+        //[ToggleGroup("EnableChildrenStatuses")]
+        [OnInspectorGUI("DrawSpace", append: true)]
         [LabelText("子状态效果列表")]
+        [ListDrawerSettings(DraggableItems = false, ShowItemCount = false)]
         public List<StatusConfigObject> ChildrenStatuses;
+
+        private void DrawSpace()
+        {
+            GUILayout.Space(20);
+        }
 
         [ToggleGroup("EnabledStateModify", "行为禁制")]
         public bool EnabledStateModify;
@@ -58,7 +68,7 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("EnabledLogicTrigger")]
         [LabelText("效果列表")/*, Space(30)*/]
-        [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
+        [ListDrawerSettings(Expanded = true, DraggableItems = true, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
         [HorizontalGroup("EnabledLogicTrigger/Hor2", PaddingLeft = 40, PaddingRight = 40)]

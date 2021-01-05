@@ -70,8 +70,8 @@ namespace EGamePlay.Combat.Status
             }
             foreach (var item in StatusConfigObject.ChildrenStatuses)
             {
-                var status = AbilityOwner.AttachStatus<StatusAbility>(item);
-                status.Caster = AbilityOwner;
+                var status = OwnerEntity.AttachStatus<StatusAbility>(item);
+                status.Caster = OwnerEntity;
                 status.TryActivateAbility();
             }
         }
@@ -119,9 +119,9 @@ namespace EGamePlay.Combat.Status
         }
 
         //应用能力效果
-        public override void ApplyAbilityEffect(CombatEntity targetEntity)
+        public override void ApplyAbilityEffectsTo(CombatEntity targetEntity)
         {
-            base.ApplyAbilityEffect(targetEntity);
+            base.ApplyAbilityEffectsTo(targetEntity);
         }
     }
 }

@@ -22,14 +22,15 @@ public class Skill1001Execution : SkillAbilityExecution
     {
         base.BeginExecute();
 
-        EntityFactory.CreateWithParent<PlayAnimationTask>(this, "施法动作").ExecuteTaskAsync().Coroutine();
+        //OwnerEntity.Publish(new PlayAnimationTask());
+        //EntityFactory.CreateWithParent<PlayAnimationTask>(this, "施法动作").ExecuteTaskAsync().Coroutine();
 
         var taskData = new CastProjectileTaskData();
         taskData.ProjectilePrefab = (AbilityEntity as Skill1001Entity).SkillConfigObject.SkillEffectObject;
         var task = EntityFactory.CreateWithParent<CastProjectileTask>(this, taskData);
         await task.ExecuteTaskAsync();
 
-        AbilityEntity.ApplyAbilityEffect(InputCombatEntity);
+        AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity);
 
         EndExecute();
     }

@@ -19,6 +19,7 @@ namespace EGamePlay.Combat
         public Dictionary<KeyCode, AbilityEntity> InputAbilitys { get; set; } = new Dictionary<KeyCode, AbilityEntity>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
+        public CombatContext CombatContext { get; set; }
 
 
         public override void Awake()
@@ -28,11 +29,12 @@ namespace EGamePlay.Combat
             AddComponent<ConditionManageComponent>();
             CurrentHealth.SetMaxValue((int)AttributeComponent.HealthPoint.Value);
             CurrentHealth.Reset();
+            CombatContext = (CombatContext)Global.GetTypeChildren<CombatContext>()[0];
         }
 
         public T CreateCombatAction<T>() where T : CombatAction, new()
         {
-            var action = CombatActionManager.CreateAction<T>(this);
+            var action = CombatContext.GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
             return action;
         }
 

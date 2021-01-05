@@ -17,8 +17,8 @@ public class StatusTenacity : StatusAbility
     {
         base.ActivateAbility();
         CanReplyHealth = true;
-        AbilityOwner.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
-        AbilityOwner.ListenerCondition(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
+        OwnerEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
+        OwnerEntity.ListenerCondition(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
         Coroutine();
     }
 
@@ -34,7 +34,7 @@ public class StatusTenacity : StatusAbility
             await ET.TimerComponent.Instance.WaitAsync(100);
             if (CanReplyHealth)
             {
-                if (AbilityOwner.CurrentHealth.Percent() < 1f)
+                if (OwnerEntity.CurrentHealth.Percent() < 1f)
                 {
                     HealthReplyTimer.UpdateAsRepeat(0.1f, ReplyHealth);
                 }
@@ -57,9 +57,9 @@ public class StatusTenacity : StatusAbility
     //生命回复
     private void ReplyHealth()
     {
-        var action = CombatActionManager.CreateAction<CureAction>(AbilityOwner);
-        action.Target = AbilityOwner;
-        action.CureValue = AbilityOwner.CurrentHealth.PercentHealth(2);
+        var action = OwnerEntity.CreateCombatAction<CureAction>();
+        action.Target = OwnerEntity;
+        action.CureValue = OwnerEntity.CurrentHealth.PercentHealth(2);
         action.ApplyCure();
     }
 }

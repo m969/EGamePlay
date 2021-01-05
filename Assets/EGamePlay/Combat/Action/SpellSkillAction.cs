@@ -27,7 +27,7 @@ namespace EGamePlay.Combat
             PreProcess();
             if (SkillAbilityExecution == null)
             {
-                SkillAbility.ApplyAbilityEffect(Target);
+                SkillAbility.ApplyAbilityEffectsTo(Target);
             }
             else
             {
