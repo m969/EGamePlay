@@ -49,34 +49,26 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
         public AddSkillEffetTargetType AddSkillEffectTargetType;
 
-        //[HideInInspector]
-        //public string EffectValueParam;
-
-        //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), HideLabel]
         public EffectTriggerType EffectTriggerType;
 
-        //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Condition), HideLabel]
         public ConditionType ConditionType;
 
-        //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Action), HideLabel]
         public ActionPointType ActionPointType;
 
-        //[HideInInspector]
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true), HideLabel]
         public string Interval;
 
-        //[HideInInspector]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("条件参数 x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
         public string ConditionParam;
 
-        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("触发概率")]
-        public string TriggerProhibit = "100%";
+        [ToggleGroup("Enabled"), /*HideIf("IsSkillEffect", true), */LabelText("触发概率")]
+        public string TriggerProbability = "100%";
     }
 }

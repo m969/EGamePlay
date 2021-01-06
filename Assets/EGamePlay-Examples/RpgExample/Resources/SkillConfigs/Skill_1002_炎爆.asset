@@ -57,6 +57,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
     - Name: DamageType
       Entry: 3
       Data: 0
@@ -96,6 +99,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
     - Name: AddStatus
       Entry: 10
       Data: 0
@@ -175,6 +181,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
     - Name: AddStatus
       Entry: 10
       Data: 1
@@ -224,8 +233,6 @@ MonoBehaviour:
   TargetSelectType: 3
   AffectAreaType: 0
   CircleAreaRadius: 1
-  AreaGuideObj: {fileID: 4659930441604555287, guid: 898cf3acc27544548b710e7d5899e83f,
-    type: 3}
   AreaCollider: {fileID: 4659930441604555287, guid: e04cf34d12876b249b8a764625ced6f6,
     type: 3}
   AffectTargetType: 2

@@ -55,9 +55,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: TriggerProhibit
-      Entry: 6
-      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
     - Name: DamageType
       Entry: 3
       Data: 1

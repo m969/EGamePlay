@@ -43,12 +43,24 @@ MonoBehaviour:
     - Name: EffectTriggerType
       Entry: 3
       Data: 0
-    - Name: Interval
+    - Name: ConditionType
       Entry: 3
       Data: 0
-    - Name: CureValue
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
       Entry: 6
       Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: CureValueFormula
+      Entry: 1
+      Data: 200
     - Name: 
       Entry: 8
       Data: 
@@ -64,13 +76,11 @@ MonoBehaviour:
   TargetSelectType: 0
   AffectAreaType: 0
   CircleAreaRadius: 0
-  AreaGuideObj: {fileID: 0}
   AreaCollider: {fileID: 0}
   AffectTargetType: 0
-  Cold: 1
-  ColdGroupTitle: "\u6280\u80FD\u51B7\u5374"
   ColdTime: 3000
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   SkillAnimationClip: {fileID: 0}
   SkillEffectObject: {fileID: 0}
   SkillAudio: {fileID: 0}
+  SkillDescription: 

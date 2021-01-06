@@ -25,6 +25,10 @@ namespace EGamePlay.Combat.Status
                 damageAction.DamageSource = DamageSource.Buff;
                 damageAction.ApplyDamage();
             }
+            else
+            {
+                GetParent<StatusAbility>().ApplyEffectTo(GetParent<StatusAbility>().OwnerEntity, Effect);
+            }
         }
     }
 }

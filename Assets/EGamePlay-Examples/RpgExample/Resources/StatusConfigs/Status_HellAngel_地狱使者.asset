@@ -56,9 +56,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: TriggerProhibit
-      Entry: 6
-      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
     - Name: AddStatus
       Entry: 10
       Data: 0
@@ -66,7 +66,24 @@ MonoBehaviour:
       Entry: 3
       Data: 2000
     - Name: Params
-      Entry: 6
+      Entry: 7
+      Data: 2|UnityEngine.Rendering.SerializedDictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], Unity.RenderPipelines.Core.Runtime
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: 
       Entry: 8
@@ -84,8 +101,7 @@ MonoBehaviour:
   ShowInStatusIconList: 0
   CanStack: 0
   MaxStack: 1
-  ChildrenStatuses:
-  - {fileID: 11400000, guid: bbf6d8fee3b0db34bac694163354a4ea, type: 2}
+  ChildrenStatuses: []
   EnabledStateModify: 0
   ActionControlType: 0
   EnabledAttributeModify: 0

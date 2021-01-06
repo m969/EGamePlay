@@ -55,7 +55,7 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: TriggerProhibit
+    - Name: TriggerProbability
       Entry: 1
       Data: 100%
     - Name: DamageType
@@ -83,6 +83,7 @@ MonoBehaviour:
   ShowInStatusIconList: 1
   CanStack: 0
   MaxStack: 1
+  ChildrenStatuses: []
   EnabledStateModify: 0
   ActionControlType: 0
   EnabledAttributeModify: 0
