@@ -184,7 +184,7 @@
     public enum FloatNumericType
     {
         [LabelText("暴击概率")]
-        CriticalProb = 2001,
+        CriticalProbability = 2001,
     }
 
     //[Flags]

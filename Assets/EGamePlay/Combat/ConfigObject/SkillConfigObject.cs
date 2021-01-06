@@ -123,12 +123,12 @@ namespace EGamePlay.Combat
                 item.IsSkillEffect = true;
             }
 
-            string[] guids=UnityEditor.Selection.assetGUIDs;
-            int i=guids.Length;
+            string[] guids = UnityEditor.Selection.assetGUIDs;
+            int i = guids.Length;
             if (i == 1)
             {
-                string guid=guids[0];
-                string assetPath=UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                string guid = guids[0];
+                string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
                 var fileName = Path.GetFileName(assetPath);
                 var newName = $"Skill_{this.ID}_{this.Name}";
                 if (!fileName.StartsWith(newName))

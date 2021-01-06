@@ -1,5 +1,6 @@
 ﻿using EGamePlay.Combat.Ability;
 using System;
+using GameUtils;
 
 namespace EGamePlay.Combat.Skill
 {

@@ -6,6 +6,7 @@ using EGamePlay.Combat.Status;
 using EGamePlay.Combat.Ability;
 using EGamePlay.Combat;
 using EGamePlay;
+using GameUtils;
 
 public class StatusTenacity : StatusAbility
 {

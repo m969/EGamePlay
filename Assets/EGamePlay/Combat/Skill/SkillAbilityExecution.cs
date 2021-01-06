@@ -24,8 +24,8 @@ namespace EGamePlay.Combat.Skill
 
         public override void EndExecute()
         {
-            base.EndExecute();
             GetAbility<SkillAbility>().Spelling = false;
+            base.EndExecute();
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using EGamePlay;
 using System;
 using B83.ExpressionParser;
+using GameUtils;
 
 namespace EGamePlay.Combat
 {
@@ -12,7 +13,6 @@ namespace EGamePlay.Combat
     /// </summary>
     public class DamageAction : CombatAction
     {
-        private static ExpressionParser ExpressionParser { get; set; } = new ExpressionParser();
         public DamageEffect DamageEffect { get; set; }
         //伤害来源
         public DamageSource DamageSource { get; set; }
@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
 
         private int ParseDamage()
         {
-            var expression = ExpressionParser.EvaluateExpression(DamageEffect.DamageValueFormula);
+            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(DamageEffect.DamageValueFormula);
             if (expression.Parameters.ContainsKey("自身攻击力"))
             {
                 expression.Parameters["自身攻击力"].Value = Creator.AttributeComponent.AttackPower.Value;
@@ -51,6 +51,10 @@ namespace EGamePlay.Combat
                     IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
                 }
                 DamageValue = ParseDamage();
+                if (IsCritical)
+                {
+                    DamageValue = (int)(DamageValue * 1.5f);
+                }
             }
             if (DamageSource == DamageSource.Buff)
             {

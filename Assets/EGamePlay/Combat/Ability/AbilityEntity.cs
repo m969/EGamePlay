@@ -11,6 +11,7 @@ namespace EGamePlay.Combat.Ability
     {
         public CombatEntity OwnerEntity { get => GetParent<CombatEntity>(); }
         public object ConfigObject { get; set; }
+        public int Level { get; set; } = 1;
 
 
         public override void Awake(object initData)
@@ -64,6 +65,7 @@ namespace EGamePlay.Combat.Ability
             {
                 var action = this.OwnerEntity.CreateCombatAction<AssignEffectAction>();
                 action.Target = targetEntity;
+                action.SourceAbility = this;
                 action.Effect = effectItem;
                 if (effectItem is AddStatusEffect addStatusEffect)
                 {
@@ -75,7 +77,7 @@ namespace EGamePlay.Combat.Ability
                         {
                             foreach (var item3 in addStatusEffect.Params)
                             {
-                                if (statusConfig.NumericValue != null)
+                                if (!string.IsNullOrEmpty(statusConfig.NumericValue))
                                 {
                                     statusConfig.NumericValue = statusConfig.NumericValue.Replace(item3.Key, item3.Value);
                                 }
@@ -87,11 +89,11 @@ namespace EGamePlay.Combat.Ability
                             {
                                 foreach (var item3 in addStatusEffect.Params)
                                 {
-                                    if (item6.Interval != null)
+                                    if (!string.IsNullOrEmpty(item6.Interval))
                                     {
                                         item6.Interval = item6.Interval.Replace(item3.Key, item3.Value);
                                     }
-                                    if (item6.ConditionParam != null)
+                                    if (!string.IsNullOrEmpty(item6.ConditionParam))
                                     {
                                         item6.ConditionParam = item6.ConditionParam.Replace(item3.Key, item3.Value);
                                     }
@@ -100,7 +102,7 @@ namespace EGamePlay.Combat.Ability
                                 {
                                     foreach (var item4 in addStatusEffect.Params)
                                     {
-                                        if (damage.DamageValueFormula != null)
+                                        if (!string.IsNullOrEmpty(damage.DamageValueFormula))
                                         {
                                             damage.DamageValueFormula = damage.DamageValueFormula.Replace(item4.Key, item4.Value);
                                         }
@@ -110,7 +112,7 @@ namespace EGamePlay.Combat.Ability
                                 {
                                     foreach (var item5 in addStatusEffect.Params)
                                     {
-                                        if (cure.CureValueFormula != null)
+                                        if (!string.IsNullOrEmpty(cure.CureValueFormula))
                                         {
                                             cure.CureValueFormula = cure.CureValueFormula.Replace(item5.Key, item5.Value);
                                         }

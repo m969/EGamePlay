@@ -57,8 +57,8 @@ MonoBehaviour:
       Entry: 6
       Data: 
     - Name: TriggerProhibit
-      Entry: 6
-      Data: 
+      Entry: 1
+      Data: 100%
     - Name: DamageType
       Entry: 3
       Data: 1
@@ -99,8 +99,8 @@ MonoBehaviour:
       Entry: 6
       Data: 
     - Name: TriggerProhibit
-      Entry: 6
-      Data: 
+      Entry: 1
+      Data: 100%
     - Name: AddStatus
       Entry: 10
       Data: 0
@@ -109,8 +109,8 @@ MonoBehaviour:
       Data: 4000
     - Name: Params
       Entry: 7
-      Data: 3|UnityEngine.Rendering.SerializedDictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], Unity.RenderPipelines.Core.Runtime
+      Data: 3|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
       Data: 4|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
@@ -129,7 +129,7 @@ MonoBehaviour:
       Data: "\u4F24\u5BB3\u503C"
     - Name: $v
       Entry: 1
-      Data: 280
+      Data: "100+\u81EA\u8EAB\u6CD5\u672F\u5F3A\u5EA6*0.2"
     - Name: 
       Entry: 8
       Data: 
@@ -141,7 +141,7 @@ MonoBehaviour:
       Data: "\u95F4\u9694\u65F6\u95F4"
     - Name: $v
       Entry: 1
-      Data: 400
+      Data: "400-\u6280\u80FD\u7B49\u7EA7*50"
     - Name: 
       Entry: 8
       Data: 

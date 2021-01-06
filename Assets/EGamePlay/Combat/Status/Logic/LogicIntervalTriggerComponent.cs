@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using GameUtils;
 
 namespace EGamePlay.Combat.Status
 {
@@ -16,7 +17,12 @@ namespace EGamePlay.Combat.Status
         public override void Setup()
         {
             //Log.Debug(GetEntity<LogicEntity>().Effect.Interval);
-            var interval = int.Parse(GetEntity<LogicEntity>().Effect.Interval) / 1000f;
+            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(GetEntity<LogicEntity>().Effect.Interval);
+            if (expression.Parameters.ContainsKey("技能等级"))
+            {
+                expression.Parameters["技能等级"].Value = GetEntity<LogicEntity>().GetParent<StatusAbility>().Level;
+            }
+            var interval = (int)expression.Value / 1000f;
             IntervalTimer = new GameTimer(interval);
         }
 

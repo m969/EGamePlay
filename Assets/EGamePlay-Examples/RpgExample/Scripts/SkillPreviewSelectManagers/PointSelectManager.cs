@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using EGamePlay;
 using System;
+using GameUtils;
 
 public class PointSelectManager : MonoBehaviour
 {

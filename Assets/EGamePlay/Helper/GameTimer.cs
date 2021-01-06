@@ -1,71 +1,74 @@
 ﻿using System;
 
-public class GameTimer
+namespace GameUtils
 {
-    private float _maxTime;
-    private float _time;
-    private Action _onFinish;
-
-    public bool IsFinished => _time >= _maxTime;
-    public bool IsRunning => _time < _maxTime;
-
-    public float Time => _time;
-
-    public float MaxTime
+    public class GameTimer
     {
-        get => _maxTime;
-        set => _maxTime = value;
-    }
+        private float _maxTime;
+        private float _time;
+        private Action _onFinish;
 
-    public GameTimer(float maxTime)
-    {
-        _maxTime = maxTime;
-        _time = 0f;
-    }
+        public bool IsFinished => _time >= _maxTime;
+        public bool IsRunning => _time < _maxTime;
 
-    public void Reset()
-    {
-        _time = 0f;
-    }
+        public float Time => _time;
 
-    public GameTimer UpdateAsFinish(float delta, Action onFinish = null)
-    {
-        if (!IsFinished)
+        public float MaxTime
+        {
+            get => _maxTime;
+            set => _maxTime = value;
+        }
+
+        public GameTimer(float maxTime)
+        {
+            _maxTime = maxTime;
+            _time = 0f;
+        }
+
+        public void Reset()
+        {
+            _time = 0f;
+        }
+
+        public GameTimer UpdateAsFinish(float delta, Action onFinish = null)
+        {
+            if (!IsFinished)
+            {
+                _time += delta;
+                if (onFinish != _onFinish)
+                {
+                    _onFinish = onFinish;
+                }
+                if (IsFinished)
+                {
+                    _onFinish?.Invoke();
+                }
+            }
+            return this;
+        }
+
+        public void UpdateAsRepeat(float delta, Action onRepeat = null)
         {
             _time += delta;
-            if (onFinish != _onFinish)
+            if (onRepeat != _onFinish)
             {
-                _onFinish = onFinish;
+                _onFinish = onRepeat;
             }
-            if (IsFinished)
+            while (_time >= _maxTime)
             {
+                _time -= _maxTime;
                 _onFinish?.Invoke();
             }
         }
-        return this;
-    }
 
-    public void UpdateAsRepeat(float delta, Action onRepeat = null)
-    {
-        _time += delta;
-        if (onRepeat != _onFinish)
+        public void OnFinish(Action onFinish)
+        {
+            _onFinish = onFinish;
+        }
+
+        public void OnRepeat(Action onRepeat)
         {
             _onFinish = onRepeat;
         }
-        while (_time >= _maxTime)
-        {
-            _time -= _maxTime;
-            _onFinish?.Invoke();
-        }
-    }
-
-    public void OnFinish(Action onFinish)
-    {
-        _onFinish = onFinish;
-    }
-
-    public void OnRepeat(Action onRepeat)
-    {
-        _onFinish = onRepeat;
     }
 }
