@@ -10,14 +10,15 @@ namespace EGamePlay.Combat.Status
     /// </summary>
     public class LogicActionTriggerComponent : Component
     {
-
-
         public override void Setup()
         {
+            var actionPointType = GetEntity<LogicEntity>().Effect.ActionPointType;
+            GetEntity<LogicEntity>().GetParent<StatusAbility>().OwnerEntity.ListenActionPoint(actionPointType, OnActionPointTrigger);
         }
 
-        public override void Update()
+        private void OnActionPointTrigger(CombatAction combatAction)
         {
+            GetEntity<LogicEntity>().ApplyEffect();
         }
     }
 }

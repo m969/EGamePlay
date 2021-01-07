@@ -10,14 +10,16 @@ namespace EGamePlay.Combat.Status
     /// </summary>
     public class LogicConditionTriggerComponent : Component
     {
-
-
         public override void Setup()
         {
+            var conditionType = GetEntity<LogicEntity>().Effect.ConditionType;
+            var conditionParam = GetEntity<LogicEntity>().Effect.ConditionParam;
+            Entity.GetParent<StatusAbility>().OwnerEntity.ListenerCondition(conditionType, OnConditionTrigger, conditionParam);
         }
 
-        public override void Update()
+        private void OnConditionTrigger()
         {
+            GetEntity<LogicEntity>().ApplyEffect();
         }
     }
 }

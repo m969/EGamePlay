@@ -54,6 +54,11 @@ namespace EGamePlay.Combat.Status
                 foreach (var item in StatusConfigObject.Effects)
                 {
                     var logicEntity = EntityFactory.CreateWithParent<LogicEntity>(this, item);
+                    if (item.EffectTriggerType == EffectTriggerType.Instant)
+                    {
+                        logicEntity.ApplyEffect();
+                        Destroy(logicEntity);
+                    }
                     if (item.EffectTriggerType == EffectTriggerType.Interval)
                     {
                         logicEntity.AddComponent<LogicIntervalTriggerComponent>();

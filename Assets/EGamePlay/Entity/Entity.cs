@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using GameUtils;
 
 namespace EGamePlay
 {
@@ -24,7 +26,7 @@ namespace EGamePlay
 #endif
         public long Id { get; set; }
         public long InstanceId { get; set; }
-        public GlobalEntity Global => EntityFactory.Global;
+        public MasterEntity Global => EntityFactory.Master;
         private Entity parent;
         public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
         public bool IsDisposed { get { return InstanceId == 0; } }
@@ -92,6 +94,11 @@ namespace EGamePlay
 
         public T AddComponent<T>() where T : Component, new()
         {
+            //Log.Debug(typeof(T).BaseType.Name);
+            //if (typeof(T).HasImplementedRawGeneric(typeof(EntityComponent<>)))
+            //{
+            //    if ()
+            //}
             var c = new T();
             c.Entity = this;
             c.IsDisposed = false;

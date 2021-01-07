@@ -9,8 +9,8 @@ public class EGamePlayInit : MonoBehaviour
 {
     private void Awake()
     {
-        EntityFactory.Global = new GlobalEntity();
-        EntityFactory.CreateWithParent<TimerComponent>(EntityFactory.Global);
+        EntityFactory.Master = new MasterEntity();
+        EntityFactory.CreateWithParent<TimerComponent>(EntityFactory.Master);
         EntityFactory.Create<CombatContext>();
     }
 
@@ -20,12 +20,12 @@ public class EGamePlayInit : MonoBehaviour
 
     private void Update()
     {
-        EntityFactory.Global.Update();
+        EntityFactory.Master.Update();
         TimerComponent.Instance.Update();
     }
 
     private void OnApplicationQuit()
     {
-        Entity.Destroy(EntityFactory.Global);
+        Entity.Destroy(EntityFactory.Master);
     }
 }

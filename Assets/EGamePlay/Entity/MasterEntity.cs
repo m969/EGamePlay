@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EGamePlay
 {
-    public sealed class GlobalEntity : Entity
+    public sealed class MasterEntity : Entity
     {
         public Dictionary<Type, List<Entity>> Entities { get; private set; } = new Dictionary<Type, List<Entity>>();
         public List<Component> AllComponents { get; private set; } = new List<Component>();
