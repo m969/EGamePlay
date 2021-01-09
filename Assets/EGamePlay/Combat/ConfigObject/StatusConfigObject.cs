@@ -35,12 +35,10 @@ namespace EGamePlay.Combat
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
         public int MaxStack = 0;
 
-        //[ToggleGroup("EnableChildrenStatuses", "子状态效果")]
-        //public bool EnableChildrenStatuses;
-        //[ToggleGroup("EnableChildrenStatuses")]
+        [LabelText("子状态效果")]
+        public bool EnableChildrenStatuses;
         [OnInspectorGUI("DrawSpace", append: true)]
-        [LabelText("子状态效果列表")]
-        [ListDrawerSettings(DraggableItems = false, ShowItemCount = false)]
+        [LabelText("子状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false)]
         public List<StatusConfigObject> ChildrenStatuses;
 
         private void DrawSpace()
@@ -202,6 +200,9 @@ namespace EGamePlay.Combat
         private const string StatusNameLabel = "状态名称";
         private const string StatusTypeLabel = "状态类型";
 #else
+        private const string StatusIdLabel = "StatusID";
+        private const string StatusNameLabel = "Name";
+        private const string StatusTypeLabel = "Type";
 #endif
     }
 

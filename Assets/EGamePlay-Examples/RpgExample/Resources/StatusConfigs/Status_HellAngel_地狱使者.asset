@@ -101,6 +101,7 @@ MonoBehaviour:
   ShowInStatusIconList: 0
   CanStack: 0
   MaxStack: 1
+  EnableChildrenStatuses: 0
   ChildrenStatuses: []
   EnabledStateModify: 0
   ActionControlType: 0
