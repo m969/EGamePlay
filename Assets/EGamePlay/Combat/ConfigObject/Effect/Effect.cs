@@ -35,6 +35,7 @@ namespace EGamePlay.Combat
         }
     }
 
+    [Serializable]
     public abstract class Effect
     {
         [HideInInspector]

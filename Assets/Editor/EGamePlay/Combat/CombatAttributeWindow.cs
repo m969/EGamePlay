@@ -1,4 +1,7 @@
-﻿namespace EGamePlay.Combat
+﻿using UnityEngine.Timeline;
+using UnityEngine.Playables;
+
+namespace EGamePlay.Combat
 {
 	using System.Collections;
 	using System.Collections.Generic;
@@ -385,9 +388,4 @@
 			GUI.Box(new Rect(position + new Vector2(width+ sliderWidth, -5), new Vector2(sliderWidth, 20)), Timeline.segmentTex, Timeline.boxStyle);
 		}
 	}
-
-	public class SkillTrack : UnityEngine.Timeline.TrackAsset
-    {
-
-    }
 }
