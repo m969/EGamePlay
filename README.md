@@ -14,6 +14,7 @@
 - [5、如何实现一个灵活、通用的战斗（技能）系统——能力Ability](https://zhuanlan.zhihu.com/p/292590253)
 - [6、如何实现一个灵活、通用的战斗（技能）系统——Status状态效果](https://zhuanlan.zhihu.com/p/334825494)
 - [7、如何实现一个灵活、通用的战斗（技能）系统——Skill技能](https://zhuanlan.zhihu.com/p/340447052)
+- [8、如何实现一个灵活、通用的战斗（技能）系统——技能效果](https://zhuanlan.zhihu.com/p/341431038)
 
 ---
 
@@ -25,6 +26,63 @@
 
 ***
 
+<details>
+<summary>
+Numeric
+</summary>
+NumericFloat
+</details>
+
+<details>
+<summary>
+CombatEntity
+</summary>
+CombatEntity
+</details>
+
+<details>
+<summary>
+Ability
+</summary>
+Ability
+</details>
+
+<details>
+<summary>
+Status
+</summary>
+StatusAbility
+</details>
+
+<details>
+<summary>
+Skill
+</summary>
+SkillAbility
+</details>
+
+<details>
+<summary>
+Effect
+</summary>
+SkillEffect
+</details>
+
+<details>
+<summary>
+ExpressionParser
+</summary>
+ExpressionParser
+</details>
+
+<details>
+<summary>
+EffectConfigToJson
+</summary>
+EffectConfigToJson
+</details>
+
+---
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具
 
 ![SkillConfigImage.png](ConfigImage.png)
