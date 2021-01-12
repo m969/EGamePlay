@@ -1,6 +1,4 @@
-﻿#define EGamePlay_ZN
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,8 +36,14 @@ namespace EGamePlay.Combat
         [LabelText("子状态效果")]
         public bool EnableChildrenStatuses;
         [OnInspectorGUI("DrawSpace", append: true)]
-        [LabelText("子状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false)]
-        public List<StatusConfigObject> ChildrenStatuses;
+        [HideReferenceObjectPicker]
+        [LabelText("子状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false, CustomAddFunction = "AddChildStatus")]
+        public List<ChildStatus> ChildrenStatuses = new List<ChildStatus>();
+
+        private void AddChildStatus()
+        {
+            ChildrenStatuses.Add(new ChildStatus());
+        }
 
         private void DrawSpace()
         {
@@ -195,15 +199,24 @@ namespace EGamePlay.Combat
         }
 
 
-#if EGamePlay_ZN
-        private const string StatusIdLabel = "状态ID";
-        private const string StatusNameLabel = "状态名称";
-        private const string StatusTypeLabel = "状态类型";
-#else
+#if EGamePlay_EN
         private const string StatusIdLabel = "StatusID";
         private const string StatusNameLabel = "Name";
         private const string StatusTypeLabel = "Type";
+#else
+        private const string StatusIdLabel = "状态ID";
+        private const string StatusNameLabel = "状态名称";
+        private const string StatusTypeLabel = "状态类型";
 #endif
+    }
+
+    public class ChildStatus
+    {
+        [LabelText("状态效果")]
+        public StatusConfigObject StatusConfigObject;
+
+        [LabelText("参数列表"), HideReferenceObjectPicker]
+        public Dictionary<string, string> Params = new Dictionary<string, string>();
     }
 
     public enum StatusType

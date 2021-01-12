@@ -75,7 +75,7 @@ namespace EGamePlay.Combat.Status
             }
             foreach (var item in StatusConfigObject.ChildrenStatuses)
             {
-                var status = OwnerEntity.AttachStatus<StatusAbility>(item);
+                var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
                 status.Caster = OwnerEntity;
                 status.TryActivateAbility();
             }

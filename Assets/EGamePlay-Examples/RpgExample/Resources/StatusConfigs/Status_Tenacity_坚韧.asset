@@ -21,6 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: ChildrenStatuses
+      Entry: 6
+      Data: 
     - Name: Effects
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
@@ -41,7 +44,7 @@ MonoBehaviour:
   ShowInStatusIconList: 0
   CanStack: 0
   MaxStack: 1
-  ChildrenStatuses: []
+  EnableChildrenStatuses: 0
   EnabledStateModify: 0
   ActionControlType: 0
   EnabledAttributeModify: 0
