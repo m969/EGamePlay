@@ -73,11 +73,14 @@ namespace EGamePlay.Combat.Status
                     }
                 }
             }
-            foreach (var item in StatusConfigObject.ChildrenStatuses)
+            if (StatusConfigObject.EnableChildrenStatuses)
             {
-                var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
-                status.Caster = OwnerEntity;
-                status.TryActivateAbility();
+                foreach (var item in StatusConfigObject.ChildrenStatuses)
+                {
+                    var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
+                    status.Caster = OwnerEntity;
+                    status.TryActivateAbility();
+                }
             }
         }
 
