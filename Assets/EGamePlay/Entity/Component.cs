@@ -6,6 +6,8 @@ namespace EGamePlay
     {
         public Entity Entity { get; set; }
         public bool IsDisposed { get; set; }
+        public bool Enable { get; set; }
+        public bool Disable => Enable == false;
 
 
         public T GetEntity<T>() where T : Entity

@@ -27,7 +27,7 @@ namespace EGamePlay.Combat
             var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(DamageEffect.DamageValueFormula);
             if (expression.Parameters.ContainsKey("自身攻击力"))
             {
-                expression.Parameters["自身攻击力"].Value = Creator.AttributeComponent.AttackPower.Value;
+                expression.Parameters["自身攻击力"].Value = Creator.GetComponent<AttributeComponent>().AttackPower.Value;
             }
             return (int)expression.Value;
         }
@@ -37,8 +37,8 @@ namespace EGamePlay.Combat
         {
             if (DamageSource == DamageSource.Attack)
             {
-                IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
-                DamageValue = (int)Mathf.Max(1, Creator.AttributeComponent.AttackPower.Value - Target.AttributeComponent.AttackDefense.Value);
+                IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;
+                DamageValue = (int)Mathf.Max(1, Creator.GetComponent<AttributeComponent>().AttackPower.Value - Target.GetComponent<AttributeComponent>().AttackDefense.Value);
                 if (IsCritical)
                 {
                     DamageValue = (int)(DamageValue * 1.5f);
@@ -48,7 +48,7 @@ namespace EGamePlay.Combat
             {
                 if (DamageEffect.CanCrit)
                 {
-                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
+                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;
                 }
                 DamageValue = ParseDamage();
                 if (IsCritical)
@@ -60,7 +60,7 @@ namespace EGamePlay.Combat
             {
                 if (DamageEffect.CanCrit)
                 {
-                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.AttributeComponent.CriticalProbability.Value;
+                    IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;
                 }
                 DamageValue = ParseDamage();
             }

@@ -23,6 +23,7 @@ public sealed class Monster : MonoBehaviour
     void Start()
     {
         CombatEntity = EntityFactory.Create<CombatEntity>();
+        CombatEntity.Position = transform.position;
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         if (name == "Monster")
@@ -40,7 +41,12 @@ public sealed class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CombatEntity.Position = transform.position;
+        MotionComponent motionComponent = CombatEntity.GetComponent<MotionComponent>();
+        if (motionComponent.Enable)
+        {
+            
+        }
+        transform.position = CombatEntity.Position;
     }
 
     private void OnReceiveDamage(CombatAction combatAction)

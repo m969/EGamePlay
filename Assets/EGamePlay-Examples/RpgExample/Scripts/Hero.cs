@@ -48,6 +48,7 @@ public sealed class Hero : MonoBehaviour
 
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.AddComponent<SkillPreviewComponent>();
+        //CombatEntity.GetComponent<MotionComponent>().Enable = false;
 
         SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
         AbilityEntity abilityA = CombatEntity.AttachSkill<Skill1001Entity>(config);
@@ -141,7 +142,7 @@ public sealed class Hero : MonoBehaviour
         var action = CombatEntity.CreateCombatAction<DamageAction>();
         action.Target = monster.GetComponent<Monster>().CombatEntity;
         action.DamageSource = DamageSource.Attack;
-        CombatEntity.AttributeComponent.AttackPower.SetBase(ET.RandomHelper.RandomNumber(600, 999));
+        CombatEntity.GetComponent<AttributeComponent>().AttackPower.SetBase(ET.RandomHelper.RandomNumber(600, 999));
         action.ApplyDamage();
     }
 

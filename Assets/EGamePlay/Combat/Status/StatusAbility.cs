@@ -35,7 +35,7 @@ namespace EGamePlay.Combat.Status
                     case AttributeType.AttackPower:
                         var value = int.Parse(StatusConfigObject.NumericValue);
                         NumericModifier = new FloatModifier() { Value = value };
-                        GetParent<CombatEntity>().AttributeComponent.AttackPower.AddAddModifier(NumericModifier);
+                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().AttackPower.AddAddModifier(NumericModifier);
                         break;
                     case AttributeType.AttackDefense:
                         break;
@@ -98,7 +98,7 @@ namespace EGamePlay.Combat.Status
                     case AttributeType.None:
                         break;
                     case AttributeType.AttackPower:
-                        GetParent<CombatEntity>().AttributeComponent.AttackPower.RemoveAddModifier(NumericModifier);
+                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().AttackPower.RemoveAddModifier(NumericModifier);
                         break;
                     case AttributeType.AttackDefense:
                         break;

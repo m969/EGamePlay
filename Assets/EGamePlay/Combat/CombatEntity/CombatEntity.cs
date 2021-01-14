@@ -14,22 +14,23 @@ namespace EGamePlay.Combat
     public sealed class CombatEntity : Entity
     {
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
-        public AttributeManageComponent AttributeComponent { get { return GetComponent<AttributeManageComponent>(); } }
         public Dictionary<string, AbilityEntity> NameAbilitys { get; set; } = new Dictionary<string, AbilityEntity>();
         public Dictionary<KeyCode, AbilityEntity> InputAbilitys { get; set; } = new Dictionary<KeyCode, AbilityEntity>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public CombatContext CombatContext { get; set; }
+        public bool CanMove { get; set; }
 
 
         public override void Awake()
         {
-            AddComponent<AttributeManageComponent>();
+            AddComponent<AttributeComponent>();
             AddComponent<ActionPointManageComponent>();
             AddComponent<ConditionManageComponent>();
-            CurrentHealth.SetMaxValue((int)AttributeComponent.HealthPoint.Value);
+            //AddComponent<MotionComponent>();
+            CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
             CurrentHealth.Reset();
-            CombatContext = (CombatContext)Global.GetTypeChildren<CombatContext>()[0];
+            CombatContext = (CombatContext)Master.GetTypeChildren<CombatContext>()[0];
         }
 
         public T CreateCombatAction<T>() where T : CombatAction, new()
