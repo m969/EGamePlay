@@ -41,11 +41,11 @@ public sealed class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MotionComponent motionComponent = CombatEntity.GetComponent<MotionComponent>();
-        if (motionComponent.Enable)
-        {
+        //MotionComponent motionComponent = CombatEntity.GetComponent<MotionComponent>();
+        //if (motionComponent.Enable)
+        //{
             
-        }
+        //}
         transform.position = CombatEntity.Position;
     }
 
