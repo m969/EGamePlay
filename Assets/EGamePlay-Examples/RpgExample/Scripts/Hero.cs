@@ -51,7 +51,7 @@ public sealed class Hero : MonoBehaviour
         //CombatEntity.GetComponent<MotionComponent>().Enable = false;
 
         SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        AbilityEntity abilityA = CombatEntity.AttachSkill<Skill1001Entity>(config);
+        SkillAbility abilityA = CombatEntity.AttachSkill<Skill1001Entity>(config);
         CombatEntity.BindAbilityInput(abilityA, KeyCode.Q);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");

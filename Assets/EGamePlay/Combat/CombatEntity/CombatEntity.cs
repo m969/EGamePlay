@@ -14,8 +14,9 @@ namespace EGamePlay.Combat
     public sealed class CombatEntity : Entity
     {
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
-        public Dictionary<string, AbilityEntity> NameAbilitys { get; set; } = new Dictionary<string, AbilityEntity>();
-        public Dictionary<KeyCode, AbilityEntity> InputAbilitys { get; set; } = new Dictionary<KeyCode, AbilityEntity>();
+        public Dictionary<string, SkillAbility> NameAbilitys { get; set; } = new Dictionary<string, SkillAbility>();
+        public Dictionary<KeyCode, SkillAbility> InputAbilitys { get; set; } = new Dictionary<KeyCode, SkillAbility>();
+        public Dictionary<string, List<StatusAbility>> NameStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public CombatContext CombatContext { get; set; }
@@ -101,15 +102,25 @@ namespace EGamePlay.Combat
         public T AttachStatus<T>(object configObject) where T : StatusAbility, new()
         {
             var status = AttachAbility<T>(configObject);
+            if (!NameStatuses.ContainsKey(status.StatusConfigObject.ID))
+            {
+                NameStatuses.Add(status.StatusConfigObject.ID, new List<StatusAbility>());
+            }
+            NameStatuses[status.StatusConfigObject.ID].Add(status);
             return status;
         }
 
-        public void OnStatusRemove(StatusAbility statusAbilityEntity)
+        public void OnStatusRemove(StatusAbility statusAbility)
         {
-            this.Publish(new StatusRemoveEvent() { CombatEntity = this, Status = statusAbilityEntity, StatusId = statusAbilityEntity.Id });
+            NameStatuses[statusAbility.StatusConfigObject.ID].Remove(statusAbility);
+            if (NameStatuses[statusAbility.StatusConfigObject.ID].Count == 0)
+            {
+                NameStatuses.Remove(statusAbility.StatusConfigObject.ID);
+            }
+            this.Publish(new StatusRemoveEvent() { CombatEntity = this, Status = statusAbility, StatusId = statusAbility.Id });
         }
 
-        public void BindAbilityInput(AbilityEntity abilityEntity, KeyCode keyCode)
+        public void BindAbilityInput(SkillAbility abilityEntity, KeyCode keyCode)
         {
             InputAbilitys.Add(keyCode, abilityEntity);
             abilityEntity.TryActivateAbility();

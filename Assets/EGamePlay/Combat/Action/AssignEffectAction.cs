@@ -16,10 +16,6 @@ namespace EGamePlay.Combat
         //创建这个赋给效果行动的源能力
         public AbilityEntity SourceAbility { get; set; }
         public Effect Effect { get; set; }
-        ////效果类型
-        //public EffectType EffectType { get; set; }
-        ////效果数值
-        //public string EffectValue { get; set; }
         public StatusAbility Status { get; set; }
 
 
