@@ -10,6 +10,7 @@ using DG.Tweening;
 public sealed class Monster : MonoBehaviour
 {
     public CombatEntity CombatEntity;
+    public AnimationComponent AnimationComponent;
     public float MoveSpeed = 0.2f;
     public Text DamageText;
     public Text CureText;
@@ -17,6 +18,7 @@ public sealed class Monster : MonoBehaviour
     public Transform CanvasTrm;
     public Transform StatusSlotsTrm;
     public GameObject StatusIconPrefab;
+    private GameObject vertigoParticle;
 
 
     // Start is called before the first frame update
@@ -26,10 +28,9 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.Position = transform.position;
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
-        if (name == "Monster")
         {
-            CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, ReceiveStatus);
-            CombatEntity.Subscribe<StatusRemoveEvent>(OnStatusRemove).AsCoroutine();
+            CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
+            CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus).AsCoroutine();
         }
 
         var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity_坚韧");
@@ -78,21 +79,49 @@ public sealed class Monster : MonoBehaviour
         GameObject.Destroy(cureText.gameObject, 0.5f);
     }
 
-    private void ReceiveStatus(CombatAction combatAction)
+    private void OnReceiveStatus(CombatAction combatAction)
     {
         var action = combatAction as AssignEffectAction;
-        var obj = GameObject.Instantiate(StatusIconPrefab);
-        obj.transform.SetParent(StatusSlotsTrm);
         if (action.Effect is AddStatusEffect addStatusEffect)
         {
-            obj.GetComponentInChildren<Text>().text = addStatusEffect.AddStatus.Name;
-            obj.name = action.Status.Id.ToString();
+            var statusConfig = addStatusEffect.AddStatus;
+            if (name == "Monster")
+            {
+                var obj = GameObject.Instantiate(StatusIconPrefab);
+                obj.transform.SetParent(StatusSlotsTrm);
+                obj.GetComponentInChildren<Text>().text = statusConfig.Name;
+                obj.name = action.Status.Id.ToString();
+            }
+
+            if (statusConfig.ID == "Vertigo")
+            {
+                AnimationComponent.AnimancerComponent.Play(AnimationComponent.StunAnimation);
+                if (vertigoParticle == null)
+                {
+                    vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                    vertigoParticle.transform.parent = transform;
+                    vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
+                }
+            }
         }
     }
 
-    private void OnStatusRemove(StatusRemoveEvent eventData)
+    private void OnRemoveStatus(RemoveStatusEvent eventData)
     {
-        var obj = StatusSlotsTrm.Find(eventData.StatusId.ToString()).gameObject;
-        GameObject.Destroy(obj);
+        if (name == "Monster")
+        {
+            var obj = StatusSlotsTrm.Find(eventData.StatusId.ToString()).gameObject;
+            GameObject.Destroy(obj);
+        }
+        
+        var statusConfig = eventData.Status.StatusConfigObject;
+        if (statusConfig.ID == "Vertigo")
+        {
+            AnimationComponent.AnimancerComponent.Play(AnimationComponent.IdleAnimation);
+            if (vertigoParticle != null)
+            {
+                GameObject.Destroy(vertigoParticle);
+            }
+        }
     }
 }

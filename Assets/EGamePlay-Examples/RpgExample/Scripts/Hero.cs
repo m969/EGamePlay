@@ -13,6 +13,7 @@ using GameUtils;
 public sealed class Hero : MonoBehaviour
 {
     public CombatEntity CombatEntity;
+    public AnimationComponent AnimationComponent;
     public float MoveSpeed = 1f;
     public float AnimTime = 0.05f;
     public GameTimer AnimTimer = new GameTimer(0.1f);
@@ -21,13 +22,13 @@ public sealed class Hero : MonoBehaviour
     public GameObject HitEffectPrefab;
     private Tweener MoveTweener { get; set; }
     private Tweener LookAtTweener { get; set; }
-    [Space(10)]
-    public Animancer.AnimancerComponent AnimancerComponent;
-    public AnimationClip IdleAnimation;
-    public AnimationClip RunAnimation;
-    public AnimationClip JumpAnimation;
-    public AnimationClip AttackAnimation;
-    public AnimationClip SkillAnimation;
+//    [Space(10)]
+//    public Animancer.AnimancerComponent AnimancerComponent;
+//    public AnimationClip IdleAnimation;
+//    public AnimationClip RunAnimation;
+//    public AnimationClip JumpAnimation;
+//    public AnimationClip AttackAnimation;
+//    public AnimationClip SkillAnimation;
 
     public static Hero Instance { get; set; }
     public Vector3 Position { get; set; }
@@ -39,12 +40,12 @@ public sealed class Hero : MonoBehaviour
     void Start()
     {
         Instance = this;
-        AnimancerComponent.Animator.fireEvents = false;
-        AnimancerComponent.States.CreateIfNew(IdleAnimation);
-        AnimancerComponent.States.CreateIfNew(RunAnimation);
-        AnimancerComponent.States.CreateIfNew(JumpAnimation);
-        AnimancerComponent.States.CreateIfNew(AttackAnimation);
-        AnimancerComponent.States.CreateIfNew(SkillAnimation);
+//        AnimancerComponent.Animator.fireEvents = false;
+//        AnimancerComponent.States.CreateIfNew(IdleAnimation);
+//        AnimancerComponent.States.CreateIfNew(RunAnimation);
+//        AnimancerComponent.States.CreateIfNew(JumpAnimation);
+//        AnimancerComponent.States.CreateIfNew(AttackAnimation);
+//        AnimancerComponent.States.CreateIfNew(SkillAnimation);
 
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.AddComponent<SkillPreviewComponent>();
@@ -52,15 +53,15 @@ public sealed class Hero : MonoBehaviour
 
         SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
         SkillAbility abilityA = CombatEntity.AttachSkill<Skill1001Entity>(config);
-        CombatEntity.BindAbilityInput(abilityA, KeyCode.Q);
+        CombatEntity.BindSkillInput(abilityA, KeyCode.Q);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
         abilityA = CombatEntity.AttachSkill<Skill1002Entity>(config);
-        CombatEntity.BindAbilityInput(abilityA, KeyCode.W);
+        CombatEntity.BindSkillInput(abilityA, KeyCode.W);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
         abilityA = CombatEntity.AttachSkill<Skill1004Ability>(config);
-        CombatEntity.BindAbilityInput(abilityA, KeyCode.E);
+        CombatEntity.BindSkillInput(abilityA, KeyCode.E);
 
         AnimTimer.MaxTime = AnimTime;
     }
@@ -98,9 +99,10 @@ public sealed class Hero : MonoBehaviour
             {
                 var time = Vector3.Distance(transform.position, point) * MoveSpeed * 0.5f;
                 StopMove();
-                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear)/*.OnUpdate(()=> { if (!SkillPlaying) {  } })*/.OnComplete(()=>{ AnimancerComponent.Play(IdleAnimation, 0.25f); });
+                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear)/*.OnUpdate(()=> { if (!SkillPlaying) {  } })*/.OnComplete(()=>{ AnimationComponent.PlayFade(AnimationComponent.IdleAnimation); });
                 LookAtTweener = transform.GetChild(0).DOLookAt(point, 0.2f);
-                AnimancerComponent.Play(RunAnimation, 0.25f);
+//                AnimancerComponent.Play(RunAnimation, 0.25f);
+                AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
             }
         }
     }
@@ -132,7 +134,7 @@ public sealed class Hero : MonoBehaviour
 
     public void Attack()
     {
-        PlayThenIdleAsync(AttackAnimation).Coroutine();
+        PlayThenIdleAsync(AnimationComponent.AttackAnimation).Coroutine();
 
         var monster = GameObject.Find("Monster");
 
@@ -149,8 +151,10 @@ public sealed class Hero : MonoBehaviour
     private ETCancellationToken token;
     public async ETVoid PlayThenIdleAsync(AnimationClip animation)
     {
-        AnimancerComponent.Play(IdleAnimation);
-        AnimancerComponent.Play(animation, 0.25f);
+//        AnimancerComponent.Play(IdleAnimation);
+//        AnimancerComponent.Play(animation, 0.25f);
+        AnimationComponent.Play(AnimationComponent.IdleAnimation);
+        AnimationComponent.PlayFade(animation);
         if (token != null)
         {
             token.Cancel();
@@ -159,7 +163,8 @@ public sealed class Hero : MonoBehaviour
         var isTimeout = await TimerComponent.Instance.WaitAsync((int)(animation.length * 1000), token);
         if (isTimeout)
         {
-            AnimancerComponent.Play(IdleAnimation, 0.25f);
+//            AnimancerComponent.Play(IdleAnimation, 0.25f);
+            AnimationComponent.PlayFade(AnimationComponent.IdleAnimation);
         }
     }
 

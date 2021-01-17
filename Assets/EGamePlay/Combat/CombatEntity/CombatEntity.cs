@@ -14,13 +14,15 @@ namespace EGamePlay.Combat
     public sealed class CombatEntity : Entity
     {
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
-        public Dictionary<string, SkillAbility> NameAbilitys { get; set; } = new Dictionary<string, SkillAbility>();
-        public Dictionary<KeyCode, SkillAbility> InputAbilitys { get; set; } = new Dictionary<KeyCode, SkillAbility>();
-        public Dictionary<string, List<StatusAbility>> NameStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
+        public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
+        public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
+        public Dictionary<string, List<StatusAbility>> TypeIdStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
+        public Dictionary<Type, List<StatusAbility>> TypeStatuses { get; set; } = new Dictionary<Type, List<StatusAbility>>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public CombatContext CombatContext { get; set; }
-        public bool CanMove { get; set; }
+//        public bool CanMove { get; set; }
+        public ActionControlType ActionControlType;
 
 
         public override void Awake()
@@ -95,39 +97,54 @@ namespace EGamePlay.Combat
         public T AttachSkill<T>(object configObject) where T : SkillAbility, new()
         {
             var skill = AttachAbility<T>(configObject);
-            NameAbilitys.Add(skill.SkillConfigObject.Name, skill);
+            NameSkills.Add(skill.SkillConfigObject.Name, skill);
             return skill;
         }
 
         public T AttachStatus<T>(object configObject) where T : StatusAbility, new()
         {
             var status = AttachAbility<T>(configObject);
-            if (!NameStatuses.ContainsKey(status.StatusConfigObject.ID))
+            if (!TypeIdStatuses.ContainsKey(status.StatusConfigObject.ID))
             {
-                NameStatuses.Add(status.StatusConfigObject.ID, new List<StatusAbility>());
+                TypeIdStatuses.Add(status.StatusConfigObject.ID, new List<StatusAbility>());
             }
-            NameStatuses[status.StatusConfigObject.ID].Add(status);
+            TypeIdStatuses[status.StatusConfigObject.ID].Add(status);
             return status;
         }
 
         public void OnStatusRemove(StatusAbility statusAbility)
         {
-            NameStatuses[statusAbility.StatusConfigObject.ID].Remove(statusAbility);
-            if (NameStatuses[statusAbility.StatusConfigObject.ID].Count == 0)
+            TypeIdStatuses[statusAbility.StatusConfigObject.ID].Remove(statusAbility);
+            if (TypeIdStatuses[statusAbility.StatusConfigObject.ID].Count == 0)
             {
-                NameStatuses.Remove(statusAbility.StatusConfigObject.ID);
+                TypeIdStatuses.Remove(statusAbility.StatusConfigObject.ID);
             }
-            this.Publish(new StatusRemoveEvent() { CombatEntity = this, Status = statusAbility, StatusId = statusAbility.Id });
+            this.Publish(new RemoveStatusEvent() { CombatEntity = this, Status = statusAbility, StatusId = statusAbility.Id });
         }
 
-        public void BindAbilityInput(SkillAbility abilityEntity, KeyCode keyCode)
+        public void BindSkillInput(SkillAbility abilityEntity, KeyCode keyCode)
         {
-            InputAbilitys.Add(keyCode, abilityEntity);
+            InputSkills.Add(keyCode, abilityEntity);
             abilityEntity.TryActivateAbility();
+        }
+
+        public bool HasStatus<T>(T statusType) where T : StatusAbility
+        {
+            return TypeStatuses.ContainsKey(statusType.GetType());
+        }
+        
+        public bool HasStatus(string statusTypeId)
+        {
+            return TypeIdStatuses.ContainsKey(statusTypeId);
+        }
+
+        public StatusAbility GetStatus(string statusTypeId)
+        {
+            return TypeIdStatuses[statusTypeId][0];
         }
     }
 
-    public class StatusRemoveEvent
+    public class RemoveStatusEvent
     {
         public CombatEntity CombatEntity { get; set; }
         public StatusAbility Status { get; set; }

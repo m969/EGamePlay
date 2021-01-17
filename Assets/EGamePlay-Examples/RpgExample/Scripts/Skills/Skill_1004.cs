@@ -25,7 +25,7 @@ public class Skill1004Execution : SkillAbilityExecution
         base.BeginExecute();
 
         Hero.Instance.StopMove();
-        Hero.Instance.PlayThenIdleAsync(Hero.Instance.SkillAnimation).Coroutine();
+        Hero.Instance.PlayThenIdleAsync(Hero.Instance.AnimationComponent.SkillAnimation).Coroutine();
         Hero.Instance.SkillPlaying = true;
         Hero.Instance.transform.GetChild(0).eulerAngles = new Vector3(0, InputDirection, 0);
 

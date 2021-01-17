@@ -26,19 +26,19 @@ public class SkillPreviewComponent : EGamePlay.Component
         if (Input.GetKeyDown(KeyCode.Q))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.Q] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.Q] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.W] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.W] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.E] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.E] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))

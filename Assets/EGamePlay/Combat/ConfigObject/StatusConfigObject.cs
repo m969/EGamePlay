@@ -22,13 +22,11 @@ namespace EGamePlay.Combat
         public string Name = "状态1";
         [LabelText(StatusTypeLabel)]
         public StatusType StatusType;
-        //[Tooltip("不勾即代表永久，0也代表永久")]
-        //[LabelText("持续时间"), SuffixLabel("毫秒", true)]
         [HideInInspector]
         public uint Duration;
         [LabelText("是否在状态栏显示")]
         public bool ShowInStatusIconList;
-        [LabelText("是否可叠加")]
+        [LabelText("能否叠加")]
         public bool CanStack;
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
         public int MaxStack = 0;

@@ -24,7 +24,14 @@ namespace EGamePlay.Combat.Status
             base.ActivateAbility();
             if (StatusConfigObject.EnabledStateModify)
             {
-
+                OwnerEntity.ActionControlType |= StatusConfigObject.ActionControlType;
+//                OwnerEntity.ActionControlType |= CheckActionControlType(ActionControlType.MoveForbid);
+//                OwnerEntity.ActionControlType |= CheckActionControlType(ActionControlType.AttackForbid);
+//                OwnerEntity.ActionControlType |= CheckActionControlType(ActionControlType.SkillForbid);
+//                ActionControlType CheckActionControlType(ActionControlType ActionControlType)
+//                {
+//                    return StatusConfigObject.ActionControlType.HasFlag(ActionControlType) ? ActionControlType : ~ActionControlType;
+//                }
             }
             if (StatusConfigObject.EnabledAttributeModify)
             {
@@ -89,7 +96,7 @@ namespace EGamePlay.Combat.Status
         {
             if (StatusConfigObject.EnabledStateModify)
             {
-
+                OwnerEntity.ActionControlType |= ~StatusConfigObject.ActionControlType;
             }
             if (StatusConfigObject.EnabledAttributeModify)
             {
