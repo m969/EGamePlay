@@ -10,7 +10,7 @@ public class EGamePlayInit : MonoBehaviour
     private void Awake()
     {
         EntityFactory.Master = new MasterEntity();
-        EntityFactory.CreateWithParent<TimerComponent>(EntityFactory.Master);
+        EntityFactory.Create<TimerComponent>();
         EntityFactory.Create<CombatContext>();
     }
 

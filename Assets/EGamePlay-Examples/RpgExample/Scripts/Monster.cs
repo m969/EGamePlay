@@ -25,8 +25,8 @@ public sealed class Monster : MonoBehaviour
     void Start()
     {
         CombatEntity = EntityFactory.Create<CombatEntity>();
-        //CombatEntity.AddComponent<MotionComponent>();
         CombatEntity.Position = transform.position;
+        CombatEntity.AddComponent<MotionComponent>();
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         {
@@ -43,20 +43,20 @@ public sealed class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //var motionComponent = CombatEntity.GetComponent<MotionComponent>();
-        //if (motionComponent.Enable)
-        //{
-        //    if (motionComponent.MoveTimer.IsRunning)
-        //    {
-        //        AnimationComponent.TryPlayFade(AnimationComponent.RunAnimation);
-        //    }
-        //    else
-        //    {
-        //        AnimationComponent.TryPlayFade(AnimationComponent.IdleAnimation);
-        //    }
-        //}
-        transform.position = CombatEntity.Position;
-        transform.GetChild(0).localEulerAngles = new Vector3(0, CombatEntity.Direction + 90, 0);
+        var motionComponent = CombatEntity.GetComponent<MotionComponent>();
+        if (motionComponent.Enable)
+        {
+            if (motionComponent.MoveTimer.IsRunning)
+            {
+                AnimationComponent.TryPlayFade(AnimationComponent.RunAnimation);
+            }
+            else
+            {
+                AnimationComponent.TryPlayFade(AnimationComponent.IdleAnimation);
+            }
+            transform.position = CombatEntity.Position;
+            transform.GetChild(0).localEulerAngles = new Vector3(0, CombatEntity.Direction + 90, 0);
+        }
     }
 
     private void OnReceiveDamage(CombatAction combatAction)
@@ -104,6 +104,7 @@ public sealed class Monster : MonoBehaviour
 
             if (statusConfig.ID == "Vertigo")
             {
+                CombatEntity.GetComponent<MotionComponent>().Enable = false;
                 AnimationComponent.AnimancerComponent.Play(AnimationComponent.StunAnimation);
                 if (vertigoParticle == null)
                 {
@@ -126,6 +127,7 @@ public sealed class Monster : MonoBehaviour
         var statusConfig = eventData.Status.StatusConfigObject;
         if (statusConfig.ID == "Vertigo")
         {
+            CombatEntity.GetComponent<MotionComponent>().Enable = true;
             AnimationComponent.AnimancerComponent.Play(AnimationComponent.IdleAnimation);
             if (vertigoParticle != null)
             {

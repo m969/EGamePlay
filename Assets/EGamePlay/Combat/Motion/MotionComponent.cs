@@ -15,15 +15,19 @@ namespace EGamePlay.Combat
         public Vector3 Position { get=> GetEntity<CombatEntity>().Position; set=> GetEntity<CombatEntity>().Position = value; }
         public float Direction { get=> GetEntity<CombatEntity>().Direction; set=> GetEntity<CombatEntity>().Direction = value; }
         public bool CanMove { get; set; }
-        public GameTimer IdleTimer { get; set; } = new GameTimer(2);
-        public GameTimer MoveTimer { get; set; } = new GameTimer(2);
+        public GameTimer IdleTimer { get; set; }
+        public GameTimer MoveTimer { get; set; }
         public Vector3 MoveVector { get; set; }
+        private Vector3 originPos;
 
 
         public override void Setup()
         {
             base.Setup();
+            IdleTimer = new GameTimer(RandomHelper.RandomNumber(20, 40) / 10f);
+            MoveTimer = new GameTimer(RandomHelper.RandomNumber(10, 20) / 10f);
             IdleTimer.Reset();
+            originPos = Position;
         }
 
         public override void Update()
@@ -44,31 +48,32 @@ namespace EGamePlay.Combat
 
         private void IdleFinish()
         {
-            //Direction = RandomHelper.RandomNumber(0, 360);
             var x = RandomHelper.RandomNumber(-20, 20);
             var z = RandomHelper.RandomNumber(-20, 20);
-            x = z = 10;
-            //x = 0;z = 1;
             var vec2 = new Vector2(x, z);
+            if (Vector3.Distance(originPos, Position) > 0.1f)
+            {
+                vec2 = -(Position - originPos);
+            }
+            vec2.Normalize();
             var right = Vector2.right;
-            var dotV = Vector2.Dot(vec2.normalized, right.normalized);
-            Log.Debug(dotV.ToString());
-            if (vec2.y > 0)
-            {
-                Direction = -(dotV - 1) * 90;
-            }
-            else
-            {
-                Direction = -(dotV - 1) * -90;
-            }
-            Log.Debug(Direction.ToString());
-            MoveVector = new Vector3(x, 0, z) / 1000f;
+            Direction = VectorAngle(right, vec2);
+
+            MoveVector = new Vector3(vec2.x, 0, vec2.y) / 100f;
             MoveTimer.Reset();
         }
 
         private void MoveFinish()
         {
             IdleTimer.Reset();
+        }
+    
+        private float VectorAngle(Vector2 from, Vector2 to)
+        {
+            var angle = 0f;
+            var cross = Vector3.Cross(from, to);
+            angle = Vector2.Angle(from, to);
+            return cross.z > 0 ? -angle : angle;
         }
     }
 }
