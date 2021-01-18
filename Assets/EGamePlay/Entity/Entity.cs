@@ -99,7 +99,8 @@ namespace EGamePlay
             c.IsDisposed = false;
             c.Enable = true;
             this.Components.Add(typeof(T), c);
-            Master.AddComponents.Add(c);
+            Master.AllComponents.Add(c);
+            //Master.AddComponents.Add(c);
             if (EntityFactory.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             c.Setup();
             return c;

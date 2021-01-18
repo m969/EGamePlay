@@ -13,10 +13,11 @@ namespace EGamePlay.Combat
     public sealed class MotionComponent : Component
     {
         public Vector3 Position { get=> GetEntity<CombatEntity>().Position; set=> GetEntity<CombatEntity>().Position = value; }
+        public float Direction { get=> GetEntity<CombatEntity>().Direction; set=> GetEntity<CombatEntity>().Direction = value; }
         public bool CanMove { get; set; }
         public GameTimer IdleTimer { get; set; } = new GameTimer(2);
         public GameTimer MoveTimer { get; set; } = new GameTimer(2);
-        public Vector3 TargetPos { get; set; }
+        public Vector3 MoveVector { get; set; }
 
 
         public override void Setup()
@@ -27,12 +28,6 @@ namespace EGamePlay.Combat
 
         public override void Update()
         {
-            base.Update();
-            if (Disable)
-            {
-                return;
-            }
-
             if (IdleTimer.IsRunning)
             {
                 IdleTimer.UpdateAsFinish(Time.deltaTime, IdleFinish);
@@ -41,22 +36,39 @@ namespace EGamePlay.Combat
             {
                 if (MoveTimer.IsRunning)
                 {
-                    MoveTimer.UpdateAsFinish(Time.deltaTime);
-                    Position += TargetPos;
-                }
-                else
-                {
-                    IdleTimer.Reset();
+                    MoveTimer.UpdateAsFinish(Time.deltaTime, MoveFinish);
+                    Position += MoveVector;
                 }
             }
         }
 
         private void IdleFinish()
         {
-            var x = RandomHelper.RandomNumber(-4, 4) / 1000f;
-            var z = RandomHelper.RandomNumber(-4, 4) / 1000f;
-            TargetPos = new Vector3(x, 0, z);
+            //Direction = RandomHelper.RandomNumber(0, 360);
+            var x = RandomHelper.RandomNumber(-20, 20);
+            var z = RandomHelper.RandomNumber(-20, 20);
+            x = z = 10;
+            //x = 0;z = 1;
+            var vec2 = new Vector2(x, z);
+            var right = Vector2.right;
+            var dotV = Vector2.Dot(vec2.normalized, right.normalized);
+            Log.Debug(dotV.ToString());
+            if (vec2.y > 0)
+            {
+                Direction = -(dotV - 1) * 90;
+            }
+            else
+            {
+                Direction = -(dotV - 1) * -90;
+            }
+            Log.Debug(Direction.ToString());
+            MoveVector = new Vector3(x, 0, z) / 1000f;
             MoveTimer.Reset();
+        }
+
+        private void MoveFinish()
+        {
+            IdleTimer.Reset();
         }
     }
 }

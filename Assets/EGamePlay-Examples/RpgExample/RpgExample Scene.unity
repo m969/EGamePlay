@@ -1521,6 +1521,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627359, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6677ac332a1c2a244ae29763728ad012, type: 3}
 --- !u!4 &742067691 stripped
@@ -1970,6 +1975,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627359, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6677ac332a1c2a244ae29763728ad012, type: 3}
 --- !u!4 &1070904449 stripped
@@ -2404,6 +2414,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Monster (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627359, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6677ac332a1c2a244ae29763728ad012, type: 3}
@@ -2841,6 +2856,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627359, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6677ac332a1c2a244ae29763728ad012, type: 3}
 --- !u!4 &1504470223 stripped
@@ -3081,6 +3101,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627359, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6677ac332a1c2a244ae29763728ad012, type: 3}
 --- !u!4 &1538722139 stripped
@@ -3275,6 +3300,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627359, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6677ac332a1c2a244ae29763728ad012, type: 3}
 --- !u!4 &1638474912 stripped
@@ -3399,6 +3429,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Monster (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627359, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6677ac332a1c2a244ae29763728ad012, type: 3}
@@ -4173,6 +4208,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Monster
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085080486834459960, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085080486834459960, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085080486834459960, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085080486834459960, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6677ac332a1c2a244ae29763728ad012, type: 3}

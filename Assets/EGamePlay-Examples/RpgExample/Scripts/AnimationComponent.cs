@@ -35,4 +35,13 @@ public class AnimationComponent : MonoBehaviour
     {
         AnimancerComponent.Play(clip, 0.25f);
     }
+
+    public void TryPlayFade(AnimationClip clip)
+    {
+        if (AnimancerComponent.IsPlaying(clip))
+        {
+            return;
+        }
+        AnimancerComponent.Play(clip, 0.25f);
+    }
 }

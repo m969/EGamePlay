@@ -25,6 +25,7 @@ public sealed class Monster : MonoBehaviour
     void Start()
     {
         CombatEntity = EntityFactory.Create<CombatEntity>();
+        //CombatEntity.AddComponent<MotionComponent>();
         CombatEntity.Position = transform.position;
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
@@ -42,12 +43,20 @@ public sealed class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //MotionComponent motionComponent = CombatEntity.GetComponent<MotionComponent>();
+        //var motionComponent = CombatEntity.GetComponent<MotionComponent>();
         //if (motionComponent.Enable)
         //{
-            
+        //    if (motionComponent.MoveTimer.IsRunning)
+        //    {
+        //        AnimationComponent.TryPlayFade(AnimationComponent.RunAnimation);
+        //    }
+        //    else
+        //    {
+        //        AnimationComponent.TryPlayFade(AnimationComponent.IdleAnimation);
+        //    }
         //}
         transform.position = CombatEntity.Position;
+        transform.GetChild(0).localEulerAngles = new Vector3(0, CombatEntity.Direction + 90, 0);
     }
 
     private void OnReceiveDamage(CombatAction combatAction)

@@ -22,13 +22,6 @@ public sealed class Hero : MonoBehaviour
     public GameObject HitEffectPrefab;
     private Tweener MoveTweener { get; set; }
     private Tweener LookAtTweener { get; set; }
-//    [Space(10)]
-//    public Animancer.AnimancerComponent AnimancerComponent;
-//    public AnimationClip IdleAnimation;
-//    public AnimationClip RunAnimation;
-//    public AnimationClip JumpAnimation;
-//    public AnimationClip AttackAnimation;
-//    public AnimationClip SkillAnimation;
 
     public static Hero Instance { get; set; }
     public Vector3 Position { get; set; }
@@ -40,13 +33,6 @@ public sealed class Hero : MonoBehaviour
     void Start()
     {
         Instance = this;
-//        AnimancerComponent.Animator.fireEvents = false;
-//        AnimancerComponent.States.CreateIfNew(IdleAnimation);
-//        AnimancerComponent.States.CreateIfNew(RunAnimation);
-//        AnimancerComponent.States.CreateIfNew(JumpAnimation);
-//        AnimancerComponent.States.CreateIfNew(AttackAnimation);
-//        AnimancerComponent.States.CreateIfNew(SkillAnimation);
-
         CombatEntity = EntityFactory.Create<CombatEntity>();
         CombatEntity.AddComponent<SkillPreviewComponent>();
         //CombatEntity.GetComponent<MotionComponent>().Enable = false;
