@@ -33,7 +33,7 @@ public sealed class Hero : MonoBehaviour
     void Start()
     {
         Instance = this;
-        CombatEntity = EntityFactory.Create<CombatEntity>();
+        CombatEntity = Entity.Create<CombatEntity>();
         CombatEntity.AddComponent<SkillPreviewComponent>();
         //CombatEntity.GetComponent<MotionComponent>().Enable = false;
 

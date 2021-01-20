@@ -11,7 +11,7 @@ public class Skill1001Entity : SkillAbility
 {
     public override AbilityExecution CreateAbilityExecution()
     {
-        var abilityExecution = EntityFactory.CreateWithParent<Skill1001Execution>(this.GetParent<CombatEntity>(), this);
+        var abilityExecution = Entity.CreateWithParent<Skill1001Execution>(this.GetParent<CombatEntity>(), this);
         return abilityExecution;
     }
 }
@@ -27,7 +27,7 @@ public class Skill1001Execution : SkillAbilityExecution
 
         var taskData = new CastProjectileTaskData();
         taskData.ProjectilePrefab = (AbilityEntity as Skill1001Entity).SkillConfigObject.SkillEffectObject;
-        var task = EntityFactory.CreateWithParent<CastProjectileTask>(this, taskData);
+        var task = Entity.CreateWithParent<CastProjectileTask>(this, taskData);
         await task.ExecuteTaskAsync();
 
         AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity);

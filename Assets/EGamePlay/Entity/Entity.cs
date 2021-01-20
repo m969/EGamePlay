@@ -8,9 +8,59 @@ namespace EGamePlay
 {
     public abstract partial class Entity
     {
+        public static MasterEntity Master => MasterEntity.Instance;
+        public static bool DebugLog { get; set; } = false;
+
+        private static T New<T>() where T : Entity, new()
+        {
+            var entity = new T();
+            entity.InstanceId = IdFactory.NewInstanceId();
+            if (!Master.Entities.ContainsKey(typeof(T)))
+            {
+                Master.Entities.Add(typeof(T), new List<Entity>());
+            }
+            Master.Entities[typeof(T)].Add(entity);
+            return entity;
+        }
+
         public static T Create<T>() where T : Entity, new()
         {
-            return EntityFactory.Create<T>();
+            var entity = New<T>();
+            entity.Id = entity.InstanceId;
+            Master.AddChild(entity);
+            entity.Awake();
+            if (DebugLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}");
+            return entity;
+        }
+
+        public static T Create<T>(object initData) where T : Entity, new()
+        {
+            var entity = New<T>();
+            entity.Id = entity.InstanceId;
+            Master.AddChild(entity);
+            entity.Awake(initData);
+            if (DebugLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}, {initData}");
+            return entity;
+        }
+
+        public static T CreateWithParent<T>(Entity parent) where T : Entity, new()
+        {
+            var entity = New<T>();
+            entity.Id = entity.InstanceId;
+            parent.AddChild(entity);
+            entity.Awake();
+            if (DebugLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
+            return entity;
+        }
+
+        public static T CreateWithParent<T>(Entity parent, object initData) where T : Entity, new()
+        {
+            var entity = New<T>();
+            entity.Id = entity.InstanceId;
+            parent.AddChild(entity);
+            entity.Awake(initData);
+            if (DebugLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
+            return entity;
         }
 
         public static void Destroy(Entity entity)
@@ -26,7 +76,7 @@ namespace EGamePlay
 #endif
         public long Id { get; set; }
         public long InstanceId { get; set; }
-        public MasterEntity Master => EntityFactory.Master;
+        //public MasterEntity Master => Entity.Master;
         private Entity parent;
         public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
         public bool IsDisposed { get { return InstanceId == 0; } }
@@ -57,9 +107,9 @@ namespace EGamePlay
 
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-            if (EntityFactory.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
+            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
             if (Children.Count > 0)
             {
                 for (int i = Children.Count - 1; i >= 0; i--)
@@ -72,11 +122,16 @@ namespace EGamePlay
 
             foreach (Component component in this.Components.Values)
             {
+                component.OnDestroy();
                 component.Dispose();
             }
             this.Components.Clear();
             Parent?.RemoveChild(this);
             InstanceId = 0;
+            if (Master.Entities.ContainsKey(GetType()))
+            {
+                Master.Entities[GetType()].Remove(this);
+            }
 #if !SERVER
             UnityEngine.GameObject.Destroy(GameObject);
 #endif
@@ -94,16 +149,16 @@ namespace EGamePlay
 
         public T AddComponent<T>() where T : Component, new()
         {
-            var c = new T();
-            c.Entity = this;
-            c.IsDisposed = false;
-            c.Enable = true;
-            this.Components.Add(typeof(T), c);
-            Master.AllComponents.Add(c);
+            var component = new T();
+            component.Entity = this;
+            component.IsDisposed = false;
+            component.Enable = true;
+            this.Components.Add(typeof(T), component);
+            Master.AllComponents.Add(component);
             //Master.AddComponents.Add(c);
-            if (EntityFactory.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
-            c.Setup();
-            return c;
+            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
+            component.Setup();
+            return component;
         }
 
         public void RemoveComponent<T>() where T : Component

@@ -92,7 +92,7 @@ namespace ET
 			}
 		}
 
-		public override void Dispose()
+		public override void OnDestroy()
 		{
 			if (this.IsDisposed)
 			{
@@ -107,7 +107,7 @@ namespace ET
 				return;
 			}
 			
-			base.Dispose();
+			//base.Dispose();
 
 			this.StartTime = 0;
 			this.RepeatedTime = 0;
@@ -195,7 +195,7 @@ namespace ET
 				return true;
 			}
 			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
-			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer/*, ETTaskCompletionSource<bool>*/>(this, tcs);
+			OnceWaitTimer timer = Entity.CreateWithParent<OnceWaitTimer/*, ETTaskCompletionSource<bool>*/>(this, tcs);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
 			
@@ -221,7 +221,7 @@ namespace ET
 				return true;
 			}
 			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
-			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer/*, ETTaskCompletionSource<bool>*/>(this, tcs);
+			OnceWaitTimer timer = Entity.CreateWithParent<OnceWaitTimer/*, ETTaskCompletionSource<bool>*/>(this, tcs);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
 			return await tcs.Task;
@@ -237,7 +237,7 @@ namespace ET
             }
 
             ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
-			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer/*, ETTaskCompletionSource<bool>*/>(this, tcs);
+			OnceWaitTimer timer = Entity.CreateWithParent<OnceWaitTimer/*, ETTaskCompletionSource<bool>*/>(this, tcs);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
 			long instanceId = timer.InstanceId;
@@ -259,7 +259,7 @@ namespace ET
 		{
 			long tillTime = TimeHelper.Now() + time;
 			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
-			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer/*, ETTaskCompletionSource<bool>*/>(this, tcs);
+			OnceWaitTimer timer = Entity.CreateWithParent<OnceWaitTimer/*, ETTaskCompletionSource<bool>*/>(this, tcs);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
 			return await tcs.Task;
@@ -278,7 +278,7 @@ namespace ET
 				throw new Exception($"repeated time < 30");
 			}
 			long tillTime = TimeHelper.Now() + time;
-			RepeatedTimer timer = EntityFactory.CreateWithParent<RepeatedTimer/*, long, Action<bool>*/>(this, time/*, action*/);
+			RepeatedTimer timer = Entity.CreateWithParent<RepeatedTimer/*, long, Action<bool>*/>(this, time/*, action*/);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
 			return timer.Id;
@@ -311,7 +311,7 @@ namespace ET
 		
 		public long NewOnceTimer(long tillTime, Action action)
 		{
-			OnceTimer timer = EntityFactory.CreateWithParent<OnceTimer/*, Action*/>(this, action);
+			OnceTimer timer = Entity.CreateWithParent<OnceTimer/*, Action*/>(this, action);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
 			return timer.Id;

@@ -9,9 +9,9 @@ public class EGamePlayInit : MonoBehaviour
 {
     private void Awake()
     {
-        EntityFactory.Master = new MasterEntity();
-        EntityFactory.Create<TimerComponent>();
-        EntityFactory.Create<CombatContext>();
+        MasterEntity.Create();
+        Entity.Create<TimerComponent>();
+        Entity.Create<CombatContext>();
     }
 
     private void Start()
@@ -20,12 +20,13 @@ public class EGamePlayInit : MonoBehaviour
 
     private void Update()
     {
-        EntityFactory.Master.Update();
+        MasterEntity.Instance.Update();
         TimerComponent.Instance.Update();
     }
 
     private void OnApplicationQuit()
     {
-        Entity.Destroy(EntityFactory.Master);
+        Entity.Destroy(MasterEntity.Instance);
+        MasterEntity.Instance = null;
     }
 }

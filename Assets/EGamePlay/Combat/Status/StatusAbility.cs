@@ -60,7 +60,7 @@ namespace EGamePlay.Combat.Status
             {
                 foreach (var item in StatusConfigObject.Effects)
                 {
-                    var logicEntity = EntityFactory.CreateWithParent<LogicEntity>(this, item);
+                    var logicEntity = Entity.CreateWithParent<LogicEntity>(this, item);
                     if (item.EffectTriggerType == EffectTriggerType.Instant)
                     {
                         logicEntity.ApplyEffect();

@@ -25,7 +25,7 @@ namespace EGamePlay.Combat
             {
                 case ConditionType.WhenInTimeNoDamage:
                     var time = (float)paramObj;
-                    var condition = EntityFactory.CreateWithParent<WhenInTimeNoDamageCondition>(Entity, time);
+                    var condition = Entity.CreateWithParent<WhenInTimeNoDamageCondition>(Entity, time);
                     Conditions.Add(action, condition);
                     condition.StartListen(action);
                     break;

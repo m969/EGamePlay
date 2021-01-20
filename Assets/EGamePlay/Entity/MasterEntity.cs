@@ -8,9 +8,24 @@ namespace EGamePlay
     {
         public Dictionary<Type, List<Entity>> Entities { get; private set; } = new Dictionary<Type, List<Entity>>();
         public List<Component> AllComponents { get; private set; } = new List<Component>();
-//        public List<Component> RemoveComponents { get; private set; } = new List<Component>();
-//        public List<Component> AddComponents { get; private set; } = new List<Component>();
+        public static MasterEntity Instance;
+        //        public List<Component> RemoveComponents { get; private set; } = new List<Component>();
+        //        public List<Component> AddComponents { get; private set; } = new List<Component>();
 
+
+        private MasterEntity() : base()
+        {
+            
+        }
+
+        public static MasterEntity Create()
+        {
+            if (Instance == null)
+            {
+                Instance = new MasterEntity();
+            }
+            return Instance;
+        }
 
         public void Update()
         {

@@ -30,9 +30,9 @@ namespace EGamePlay
 
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-            if (EntityFactory.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
+            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
             IsDisposed = true;
         }
 

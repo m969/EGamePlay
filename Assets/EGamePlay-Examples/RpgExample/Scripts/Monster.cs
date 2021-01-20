@@ -24,7 +24,7 @@ public sealed class Monster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CombatEntity = EntityFactory.Create<CombatEntity>();
+        CombatEntity = Entity.Create<CombatEntity>();
         CombatEntity.Position = transform.position;
         CombatEntity.AddComponent<MotionComponent>();
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);

@@ -21,8 +21,7 @@ namespace EGamePlay.Combat
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public CombatContext CombatContext { get; set; }
-//        public bool CanMove { get; set; }
-        public ActionControlType ActionControlType;
+        public ActionControlType ActionControlType { get; set; }
 
 
         public override void Awake()
@@ -89,7 +88,7 @@ namespace EGamePlay.Combat
         /// <param name="configObject"></param>
         public T AttachAbility<T>(object configObject) where T : AbilityEntity, new()
         {
-            var ability = EntityFactory.CreateWithParent<T>(this, configObject);
+            var ability = Entity.CreateWithParent<T>(this, configObject);
             ability.OnSetParent(this);
             return ability;
         }
