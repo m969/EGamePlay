@@ -88,9 +88,12 @@ EffectConfigToJson
 ![SkillConfigImage.png](ConfigImage.png)
 
 ---
-## 该项目使用了以下收费插件：
+### 该项目使用了以下收费插件：
 - [Odin Inspector](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041) （编辑器扩展、工作流改善）
 - [Animancer Pro](https://assetstore.unity.com/packages/tools/animation/animancer-pro-116514) （基于Playable的简单强大的动画解决方案）
+
+---
+### 该项目的ETTask、TimerComponent及部分代码来自ET框架 [https://github.com/egametang/ET](https://github.com/egametang/ET)
 
 ---
 GamePlay战斗框架技术讨论交流qq群：763696367
