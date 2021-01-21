@@ -19,7 +19,7 @@ namespace EGamePlay.Combat
 		[LabelText("状态配置")]
 		public List<StateConfig> StateConfigs;
 		[LabelText("状态互斥表")]
-		public List<List<bool>> StateMutexTable;
+		public List<List<bool>> StateMutexTable = new List<List<bool>>();
     }
 
 	[Serializable]

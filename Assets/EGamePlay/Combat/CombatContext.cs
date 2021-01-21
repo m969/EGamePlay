@@ -10,10 +10,13 @@ namespace EGamePlay.Combat
     /// </summary>
     public class CombatContext : Entity
     {
+        public static CombatContext Instance { get; private set; }
+
+
         public override void Awake()
         {
             base.Awake();
-
+            Instance = this;
             AddComponent<CombatActionManageComponent>();
         }
     }

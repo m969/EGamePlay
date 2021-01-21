@@ -76,7 +76,6 @@ namespace EGamePlay
 #endif
         public long Id { get; set; }
         public long InstanceId { get; set; }
-        //public MasterEntity Master => Entity.Master;
         private Entity parent;
         public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
         public bool IsDisposed { get { return InstanceId == 0; } }
@@ -89,6 +88,9 @@ namespace EGamePlay
         {
 #if !SERVER
             GameObject = new UnityEngine.GameObject(GetType().Name);
+            var view = GameObject.AddComponent<ET.ComponentView>();
+            view.Type = GameObject.name;
+            view.Component = this;
 #endif
         }
 
@@ -155,9 +157,31 @@ namespace EGamePlay
             component.Enable = true;
             this.Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
-            //Master.AddComponents.Add(c);
             if (Entity.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             component.Setup();
+#if !SERVER
+            var view = GameObject.AddComponent<ET.ComponentView>();
+            view.Type = typeof(T).Name;
+            view.Component = component;
+#endif
+            return component;
+        }
+
+        public T AddComponent<T>(object initData) where T : Component, new()
+        {
+            var component = new T();
+            component.Entity = this;
+            component.IsDisposed = false;
+            component.Enable = true;
+            this.Components.Add(typeof(T), component);
+            Master.AllComponents.Add(component);
+            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
+            component.Setup(initData);
+#if !SERVER
+            var view = GameObject.AddComponent<ET.ComponentView>();
+            view.Type = typeof(T).Name;
+            view.Component = component;
+#endif
             return component;
         }
 
@@ -225,7 +249,7 @@ namespace EGamePlay
             var eventComponent = GetComponent<EventComponent>();
             if (eventComponent == null)
             {
-                eventComponent = AddComponent<EventComponent>();
+                return TEvent;
             }
             eventComponent.Publish(TEvent);
             return TEvent;

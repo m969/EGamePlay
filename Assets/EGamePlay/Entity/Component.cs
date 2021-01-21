@@ -20,6 +20,11 @@ namespace EGamePlay
 
         }
 
+        public virtual void Setup(object initData)
+        {
+
+        }
+
         public virtual void Update()
         {
 
