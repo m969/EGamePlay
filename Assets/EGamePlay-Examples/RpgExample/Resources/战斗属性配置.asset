@@ -22,7 +22,17 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes:
     - Name: StateMutexTable
-      Entry: 6
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[System.Collections.Generic.List`1[[System.Boolean,
+        mscorlib]], mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
   AttributeConfigs: []
   StateConfigs: []

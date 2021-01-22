@@ -16,6 +16,7 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
+    - {fileID: 11400000, guid: d474d595ed70f2e4f82fc4bf10b77fb6, type: 2}
     - {fileID: 11400000, guid: e2cd781d8805b6f4fb70d7ab86de8abd, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -75,7 +76,7 @@ MonoBehaviour:
       Data: 4|EGamePlay.Combat.ChildStatus, EGamePlay
     - Name: StatusConfigObject
       Entry: 10
-      Data: 0
+      Data: 1
     - Name: Params
       Entry: 7
       Data: 5|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
