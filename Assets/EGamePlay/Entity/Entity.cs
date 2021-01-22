@@ -154,7 +154,7 @@ namespace EGamePlay
             var component = new T();
             component.Entity = this;
             component.IsDisposed = false;
-            component.Enable = true;
+            //component.Enable = true;
             this.Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
             if (Entity.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
@@ -172,7 +172,7 @@ namespace EGamePlay
             var component = new T();
             component.Entity = this;
             component.IsDisposed = false;
-            component.Enable = true;
+            //component.Enable = true;
             this.Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
             if (Entity.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");

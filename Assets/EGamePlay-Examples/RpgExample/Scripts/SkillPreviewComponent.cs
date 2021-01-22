@@ -12,6 +12,7 @@ using EGamePlay.Combat.Ability;
 /// </summary>
 public class SkillPreviewComponent : EGamePlay.Component
 {
+    public override bool Enable { get; set; } = true;
     private bool Previewing { get; set; }
     private SkillAbility PreviewingSkill { get; set; }
 

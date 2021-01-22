@@ -45,6 +45,7 @@ namespace EGamePlay
 
     public sealed class EventComponent : Component
     {
+        public override bool Enable { get; set; } = true;
         private Dictionary<Type, object> EventSubscribeCollections = new Dictionary<Type, object>();
         private Dictionary<object, object> CoroutineEventSubscribeQueue = new Dictionary<object, object>();
         public static bool DebugLog { get; set; } = false;
@@ -56,11 +57,11 @@ namespace EGamePlay
             {
                 foreach (var item in CoroutineEventSubscribeQueue)
                 {
-                    var TEvent = item.Value;
+                    var evnt = item.Value;
                     var eventSubscribe = item.Key;
                     var field = eventSubscribe.GetType().GetField("EventAction");
                     var value = field.GetValue(eventSubscribe);
-                    value.GetType().GetMethod("Invoke").Invoke(value, new object[] { TEvent });
+                    value.GetType().GetMethod("Invoke").Invoke(value, new object[] { evnt });
                 }
                 CoroutineEventSubscribeQueue.Clear();
             }

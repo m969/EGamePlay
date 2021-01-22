@@ -12,6 +12,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public sealed class MotionComponent : Component
     {
+        public override bool Enable { get; set; } = true;
         public Vector3 Position { get=> GetEntity<CombatEntity>().Position; set=> GetEntity<CombatEntity>().Position = value; }
         public float Direction { get=> GetEntity<CombatEntity>().Direction; set=> GetEntity<CombatEntity>().Direction = value; }
         public bool CanMove { get; set; }
