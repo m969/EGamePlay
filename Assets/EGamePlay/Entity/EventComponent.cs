@@ -57,8 +57,8 @@ namespace EGamePlay
             {
                 foreach (var item in CoroutineEventSubscribeQueue)
                 {
-                    var evnt = item.Value;
-                    var eventSubscribe = item.Key;
+                    var evnt = item.Key;
+                    var eventSubscribe = item.Value;
                     var field = eventSubscribe.GetType().GetField("EventAction");
                     var value = field.GetValue(eventSubscribe);
                     value.GetType().GetMethod("Invoke").Invoke(value, new object[] { evnt });
@@ -85,7 +85,7 @@ namespace EGamePlay
                     }
                     else
                     {
-                        CoroutineEventSubscribeQueue.Add(eventSubscribe, TEvent);
+                        CoroutineEventSubscribeQueue.Add(TEvent, eventSubscribe);
                     }
                 }
 

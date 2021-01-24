@@ -58,7 +58,7 @@ MonoBehaviour:
       Data: "\u53D8\u52A8\u6570\u503C"
     - Name: $v
       Entry: 1
-      Data: -30%
+      Data: -60%
     - Name: 
       Entry: 8
       Data: 
@@ -99,7 +99,7 @@ MonoBehaviour:
       Data: "\u53D8\u52A8\u6570\u503C"
     - Name: $v
       Entry: 1
-      Data: -30%
+      Data: -60%
     - Name: 
       Entry: 8
       Data: 
@@ -134,8 +134,8 @@ MonoBehaviour:
   ID: Weak
   Name: "\u865A\u5F31"
   StatusType: 1
-  Duration: 0
-  ShowInStatusIconList: 1
+  Duration: 6000
+  ShowInStatusSlots: 1
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 1
@@ -144,8 +144,9 @@ MonoBehaviour:
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 
+  ModifyType: 0
   EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 0}
+  ParticleEffect: {fileID: 181232, guid: b9cf594d1d8302e4a884738a176ead3a, type: 3}
   Audio: {fileID: 0}
   StatusDescription: 

@@ -9,6 +9,9 @@ namespace EGamePlay.Combat.Status
         public CombatEntity Caster { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
         public FloatModifier NumericModifier { get; set; }
+        //public bool ShowInStatusSlots { get; set; }
+        public bool IsChildStatus { get; set; }
+        public ChildStatus ChildStatusData { get; set; }
         private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
 
 
@@ -16,12 +19,29 @@ namespace EGamePlay.Combat.Status
         {
             base.Awake(initData);
             StatusConfigObject = initData as StatusConfigObject;
+            Name = StatusConfigObject.ID;
+            //ShowInStatusSlots = StatusConfigObject.ShowInStatusSlots;
         }
 
         //激活
         public override void ActivateAbility()
         {
             base.ActivateAbility();
+
+            //子状态效果
+            if (StatusConfigObject.EnableChildrenStatuses)
+            {
+                foreach (var item in StatusConfigObject.ChildrenStatuses)
+                {
+                    var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
+                    status.Caster = OwnerEntity;
+                    status.IsChildStatus = true;
+                    status.ChildStatusData = item;
+                    status.TryActivateAbility();
+                    ChildrenStatuses.Add(status);
+                }
+            }
+            //行为禁制
             if (StatusConfigObject.EnabledStateModify)
             {
                 OwnerEntity.ActionControlType |= StatusConfigObject.ActionControlType;
@@ -33,29 +53,56 @@ namespace EGamePlay.Combat.Status
 //                    return StatusConfigObject.ActionControlType.HasFlag(ActionControlType) ? ActionControlType : ~ActionControlType;
 //                }
             }
+            //属性修饰
             if (StatusConfigObject.EnabledAttributeModify)
             {
-                switch (StatusConfigObject.AttributeType)
+                if (StatusConfigObject.AttributeType != AttributeType.None && StatusConfigObject.NumericValue != "")
                 {
-                    case AttributeType.None:
-                        break;
-                    case AttributeType.AttackPower:
-                        var value = int.Parse(StatusConfigObject.NumericValue);
-                        NumericModifier = new FloatModifier() { Value = value };
-                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().AttackPower.AddAddModifier(NumericModifier);
-                        break;
-                    case AttributeType.AttackDefense:
-                        break;
-                    case AttributeType.SpellPower:
-                        break;
-                    case AttributeType.MagicDefense:
-                        break;
-                    case AttributeType.CriticalProbability:
-                        break;
-                    default:
-                        break;
+                    var numericValue = StatusConfigObject.NumericValue;
+                    if (IsChildStatus)
+                    {
+                        foreach (var item in ChildStatusData.Params)
+                        {
+                            numericValue = numericValue.Replace(item.Key, item.Value);
+                        }
+                    }
+                    numericValue = numericValue.Replace("%", "");
+                    var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(numericValue);
+                    var value = (float)expression.Value;
+                    NumericModifier = new FloatModifier() { Value = value };
+
+                    //switch (StatusConfigObject.AttributeType)
+                    //{
+                    //    case AttributeType.None:
+                    //        break;
+                    //    case AttributeType.MoveSpeed:
+                    //        break;
+                    //    case AttributeType.AttackPower:
+                    //        break;
+                    //    case AttributeType.AttackDefense:
+                    //        break;
+                    //    case AttributeType.SpellPower:
+                    //        break;
+                    //    case AttributeType.MagicDefense:
+                    //        break;
+                    //    case AttributeType.CriticalProbability:
+                    //        break;
+                    //    default:
+                    //        break;
+                    //}
+
+                    var attributeType = StatusConfigObject.AttributeType.ToString();
+                    if (StatusConfigObject.ModifyType == ModifyType.Add)
+                    {
+                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalAddModifier(NumericModifier);
+                    }
+                    if (StatusConfigObject.ModifyType == ModifyType.PercentAdd)
+                    {
+                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalPctAddModifier(NumericModifier);
+                    }
                 }
             }
+            //逻辑触发
             if (StatusConfigObject.EnabledLogicTrigger)
             {
                 foreach (var item in StatusConfigObject.Effects)
@@ -80,54 +127,67 @@ namespace EGamePlay.Combat.Status
                     }
                 }
             }
-            if (StatusConfigObject.EnableChildrenStatuses)
-            {
-                foreach (var item in StatusConfigObject.ChildrenStatuses)
-                {
-                    var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
-                    status.Caster = OwnerEntity;
-                    status.TryActivateAbility();
-                }
-            }
         }
 
         //结束
         public override void EndAbility()
         {
+            //子状态效果
+            if (StatusConfigObject.EnableChildrenStatuses)
+            {
+                foreach (var item in ChildrenStatuses)
+                {
+                    item.EndAbility();
+                }
+                ChildrenStatuses.Clear();
+            }
+            //行为禁制
             if (StatusConfigObject.EnabledStateModify)
             {
                 OwnerEntity.ActionControlType |= ~StatusConfigObject.ActionControlType;
             }
+            //属性修饰
             if (StatusConfigObject.EnabledAttributeModify)
             {
-                switch (StatusConfigObject.AttributeType)
+                if (StatusConfigObject.AttributeType != AttributeType.None && StatusConfigObject.NumericValue != "")
                 {
-                    case AttributeType.None:
-                        break;
-                    case AttributeType.AttackPower:
-                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().AttackPower.RemoveAddModifier(NumericModifier);
-                        break;
-                    case AttributeType.AttackDefense:
-                        break;
-                    case AttributeType.SpellPower:
-                        break;
-                    case AttributeType.MagicDefense:
-                        break;
-                    case AttributeType.CriticalProbability:
-                        break;
-                    default:
-                        break;
+                    //switch (StatusConfigObject.AttributeType)
+                    //{
+                    //    case AttributeType.None:
+                    //        break;
+                    //    case AttributeType.MoveSpeed:
+                    //        break;
+                    //    case AttributeType.AttackPower:
+                    //        break;
+                    //    case AttributeType.AttackDefense:
+                    //        break;
+                    //    case AttributeType.SpellPower:
+                    //        break;
+                    //    case AttributeType.MagicDefense:
+                    //        break;
+                    //    case AttributeType.CriticalProbability:
+                    //        break;
+                    //    default:
+                    //        break;
+                    //}
+
+                    var attributeType = StatusConfigObject.AttributeType.ToString();
+                    if (StatusConfigObject.ModifyType == ModifyType.Add)
+                    {
+                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalAddModifier(NumericModifier);
+                    }
+                    if (StatusConfigObject.ModifyType == ModifyType.PercentAdd)
+                    {
+                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalPctAddModifier(NumericModifier);
+                    }
                 }
             }
+            //逻辑触发
             if (StatusConfigObject.EnabledLogicTrigger)
             {
 
             }
-            foreach (var item in ChildrenStatuses)
-            {
-                item.EndAbility();
-            }
-            ChildrenStatuses.Clear();
+
             NumericModifier = null;
             GetParent<CombatEntity>().OnStatusRemove(this);
             base.EndAbility();

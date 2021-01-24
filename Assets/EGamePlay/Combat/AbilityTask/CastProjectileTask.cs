@@ -12,6 +12,7 @@ namespace EGamePlay.Combat.Ability
     {
         public Vector3 TargetPoint;
         public GameObject ProjectilePrefab;
+        public float FlyTime;
     }
 
     public class CastProjectileTask : AbilityTask
@@ -30,8 +31,8 @@ namespace EGamePlay.Combat.Ability
             {
                 var projectile = GameObject.Instantiate(CastProjectileData.ProjectilePrefab);
                 projectile.transform.position = GetParent<SkillAbilityExecution>().GetParent<CombatEntity>().Position + Vector3.up;
-                projectile.transform.DOMove(GetParent<SkillAbilityExecution>().InputCombatEntity.Position + Vector3.up, 0.8f).SetEase(Ease.Linear);
-                await TimerComponent.Instance.WaitAsync(800);
+                projectile.transform.DOMove(GetParent<SkillAbilityExecution>().InputCombatEntity.Position + Vector3.up, CastProjectileData.FlyTime).SetEase(Ease.Linear);
+                await TimerComponent.Instance.WaitAsync((int)(CastProjectileData.FlyTime * 1000));
                 GameObject.Destroy(projectile);
                 Entity.Destroy(this);
             }

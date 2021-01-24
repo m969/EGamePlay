@@ -19,6 +19,7 @@ public sealed class Monster : MonoBehaviour
     public Transform StatusSlotsTrm;
     public GameObject StatusIconPrefab;
     private GameObject vertigoParticle;
+    private GameObject weakParticle;
 
 
     // Start is called before the first frame update
@@ -48,10 +49,12 @@ public sealed class Monster : MonoBehaviour
         {
             if (motionComponent.MoveTimer.IsRunning)
             {
+                AnimationComponent.Speed = CombatEntity.GetComponent<AttributeComponent>().MoveSpeed.Value;
                 AnimationComponent.TryPlayFade(AnimationComponent.RunAnimation);
             }
             else
             {
+                AnimationComponent.Speed = 1;
                 AnimationComponent.TryPlayFade(AnimationComponent.IdleAnimation);
             }
             transform.position = CombatEntity.Position;
@@ -113,6 +116,15 @@ public sealed class Monster : MonoBehaviour
                     vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
                 }
             }
+            if (statusConfig.ID == "Weak")
+            {
+                if (weakParticle == null)
+                {
+                    weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                    weakParticle.transform.parent = transform;
+                    weakParticle.transform.localPosition = new Vector3(0, 0, 0);
+                }
+            }
         }
     }
 
@@ -120,8 +132,11 @@ public sealed class Monster : MonoBehaviour
     {
         if (name == "Monster")
         {
-            var obj = StatusSlotsTrm.Find(eventData.StatusId.ToString()).gameObject;
-            GameObject.Destroy(obj);
+            var trm = StatusSlotsTrm.Find(eventData.StatusId.ToString());
+            if (trm != null)
+            {
+                GameObject.Destroy(trm.gameObject);
+            }
         }
         
         var statusConfig = eventData.Status.StatusConfigObject;
@@ -132,6 +147,13 @@ public sealed class Monster : MonoBehaviour
             if (vertigoParticle != null)
             {
                 GameObject.Destroy(vertigoParticle);
+            }
+        }
+        if (statusConfig.ID == "Weak")
+        {
+            if (weakParticle != null)
+            {
+                GameObject.Destroy(weakParticle);
             }
         }
     }

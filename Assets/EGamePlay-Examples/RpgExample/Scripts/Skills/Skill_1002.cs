@@ -7,7 +7,7 @@ using EGamePlay.Combat.Skill;
 using EGamePlay.Combat;
 using EGamePlay;
 
-public class Skill1002Entity : SkillAbility
+public class Skill1002Ability : SkillAbility
 {
     public override AbilityExecution CreateAbilityExecution()
     {
@@ -24,7 +24,7 @@ public class Skill1002Execution : SkillAbilityExecution
 
         var taskData2 = new CreateTriggerTaskData();
         taskData2.Position = InputPoint;
-        taskData2.TriggerPrefab = (AbilityEntity as Skill1002Entity).SkillConfigObject.AreaCollider;
+        taskData2.TriggerPrefab = (AbilityEntity as Skill1002Ability).SkillConfigObject.AreaCollider;
         taskData2.OnTriggerEnterCallback = (other) => {
             AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity);
         };
@@ -34,7 +34,7 @@ public class Skill1002Execution : SkillAbilityExecution
 
         var taskData = new CreateExplosionTaskData();
         taskData.TargetPoint = InputPoint;
-        taskData.ExplosionPrefab = (AbilityEntity as Skill1002Entity).SkillConfigObject.SkillEffectObject;
+        taskData.ExplosionPrefab = (AbilityEntity as Skill1002Ability).SkillConfigObject.SkillEffectObject;
         var task = Entity.CreateWithParent<CreateExplosionTask>(this, taskData);
         await task.ExecuteTaskAsync();
 

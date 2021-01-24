@@ -24,8 +24,8 @@ namespace EGamePlay.Combat
         public StatusType StatusType;
         [HideInInspector]
         public uint Duration;
-        [LabelText("是否在状态栏显示")]
-        public bool ShowInStatusIconList;
+        [LabelText("是否在状态栏显示"), UnityEngine.Serialization.FormerlySerializedAs("ShowInStatusIconList")]
+        public bool ShowInStatusSlots;
         [LabelText("能否叠加")]
         public bool CanStack;
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
@@ -59,6 +59,8 @@ namespace EGamePlay.Combat
         public AttributeType AttributeType;
         [ToggleGroup("EnabledAttributeModify"), LabelText("数值参数")]
         public string NumericValue;
+        [ToggleGroup("EnabledAttributeModify")]
+        public ModifyType ModifyType;
         //[ToggleGroup("EnabledAttributeModify"), LabelText("属性修饰")]
         //[DictionaryDrawerSettings(KeyLabel =)]
         //public Dictionary<NumericType, string> AttributeChanges = new Dictionary<NumericType, string>();

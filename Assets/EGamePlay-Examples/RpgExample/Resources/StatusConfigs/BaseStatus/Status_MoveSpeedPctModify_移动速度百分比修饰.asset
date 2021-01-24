@@ -51,7 +51,7 @@ MonoBehaviour:
   Name: "\u79FB\u52A8\u901F\u5EA6\u767E\u5206\u6BD4\u4FEE\u9970"
   StatusType: 2
   Duration: 3000
-  ShowInStatusIconList: 1
+  ShowInStatusSlots: 1
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 0
@@ -60,6 +60,7 @@ MonoBehaviour:
   EnabledAttributeModify: 1
   AttributeType: 2002
   NumericValue: "\u53D8\u52A8\u6570\u503C"
+  ModifyType: 1
   EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}

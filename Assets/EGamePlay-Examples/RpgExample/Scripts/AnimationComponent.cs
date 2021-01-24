@@ -13,6 +13,7 @@ public class AnimationComponent : MonoBehaviour
     public AnimationClip AttackAnimation;
     public AnimationClip SkillAnimation;
     public AnimationClip StunAnimation;
+    public float Speed { get; set; } = 1f;
     
     
     private void Start()
@@ -28,20 +29,26 @@ public class AnimationComponent : MonoBehaviour
 
     public void Play(AnimationClip clip)
     {
-        AnimancerComponent.Play(clip);
+        var state = AnimancerComponent.States.GetOrCreate(clip);
+        state.Speed = Speed;
+        AnimancerComponent.Play(state);
     }
     
     public void PlayFade(AnimationClip clip)
     {
-        AnimancerComponent.Play(clip, 0.25f);
+        var state = AnimancerComponent.States.GetOrCreate(clip);
+        state.Speed = Speed;
+        AnimancerComponent.Play(state, 0.25f);
     }
 
     public void TryPlayFade(AnimationClip clip)
     {
+        var state = AnimancerComponent.States.GetOrCreate(clip);
+        state.Speed = Speed;
         if (AnimancerComponent.IsPlaying(clip))
         {
             return;
         }
-        AnimancerComponent.Play(clip, 0.25f);
+        AnimancerComponent.Play(state, 0.25f);
     }
 }

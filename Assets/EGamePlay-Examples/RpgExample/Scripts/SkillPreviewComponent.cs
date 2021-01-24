@@ -55,11 +55,11 @@ public class SkillPreviewComponent : EGamePlay.Component
     {
         CancelPreview();
         Previewing = true;
-        if (PreviewingSkill is Skill1001Entity)
+        if (PreviewingSkill is Skill1001Ability)
         {
             TargetSelectManager.Instance.Show(OnSelectedTarget);
         }
-        if (PreviewingSkill is Skill1002Entity)
+        if (PreviewingSkill is Skill1002Ability)
         {
             PointSelectManager.Instance.Show(OnInputPoint);
         }

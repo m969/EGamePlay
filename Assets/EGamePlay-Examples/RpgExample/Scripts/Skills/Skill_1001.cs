@@ -7,7 +7,7 @@ using EGamePlay.Combat.Skill;
 using EGamePlay.Combat;
 using EGamePlay;
 
-public class Skill1001Entity : SkillAbility
+public class Skill1001Ability : SkillAbility
 {
     public override AbilityExecution CreateAbilityExecution()
     {
@@ -26,7 +26,8 @@ public class Skill1001Execution : SkillAbilityExecution
         //EntityFactory.CreateWithParent<PlayAnimationTask>(this, "施法动作").ExecuteTaskAsync().Coroutine();
 
         var taskData = new CastProjectileTaskData();
-        taskData.ProjectilePrefab = (AbilityEntity as Skill1001Entity).SkillConfigObject.SkillEffectObject;
+        taskData.FlyTime = 0.3f;
+        taskData.ProjectilePrefab = (AbilityEntity as Skill1001Ability).SkillConfigObject.SkillEffectObject;
         var task = Entity.CreateWithParent<CastProjectileTask>(this, taskData);
         await task.ExecuteTaskAsync();
 

@@ -25,8 +25,8 @@ namespace EGamePlay.Combat
         public override void Setup()
         {
             base.Setup();
-            IdleTimer = new GameTimer(RandomHelper.RandomNumber(20, 40) / 10f);
-            MoveTimer = new GameTimer(RandomHelper.RandomNumber(10, 20) / 10f);
+            IdleTimer = new GameTimer(RandomHelper.RandomNumber(20, 30) / 10f);
+            MoveTimer = new GameTimer(RandomHelper.RandomNumber(20, 40) / 10f);
             IdleTimer.Reset();
             originPos = Position;
         }
@@ -42,7 +42,8 @@ namespace EGamePlay.Combat
                 if (MoveTimer.IsRunning)
                 {
                     MoveTimer.UpdateAsFinish(Time.deltaTime, MoveFinish);
-                    Position += MoveVector;
+                    var speed = GetEntity<CombatEntity>().GetComponent<AttributeComponent>().MoveSpeed.Value;
+                    Position += MoveVector * speed;
                 }
             }
         }

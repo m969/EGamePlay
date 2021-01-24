@@ -174,6 +174,13 @@
         CauseDamage = 4001,
     }
 
+    [LabelText("修饰类型")]
+    public enum ModifyType
+    {
+        Add = 0,
+        PercentAdd = 1,
+    }
+
     //[LabelText("整形数值")]
     //public enum IntNumericType
     //{

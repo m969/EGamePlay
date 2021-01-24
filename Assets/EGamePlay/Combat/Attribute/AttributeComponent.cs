@@ -7,11 +7,14 @@ namespace EGamePlay.Combat
     /// </summary>
     public class AttributeComponent : Component
 	{
-        private readonly Dictionary<string, FloatNumeric> attributeNumerics = new Dictionary<string, FloatNumeric>();
-        public FloatNumeric HealthPoint { get { return attributeNumerics[nameof(AttributeType.HealthPoint)]; } }
-        public FloatNumeric AttackPower { get { return attributeNumerics[nameof(AttributeType.AttackPower)]; } }
-        public FloatNumeric AttackDefense { get { return attributeNumerics[nameof(AttributeType.AttackDefense)]; } }
-        public FloatNumeric CriticalProbability { get { return attributeNumerics[nameof(AttributeType.CriticalProbability)]; } }
+        private readonly Dictionary<string, FloatNumeric> attributeNameNumerics = new Dictionary<string, FloatNumeric>();
+        private readonly Dictionary<AttributeType, FloatNumeric> attributeTypeNumerics = new Dictionary<AttributeType, FloatNumeric>();
+        public FloatNumeric MoveSpeed { get { return attributeNameNumerics[nameof(AttributeType.MoveSpeed)]; } }
+        public FloatNumeric CauseDamage { get { return attributeNameNumerics[nameof(AttributeType.CauseDamage)]; } }
+        public FloatNumeric HealthPoint { get { return attributeNameNumerics[nameof(AttributeType.HealthPoint)]; } }
+        public FloatNumeric AttackPower { get { return attributeNameNumerics[nameof(AttributeType.AttackPower)]; } }
+        public FloatNumeric AttackDefense { get { return attributeNameNumerics[nameof(AttributeType.AttackDefense)]; } }
+        public FloatNumeric CriticalProbability { get { return attributeNameNumerics[nameof(AttributeType.CriticalProbability)]; } }
 
 
         public override void Setup()
@@ -21,18 +24,25 @@ namespace EGamePlay.Combat
 
         public void Initialize()
         {
-            AddNumeric(nameof(AttributeType.HealthPoint), 99_999);
-            AddNumeric(nameof(AttributeType.AttackPower), 1000);
-            AddNumeric(nameof(AttributeType.AttackDefense), 300);
-            AddNumeric(nameof(AttributeType.CriticalProbability), 0.5f);
+            AddNumeric(AttributeType.HealthPoint, nameof(AttributeType.HealthPoint), 99_999);
+            AddNumeric(AttributeType.MoveSpeed, nameof(AttributeType.MoveSpeed), 1);
+            AddNumeric(AttributeType.CauseDamage, nameof(AttributeType.CauseDamage), 1);
+            AddNumeric(AttributeType.AttackPower, nameof(AttributeType.AttackPower), 1000);
+            AddNumeric(AttributeType.AttackDefense, nameof(AttributeType.AttackDefense), 300);
+            AddNumeric(AttributeType.CriticalProbability, nameof(AttributeType.CriticalProbability), 0.5f);
         }
 
-        public FloatNumeric AddNumeric(string type, float baseValue)
+        public FloatNumeric AddNumeric(AttributeType attributeType, string attributeName, float baseValue)
         {
             var numeric = new FloatNumeric();
             numeric.SetBase(baseValue);
-            attributeNumerics.Add(type, numeric);
+            attributeNameNumerics.Add(attributeName, numeric);
             return numeric;
+        }
+
+        public FloatNumeric GetNumeric(string attributeName)
+        {
+            return attributeNameNumerics[attributeName];
         }
 	}
 }

@@ -75,6 +75,18 @@ namespace EGamePlay
         public UnityEngine.GameObject GameObject { get; set; }
 #endif
         public long Id { get; set; }
+        private string name;
+        public string Name
+        {
+            get => name;
+            set
+            {
+#if !SERVER
+                GameObject.name = $"{GetType().Name}: {value}";
+#endif
+                name = value;
+            }
+        }
         public long InstanceId { get; set; }
         private Entity parent;
         public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }

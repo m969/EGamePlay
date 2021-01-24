@@ -22,8 +22,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   TaskConfigs:
-  - Title: "\u52A8\u6001\u8868\u8FBE\u5F0F\u89E3\u6790\u529F\u80FD"
-    Description: "\u63CF\u8FF0"
   - Title: "\u78B0\u649E\u76D2\u4E0E\u53EF\u89C6\u6280\u80FD\u573A"
     Description: "LockstepCollision\u78B0\u649E\u7CFB\u7EDF"
   - Title: "\u6280\u80FD\u6548\u679C\u6570\u503C\u516C\u5F0F\u7F16\u8F91\u9762\u677F"
@@ -31,8 +29,4 @@ MonoBehaviour:
   - Title: Hero Builder Editor
     Description: "\u63CF\u8FF0"
   - Title: "\u5149\u4E4B\u675F\u7F1A"
-    Description: "\u63CF\u8FF0"
-  - Title: "\u7729\u6655"
-    Description: "\u63CF\u8FF0"
-  - Title: "\u602A\u7269ai"
     Description: "\u63CF\u8FF0"

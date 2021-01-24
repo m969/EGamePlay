@@ -16,7 +16,7 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 11400000, guid: b8c91eb546ede34438b6e5f3aefa1734, type: 2}
+    - {fileID: 11400000, guid: d5298db8f38dc4b47b0d708b7b8d8218, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -106,7 +106,7 @@ MonoBehaviour:
       Data: 0
     - Name: Duration
       Entry: 3
-      Data: 4000
+      Data: 6000
     - Name: Params
       Entry: 7
       Data: 3|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
