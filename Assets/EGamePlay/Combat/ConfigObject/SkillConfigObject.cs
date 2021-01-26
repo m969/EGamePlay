@@ -82,6 +82,7 @@ namespace EGamePlay.Combat
 
                 var effect = Activator.CreateInstance(effectType) as Effect;
                 effect.Enabled = true;
+                effect.IsSkillEffect = true;
                 Effects.Add(effect);
 
                 EffectTypeName = "(添加效果)";
@@ -120,10 +121,10 @@ namespace EGamePlay.Combat
         [OnInspectorGUI]
         private void OnInspectorGUI()
         {
-            foreach (var item in this.Effects)
-            {
-                item.IsSkillEffect = true;
-            }
+            //foreach (var item in this.Effects)
+            //{
+            //    item.IsSkillEffect = true;
+            //}
 
             if (!AutoRename)
             {
