@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Vertigo_\u7729\u6655"
+  m_Name: "Status_Status1_\u72B6\u60012"
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -50,23 +50,22 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Vertigo
-  Name: "\u7729\u6655"
-  StatusType: 1
-  Duration: 5000
-  ShowInStatusSlots: 1
+  ID: Status1
+  Name: "\u72B6\u60012"
+  StatusType: 0
+  Duration: 0
+  ShowInStatusSlots: 0
   CanStack: 0
-  MaxStack: 1
+  MaxStack: 0
   EnableChildrenStatuses: 0
-  EnabledStateModify: 1
-  ActionControlType: 14
+  EnabledStateModify: 0
+  ActionControlType: 0
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 
   ModifyType: 0
   EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 1846532664448058, guid: 20980e90dd2e73b419275714d5c124c4,
-    type: 3}
+  ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
   StatusDescription: 

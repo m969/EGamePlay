@@ -161,6 +161,9 @@ namespace EGamePlay.Combat
 
         [TextArea, LabelText("状态描述")]
         public string StatusDescription;
+        [SerializeField, LabelText("自动重命名")]
+        public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
+        public static bool AutoRenameStatic = true;
 
         //private bool NeedClearLog;
         [OnInspectorGUI]
@@ -182,17 +185,33 @@ namespace EGamePlay.Combat
             //    NeedClearLog = true;
             //}
 
+            if (!AutoRename)
+            {
+                return;
+            }
+
+            RenameFile();
+        }
+
+        [Button("重命名配置文件"), HideIf("AutoRename")]
+        private void RenameFile()
+        {
             string[] guids = UnityEditor.Selection.assetGUIDs;
             int i = guids.Length;
             if (i == 1)
             {
                 string guid = guids[0];
                 string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var so = UnityEditor.AssetDatabase.LoadAssetAtPath<StatusConfigObject>(assetPath);
+                if (so != this)
+                {
+                    return;
+                }
                 var fileName = Path.GetFileName(assetPath);
                 var newName = $"Status_{this.ID}_{this.Name}";
                 if (!fileName.StartsWith(newName))
                 {
-                    Debug.Log(assetPath);
+                    //Debug.Log(assetPath);
                     UnityEditor.AssetDatabase.RenameAsset(assetPath, newName);
                 }
             }
