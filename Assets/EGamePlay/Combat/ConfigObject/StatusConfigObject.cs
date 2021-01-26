@@ -43,11 +43,6 @@ namespace EGamePlay.Combat
             ChildrenStatuses.Add(new ChildStatus());
         }
 
-        private void DrawSpace()
-        {
-            GUILayout.Space(20);
-        }
-
         [ToggleGroup("EnabledStateModify", "行为禁制")]
         public bool EnabledStateModify;
         [ToggleGroup("EnabledStateModify")]
@@ -137,13 +132,6 @@ namespace EGamePlay.Combat
             //SkillHelper.AddEffect(Effects, EffectType);
         }
 
-        private void BeginBox()
-        {
-            GUILayout.Space(30);
-            SirenixEditorGUI.DrawThickHorizontalSeparator();
-            GUILayout.Space(10);
-            SirenixEditorGUI.BeginBox("状态表现");
-        }
         [LabelText("状态特效")]
         [OnInspectorGUI("BeginBox", append:false)]
         public GameObject ParticleEffect;
@@ -151,6 +139,27 @@ namespace EGamePlay.Combat
         [LabelText("状态音效")]
         [OnInspectorGUI("EndBox", append:true)]
         public AudioClip Audio;
+
+        [TextArea, LabelText("状态描述")]
+        public string StatusDescription;
+        [SerializeField, LabelText("自动重命名")]
+        public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
+        public static bool AutoRenameStatic = true;
+
+#if UNITY_EDITOR
+        private void DrawSpace()
+        {
+            GUILayout.Space(20);
+        }
+
+        private void BeginBox()
+        {
+            GUILayout.Space(30);
+            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            GUILayout.Space(10);
+            SirenixEditorGUI.BeginBox("状态表现");
+        }
+
         private void EndBox()
         {
             SirenixEditorGUI.EndBox();
@@ -158,12 +167,6 @@ namespace EGamePlay.Combat
             SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
         }
-
-        [TextArea, LabelText("状态描述")]
-        public string StatusDescription;
-        [SerializeField, LabelText("自动重命名")]
-        public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
-        public static bool AutoRenameStatic = true;
 
         //private bool NeedClearLog;
         [OnInspectorGUI]
@@ -216,6 +219,7 @@ namespace EGamePlay.Combat
                 }
             }
         }
+#endif
 
 
 #if EGamePlay_EN

@@ -90,13 +90,6 @@ namespace EGamePlay.Combat
             //SkillHelper.AddEffect(Effects, EffectType);
         }
 
-        private void BeginBox()
-        {
-            GUILayout.Space(30);
-            SirenixEditorGUI.DrawThickHorizontalSeparator();
-            GUILayout.Space(10);
-            SirenixEditorGUI.BeginBox("技能表现");
-        }
         [OnInspectorGUI("BeginBox", append: false)]
         [LabelText("技能动作")]
         public AnimationClip SkillAnimationClip;
@@ -105,6 +98,21 @@ namespace EGamePlay.Combat
         [LabelText("技能音效")]
         [OnInspectorGUI("EndBox", append: true)]
         public AudioClip SkillAudio;
+
+        [TextArea, LabelText("技能描述")]
+        public string SkillDescription;
+        [SerializeField, LabelText("自动重命名")]
+        public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
+
+#if UNITY_EDITOR
+        private void BeginBox()
+        {
+            GUILayout.Space(30);
+            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            GUILayout.Space(10);
+            SirenixEditorGUI.BeginBox("技能表现");
+        }
+
         private void EndBox()
         {
             SirenixEditorGUI.EndBox();
@@ -112,11 +120,6 @@ namespace EGamePlay.Combat
             SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
         }
-
-        [TextArea, LabelText("技能描述")]
-        public string SkillDescription;
-        [SerializeField, LabelText("自动重命名")]
-        public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
 
         [OnInspectorGUI]
         private void OnInspectorGUI()
@@ -157,6 +160,7 @@ namespace EGamePlay.Combat
                 }
             }
         }
+#endif
     }
 
     [LabelText("护盾类型")]
