@@ -5,7 +5,6 @@ using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System;
 using System.IO;
-using Sirenix.OdinInspector.Editor;
 using UnityEngine.PlayerLoop;
 using Sirenix.Utilities.Editor;
 using UnityEngine.Serialization;
@@ -101,10 +100,21 @@ namespace EGamePlay.Combat
 
         [TextArea, LabelText("技能描述")]
         public string SkillDescription;
+
+#if UNITY_EDITOR
         [SerializeField, LabelText("自动重命名")]
         public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
 
-#if UNITY_EDITOR
+        private void OnEnable()
+        {
+            StatusConfigObject.AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
+        }
+
+        private void OnDisable()
+        {
+            UnityEditor.EditorPrefs.SetBool("AutoRename", StatusConfigObject.AutoRenameStatic);
+        }
+
         private void BeginBox()
         {
             GUILayout.Space(30);

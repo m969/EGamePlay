@@ -5,9 +5,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System.IO;
-using Sirenix.Utilities.Editor;
 using System.Linq;
-using UnityEditor;
 using System.Reflection;
 
 namespace EGamePlay.Combat
@@ -142,11 +140,22 @@ namespace EGamePlay.Combat
 
         [TextArea, LabelText("状态描述")]
         public string StatusDescription;
+
+#if UNITY_EDITOR
         [SerializeField, LabelText("自动重命名")]
         public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
         public static bool AutoRenameStatic = true;
 
-#if UNITY_EDITOR
+        private void OnEnable()
+        {
+            AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
+        }
+
+        private void OnDisable()
+        {
+            UnityEditor.EditorPrefs.SetBool("AutoRename", AutoRenameStatic);
+        }
+
         private void DrawSpace()
         {
             GUILayout.Space(20);
@@ -155,16 +164,16 @@ namespace EGamePlay.Combat
         private void BeginBox()
         {
             GUILayout.Space(30);
-            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
-            SirenixEditorGUI.BeginBox("状态表现");
+            Sirenix.Utilities.Editor.SirenixEditorGUI.BeginBox("状态表现");
         }
 
         private void EndBox()
         {
-            SirenixEditorGUI.EndBox();
+            Sirenix.Utilities.Editor.SirenixEditorGUI.EndBox();
             GUILayout.Space(30);
-            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
         }
 

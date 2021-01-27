@@ -10,7 +10,18 @@ using System.Linq;
 
 namespace EGamePlay.Combat
 {
-    [CreateAssetMenu(fileName = "战斗属性配置", menuName = "技能|状态/战斗属性配置")]
+//#if UNITY_EDITOR
+//	[UnityEditor.InitializeOnLoad]
+//	public static class UnityInitial
+//    {
+//		static UnityInitial()
+//        {
+//			StatusConfigObject.AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
+//		}
+//	}
+//#endif
+
+	[CreateAssetMenu(fileName = "战斗属性配置", menuName = "技能|状态/战斗属性配置")]
     //[LabelText("战斗属性配置")]
     public class AttributeConfigObject : SerializedScriptableObject
     {

@@ -22,6 +22,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: true
     - Name: ChildrenStatuses
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
@@ -111,7 +114,7 @@ MonoBehaviour:
   Name: "\u5730\u72F1\u4F7F\u8005"
   StatusType: 0
   Duration: 0
-  ShowInStatusIconList: 0
+  ShowInStatusSlots: 0
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 0
@@ -120,6 +123,7 @@ MonoBehaviour:
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 
+  ModifyType: 0
   EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
