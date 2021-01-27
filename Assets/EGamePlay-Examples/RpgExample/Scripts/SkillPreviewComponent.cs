@@ -12,6 +12,7 @@ using EGamePlay.Combat.Ability;
 /// </summary>
 public class SkillPreviewComponent : EGamePlay.Component
 {
+    public override bool Enable { get; set; } = true;
     private bool Previewing { get; set; }
     private SkillAbility PreviewingSkill { get; set; }
 
@@ -26,19 +27,19 @@ public class SkillPreviewComponent : EGamePlay.Component
         if (Input.GetKeyDown(KeyCode.Q))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.Q] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.Q] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.W] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.W] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputAbilitys[KeyCode.E] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.E] as SkillAbility;
             EnterPreview();
         }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
@@ -54,11 +55,11 @@ public class SkillPreviewComponent : EGamePlay.Component
     {
         CancelPreview();
         Previewing = true;
-        if (PreviewingSkill is Skill1001Entity)
+        if (PreviewingSkill is Skill1001Ability)
         {
             TargetSelectManager.Instance.Show(OnSelectedTarget);
         }
-        if (PreviewingSkill is Skill1002Entity)
+        if (PreviewingSkill is Skill1002Ability)
         {
             PointSelectManager.Instance.Show(OnInputPoint);
         }

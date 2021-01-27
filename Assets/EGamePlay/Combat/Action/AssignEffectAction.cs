@@ -16,10 +16,6 @@ namespace EGamePlay.Combat
         //创建这个赋给效果行动的源能力
         public AbilityEntity SourceAbility { get; set; }
         public Effect Effect { get; set; }
-        ////效果类型
-        //public EffectType EffectType { get; set; }
-        ////效果数值
-        //public string EffectValue { get; set; }
         public StatusAbility Status { get; set; }
 
 
@@ -38,7 +34,19 @@ namespace EGamePlay.Combat
             }
             if (Effect is AddStatusEffect addStatusEffect)
             {
-                Status = Target.AttachStatus<StatusAbility>(addStatusEffect.AddStatus);
+                var statusConfig = addStatusEffect.AddStatus;
+                if (statusConfig.CanStack == false)
+                {
+                    if (Target.HasStatus(statusConfig.ID))
+                    {
+                        var status = Target.GetStatus(statusConfig.ID);
+                        var statusLifeTimer = status.GetComponent<StatusLifeTimeComponent>().LifeTimer;
+                        statusLifeTimer.MaxTime = addStatusEffect.Duration / 1000f;
+                        statusLifeTimer.Reset();
+                        return;
+                    }
+                }
+                Status = Target.AttachStatus<StatusAbility>(statusConfig);
                 Status.Caster = Creator;
                 Status.Level = SourceAbility.Level;
                 Status.AddComponent<StatusLifeTimeComponent>();

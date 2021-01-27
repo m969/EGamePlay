@@ -13,7 +13,7 @@ public class Skill1004Ability : SkillAbility
 {
     public override AbilityExecution CreateAbilityExecution()
     {
-        var abilityExecution = EntityFactory.CreateWithParent<Skill1004Execution>(this.GetParent<CombatEntity>(), this);
+        var abilityExecution = Entity.CreateWithParent<Skill1004Execution>(this.GetParent<CombatEntity>(), this);
         return abilityExecution;
     }
 }
@@ -25,7 +25,7 @@ public class Skill1004Execution : SkillAbilityExecution
         base.BeginExecute();
 
         Hero.Instance.StopMove();
-        Hero.Instance.PlayThenIdleAsync(Hero.Instance.SkillAnimation).Coroutine();
+        Hero.Instance.PlayThenIdleAsync(Hero.Instance.AnimationComponent.SkillAnimation).Coroutine();
         Hero.Instance.SkillPlaying = true;
         Hero.Instance.transform.GetChild(0).eulerAngles = new Vector3(0, InputDirection, 0);
 
@@ -34,7 +34,7 @@ public class Skill1004Execution : SkillAbilityExecution
         taskData.Direction = InputDirection;
         taskData.LifeTime = 2000;
         taskData.EffectPrefab = GetAbility<Skill1004Ability>().SkillConfigObject.SkillEffectObject;
-        var task = EntityFactory.CreateWithParent<CreateEffectTask>(this, taskData);
+        var task = Entity.CreateWithParent<CreateEffectTask>(this, taskData);
         task.ExecuteTaskAsync().Coroutine();
 
         await TimerComponent.Instance.WaitAsync(1500);
@@ -47,7 +47,7 @@ public class Skill1004Execution : SkillAbilityExecution
         taskData2.OnTriggerEnterCallback = (other) => {
             AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity);
         };
-        var task2 = EntityFactory.CreateWithParent<CreateTriggerTask>(this, taskData2);
+        var task2 = Entity.CreateWithParent<CreateTriggerTask>(this, taskData2);
         await task2.ExecuteTaskAsync();
 
         EndExecute();

@@ -1,15 +1,11 @@
-﻿#define EGamePlay_ZN
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System.IO;
-using Sirenix.Utilities.Editor;
 using System.Linq;
-using UnityEditor;
 using System.Reflection;
 
 namespace EGamePlay.Combat
@@ -24,13 +20,11 @@ namespace EGamePlay.Combat
         public string Name = "状态1";
         [LabelText(StatusTypeLabel)]
         public StatusType StatusType;
-        //[Tooltip("不勾即代表永久，0也代表永久")]
-        //[LabelText("持续时间"), SuffixLabel("毫秒", true)]
         [HideInInspector]
         public uint Duration;
-        [LabelText("是否在状态栏显示")]
-        public bool ShowInStatusIconList;
-        [LabelText("是否可叠加")]
+        [LabelText("是否在状态栏显示"), UnityEngine.Serialization.FormerlySerializedAs("ShowInStatusIconList")]
+        public bool ShowInStatusSlots;
+        [LabelText("能否叠加")]
         public bool CanStack;
         [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
         public int MaxStack = 0;
@@ -38,12 +32,13 @@ namespace EGamePlay.Combat
         [LabelText("子状态效果")]
         public bool EnableChildrenStatuses;
         [OnInspectorGUI("DrawSpace", append: true)]
-        [LabelText("子状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false)]
-        public List<StatusConfigObject> ChildrenStatuses;
+        [HideReferenceObjectPicker]
+        [LabelText("子状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false, CustomAddFunction = "AddChildStatus")]
+        public List<ChildStatus> ChildrenStatuses = new List<ChildStatus>();
 
-        private void DrawSpace()
+        private void AddChildStatus()
         {
-            GUILayout.Space(20);
+            ChildrenStatuses.Add(new ChildStatus());
         }
 
         [ToggleGroup("EnabledStateModify", "行为禁制")]
@@ -57,6 +52,8 @@ namespace EGamePlay.Combat
         public AttributeType AttributeType;
         [ToggleGroup("EnabledAttributeModify"), LabelText("数值参数")]
         public string NumericValue;
+        [ToggleGroup("EnabledAttributeModify")]
+        public ModifyType ModifyType;
         //[ToggleGroup("EnabledAttributeModify"), LabelText("属性修饰")]
         //[DictionaryDrawerSettings(KeyLabel =)]
         //public Dictionary<NumericType, string> AttributeChanges = new Dictionary<NumericType, string>();
@@ -133,13 +130,6 @@ namespace EGamePlay.Combat
             //SkillHelper.AddEffect(Effects, EffectType);
         }
 
-        private void BeginBox()
-        {
-            GUILayout.Space(30);
-            SirenixEditorGUI.DrawThickHorizontalSeparator();
-            GUILayout.Space(10);
-            SirenixEditorGUI.BeginBox("状态表现");
-        }
         [LabelText("状态特效")]
         [OnInspectorGUI("BeginBox", append:false)]
         public GameObject ParticleEffect;
@@ -147,16 +137,45 @@ namespace EGamePlay.Combat
         [LabelText("状态音效")]
         [OnInspectorGUI("EndBox", append:true)]
         public AudioClip Audio;
-        private void EndBox()
-        {
-            SirenixEditorGUI.EndBox();
-            GUILayout.Space(30);
-            SirenixEditorGUI.DrawThickHorizontalSeparator();
-            GUILayout.Space(10);
-        }
 
         [TextArea, LabelText("状态描述")]
         public string StatusDescription;
+
+#if UNITY_EDITOR
+        [SerializeField, LabelText("自动重命名")]
+        public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
+        public static bool AutoRenameStatic = true;
+
+        private void OnEnable()
+        {
+            AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
+        }
+
+        private void OnDisable()
+        {
+            UnityEditor.EditorPrefs.SetBool("AutoRename", AutoRenameStatic);
+        }
+
+        private void DrawSpace()
+        {
+            GUILayout.Space(20);
+        }
+
+        private void BeginBox()
+        {
+            GUILayout.Space(30);
+            Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
+            GUILayout.Space(10);
+            Sirenix.Utilities.Editor.SirenixEditorGUI.BeginBox("状态表现");
+        }
+
+        private void EndBox()
+        {
+            Sirenix.Utilities.Editor.SirenixEditorGUI.EndBox();
+            GUILayout.Space(30);
+            Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
+            GUILayout.Space(10);
+        }
 
         //private bool NeedClearLog;
         [OnInspectorGUI]
@@ -178,32 +197,58 @@ namespace EGamePlay.Combat
             //    NeedClearLog = true;
             //}
 
+            if (!AutoRename)
+            {
+                return;
+            }
+
+            RenameFile();
+        }
+
+        [Button("重命名配置文件"), HideIf("AutoRename")]
+        private void RenameFile()
+        {
             string[] guids = UnityEditor.Selection.assetGUIDs;
             int i = guids.Length;
             if (i == 1)
             {
                 string guid = guids[0];
                 string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var so = UnityEditor.AssetDatabase.LoadAssetAtPath<StatusConfigObject>(assetPath);
+                if (so != this)
+                {
+                    return;
+                }
                 var fileName = Path.GetFileName(assetPath);
                 var newName = $"Status_{this.ID}_{this.Name}";
                 if (!fileName.StartsWith(newName))
                 {
-                    Debug.Log(assetPath);
+                    //Debug.Log(assetPath);
                     UnityEditor.AssetDatabase.RenameAsset(assetPath, newName);
                 }
             }
         }
+#endif
 
 
-#if EGamePlay_ZN
-        private const string StatusIdLabel = "状态ID";
-        private const string StatusNameLabel = "状态名称";
-        private const string StatusTypeLabel = "状态类型";
-#else
+#if EGamePlay_EN
         private const string StatusIdLabel = "StatusID";
         private const string StatusNameLabel = "Name";
         private const string StatusTypeLabel = "Type";
+#else
+        private const string StatusIdLabel = "状态ID";
+        private const string StatusNameLabel = "状态名称";
+        private const string StatusTypeLabel = "状态类型";
 #endif
+    }
+
+    public class ChildStatus
+    {
+        [LabelText("状态效果")]
+        public StatusConfigObject StatusConfigObject;
+
+        [LabelText("参数列表"), HideReferenceObjectPicker]
+        public Dictionary<string, string> Params = new Dictionary<string, string>();
     }
 
     public enum StatusType

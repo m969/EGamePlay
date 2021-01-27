@@ -6,6 +6,8 @@ namespace EGamePlay
     {
         public Entity Entity { get; set; }
         public bool IsDisposed { get; set; }
+        public virtual bool Enable { get; set; }
+        public bool Disable => Enable == false;
 
 
         public T GetEntity<T>() where T : Entity
@@ -14,6 +16,11 @@ namespace EGamePlay
         }
 
         public virtual void Setup()
+        {
+
+        }
+
+        public virtual void Setup(object initData)
         {
 
         }
@@ -28,9 +35,9 @@ namespace EGamePlay
 
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-            if (EntityFactory.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
+            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
             IsDisposed = true;
         }
 

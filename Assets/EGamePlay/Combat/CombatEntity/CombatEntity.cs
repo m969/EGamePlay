@@ -14,22 +14,25 @@ namespace EGamePlay.Combat
     public sealed class CombatEntity : Entity
     {
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
-        public AttributeManageComponent AttributeComponent { get { return GetComponent<AttributeManageComponent>(); } }
-        public Dictionary<string, AbilityEntity> NameAbilitys { get; set; } = new Dictionary<string, AbilityEntity>();
-        public Dictionary<KeyCode, AbilityEntity> InputAbilitys { get; set; } = new Dictionary<KeyCode, AbilityEntity>();
+        public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
+        public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
+        public Dictionary<string, List<StatusAbility>> TypeIdStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
+        public Dictionary<Type, List<StatusAbility>> TypeStatuses { get; set; } = new Dictionary<Type, List<StatusAbility>>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public CombatContext CombatContext { get; set; }
+        public ActionControlType ActionControlType { get; set; }
 
 
         public override void Awake()
         {
-            AddComponent<AttributeManageComponent>();
+            AddComponent<AttributeComponent>();
             AddComponent<ActionPointManageComponent>();
             AddComponent<ConditionManageComponent>();
-            CurrentHealth.SetMaxValue((int)AttributeComponent.HealthPoint.Value);
+            //AddComponent<MotionComponent>();
+            CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
             CurrentHealth.Reset();
-            CombatContext = (CombatContext)Global.GetTypeChildren<CombatContext>()[0];
+            CombatContext = (CombatContext)Master.GetTypeChildren<CombatContext>()[0];
         }
 
         public T CreateCombatAction<T>() where T : CombatAction, new()
@@ -85,7 +88,7 @@ namespace EGamePlay.Combat
         /// <param name="configObject"></param>
         public T AttachAbility<T>(object configObject) where T : AbilityEntity, new()
         {
-            var ability = EntityFactory.CreateWithParent<T>(this, configObject);
+            var ability = Entity.CreateWithParent<T>(this, configObject);
             ability.OnSetParent(this);
             return ability;
         }
@@ -93,29 +96,54 @@ namespace EGamePlay.Combat
         public T AttachSkill<T>(object configObject) where T : SkillAbility, new()
         {
             var skill = AttachAbility<T>(configObject);
-            NameAbilitys.Add(skill.SkillConfigObject.Name, skill);
+            NameSkills.Add(skill.SkillConfigObject.Name, skill);
             return skill;
         }
 
         public T AttachStatus<T>(object configObject) where T : StatusAbility, new()
         {
             var status = AttachAbility<T>(configObject);
+            if (!TypeIdStatuses.ContainsKey(status.StatusConfigObject.ID))
+            {
+                TypeIdStatuses.Add(status.StatusConfigObject.ID, new List<StatusAbility>());
+            }
+            TypeIdStatuses[status.StatusConfigObject.ID].Add(status);
             return status;
         }
 
-        public void OnStatusRemove(StatusAbility statusAbilityEntity)
+        public void OnStatusRemove(StatusAbility statusAbility)
         {
-            this.Publish(new StatusRemoveEvent() { CombatEntity = this, Status = statusAbilityEntity, StatusId = statusAbilityEntity.Id });
+            TypeIdStatuses[statusAbility.StatusConfigObject.ID].Remove(statusAbility);
+            if (TypeIdStatuses[statusAbility.StatusConfigObject.ID].Count == 0)
+            {
+                TypeIdStatuses.Remove(statusAbility.StatusConfigObject.ID);
+            }
+            this.Publish(new RemoveStatusEvent() { CombatEntity = this, Status = statusAbility, StatusId = statusAbility.Id });
         }
 
-        public void BindAbilityInput(AbilityEntity abilityEntity, KeyCode keyCode)
+        public void BindSkillInput(SkillAbility abilityEntity, KeyCode keyCode)
         {
-            InputAbilitys.Add(keyCode, abilityEntity);
+            InputSkills.Add(keyCode, abilityEntity);
             abilityEntity.TryActivateAbility();
+        }
+
+        public bool HasStatus<T>(T statusType) where T : StatusAbility
+        {
+            return TypeStatuses.ContainsKey(statusType.GetType());
+        }
+        
+        public bool HasStatus(string statusTypeId)
+        {
+            return TypeIdStatuses.ContainsKey(statusTypeId);
+        }
+
+        public StatusAbility GetStatus(string statusTypeId)
+        {
+            return TypeIdStatuses[statusTypeId][0];
         }
     }
 
-    public class StatusRemoveEvent
+    public class RemoveStatusEvent
     {
         public CombatEntity CombatEntity { get; set; }
         public StatusAbility Status { get; set; }

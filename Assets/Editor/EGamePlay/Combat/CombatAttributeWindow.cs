@@ -1,4 +1,7 @@
-﻿namespace EGamePlay.Combat
+﻿using UnityEngine.Timeline;
+using UnityEngine.Playables;
+
+namespace EGamePlay.Combat
 {
 	using System.Collections;
 	using System.Collections.Generic;
@@ -47,13 +50,14 @@
         protected override void OnEnable()
         {
             base.OnEnable();
-			attributeConfigObject = AssetDatabase.LoadAssetAtPath<AttributeConfigObject>("Assets/EGamePlay-Examples/战斗属性配置.asset");
+			attributeConfigObject = AssetDatabase.LoadAssetAtPath<AttributeConfigObject>("Assets/EGamePlay-Examples/RpgExample/Resources/战斗属性配置.asset");
 			if (attributeConfigObject == null)
             {
 				return;
             }
 			AttributeConfigs = attributeConfigObject.AttributeConfigs;
 			StateConfigs = attributeConfigObject.StateConfigs;
+			Init();
 		}
 
         public void DrawStateList()
@@ -176,17 +180,212 @@
 		}
 
 
-		//[MenuItem("Tools/EGamePlay/战斗属性编辑界面")]
-		private static void ShowWindow()
+        [MenuItem("Tools/EGamePlay/战斗属性编辑界面")]
+        private static void ShowWindow()
 		{
 			var window = GetWindowWithRect<CombatAttributeWindow>(new Rect(0, 0, 800, 600), true, "战斗属性编辑界面");
             window.position = GUIHelper.GetEditorWindowRect().AlignCenter(700, 700);
 		}
 
-		protected override void OnGUI()
-		{
+		bool isDraging = false;
+		Vector2 pos;
+		Texture boxTex;
+		Timeline timeline;
+
+		private void Init()
+        {
+			pos = position.position + new Vector2(200, 200);
+			Timeline.segmentTex = boxTex = EditorGUIUtility.Load("Square.png") as Texture;
+
+			timeline = new Timeline() { timelineSegments = new List<TimelineSegment>(), localPosition = pos };
+			timeline.AddSegment();
+		}
+
+        protected override void OnGUI()
+        {
 			base.OnGUI();
 			//DrawStateList();
+			var currentEvent = Event.current;
+
+			if (Timeline.boxStyle == null)
+            {
+				Timeline.boxStyle = new GUIStyle(GUI.skin.box);
+				Timeline.boxStyle.stretchHeight = true;
+				Timeline.boxStyle.stretchWidth = true;
+			}
+
+			if (currentEvent.isMouse && currentEvent.button == 0)
+			{
+				foreach (var item in timeline.timelineSegments)
+				{
+                    switch (currentEvent.type)
+                    {
+                        case EventType.MouseDown:
+							item.DragCheck();
+							break;
+                        case EventType.MouseUp:
+							item.isDraging = false;
+							item.isDragingSlider = false;
+							break;
+                        case EventType.MouseMove:
+                            break;
+                        case EventType.MouseDrag:
+							item.DragCheck();
+							break;
+                        case EventType.KeyDown:
+                            break;
+                        case EventType.KeyUp:
+                            break;
+                        case EventType.ScrollWheel:
+                            break;
+                        case EventType.Repaint:
+                            break;
+                        case EventType.Layout:
+                            break;
+                        case EventType.DragUpdated:
+							item.DragCheck();
+                            break;
+						case EventType.DragPerform:
+                            break;
+                        case EventType.DragExited:
+                            break;
+                        case EventType.Ignore:
+                            break;
+                        case EventType.Used:
+                            break;
+                        case EventType.ValidateCommand:
+                            break;
+                        case EventType.ExecuteCommand:
+                            break;
+                        case EventType.ContextClick:
+                            break;
+                        case EventType.MouseEnterWindow:
+                            break;
+                        case EventType.MouseLeaveWindow:
+                            break;
+                        default:
+                            break;
+                    }
+
+					if (item.isDraging)
+					{
+						item.localPosition = new Vector2(currentEvent.delta.x + item.localPosition.x, item.localPosition.y);
+					}
+					if (item.isDragingSlider)
+					{
+						item.width = currentEvent.mousePosition.x - item.GetPosition().x;
+					}
+					//item.DrawSegment();
+				}
+
+				//if (currentEvent.type == EventType.MouseDown)
+				//{
+				//	var clickPos = currentEvent.mousePosition;
+				//	if (clickPos.x > pos.x && clickPos.x < (pos.x + 80) && clickPos.y > pos.y && clickPos.y < (pos.y + 20))
+				//	{
+				//		isDraging = true;
+				//	}
+				//}
+				//if (currentEvent.type == EventType.MouseUp)
+				//{
+				//	isDraging = false;
+				//}
+				//if (isDraging)
+				//{
+				//	pos = currentEvent.delta + pos;
+				//}
+				//currentEvent.Use();
+			}
+			timeline.DrawSegments();
+			//GUI.Box(new Rect(pos, new Vector2(10, 20)), boxTex);
+			//GUI.Box(new Rect(pos+new Vector2(10, 5), new Vector2(80, 10)), boxTex);
+			//GUI.Box(new Rect(pos+new Vector2(90, 0), new Vector2(10, 20)), boxTex);
+		}
+	}
+
+	public class Timeline
+    {
+		public Vector2 localPosition;
+		public List<TimelineSegment> timelineSegments;
+		public static Texture segmentTex;
+		public static GUIStyle boxStyle;
+
+		public void DrawSegments()
+        {
+			foreach (var item in timelineSegments)
+			{
+				item.DrawSegment();
+			}
+		}
+
+		public void AddSegment()
+        {
+			timelineSegments.Add(new TimelineSegment() { timeline = this });
+		}
+    }
+
+	public class TimelineSegment
+    {
+		public Timeline timeline;
+		public Vector2 localPosition;
+		public float width = 80;
+		public float sliderWidth = 5;
+		public bool enter;
+		public bool selected;
+		public bool isDraging;
+		public bool isDragingSlider;
+
+		public Vector2 GetPosition()
+        {
+			return timeline.localPosition + localPosition;
+        }
+
+		public bool IsMouseOnBody()
+        {
+			var currentEvent = Event.current;
+			var position = GetPosition();
+			var clickPos = currentEvent.mousePosition;
+			if (clickPos.x > (position.x + sliderWidth) && clickPos.x < (position.x + width + sliderWidth) && clickPos.y > position.y && clickPos.y < (position.y + 10))
+			{
+				return true;
+			}
+			return false;
+        }
+
+		public bool IsMouseOnSlider()
+		{
+			var currentEvent = Event.current;
+			var position = GetPosition();
+			var clickPos = currentEvent.mousePosition;
+			if (clickPos.x > (position.x + width + sliderWidth) && clickPos.x < (position.x + width + sliderWidth + sliderWidth) && clickPos.y > (position.y - 5) && clickPos.y < (position.y + 15))
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public void DragCheck()
+		{
+			if (isDraging || isDragingSlider)
+			{
+				return;
+			}
+			if (IsMouseOnBody())
+			{
+				isDraging = true;
+			}
+			if (IsMouseOnSlider())
+			{
+				isDragingSlider = true;
+			}
+		}
+
+		public void DrawSegment()
+        {
+			var position = GetPosition();
+			//GUI.Box(new Rect(position + new Vector2(sliderWidth, -10), new Vector2(sliderWidth, 20)), Timeline.segmentTex);
+			GUI.Box(new Rect(position + new Vector2(sliderWidth, 0), new Vector2(width, 10)), Timeline.segmentTex, Timeline.boxStyle);
+			GUI.Box(new Rect(position + new Vector2(width+ sliderWidth, -5), new Vector2(sliderWidth, 20)), Timeline.segmentTex, Timeline.boxStyle);
 		}
 	}
 }

@@ -10,6 +10,7 @@ namespace EGamePlay.Combat.Status
     /// </summary>
     public class StatusLifeTimeComponent : Component
     {
+        public override bool Enable { get; set; } = true;
         public GameTimer LifeTimer { get; set; }
 
 

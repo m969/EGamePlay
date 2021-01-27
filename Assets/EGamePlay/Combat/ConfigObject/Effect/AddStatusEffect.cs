@@ -13,6 +13,7 @@ using System.Reflection;
 namespace EGamePlay.Combat
 {
     [Effect("施加状态效果", 30)]
+    [Serializable]
     public class AddStatusEffect : Effect
     {
         public override string Label

@@ -11,6 +11,7 @@ namespace EGamePlay.Combat.Status
     /// </summary>
     public class LogicIntervalTriggerComponent : Component
     {
+        public override bool Enable { get; set; } = true;
         public GameTimer IntervalTimer { get; set; }
 
 

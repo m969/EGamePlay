@@ -21,9 +21,25 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: false
+    - Name: ChildrenStatuses
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: Effects
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
         mscorlib
     - Name: 
       Entry: 12
@@ -37,18 +53,20 @@ MonoBehaviour:
   ID: Vertigo
   Name: "\u7729\u6655"
   StatusType: 1
-  Duration: 0
-  ShowInStatusIconList: 1
+  Duration: 5000
+  ShowInStatusSlots: 1
   CanStack: 0
   MaxStack: 1
-  ChildrenStatuses: []
+  EnableChildrenStatuses: 0
   EnabledStateModify: 1
   ActionControlType: 14
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 
+  ModifyType: 0
   EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 0}
+  ParticleEffect: {fileID: 1846532664448058, guid: 20980e90dd2e73b419275714d5c124c4,
+    type: 3}
   Audio: {fileID: 0}
   StatusDescription: 

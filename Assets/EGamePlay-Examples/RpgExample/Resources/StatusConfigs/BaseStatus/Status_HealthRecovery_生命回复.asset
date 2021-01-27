@@ -21,16 +21,29 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: ChildrenStatuses
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: Effects
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.CureEffect, EGamePlay
+      Data: 2|EGamePlay.Combat.CureEffect, EGamePlay
     - Name: IsSkillEffect
       Entry: 5
       Data: false
@@ -55,7 +68,7 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 1
       Data: 2
-    - Name: TriggerProhibit
+    - Name: TriggerProbability
       Entry: 1
       Data: 100%
     - Name: CureValueFormula
@@ -77,7 +90,7 @@ MonoBehaviour:
   ShowInStatusIconList: 0
   CanStack: 0
   MaxStack: 1
-  ChildrenStatuses: []
+  EnableChildrenStatuses: 0
   EnabledStateModify: 0
   ActionControlType: 0
   EnabledAttributeModify: 0

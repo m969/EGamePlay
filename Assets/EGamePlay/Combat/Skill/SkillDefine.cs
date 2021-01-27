@@ -162,30 +162,44 @@
 
         [LabelText("暴击概率")]
         CriticalProbability = 2001,
+        [LabelText("移动速度")]
+        MoveSpeed = 2002,
+        [LabelText("攻击速度")]
+        AttackSpeed = 2003,
 
         [LabelText("护盾值")]
         ShieldValue = 3001,
+
+        [LabelText("造成伤害")]
+        CauseDamage = 4001,
     }
 
-    [LabelText("整形数值")]
-    public enum IntNumericType
+    [LabelText("修饰类型")]
+    public enum ModifyType
     {
-        [LabelText("物理攻击")]
-        PhysicAttack = 1001,
-        [LabelText("物理护甲")]
-        Defense = 1002,
-        [LabelText("法术强度")]
-        SpellPower = 1003,
-        [LabelText("魔法抗性")]
-        MagicDefense = 1004,
+        Add = 0,
+        PercentAdd = 1,
     }
 
-    [LabelText("浮点型形数值")]
-    public enum FloatNumericType
-    {
-        [LabelText("暴击概率")]
-        CriticalProbability = 2001,
-    }
+    //[LabelText("整形数值")]
+    //public enum IntNumericType
+    //{
+    //    [LabelText("物理攻击")]
+    //    PhysicAttack = 1001,
+    //    [LabelText("物理护甲")]
+    //    Defense = 1002,
+    //    [LabelText("法术强度")]
+    //    SpellPower = 1003,
+    //    [LabelText("魔法抗性")]
+    //    MagicDefense = 1004,
+    //}
+
+    //[LabelText("浮点型形数值")]
+    //public enum FloatNumericType
+    //{
+    //    [LabelText("暴击概率")]
+    //    CriticalProbability = 2001,
+    //}
 
     //[Flags]
     //[LabelText("伤害类型")]

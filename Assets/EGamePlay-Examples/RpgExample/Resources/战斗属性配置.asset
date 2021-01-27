@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 964ea8177f33bda478b21386344bf627, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e4a62c040baf7248b2dc49eaa7c4f84, type: 3}
   m_Name: "\u6218\u6597\u5C5E\u6027\u914D\u7F6E"
   m_EditorClassIdentifier: 
   serializationData:
@@ -27,132 +27,12 @@ MonoBehaviour:
         mscorlib]], mscorlib]], mscorlib
     - Name: 
       Entry: 12
-      Data: 4
-    - Name: 
-      Entry: 7
-      Data: 1|System.Collections.Generic.List`1[[System.Boolean, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 4
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: false
-    - Name: 
-      Entry: 5
-      Data: true
+      Data: 0
     - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
-    - Name: 
-      Entry: 7
-      Data: 2|System.Collections.Generic.List`1[[System.Boolean, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 4
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: false
-    - Name: 
-      Entry: 5
-      Data: false
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[System.Boolean, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 4
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: false
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 4|System.Collections.Generic.List`1[[System.Boolean, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 4
-    - Name: 
-      Entry: 5
-      Data: false
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 5
-      Data: true
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  AttributeConfigs:
-  - Enable: 0
-    AttributeName: NewAttribute
-    AliasName: NewAttribute
-    Guid: 
-  - Enable: 0
-    AttributeName: NewAttribute
-    AliasName: NewAttribute
-    Guid: 
-  StateConfigs:
-  - Enable: 0
-    StateName: NewState
-    AliasName: NewState
-    Guid: 
-  - Enable: 0
-    StateName: NewState
-    AliasName: NewState
-    Guid: 
-  - Enable: 0
-    StateName: NewState
-    AliasName: NewState
-    Guid: 
-  - Enable: 0
-    StateName: NewState
-    AliasName: NewState
-    Guid: 
+  AttributeConfigs: []
+  StateConfigs: []

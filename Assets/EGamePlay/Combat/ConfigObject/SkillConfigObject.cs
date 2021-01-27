@@ -5,7 +5,6 @@ using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System;
 using System.IO;
-using Sirenix.OdinInspector.Editor;
 using UnityEngine.PlayerLoop;
 using Sirenix.Utilities.Editor;
 using UnityEngine.Serialization;
@@ -82,11 +81,38 @@ namespace EGamePlay.Combat
 
                 var effect = Activator.CreateInstance(effectType) as Effect;
                 effect.Enabled = true;
+                effect.IsSkillEffect = true;
                 Effects.Add(effect);
 
                 EffectTypeName = "(添加效果)";
             }
             //SkillHelper.AddEffect(Effects, EffectType);
+        }
+
+        [OnInspectorGUI("BeginBox", append: false)]
+        [LabelText("技能动作")]
+        public AnimationClip SkillAnimationClip;
+        [LabelText("技能特效")]
+        public GameObject SkillEffectObject;
+        [LabelText("技能音效")]
+        [OnInspectorGUI("EndBox", append: true)]
+        public AudioClip SkillAudio;
+
+        [TextArea, LabelText("技能描述")]
+        public string SkillDescription;
+
+#if UNITY_EDITOR
+        [SerializeField, LabelText("自动重命名")]
+        public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
+
+        private void OnEnable()
+        {
+            StatusConfigObject.AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
+        }
+
+        private void OnDisable()
+        {
+            UnityEditor.EditorPrefs.SetBool("AutoRename", StatusConfigObject.AutoRenameStatic);
         }
 
         private void BeginBox()
@@ -96,14 +122,7 @@ namespace EGamePlay.Combat
             GUILayout.Space(10);
             SirenixEditorGUI.BeginBox("技能表现");
         }
-        [OnInspectorGUI("BeginBox", append: false)]
-        [LabelText("技能动作")]
-        public AnimationClip SkillAnimationClip;
-        [LabelText("技能特效")]
-        public GameObject SkillEffectObject;
-        [LabelText("技能音效")]
-        [OnInspectorGUI("EndBox", append: true)]
-        public AudioClip SkillAudio;
+
         private void EndBox()
         {
             SirenixEditorGUI.EndBox();
@@ -112,32 +131,46 @@ namespace EGamePlay.Combat
             GUILayout.Space(10);
         }
 
-        [TextArea, LabelText("技能描述")]
-        public string SkillDescription;
-
         [OnInspectorGUI]
         private void OnInspectorGUI()
         {
-            foreach (var item in this.Effects)
+            //foreach (var item in this.Effects)
+            //{
+            //    item.IsSkillEffect = true;
+            //}
+
+            if (!AutoRename)
             {
-                item.IsSkillEffect = true;
+                return;
             }
 
+            RenameFile();
+        }
+
+        [Button("重命名配置文件"), HideIf("AutoRename")]
+        private void RenameFile()
+        {
             string[] guids = UnityEditor.Selection.assetGUIDs;
             int i = guids.Length;
             if (i == 1)
             {
                 string guid = guids[0];
                 string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var so = UnityEditor.AssetDatabase.LoadAssetAtPath<SkillConfigObject>(assetPath);
+                if (so != this)
+                {
+                    return;
+                }
                 var fileName = Path.GetFileName(assetPath);
                 var newName = $"Skill_{this.ID}_{this.Name}";
                 if (!fileName.StartsWith(newName))
                 {
-                    Debug.Log(assetPath);
+                    //Debug.Log(assetPath);
                     UnityEditor.AssetDatabase.RenameAsset(assetPath, newName);
                 }
             }
         }
+#endif
     }
 
     [LabelText("护盾类型")]

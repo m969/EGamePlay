@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
+  m_Name: "Status_CauseDamagePctModify_\u9020\u6210\u4F24\u5BB3\u767E\u5206\u6BD4\u4FEE\u9970"
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: ChildrenStatuses
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Effects
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  ID: CauseDamagePctModify
+  Name: "\u9020\u6210\u4F24\u5BB3\u767E\u5206\u6BD4\u4FEE\u9970"
+  StatusType: 2
+  Duration: 3000
+  ShowInStatusSlots: 1
+  CanStack: 0
+  MaxStack: 1
+  EnableChildrenStatuses: 0
+  EnabledStateModify: 0
+  ActionControlType: 0
+  EnabledAttributeModify: 1
+  AttributeType: 4001
+  NumericValue: "\u53D8\u52A8\u6570\u503C"
+  ModifyType: 1
+  EnabledLogicTrigger: 0
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
+  ParticleEffect: {fileID: 0}
+  Audio: {fileID: 0}
+  StatusDescription: 
