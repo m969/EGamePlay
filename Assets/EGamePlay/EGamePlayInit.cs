@@ -27,6 +27,6 @@ public class EGamePlayInit : MonoBehaviour
     private void OnApplicationQuit()
     {
         Entity.Destroy(MasterEntity.Instance);
-        MasterEntity.Instance = null;
+        MasterEntity.Destroy();
     }
 }
