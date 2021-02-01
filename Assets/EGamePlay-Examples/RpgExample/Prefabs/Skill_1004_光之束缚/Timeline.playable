@@ -103,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ColliderType: 0
   EffectApplyType: 0
+  IsProjectile: 0
 --- !u!114 &5903591753440942179
 MonoBehaviour:
   m_ObjectHideFlags: 1

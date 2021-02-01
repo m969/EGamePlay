@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.Playables;
 using Sirenix.OdinInspector;
 
-[LabelText("碰撞体类型")]
-public enum ColliderType
+[LabelText("碰撞体形状")]
+public enum ColliderShapeType
 {
     [LabelText("矩形")]
     Box,
@@ -13,6 +13,14 @@ public enum ColliderType
     Circle,
     [LabelText("扇形")]
     Sector,
+}
+
+//[System.Flags]
+public enum ProjectileType
+{
+    [LabelText("飞弹")]
+    飞弹,
+
 }
 
 [LabelText("应用效果")]
@@ -32,8 +40,23 @@ public enum EffectApplyType
 [System.Serializable]
 public class ColliderPlayableAsset : PlayableAsset
 {
-    public ColliderType ColliderType;
+    public ColliderShapeType ColliderType;
+    //[/*EnumToggleButtons, */HideLabel]
+    //public ProjectileType ProjectileType;
+
+    //[LabelText("碰撞体ID"), ShowIf("ProjectileType", ProjectileType.飞弹)]
+    //public string ColliderID;
+
+    //[OnInspectorGUI("DrawSeperate", append: false)]
     public EffectApplyType EffectApplyType;
+    [LabelText("飞弹")]
+    public bool IsProjectile;
+
+    void DrawSeperate()
+    {
+        UnityEditor.EditorGUILayout.Space();
+        //Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
+    }
 
 
     // Factory method that generates a playable based on this asset
