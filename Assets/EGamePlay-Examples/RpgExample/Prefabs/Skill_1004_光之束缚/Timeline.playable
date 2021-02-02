@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5353161585125240036
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40732cfdaa43ae744b14ea255c01a482, type: 3}
+  m_Name: Collider Target Emitter
+  m_EditorClassIdentifier: 
+  m_Time: 3.3333333333333335
+  m_Retroactive: 1
+  m_EmitOnce: 1
+  m_Asset: {fileID: 11400000, guid: 20e77136f0b57364ebd2b564e9a053d5, type: 2}
+  ColliderName: 
 --- !u!114 &-2331447533320253492
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -36,6 +53,24 @@ MonoBehaviour:
     m_Framerate: 60
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 4828324310282108766}
+--- !u!114 &1349140570378579558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3abb3a3aee61bf42b408dc5d032e858, type: 3}
+  m_Name: Collider Projectile Emitter
+  m_EditorClassIdentifier: 
+  m_Time: 2.9166666666666665
+  m_Retroactive: 1
+  m_EmitOnce: 1
+  m_Asset: {fileID: 11400000, guid: ab861c9bd1d9fdc4f9b3805e3b5b4d6e, type: 2}
+  ColliderName: 
+  ExistTime: 2
 --- !u!114 &3104048393300136761
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -89,6 +124,28 @@ MonoBehaviour:
   m_Markers:
     m_Objects:
     - {fileID: -2331447533320253492}
+    - {fileID: 5161023135302009237}
+    - {fileID: 1349140570378579558}
+    - {fileID: -5353161585125240036}
+--- !u!114 &5161023135302009237
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147c6770eb845c942b32ae3ec43cc41d, type: 3}
+  m_Name: Collider Spawn Emitter
+  m_EditorClassIdentifier: 
+  m_Time: 2.25
+  m_Retroactive: 1
+  m_EmitOnce: 1
+  m_Asset: {fileID: 11400000, guid: 20e77136f0b57364ebd2b564e9a053d5, type: 2}
+  ColliderName: "\u9ED1\u706B\u7403\u78B0\u649E\u4F53"
+  ExistTime: 0
+  EffectApplyType: 0
 --- !u!114 &5450559293549034974
 MonoBehaviour:
   m_ObjectHideFlags: 1
