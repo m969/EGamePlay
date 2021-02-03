@@ -10,6 +10,7 @@ using Sirenix.Utilities.Editor;
 using UnityEngine.Serialization;
 using System.Linq;
 using System.Reflection;
+using UnityEngine.Timeline;
 
 namespace EGamePlay.Combat
 {
@@ -90,8 +91,8 @@ namespace EGamePlay.Combat
         }
 
         [OnInspectorGUI("BeginBox", append: false)]
-        [LabelText("技能动作")]
-        public AnimationClip SkillAnimationClip;
+        [LabelText("技能执行")]
+        public TimelineAsset SkillExecutionAsset;
         [LabelText("技能特效")]
         public GameObject SkillEffectObject;
         [LabelText("技能音效")]

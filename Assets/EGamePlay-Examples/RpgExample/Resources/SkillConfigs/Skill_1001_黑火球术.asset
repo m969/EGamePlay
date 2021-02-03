@@ -22,6 +22,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: true
     - Name: Effects
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
@@ -170,7 +173,8 @@ MonoBehaviour:
   AffectTargetType: 2
   ColdTime: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillAnimationClip: {fileID: 0}
+  SkillExecutionAsset: {fileID: 11400000, guid: a9b515be710ca4d48ba9e026ba6dde33,
+    type: 2}
   SkillEffectObject: {fileID: 8055077527788061986, guid: 20ac05806cd85ab40944060644de7f91,
     type: 3}
   SkillAudio: {fileID: 0}

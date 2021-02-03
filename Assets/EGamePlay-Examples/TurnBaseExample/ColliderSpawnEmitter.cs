@@ -14,9 +14,9 @@ public class ColliderSpawnEmitter : SignalEmitter
     [LabelText("碰撞体名称")]
     public string ColliderName;
     //public bool IsProjectile;
-    public ColliderShape ColliderShape;
     public ColliderType ColliderType;
-    public FlyType FlyType;
+    public ColliderShape ColliderShape;
+    //public FlyType FlyType;
     [LabelText("存活时间")]
     public float ExistTime;
     public EffectApplyType EffectApplyType;
@@ -61,11 +61,14 @@ public class ColliderSpawnEmitterInspector : OdinEditor
         emitter.emitOnce = EditorGUILayout.Toggle("EmitOnce", emitter.emitOnce);
         EditorGUILayout.Space(20);
         emitter.ColliderName = EditorGUILayout.TextField("碰撞体名称", emitter.ColliderName);
-        emitter.ColliderShape = (ColliderShape)SirenixEditorFields.EnumDropdown("碰撞体形状", emitter.ColliderShape);
-
         emitter.ColliderType = (ColliderType)SirenixEditorFields.EnumDropdown("碰撞体类型", emitter.ColliderType);
+        if (emitter.ColliderType != ColliderType.TargetFly)
+        {
+            emitter.ColliderShape = (ColliderShape)SirenixEditorFields.EnumDropdown("碰撞体形状", emitter.ColliderShape);
+            emitter.ExistTime = EditorGUILayout.FloatField("存活时间", emitter.ExistTime);
+        }
+
         //emitter.IsProjectile = EditorGUILayout.Toggle("飞弹", emitter.IsProjectile);
-        emitter.ExistTime = EditorGUILayout.FloatField("存活时间", emitter.ExistTime);
         //if (emitter.IsProjectile)
         //{
         //    SirenixEditorGUI.IndentSpace();

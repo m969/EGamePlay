@@ -11,6 +11,7 @@ namespace EGamePlay.Combat.Skill
     /// </summary>
     public abstract class SkillAbilityExecution : AbilityExecution
     {
+        public SkillAbility SkillAbility { get { return AbilityEntity as SkillAbility; } }
         public CombatEntity InputCombatEntity { get; set; }
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }

@@ -1,38 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5353161585125240036
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40732cfdaa43ae744b14ea255c01a482, type: 3}
-  m_Name: Collider Target Emitter
-  m_EditorClassIdentifier: 
-  m_Time: 3.3333333333333335
-  m_Retroactive: 1
-  m_EmitOnce: 1
-  m_Asset: {fileID: 11400000, guid: 20e77136f0b57364ebd2b564e9a053d5, type: 2}
-  ColliderName: 
---- !u!114 &-2331447533320253492
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
-  m_Name: Signal Emitter
-  m_EditorClassIdentifier: 
-  m_Time: 4.166666666666667
-  m_Retroactive: 0
-  m_EmitOnce: 0
-  m_Asset: {fileID: 11400000, guid: 273191c792514424a8b2db59e73941d3, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfda56da833e2384a9677cd3c976a436, type: 3}
-  m_Name: Timeline
+  m_Name: Skill_1001_Execution
   m_EditorClassIdentifier: 
   m_Version: 0
   m_Tracks:
@@ -53,24 +20,6 @@ MonoBehaviour:
     m_Framerate: 60
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 4828324310282108766}
---- !u!114 &1349140570378579558
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3abb3a3aee61bf42b408dc5d032e858, type: 3}
-  m_Name: Collider Projectile Emitter
-  m_EditorClassIdentifier: 
-  m_Time: 2.3
-  m_Retroactive: 1
-  m_EmitOnce: 1
-  m_Asset: {fileID: 11400000, guid: ab861c9bd1d9fdc4f9b3805e3b5b4d6e, type: 2}
-  ColliderName: 
-  ExistTime: 2
 --- !u!114 &3104048393300136761
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -123,10 +72,7 @@ MonoBehaviour:
   m_Clips: []
   m_Markers:
     m_Objects:
-    - {fileID: -2331447533320253492}
     - {fileID: 5161023135302009237}
-    - {fileID: 1349140570378579558}
-    - {fileID: -5353161585125240036}
 --- !u!114 &5161023135302009237
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -139,31 +85,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147c6770eb845c942b32ae3ec43cc41d, type: 3}
   m_Name: Collider Spawn Emitter
   m_EditorClassIdentifier: 
-  m_Time: 2.9166667461395264
+  m_Time: 0.3333333432674408
   m_Retroactive: 1
   m_EmitOnce: 1
   m_Asset: {fileID: 11400000, guid: 20e77136f0b57364ebd2b564e9a053d5, type: 2}
   ColliderName: "\u9ED1\u706B\u7403\u78B0\u649E\u4F53"
-  ColliderShape: 2
   ColliderType: 1
-  FlyType: 0
+  ColliderShape: 1
   ExistTime: 0
-  EffectApplyType: 2
---- !u!114 &5450559293549034974
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b42d7398bd6a114e8473213c0649f06, type: 3}
-  m_Name: NewPlayableAsset
-  m_EditorClassIdentifier: 
-  ColliderType: 0
   EffectApplyType: 0
-  IsProjectile: 0
 --- !u!114 &5903591753440942179
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,7 +104,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82cd92ffc29383742932b27ca414c80f, type: 3}
-  m_Name: "\u6280\u80FD\u6570\u636E"
+  m_Name: "\u6280\u80FD\u52A8\u4F5C"
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -186,61 +116,10 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 2
-    m_ClipIn: 0
-    m_Asset: {fileID: 5450559293549034974}
-    m_Duration: 0.10000000000000009
-    m_TimeScale: 1
-    m_ParentTrack: {fileID: 5903591753440942179}
-    m_EaseInDuration: 0
-    m_EaseOutDuration: 0
-    m_BlendInDuration: -1
-    m_BlendOutDuration: -1
-    m_MixInCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_MixOutCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_BlendInCurveMode: 0
-    m_BlendOutCurveMode: 0
-    m_ExposedParameterNames: []
-    m_AnimationCurves: {fileID: 0}
-    m_Recordable: 0
-    m_PostExtrapolationMode: 0
-    m_PreExtrapolationMode: 0
-    m_PostExtrapolationTime: 0
-    m_PreExtrapolationTime: 0
-    m_DisplayName: ColliderPlayableAsset
-  - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 3617624330845435797}
-    m_Duration: 1.5
+    m_Duration: 1
     m_TimeScale: 1
     m_ParentTrack: {fileID: 5903591753440942179}
     m_EaseInDuration: 0

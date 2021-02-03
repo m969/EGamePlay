@@ -6,6 +6,7 @@ using EGamePlay.Combat.Ability;
 using EGamePlay.Combat.Skill;
 using EGamePlay.Combat;
 using EGamePlay;
+using ET;
 
 public class Skill1001Ability : SkillAbility
 {
@@ -25,11 +26,25 @@ public class Skill1001Execution : SkillAbilityExecution
         //OwnerEntity.Publish(new PlayAnimationTask());
         //EntityFactory.CreateWithParent<PlayAnimationTask>(this, "施法动作").ExecuteTaskAsync().Coroutine();
 
-        var taskData = new CastProjectileTaskData();
-        taskData.FlyTime = 0.3f;
-        taskData.ProjectilePrefab = (AbilityEntity as Skill1001Ability).SkillConfigObject.SkillEffectObject;
-        var task = Entity.CreateWithParent<CastProjectileTask>(this, taskData);
-        await task.ExecuteTaskAsync();
+        var skillExecutionAsset = SkillAbility.SkillConfigObject.SkillExecutionAsset;
+        var markers = skillExecutionAsset.markerTrack.GetMarkers();
+        foreach (var item in markers)
+        {
+            if (item is ColliderSpawnEmitter colliderSpawnEmitter)
+            {
+                if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly)
+                {
+                    await TimerComponent.Instance.WaitAsync((int)(colliderSpawnEmitter.time * 1000));
+
+                    var taskData = new CastProjectileTaskData();
+                    taskData.FlyTime = 0.3f;
+                    taskData.TargetEntity = InputCombatEntity;
+                    taskData.ProjectilePrefab = SkillAbility.SkillConfigObject.SkillEffectObject;
+                    var task = Entity.CreateWithParent<CastProjectileTask>(OwnerEntity, taskData);
+                    task.ExecuteTaskAsync().Coroutine();
+                }
+            }
+        }
 
         AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity);
 

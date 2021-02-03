@@ -20,18 +20,20 @@ public enum ColliderType
 {
     [LabelText("固定碰撞体")]
     Fixed,
-    [LabelText("飞行碰撞体")]
-    FlyMove,
+    [LabelText("目标飞行碰撞体")]
+    TargetFly,
+    [LabelText("朝向飞行碰撞体")]
+    ForwardFly,
 }
 
-[LabelText("飞行类型")]
-public enum FlyType
-{
-    [LabelText("朝前方飞")]
-    Forward,
-    [LabelText("超目标飞")]
-    Target,
-}
+//[LabelText("飞行类型")]
+//public enum FlyType
+//{
+//    [LabelText("朝前方飞")]
+//    Forward,
+//    [LabelText("超目标飞")]
+//    Target,
+//}
 
 [LabelText("应用效果")]
 public enum EffectApplyType

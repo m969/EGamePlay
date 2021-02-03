@@ -10,7 +10,7 @@ namespace EGamePlay.Combat.Ability
 {
     public class CastProjectileTaskData
     {
-        public Vector3 TargetPoint;
+        public CombatEntity TargetEntity;
         public GameObject ProjectilePrefab;
         public float FlyTime;
     }
@@ -30,9 +30,20 @@ namespace EGamePlay.Combat.Ability
             try
             {
                 var projectile = GameObject.Instantiate(CastProjectileData.ProjectilePrefab);
-                projectile.transform.position = GetParent<SkillAbilityExecution>().GetParent<CombatEntity>().Position + Vector3.up;
-                projectile.transform.DOMove(GetParent<SkillAbilityExecution>().InputCombatEntity.Position + Vector3.up, CastProjectileData.FlyTime).SetEase(Ease.Linear);
-                await TimerComponent.Instance.WaitAsync((int)(CastProjectileData.FlyTime * 1000));
+                projectile.transform.position = GetParent<CombatEntity>().Position + Vector3.up;
+
+                while (true)
+                {
+                    var targetPos = CastProjectileData.TargetEntity.Position + Vector3.up;
+                    projectile.transform.DOMove(targetPos, CastProjectileData.FlyTime).SetEase(Ease.Linear);
+                    if (Vector3.Distance(projectile.transform.position, targetPos) < 0.1f)
+                    {
+                        break;
+                    }
+                    await TimerComponent.Instance.WaitAsync(20);
+                }
+
+                //await TimerComponent.Instance.WaitAsync((int)(CastProjectileData.FlyTime * 1000));
                 GameObject.Destroy(projectile);
                 Entity.Destroy(this);
             }
