@@ -1,4 +1,5 @@
-﻿using UnityEngine.Timeline;
+﻿using System.Reflection;
+using UnityEngine.Timeline;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -12,6 +13,10 @@ public class ColliderSpawnEmitter : SignalEmitter
 {
     [LabelText("碰撞体名称")]
     public string ColliderName;
+    //public bool IsProjectile;
+    public ColliderShape ColliderShape;
+    public ColliderType ColliderType;
+    public FlyType FlyType;
     [LabelText("存活时间")]
     public float ExistTime;
     public EffectApplyType EffectApplyType;
@@ -38,19 +43,42 @@ public class ColliderSpawnEmitterInspector : OdinEditor
 {
     public override void OnInspectorGUI()
     {
+        //EditorGUILayout.Space(20);
         //base.OnInspectorGUI();
+        
         serializedObject.Update();
 
+        //var editorType = typeof(Editor);
+        //editorType.InvokeMember("DoDrawDefaultInspector",
+        //    System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.Static 
+        //     | System.Reflection.BindingFlags.NonPublic, null, null, 
+        //    new object[] {serializedObject});
+        //return;
+        
         var emitter = target as ColliderSpawnEmitter;
         emitter.time = EditorGUILayout.FloatField("Time", (float)emitter.time);
         emitter.retroactive = EditorGUILayout.Toggle("Retroactive", emitter.retroactive);
         emitter.emitOnce = EditorGUILayout.Toggle("EmitOnce", emitter.emitOnce);
         EditorGUILayout.Space(20);
         emitter.ColliderName = EditorGUILayout.TextField("碰撞体名称", emitter.ColliderName);
+        emitter.ColliderShape = (ColliderShape)SirenixEditorFields.EnumDropdown("碰撞体形状", emitter.ColliderShape);
+
+        emitter.ColliderType = (ColliderType)SirenixEditorFields.EnumDropdown("碰撞体类型", emitter.ColliderType);
+        //emitter.IsProjectile = EditorGUILayout.Toggle("飞弹", emitter.IsProjectile);
         emitter.ExistTime = EditorGUILayout.FloatField("存活时间", emitter.ExistTime);
+        //if (emitter.IsProjectile)
+        //{
+        //    SirenixEditorGUI.IndentSpace();
+        //    emitter.ExistTime = EditorGUILayout.FloatField("存活时间", emitter.ExistTime);
+        //}
+        //else
+        //{
+
+        //}
         emitter.EffectApplyType = (EffectApplyType)EditorGUILayout.EnumPopup("应用效果", emitter.EffectApplyType);
 
         serializedObject.ApplyModifiedProperties();
+        
     }
 }
 #endif

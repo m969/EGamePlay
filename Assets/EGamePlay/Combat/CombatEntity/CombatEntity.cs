@@ -20,7 +20,6 @@ namespace EGamePlay.Combat
         public Dictionary<Type, List<StatusAbility>> TypeStatuses { get; set; } = new Dictionary<Type, List<StatusAbility>>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
-        public CombatContext CombatContext { get; set; }
         public ActionControlType ActionControlType { get; set; }
 
 
@@ -32,12 +31,11 @@ namespace EGamePlay.Combat
             //AddComponent<MotionComponent>();
             CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
             CurrentHealth.Reset();
-            CombatContext = (CombatContext)Master.GetTypeChildren<CombatContext>()[0];
         }
 
         public T CreateCombatAction<T>() where T : CombatAction, new()
         {
-            var action = CombatContext.GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
+            var action = GetParent<CombatContext>().GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
             return action;
         }
 

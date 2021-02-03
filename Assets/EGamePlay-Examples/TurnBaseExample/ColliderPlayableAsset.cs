@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using Sirenix.OdinInspector;
 
 [LabelText("碰撞体形状")]
-public enum ColliderShapeType
+public enum ColliderShape
 {
     [LabelText("矩形")]
     Box,
@@ -15,12 +15,22 @@ public enum ColliderShapeType
     Sector,
 }
 
-//[System.Flags]
-public enum ProjectileType
+[LabelText("碰撞体类型")]
+public enum ColliderType
 {
-    [LabelText("飞弹")]
-    飞弹,
+    [LabelText("固定碰撞体")]
+    Fixed,
+    [LabelText("飞行碰撞体")]
+    FlyMove,
+}
 
+[LabelText("飞行类型")]
+public enum FlyType
+{
+    [LabelText("朝前方飞")]
+    Forward,
+    [LabelText("超目标飞")]
+    Target,
 }
 
 [LabelText("应用效果")]
@@ -40,7 +50,7 @@ public enum EffectApplyType
 [System.Serializable]
 public class ColliderPlayableAsset : PlayableAsset
 {
-    public ColliderShapeType ColliderType;
+    public ColliderShape ColliderType;
     //[/*EnumToggleButtons, */HideLabel]
     //public ProjectileType ProjectileType;
 
