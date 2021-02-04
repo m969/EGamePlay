@@ -137,8 +137,6 @@ public sealed class Hero : MonoBehaviour
     private ETCancellationToken token;
     public async ETVoid PlayThenIdleAsync(AnimationClip animation)
     {
-//        AnimancerComponent.Play(IdleAnimation);
-//        AnimancerComponent.Play(animation, 0.25f);
         AnimationComponent.Play(AnimationComponent.IdleAnimation);
         AnimationComponent.PlayFade(animation);
         if (token != null)
@@ -149,25 +147,7 @@ public sealed class Hero : MonoBehaviour
         var isTimeout = await TimerComponent.Instance.WaitAsync((int)(animation.length * 1000), token);
         if (isTimeout)
         {
-//            AnimancerComponent.Play(IdleAnimation, 0.25f);
             AnimationComponent.PlayFade(AnimationComponent.IdleAnimation);
         }
-    }
-
-    public void SpellSkillA()
-    {
-        //var abilityA = CombatEntity.IndexAbilitys[1];
-        //var monster = GameObject.Find("/Monster");
-        //CombatEntity.Position = transform.position;
-
-        //var abilityExecution = EntityFactory.CreateWithParent<Skill1001Execution>(CombatEntity, abilityA);
-        //abilityExecution.AbilityExecutionTarget = monster.GetComponent<Monster>().CombatEntity;
-        //abilityExecution.InputPoint = monster.transform.position;
-        //abilityExecution.BeginExecute();
-    }
-
-    public void SpellSkillB()
-    {
-
     }
 }

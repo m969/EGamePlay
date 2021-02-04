@@ -8,6 +8,14 @@ using EGamePlay.Combat;
 using EGamePlay;
 using ET;
 
+
+public class AnimationData
+{
+    public float StartTime;
+    public float Duration;
+    public AnimationClip AnimationClip;
+}
+
 public class Skill1001Ability : SkillAbility
 {
     public override AbilityExecution CreateAbilityExecution()
@@ -27,6 +35,7 @@ public class Skill1001Execution : SkillAbilityExecution
         //EntityFactory.CreateWithParent<PlayAnimationTask>(this, "施法动作").ExecuteTaskAsync().Coroutine();
 
         var skillExecutionAsset = SkillAbility.SkillConfigObject.SkillExecutionAsset;
+
         var markers = skillExecutionAsset.markerTrack.GetMarkers();
         foreach (var item in markers)
         {
@@ -41,12 +50,54 @@ public class Skill1001Execution : SkillAbilityExecution
                     taskData.TargetEntity = InputCombatEntity;
                     taskData.ProjectilePrefab = SkillAbility.SkillConfigObject.SkillEffectObject;
                     var task = Entity.CreateWithParent<CastProjectileTask>(OwnerEntity, taskData);
+                    task.OnEnterCallback = () => { AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity); };
                     task.ExecuteTaskAsync().Coroutine();
                 }
             }
         }
 
-        AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity);
+        var animationDatas = new List<AnimationData>();
+        var rootTracks = skillExecutionAsset.GetRootTracks();
+        var outputTracks = skillExecutionAsset.GetOutputTracks();
+        foreach (var item in rootTracks)
+        {
+            if (item.hasClips)
+            {
+                var clips = item.GetClips();
+                foreach (var clip in clips)
+                {
+                    if (clip.animationClip != null)
+                    {
+                        var animationData = new AnimationData();
+                        animationData.StartTime = (float)clip.clipIn;
+                        animationData.Duration = (float)clip.duration;
+                        animationData.AnimationClip = clip.animationClip;
+                        animationDatas.Add(animationData);
+                    }
+                }
+            }
+        }
+
+        var tasks = new List<ETTask>();
+        foreach (var item in animationDatas)
+        {
+            var tcs = new ETTaskCompletionSource();
+            PlayAnimation(item, tcs).Coroutine();
+            tasks.Add(tcs.Task);
+        }
+
+        async ETVoid PlayAnimation(AnimationData animationData, ETTaskCompletionSource tcs)
+        {
+            if (animationData.StartTime > 0)
+            {
+                await TimerComponent.Instance.WaitAsync((int)(animationData.StartTime * 1000));
+            }
+            Hero.Instance.AnimationComponent.PlayFade(animationData.AnimationClip);
+            await TimerComponent.Instance.WaitAsync((int)(animationData.Duration * 1000));
+            tcs.SetResult();
+        }
+
+        await ETTaskHelper.WaitAll(tasks.ToArray());
 
         EndExecute();
     }

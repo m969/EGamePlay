@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using ET;
+using System;
 using EGamePlay.Combat.Skill;
 
 namespace EGamePlay.Combat.Ability
@@ -18,11 +19,13 @@ namespace EGamePlay.Combat.Ability
     public class CastProjectileTask : AbilityTask
     {
         public CastProjectileTaskData CastProjectileData { get; set; }
+        public Action OnEnterCallback { get; set; }
 
 
         public override void Awake(object initData)
         {
             CastProjectileData = (CastProjectileTaskData)initData;
+            OnEnterCallback = null;
         }
 
         public override async ETTask ExecuteTaskAsync()
@@ -35,12 +38,16 @@ namespace EGamePlay.Combat.Ability
                 while (true)
                 {
                     var targetPos = CastProjectileData.TargetEntity.Position + Vector3.up;
-                    projectile.transform.DOMove(targetPos, CastProjectileData.FlyTime).SetEase(Ease.Linear);
-                    if (Vector3.Distance(projectile.transform.position, targetPos) < 0.1f)
+                    projectile.transform.LookAt(targetPos);
+                    var moveVector = targetPos - projectile.transform.position;
+                    projectile.transform.Translate(moveVector.normalized * 0.2f, Space.World);
+                    //projectile.transform.DOMove(targetPos, CastProjectileData.FlyTime).SetEase(Ease.Linear);
+                    if (Vector3.Distance(projectile.transform.position, targetPos) < 0.4f)
                     {
+                        OnEnterCallback?.Invoke();
                         break;
                     }
-                    await TimerComponent.Instance.WaitAsync(20);
+                    await TimerComponent.Instance.WaitAsync(10);
                 }
 
                 //await TimerComponent.Instance.WaitAsync((int)(CastProjectileData.FlyTime * 1000));
