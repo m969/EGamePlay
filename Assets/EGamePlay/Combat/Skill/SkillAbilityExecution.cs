@@ -20,12 +20,12 @@ namespace EGamePlay.Combat.Skill
         public override void BeginExecute()
         {
             base.BeginExecute();
-            GetAbility<SkillAbility>().Spelling = true;
+            SkillAbility.Spelling = true;
         }
 
         public override void EndExecute()
         {
-            GetAbility<SkillAbility>().Spelling = false;
+            SkillAbility.Spelling = false;
             base.EndExecute();
         }
     }

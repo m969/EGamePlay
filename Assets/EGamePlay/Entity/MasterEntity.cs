@@ -4,6 +4,14 @@ using System.Collections.Generic;
 
 namespace EGamePlay
 {
+    [System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    sealed class EnableUpdateAttribute : Attribute
+    {
+        public EnableUpdateAttribute()
+        {
+        }
+    }
+
     public sealed class MasterEntity : Entity
     {
         public Dictionary<Type, List<Entity>> Entities { get; private set; } = new Dictionary<Type, List<Entity>>();
@@ -43,10 +51,10 @@ namespace EGamePlay
                     AllComponents.RemoveAt(i);
                     continue;
                 }
-                if (item.Disable)
-                {
-                    continue;
-                }
+                //if (item.Disable)
+                //{
+                //    continue;
+                //}
                 item.Update();
             }
         }

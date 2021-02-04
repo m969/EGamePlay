@@ -39,7 +39,7 @@ MonoBehaviour:
   - {fileID: 9139510270093723179}
   m_FixedDuration: 0
   m_EditorSettings:
-    m_Framerate: 60
+    m_Framerate: 30
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 4828324310282108766}
 --- !u!114 &3104048393300136761
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147c6770eb845c942b32ae3ec43cc41d, type: 3}
   m_Name: Collider Spawn Emitter
   m_EditorClassIdentifier: 
-  m_Time: 0.3333333432674408
+  m_Time: 1.5333333015441895
   m_Retroactive: 1
   m_EmitOnce: 1
   m_Asset: {fileID: 11400000, guid: 20e77136f0b57364ebd2b564e9a053d5, type: 2}
