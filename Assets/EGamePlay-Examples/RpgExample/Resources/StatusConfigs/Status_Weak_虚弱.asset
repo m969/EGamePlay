@@ -23,6 +23,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: true
     - Name: ChildrenStatuses
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],

@@ -1,5 +1,6 @@
 ﻿//using System.Collections.Generic;
-
+////为简化流程，目前只使用FloatNumeric
+//
 //namespace EGamePlay.Combat
 //{
 //    /// <summary>

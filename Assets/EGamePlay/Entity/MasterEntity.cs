@@ -51,10 +51,10 @@ namespace EGamePlay
                     AllComponents.RemoveAt(i);
                     continue;
                 }
-                //if (item.Disable)
-                //{
-                //    continue;
-                //}
+                if (item.Disable)
+                {
+                    continue;
+                }
                 item.Update();
             }
         }

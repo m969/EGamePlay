@@ -120,7 +120,7 @@ public sealed class Hero : MonoBehaviour
 
     public void Attack()
     {
-        PlayThenIdleAsync(AnimationComponent.AttackAnimation).Coroutine();
+        //PlayThenIdleAsync(AnimationComponent.AttackAnimation).Coroutine();
 
         var monster = GameObject.Find("Monster");
 
