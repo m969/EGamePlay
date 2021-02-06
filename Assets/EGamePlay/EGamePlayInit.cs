@@ -3,12 +3,25 @@ using EGamePlay.Combat;
 using ET;
 using System.Threading;
 using UnityEngine;
+using Sirenix.OdinInspector;
+using System.Collections.Generic;
 
 
-public class EGamePlayInit : MonoBehaviour
+public class EGamePlayInit : SerializedMonoBehaviour
 {
+    public static EGamePlayInit Instance { get; private set; }
+    public Dictionary<string, TextAsset> TypeConfigTexts;
+    public Dictionary<string, object> TypeConfigCategarys { get; set; } = new Dictionary<string, object>();
+
+
     private void Awake()
     {
+        Instance = this;
+
+        //var unitConfigCategory = new UnitConfigCategory();
+        //unitConfigCategory.BeginInit();
+        //TypeConfigCategarys.Add("UnitConfig", unitConfigCategory);
+
         MasterEntity.Create();
         Entity.Create<TimerComponent>();
         Entity.Create<CombatContext>();

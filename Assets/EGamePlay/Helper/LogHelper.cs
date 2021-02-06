@@ -30,6 +30,11 @@ namespace ET
             UnityEngine.Debug.Log(log);
         }
 
+        public static void Info(string log)
+        {
+            UnityEngine.Debug.Log(log);
+        }
+
         public static void Error(string log)
         {
             UnityEngine.Debug.LogError(log);

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1976,8 +1976,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1127498800}
-  - component: {fileID: 1127498801}
   - component: {fileID: 1127498802}
+  - component: {fileID: 1127498801}
   - component: {fileID: 1127498803}
   m_Layer: 9
   m_Name: Hero
@@ -3754,6 +3754,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91489559dcd5cc498fe9a298e8772c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 4900000, guid: 79f1713de1c57e646a74288a5fe0f14f, type: 3}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: TypeConfigTexts
+      Entry: 7
+      Data: 0|UnityEngine.Rendering.SerializedDictionary`2[[System.String, mscorlib],[UnityEngine.TextAsset,
+        UnityEngine.CoreModule]], Unity.RenderPipelines.Core.Runtime
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: UnitConfig
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
 --- !u!1 &2048705141
 GameObject:
   m_ObjectHideFlags: 0

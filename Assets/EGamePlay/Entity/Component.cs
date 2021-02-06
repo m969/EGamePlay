@@ -6,7 +6,7 @@ namespace EGamePlay
     {
         public Entity Entity { get; set; }
         public bool IsDisposed { get; set; }
-        public virtual bool Enable { get; set; }
+        public virtual bool Enable { get; set; } = true;
         public bool Disable => Enable == false;
 
 
