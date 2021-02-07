@@ -24,7 +24,7 @@ namespace ET
 	/// <typeparam name="T"></typeparam>
 	public abstract class ACategory<T> : ACategory where T : IConfig
 	{
-		protected Dictionary<int, T> dict;
+		protected Dictionary<int, T> dict = new Dictionary<int, T>();
 
 		public override void BeginInit()
 		{
@@ -34,10 +34,16 @@ namespace ET
 
 			try
 			{
-                this.dict = JsonHelper.FromJson<Dictionary<int, T>>(configStr);
-            }
+                var dit = JsonHelper.FromJson<Dictionary<string, T>>(configStr);
+				dict.Clear();
+                foreach (var item in dit)
+                {
+					dict.Add(int.Parse(item.Key), item.Value);
+				}
+			}
 			catch (Exception e)
 			{
+				Log.Error(e);
 				throw new Exception($"parser json fail: {configStr}", e);
 			}
 		}

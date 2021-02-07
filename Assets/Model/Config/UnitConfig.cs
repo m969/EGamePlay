@@ -17,9 +17,5 @@ namespace ET
 		[BsonId]
 		public int Id { get; set; }
 		public string Name;
-		public string Desc;
-		public int Position;
-		public int Height;
-		public int Weight;
 	}
 }

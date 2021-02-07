@@ -140,7 +140,7 @@ namespace ET
                 sb.Append($"\tpublic partial class {protoName}: IConfig\n");
                 sb.Append("\t{\n");
                 sb.Append("\t\t[BsonId]\n");
-                sb.Append("\t\tpublic long Id { get; set; }\n");
+                sb.Append("\t\tpublic int Id { get; set; }\n");
 
                 int cellCount = sheet.GetRow(3).LastCellNum;
 
@@ -244,6 +244,14 @@ namespace ET
                 {
                     ISheet sheet = xssfWorkbook.GetSheetAt(i);
                     ExportSheet(sheet, sw);
+                    if (i < xssfWorkbook.NumberOfSheets - 1)
+                    {
+                        sw.Write("},");
+                    }
+                    else
+                    {
+                        sw.Write("}");
+                    }
                 }
                 sw.WriteLine("}");
             }
@@ -310,14 +318,14 @@ namespace ET
                     if (fieldName == "Id" || fieldName == "_id")
                     {
                         fieldName = "_id";
-                        sb.Append("{\"" + fieldValue + "\":{{");
+                        sb.Append("\"" + fieldValue + "\":{");
                     }
 
                     string fieldType = cellInfos[j].Type;
                     sb.Append($"\"{fieldName}\":{Convert(fieldType, fieldValue)}");
                 }
 
-                sb.Append("}},");
+                //sb.Append("},");
                 sw.WriteLine(sb.ToString());
             }
         }
