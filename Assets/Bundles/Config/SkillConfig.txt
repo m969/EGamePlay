@@ -1,3 +1,3 @@
 {
-"1001":{"_id":1001,"Name":"黑火球术","Type":"主动","Cooldown":0
+"1001":{"_id":1001,"Name":"黑火球术","Type":"主动","Cooldown":0,"Description":"黑火球术: 净化","Effect1":"Damage=1001","Effect2":"AddStatus=1001","Effect3":"净化"
 }}

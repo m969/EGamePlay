@@ -21,9 +21,16 @@ public class EGamePlayInit : SerializedMonoBehaviour
         ACategory configCategory = new UnitConfigCategory();
         configCategory.BeginInit();
         TypeConfigCategarys.Add("UnitConfig", configCategory);
+
         configCategory = new SkillConfigCategory();
         configCategory.BeginInit();
         TypeConfigCategarys.Add("SkillConfig", configCategory);
+
+        configCategory = new StatusConfigCategory();
+        configCategory.BeginInit();
+        TypeConfigCategarys.Add("StatusConfig", configCategory);
+
+
 
         MasterEntity.Create();
         Entity.Create<TimerComponent>();

@@ -1,0 +1,3 @@
+{
+"1":{"_id":1,"StatusID":"Vertigo","Name":"眩晕","Type":"Debuff","StatusSlot":"是","Description":"眩晕","ActionControl":"移动禁止|施法禁止|攻击禁止","AttributeType":"无","AttributeParams":"Add|法术强度*0.2"
+}}

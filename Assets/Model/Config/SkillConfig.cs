@@ -19,6 +19,9 @@ namespace ET
 		public string Name;
 		public string Type;
 		public float Cooldown;
-		public string Effects;
+		public string Description;
+		public string Effect1;
+		public string Effect2;
+		public string Effect3;
 	}
 }

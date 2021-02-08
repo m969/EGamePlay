@@ -3760,6 +3760,7 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 4900000, guid: 79f1713de1c57e646a74288a5fe0f14f, type: 3}
     - {fileID: 4900000, guid: 23634d520f9e666409d18131e3c6bbc5, type: 3}
+    - {fileID: 4900000, guid: 2bc72c3b6ec844f459adcb42fc92e30e, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -3778,7 +3779,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 7
       Data: 
@@ -3800,6 +3801,18 @@ MonoBehaviour:
     - Name: $v
       Entry: 10
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: StatusConfig
+    - Name: $v
+      Entry: 10
+      Data: 2
     - Name: 
       Entry: 8
       Data: 
