@@ -41,11 +41,6 @@ namespace Animancer
             get => _Animator;
             set
             {
-#if UNITY_EDITOR
-                Editor.AnimancerEditorUtilities.SetIsInspectorExpanded(_Animator, true);
-                Editor.AnimancerEditorUtilities.SetIsInspectorExpanded(value, false);
-#endif
-
                 // It doesn't seem to be possible to stop the old Animator from playing the graph.
 
                 _Animator = value;
@@ -231,59 +226,32 @@ namespace Animancer
 
 #if UNITY_EDITOR
         /// <summary>[Editor-Only]
+        /// Destroys the <see cref="Playable"/> if it was initialised and searches for an <see cref="Animator"/> on
+        /// this object, or it's children or parents.
+        /// </summary>
+        /// <remarks>
         /// Called by the Unity Editor when this component is first added (in Edit Mode) and whenever the Reset command
         /// is executed from its context menu.
-        /// <para></para>
-        /// Destroys the playable if one has been initialised.
-        /// Searches for an <see cref="UnityEngine.Animator"/> on this object, or it's children or parents.
-        /// Removes the <see cref="Animator.runtimeAnimatorController"/> if it finds one.
-        /// <para></para>
-        /// This method also prevents you from adding multiple copies of this component to a single object. Doing so
-        /// will destroy the new one immediately and change the old one's type to match the new one, allowing you to
-        /// change the type without losing the values of any serialized fields they share.
-        /// </summary>
+        /// </remarks>
         protected virtual void Reset()
         {
             OnDestroy();
-
             _Animator = Editor.AnimancerEditorUtilities.GetComponentInHierarchy<Animator>(gameObject);
-
-            if (_Animator != null)
-            {
-                _Animator.runtimeAnimatorController = null;
-                Editor.AnimancerEditorUtilities.SetIsInspectorExpanded(_Animator, false);
-
-                // Collapse the Animator property because the custom Inspector uses that to control whether the
-                // Animator's Inspector is expanded.
-                using (var serializedObject = new UnityEditor.SerializedObject(this))
-                {
-                    var property = serializedObject.FindProperty("_Animator");
-                    property.isExpanded = false;
-                    serializedObject.ApplyModifiedProperties();
-                }
-            }
-
-            AnimancerUtilities.IfMultiComponentThenChangeType(this);
         }
 #endif
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by Unity when this component becomes enabled and active.
-        /// <para></para>
-        /// Ensures that the <see cref="PlayableGraph"/> is playing.
-        /// </summary>
+        /// <summary>Ensures that the <see cref="PlayableGraph"/> is playing.</summary>
+        /// <remarks>Called by Unity when this component becomes enabled and active.</remarks>
         protected virtual void OnEnable()
         {
             if (IsPlayableInitialised)
                 _Playable.UnpauseGraph();
         }
 
-        /// <summary>
-        /// Called by Unity when this component becomes disabled or inactive. Acts according to the
-        /// <see cref="ActionOnDisable"/>.
-        /// </summary>
+        /// <summary>Acts according to the <see cref="ActionOnDisable"/>.</summary>
+        /// <remarks>Called by Unity when this component becomes enabled and active.</remarks>
         protected virtual void OnDisable()
         {
             if (!IsPlayableInitialised)
@@ -375,10 +343,8 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by Unity when this component is destroyed.
-        /// Ensures that the <see cref="Playable"/> is properly cleaned up.
-        /// </summary>
+        /// <summary>Ensures that the <see cref="Playable"/> is properly cleaned up.</summary>
+        /// <remarks>Called by Unity when this component is destroyed.</remarks>
         protected virtual void OnDestroy()
         {
             if (IsPlayableInitialised)
@@ -425,7 +391,8 @@ namespace Animancer
         /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
         /// To restart it from the beginning you can use <c>...Play(clip, layerIndex).Time = 0;</c>.
         /// </summary>
-        public AnimancerState Play(AnimationClip clip) => Playable.Play(States.GetOrCreate(clip));
+        public AnimancerState Play(AnimationClip clip)
+            => Playable.Play(States.GetOrCreate(clip));
 
         /// <summary>
         /// Stops all other animations on the same layer, plays the `state`, and returns it.
@@ -433,7 +400,8 @@ namespace Animancer
         /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
         /// To restart it from the beginning you can use <c>...Play(state).Time = 0;</c>.
         /// </summary>
-        public AnimancerState Play(AnimancerState state) => Playable.Play(state);
+        public AnimancerState Play(AnimancerState state)
+            => Playable.Play(state);
 
         /************************************************************************************************************************/
         // Cross Fade.
@@ -478,7 +446,8 @@ namespace Animancer
         /// <see cref="Play(AnimancerState)"/> or <see cref="Play(AnimancerState, float, FadeMode)"/>
         /// depending on <see cref="ITransition.CrossFadeFromStart"/>.
         /// </summary>
-        public AnimancerState Play(ITransition transition) => Playable.Play(transition);
+        public AnimancerState Play(ITransition transition)
+            => Playable.Play(transition);
 
         /// <summary>
         /// Creates a state for the `transition` if it didn't already exist, then calls
@@ -501,7 +470,8 @@ namespace Animancer
         /// </summary>
         /// <exception cref="ArgumentNullException">The `key` is null.</exception>
         /// <exception cref="KeyNotFoundException">No state is registered with the `key`.</exception>
-        public AnimancerState TryPlay(object key) => Playable.TryPlay(key);
+        public AnimancerState TryPlay(object key)
+            => Playable.TryPlay(key);
 
         /// <summary>
         /// Starts fading in the animation registered with the `key` while fading out all others in the same layer

@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using Object = UnityEngine.Object;
 
 namespace Animancer
 {
@@ -310,7 +311,7 @@ namespace Animancer
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="Drawer"/> to manage the Inspector GUI for the `state`.
+            /// Creates a new <see cref="Drawer"/> to manage the Inspector GUI for the `state`.
             /// </summary>
             public Drawer(LinearMixerState state) : base(state) { }
 
@@ -388,10 +389,7 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>
-            /// Called by <see cref="AnimancerPlayable.Play(ITransition)"/> to apply the
-            /// <see cref="AnimancerNode.Speed"/> and <see cref="ExtrapolateSpeed"/>.
-            /// </summary>
+            /// <inheritdoc/>
             public override void Apply(AnimancerState state)
             {
                 base.Apply(state);
@@ -426,7 +424,7 @@ namespace Animancer
                     }
 
                     Thresholds.Swap(i, i - 1);
-                    Clips.Swap(i, i - 1);
+                    States.Swap(i, i - 1);
 
                     if (i < speedCount)
                         Speeds.Swap(i, i - 1);
@@ -538,36 +536,37 @@ namespace Animancer
                     });
 
                     AddCalculateThresholdsFunction(menu, "From Speed",
-                        (clip, threshold) => clip.apparentSpeed);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) ? velocity.magnitude : float.NaN);
                     AddCalculateThresholdsFunction(menu, "From Velocity X",
-                        (clip, threshold) => clip.averageSpeed.x);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) ? velocity.x : float.NaN);
                     AddCalculateThresholdsFunction(menu, "From Velocity Y",
-                        (clip, threshold) => clip.averageSpeed.z);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) ? velocity.y : float.NaN);
                     AddCalculateThresholdsFunction(menu, "From Velocity Z",
-                        (clip, threshold) => clip.averageSpeed.z);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) ? velocity.z : float.NaN);
                     AddCalculateThresholdsFunction(menu, "From Angular Speed (Rad)",
-                        (clip, threshold) => clip.averageAngularSpeed);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageAngularSpeed(state, out var speed) ? speed : float.NaN);
                     AddCalculateThresholdsFunction(menu, "From Angular Speed (Deg)",
-                        (clip, threshold) => clip.averageAngularSpeed * Mathf.Rad2Deg);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageAngularSpeed(state, out var speed) ? speed * Mathf.Rad2Deg : float.NaN);
                 }
 
                 /************************************************************************************************************************/
 
                 private void AddCalculateThresholdsFunction(UnityEditor.GenericMenu menu, string label,
-                    Func<AnimationClip, float, float> calculateThreshold)
+                    Func<Object, float, float> calculateThreshold)
                 {
                     AddPropertyModifierFunction(menu, label, (property) =>
                     {
-                        var count = CurrentClips.arraySize;
+                        var count = CurrentStates.arraySize;
                         for (int i = 0; i < count; i++)
                         {
-                            var clip = CurrentClips.GetArrayElementAtIndex(i).objectReferenceValue as AnimationClip;
-                            if (clip == null)
+                            var state = CurrentStates.GetArrayElementAtIndex(i).objectReferenceValue;
+                            if (state == null)
                                 continue;
 
                             var threshold = CurrentThresholds.GetArrayElementAtIndex(i);
-
-                            threshold.floatValue = calculateThreshold(clip, threshold.floatValue);
+                            var value = calculateThreshold(state, threshold.floatValue);
+                            if (!float.IsNaN(value))
+                                threshold.floatValue = value;
                         }
                     });
                 }

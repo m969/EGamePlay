@@ -273,7 +273,7 @@ namespace Animancer.Editor
                 _InstanceRoot.localPosition = Vector3.zero;
                 _InstanceRoot.name = _OriginalRoot.name;
 
-                DestroyUnnecessaryComponents(_InstanceRoot.gameObject);
+                DisableUnnecessaryComponents(_InstanceRoot.gameObject);
 
                 _InstanceAnimators = _InstanceRoot.GetComponentsInChildren<Animator>();
                 for (int i = 0; i < _InstanceAnimators.Length; i++)
@@ -289,90 +289,29 @@ namespace Animancer.Editor
 
                 _PreviewSceneRoot.gameObject.SetActive(true);
 
-                InitialiseCamera();
                 SetSelectedAnimator(_SelectedInstanceAnimator);
+                InitialiseCamera();
                 _Instance._Inspector.GatherAnimations();
             }
 
             /************************************************************************************************************************/
 
-            /// <summary>
-            /// Destroys all unnecessary components on the preview instance while accounting for any
-            /// <see cref="RequireComponent"/> attributes.
-            /// </summary>
-            private static void DestroyUnnecessaryComponents(GameObject root)
+            /// <summary>Disables all unnecessary components on the `root` or its children.</summary>
+            private static void DisableUnnecessaryComponents(GameObject root)
             {
-                var components = root.GetComponentsInChildren<Component>();
-
-                var typeToDependencies = new Dictionary<Type, List<Type>>();
-                var componentToDependencies = new Dictionary<Component, List<Component>>(components.Length);
-                for (int i = 0; i < components.Length; i++)
+                var behaviours = root.GetComponentsInChildren<Behaviour>();
+                for (int i = 0; i < behaviours.Length; i++)
                 {
-                    var component = components[i];
+                    var behaviour = behaviours[i];
 
-                    if (!componentToDependencies.TryGetValue(component, out var dependencies))
-                    {
-                        var type = component.GetType();
-                        if (!typeToDependencies.TryGetValue(type, out var typeDependencies))
-                        {
-                            if (type.IsDefined(typeof(RequireComponent), false))
-                            {
-                                var requirements = (RequireComponent[])type.GetCustomAttributes(typeof(RequireComponent), false);
-                                for (int j = 0; j < requirements.Length; j++)
-                                {
-                                    var requirement = requirements[j];
-                                    GatherRequirement(ref typeDependencies, requirement.m_Type0);
-                                    GatherRequirement(ref typeDependencies, requirement.m_Type1);
-                                    GatherRequirement(ref typeDependencies, requirement.m_Type2);
-                                }
-                            }
-
-                            typeToDependencies.Add(type, typeDependencies);
-                        }
-
-                        if (typeDependencies != null)
-                        {
-                            dependencies = new List<Component>();
-
-                            for (int j = 0; j < typeDependencies.Count; j++)
-                            {
-                                var requiredComponent = component.GetComponent(typeDependencies[j]);
-                                if (requiredComponent != null)
-                                    dependencies.Add(requiredComponent);
-                            }
-                        }
-
-                        componentToDependencies.Add(component, dependencies);
-                    }
-                }
-
-                var sortedComponents = AnimancerEditorUtilities.TopologicalSort(components,
-                    (component) => componentToDependencies[component]);
-
-                for (int i = components.Length - 1; i >= 0; i--)
-                {
-                    var component = sortedComponents[i];
-                    if (component is Transform ||
-                        component is MeshFilter ||
-                        component is Renderer ||
-                        component is Animator)
+                    // Other undesirable components aren't Behaviours anyway: Transform, MeshFilter, Renderer
+                    if (behaviour is Animator)
                         continue;
 
-                    DestroyImmediate(component);
+                    behaviour.enabled = false;
+                    if (behaviour is MonoBehaviour mono)
+                        mono.runInEditMode = false;
                 }
-            }
-
-            /************************************************************************************************************************/
-
-            private static void GatherRequirement(ref List<Type> requirements, Type type)
-            {
-                if (type == null)
-                    return;
-
-                if (requirements == null)
-                    requirements = new List<Type>();
-
-                requirements.Add(type);
             }
 
             /************************************************************************************************************************/
@@ -399,7 +338,7 @@ namespace Animancer.Editor
 
                     if (_SelectedInstanceType == AnimationType.Sprite)
                     {
-                        Camera.transform.parent.localRotation = Quaternion.identity;
+                        CameraEulerAngles = default;
                     }
                     else
                     {
@@ -805,8 +744,7 @@ namespace Animancer.Editor
                 {
                     if (index < 0)
                     {
-                        if (_ExpandedHierarchy == null)
-                            _ExpandedHierarchy = new List<Transform>();
+                        AnimancerUtilities.NewIfNull(ref _ExpandedHierarchy);
                         _ExpandedHierarchy.Add(transform);
                     }
 
@@ -833,6 +771,10 @@ namespace Animancer.Editor
 
             /************************************************************************************************************************/
 
+            private bool HasCamera => Camera != null && Camera.transform.parent != null;
+
+            /************************************************************************************************************************/
+
             [SerializeField] private Vector3 _CameraPosition = Vector3NaN;
             [SerializeField] private Vector3 _DefaultCameraPosition = Vector3NaN;
 
@@ -843,11 +785,8 @@ namespace Animancer.Editor
                 {
                     _CameraPosition = value;
 
-                    if (Camera != null &&
-                        Camera.transform.parent != null &&
-                        !float.IsNaN(value.x) &&
-                        !float.IsNaN(value.y) &&
-                        !float.IsNaN(value.z))
+                    if (HasCamera &&
+                        !value.IsNaN())
                     {
                         Camera.transform.parent.localPosition = value;
                     }
@@ -865,7 +804,7 @@ namespace Animancer.Editor
                 set
                 {
                     _CameraZoom = value;
-                    if (Camera != null)
+                    if (HasCamera)
                         Camera.transform.localPosition = new Vector3(0, 0, -_CameraZoom);
                 }
             }
@@ -877,14 +816,24 @@ namespace Animancer.Editor
 
             private Vector3 CameraEulerAngles
             {
-                get => _CameraEulerAngles;
+                get
+                {
+                    if (HasCamera)
+                        return Camera.transform.parent.localEulerAngles;
+                    else
+                        return _CameraEulerAngles;
+                }
                 set
                 {
                     if (_SelectedInstanceType == AnimationType.Sprite)
+                    {
+                        if (HasCamera)
+                            Camera.transform.parent.localRotation = Quaternion.identity;
                         return;
+                    }
 
                     _CameraEulerAngles = value;
-                    if (Camera != null && Camera.transform.parent != null)
+                    if (!value.IsNaN() && HasCamera)
                         Camera.transform.parent.localEulerAngles = value;
                 }
             }
@@ -921,19 +870,24 @@ namespace Animancer.Editor
 
                 Camera.farClipPlane = 100;
 
-                CameraPosition = float.IsNaN(_CameraPosition.x) ?
+                CameraPosition = _CameraPosition.IsNaN() ?
                     bounds.center :
                     _CameraPosition;
 
-                CameraZoom = _CameraZoom == 0 ?
-                    bounds.extents.magnitude * 2 / Mathf.Tan(Camera.fieldOfView * Mathf.Deg2Rad) :
-                    CameraZoom;
+                var zoom = CameraZoom;
+                if (zoom <= 0)
+                {
+                    zoom = bounds.extents.magnitude * 2 / Mathf.Tan(Camera.fieldOfView * Mathf.Deg2Rad);
+                    if (zoom <= 0)
+                        zoom = 10;
+                }
+                CameraZoom = zoom;
 
-                CameraEulerAngles = float.IsNaN(_CameraEulerAngles.x) ?
+                CameraEulerAngles = _CameraEulerAngles.IsNaN() ?
                     new Vector3(45, 135, 0) :
                     _CameraEulerAngles;
 
-                if (float.IsNaN(_DefaultCameraPosition.x))
+                if (_DefaultCameraPosition.IsNaN())
                 {
                     _DefaultCameraPosition = CameraPosition;
                     _DefaultCameraZoom = CameraZoom;

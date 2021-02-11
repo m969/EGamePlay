@@ -101,7 +101,7 @@ namespace Animancer
         /// often leading to the same event being added multiple times.
         /// <para></para>
         /// If that is not the case, you can simply disable this warning. There is nothing inherently wrong with having
-        /// multiple identical events in the same sequence (though it would waste a bit of performance).
+        /// multiple identical events in the same sequence.
         /// </remarks>
         DuplicateEvent = 1 << 3,
 
@@ -228,6 +228,15 @@ namespace Animancer
         /// so that it can include the stack trace in the warning message for any nodes that end up being unused.
         /// </remarks>
         UnusedNode = 1 << 12,
+
+        /// <summary>
+        /// <see cref="PlayableAssetState.InitialiseBindings"/> is trying to bind to the same <see cref="Animator"/>
+        /// that is being used by Animancer.
+        /// </summary>
+        /// <remarks>
+        /// Doing this will replace Animancer's output so its animations would not work anymore.
+        /// </remarks>
+        PlayableAssetAnimatorBinding = 1 << 13,
 
         /// <summary>All warning types.</summary>
         All = ~0,

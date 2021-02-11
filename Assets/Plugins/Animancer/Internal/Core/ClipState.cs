@@ -16,7 +16,7 @@ namespace Animancer
     /// </remarks>
     /// https://kybernetik.com.au/animancer/api/Animancer/ClipState
     /// 
-    public sealed class ClipState : AnimancerState, IHasIK
+    public sealed class ClipState : AnimancerState
     {
         /************************************************************************************************************************/
         #region Fields and Properties
@@ -120,12 +120,6 @@ namespace Animancer
             var root = Root;
             var clipPlayable = AnimationClipPlayable.Create(root._Graph, _Clip);
             playable = clipPlayable;
-
-            if (!root.DefaultApplyFootIK)
-                clipPlayable.SetApplyFootIK(false);
-
-            if (root.DefaultApplyAnimatorIK)
-                clipPlayable.SetApplyPlayableIK(true);
         }
 
         /************************************************************************************************************************/
@@ -161,7 +155,7 @@ namespace Animancer
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="Drawer"/> to manage the Inspector GUI for the `state`.
+            /// Creates a new <see cref="Drawer"/> to manage the Inspector GUI for the `state`.
             /// </summary>
             public Drawer(ClipState state) : base(state) { }
 
@@ -264,7 +258,7 @@ namespace Animancer
             }
 
             /// <summary>
-            /// If this transition will set the <see cref="AnimancerState.NormalizedTime"/>, then it needs to use
+            /// If this transition will set the <see cref="AnimancerState.Time"/>, then it needs to use
             /// <see cref="FadeMode.FromStart"/>.
             /// </summary>
             public override FadeMode FadeMode => float.IsNaN(_NormalizedStartTime) ? FadeMode.FixedSpeed : FadeMode.FromStart;
@@ -276,6 +270,12 @@ namespace Animancer
 
             /// <inheritdoc/>
             public override float MaximumDuration => _Clip != null ? _Clip.length : 0;
+
+            /// <inheritdoc/>
+            public override float AverageAngularSpeed => _Clip != null ? _Clip.averageAngularSpeed : default;
+
+            /// <inheritdoc/>
+            public override Vector3 AverageVelocity => _Clip != null ? _Clip.averageSpeed : default;
 
             /// <inheritdoc/>
             public override bool IsValid => _Clip != null && !_Clip.legacy;
@@ -295,10 +295,7 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>
-            /// Called by <see cref="AnimancerPlayable.Play(ITransition)"/> to apply the <see cref="Speed"/>
-            /// and <see cref="NormalizedStartTime"/>.
-            /// </summary>
+            /// <inheritdoc/>
             public override void Apply(AnimancerState state)
             {
                 base.Apply(state);
@@ -333,7 +330,7 @@ namespace Animancer
             {
                 /************************************************************************************************************************/
 
-                /// <summary>Constructs a new <see cref="Drawer"/>.</summary>
+                /// <summary>Creates a new <see cref="Drawer"/>.</summary>
                 public Drawer() : base(nameof(_Clip)) { }
 
                 /************************************************************************************************************************/

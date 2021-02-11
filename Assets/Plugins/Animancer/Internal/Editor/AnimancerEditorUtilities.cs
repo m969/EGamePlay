@@ -29,6 +29,30 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
+        /// <summary>Is the <see cref="Vector2.x"/> or <see cref="Vector2.y"/> NaN?</summary>
+        public static bool IsNaN(this Vector2 vector) => float.IsNaN(vector.x) || float.IsNaN(vector.y);
+
+        /// <summary>Is the <see cref="Vector3.x"/>, <see cref="Vector3.y"/>, or <see cref="Vector3.z"/> NaN?</summary>
+        public static bool IsNaN(this Vector3 vector) => float.IsNaN(vector.x) || float.IsNaN(vector.y) || float.IsNaN(vector.z);
+
+        /************************************************************************************************************************/
+
+        /// <summary>Adds default items or removes items to make the <see cref="List{T}.Count"/> equal to the `count`.</summary>
+        public static void SetCount<T>(List<T> list, int count)
+        {
+            if (list.Count < count)
+            {
+                while (list.Count < count)
+                    list.Add(default);
+            }
+            else
+            {
+                list.RemoveRange(count, list.Count - count);
+            }
+        }
+
+        /************************************************************************************************************************/
+
         /// <summary>
         /// Tries to find a <typeparamref name="T"/> component on the `gameObject` or its parents or children (in that
         /// order).
@@ -54,23 +78,6 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        /// <summary>Wraps <see cref="UnityEditorInternal.InternalEditorUtility.GetIsInspectorExpanded"/>.</summary>
-        public static bool GetIsInspectorExpanded(Object obj)
-            => UnityEditorInternal.InternalEditorUtility.GetIsInspectorExpanded(obj);
-
-        /// <summary>Wraps <see cref="UnityEditorInternal.InternalEditorUtility.SetIsInspectorExpanded"/>.</summary>
-        public static void SetIsInspectorExpanded(Object obj, bool isExpanded)
-            => UnityEditorInternal.InternalEditorUtility.SetIsInspectorExpanded(obj, isExpanded);
-
-        /// <summary>Calls <see cref="SetIsInspectorExpanded(Object, bool)"/> on all `objects`.</summary>
-        public static void SetIsInspectorExpanded(Object[] objects, bool isExpanded)
-        {
-            for (int i = 0; i < objects.Length; i++)
-                SetIsInspectorExpanded(objects[i], isExpanded);
-        }
-
-        /************************************************************************************************************************/
-
         private static Dictionary<Type, Dictionary<string, MethodInfo>> _TypeToMethodNameToMethod;
 
         /// <summary>
@@ -83,8 +90,7 @@ namespace Animancer.Editor
         /// </summary>
         public static object Invoke(Type type, object target, string methodName)
         {
-            if (_TypeToMethodNameToMethod == null)
-                _TypeToMethodNameToMethod = new Dictionary<Type, Dictionary<string, MethodInfo>>();
+            AnimancerUtilities.NewIfNull(ref _TypeToMethodNameToMethod);
 
             if (!_TypeToMethodNameToMethod.TryGetValue(type, out var nameToMethod))
             {
@@ -117,11 +123,9 @@ namespace Animancer.Editor
         /// </summary>
         public static void RegisterNonCriticalIssue(Action<StringBuilder> describeIssue)
         {
-            if (_NonCriticalIssues == null)
-                _NonCriticalIssues = new List<Action<StringBuilder>>();
+            AnimancerUtilities.NewIfNull(ref _NonCriticalIssues);
 
             _NonCriticalIssues.Add(describeIssue);
-
         }
 
         /// <summary>
@@ -232,9 +236,8 @@ namespace Animancer.Editor
         /// </summary>
         public static bool InitialiseCleanDictionary<TKey, TValue>(ref Dictionary<TKey, TValue> dictionary) where TKey : Object
         {
-            if (dictionary == null)
+            if (AnimancerUtilities.NewIfNull(ref dictionary))
             {
-                dictionary = new Dictionary<TKey, TValue>();
                 return true;
             }
             else
@@ -251,29 +254,13 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Adds a menu function which is disabled if `isEnabled` is false.
-        /// </summary>
-        public static void AddMenuItem(GenericMenu menu, string label, bool isEnabled, GenericMenu.MenuFunction func)
-        {
-            if (!isEnabled)
-            {
-                menu.AddDisabledItem(new GUIContent(label));
-                return;
-            }
-
-            menu.AddItem(new GUIContent(label), false, func);
-        }
-
-        /************************************************************************************************************************/
-
-        /// <summary>
         /// Adds a menu function which passes the result of <see cref="CalculateEditorFadeDuration"/> into `startFade`.
         /// </summary>
         public static void AddFadeFunction(GenericMenu menu, string label, bool isEnabled, AnimancerNode node, Action<float> startFade)
         {
             // Fade functions need to be delayed twice since the context menu itself causes the next frame delta
             // time to be unreasonably high (which would skip the start of the fade).
-            AddMenuItem(menu, label, isEnabled,
+            menu.AddFunction(label, isEnabled,
                 () => EditorApplication.delayCall +=
                 () => EditorApplication.delayCall +=
                 () =>

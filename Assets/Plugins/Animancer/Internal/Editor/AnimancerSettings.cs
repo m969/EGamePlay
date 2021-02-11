@@ -85,9 +85,7 @@ namespace Animancer.Editor
             /// <summary>[Internal] Sets the prefix for <see cref="GetSerializedProperty"/>.</summary>
             internal static void SetBasePropertyPath<T>(ref T group, string propertyPath) where T : Group, new()
             {
-                if (group == null)
-                    group = new T();
-
+                AnimancerUtilities.NewIfNull(ref group);
                 group._BasePropertyPath = propertyPath + ".";
             }
 

@@ -10,7 +10,7 @@ using GameUtils;
 public class DirectRectSelectManager : MonoBehaviour
 {
     public static DirectRectSelectManager Instance { get; set; }
-    private Action<float> OnSelectedCallback { get; set; }
+    private Action<float, Vector3> OnSelectedCallback { get; set; }
     public GameObject HeroObj;
     public GameObject DirectObj;
 
@@ -30,12 +30,12 @@ public class DirectRectSelectManager : MonoBehaviour
             if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
             {
                 Hide();
-                OnSelectedCallback?.Invoke(DirectObj.transform.localEulerAngles.y);
+                OnSelectedCallback?.Invoke(DirectObj.transform.localEulerAngles.y, hitPoint);
             }
         }
     }
 
-    public void Show(Action<float> onSelectedCallback)
+    public void Show(Action<float, Vector3> onSelectedCallback)
     {
         //Cursor.visible = false;
         gameObject.SetActive(true);

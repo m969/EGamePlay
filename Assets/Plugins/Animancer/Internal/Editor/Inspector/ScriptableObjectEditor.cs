@@ -24,11 +24,8 @@ namespace Animancer.Editor
     {
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by the Unity editor to draw the custom Inspector GUI elements.
-        /// <para></para>
-        /// Draws the regular Inspector then adds a message explaining that changes in Play Mode will persist.
-        /// </summary>
+        /// <summary>Draws the regular Inspector then adds a message explaining that changes in Play Mode will persist.</summary>
+        /// <remarks>Called by the Unity editor to draw the custom Inspector GUI elements.</remarks>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();

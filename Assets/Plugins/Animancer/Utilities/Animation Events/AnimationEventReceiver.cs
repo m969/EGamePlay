@@ -86,7 +86,7 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Constructs a new <see cref="AnimationEventReceiver"/> and sets the <see cref="Source"/> and
+        /// Creates a new <see cref="AnimationEventReceiver"/> and sets the <see cref="Source"/> and
         /// <see cref="Callback"/>.
         /// </summary>
         public AnimationEventReceiver(AnimancerState source, Action<AnimationEvent> callback)
@@ -147,7 +147,7 @@ namespace Animancer
 
             var message = ObjectPool.AcquireStringBuilder()
                 .Append("No Animation Event was found in ")
-                .Append(_Source.Clip)
+                .Append(_Source)
                 .Append(" with the Function Name '")
                 .Append(FunctionName)
                 .Append('\'');

@@ -135,9 +135,8 @@ namespace Animancer
 
         void IDisposable.Dispose() => Dispose();
 
-        /// <summary>
-        /// Called by <see cref="AnimancerPlayable.OnPlayableDestroy"/> to clean up the <see cref="NativeArray{T}"/>s.
-        /// </summary>
+        /// <summary>Cleans up the <see cref="NativeArray{T}"/>s.</summary>
+        /// <remarks>Called by <see cref="AnimancerPlayable.OnPlayableDestroy"/>.</remarks>
         protected virtual void Dispose()
         {
             if (_Properties.IsCreated)

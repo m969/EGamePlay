@@ -90,7 +90,8 @@ namespace Animancer.Editor
                 return null;
 
             var transition = _Instance.GetTransition();
-            return _Instance._Scene.InstanceAnimancer.States[transition];
+            _Instance._Scene.InstanceAnimancer.States.TryGet(transition, out var state);
+            return state;
         }
 
         /************************************************************************************************************************/
@@ -127,10 +128,8 @@ namespace Animancer.Editor
             titleContent = new GUIContent("Transition Preview", Icon);
             autoRepaintOnSceneChange = true;
 
-            if (_Inspector == null)
-                _Inspector = new Inspector();
-            if (_Scene == null)
-                _Scene = new Scene();
+            AnimancerUtilities.NewIfNull(ref _Inspector);
+            AnimancerUtilities.NewIfNull(ref _Scene);
 
             if (_TransitionProperty.IsValid() &&
                 !CanBePreviewed(_TransitionProperty))

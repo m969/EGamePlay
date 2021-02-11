@@ -93,10 +93,11 @@ namespace Animancer
                 /// <summary>
                 /// The runtime <see cref="AnimancerEvent.Sequence"/> compiled from this <see cref="Serializable"/>.
                 /// Each call after the first will return the same value.
-                /// <para></para>
+                /// </summary>
+                /// <remarks>
                 /// Unlike <see cref="GetSequenceOptional"/>, this method will create an empty
                 /// <see cref="AnimancerEvent.Sequence"/> instead of returning null.
-                /// </summary>
+                /// </remarks>
                 public Sequence Sequence
                 {
                     get
@@ -105,8 +106,7 @@ namespace Animancer
                         {
                             GetSequenceOptional();
 
-                            if (_Sequence == null)
-                                _Sequence = new Sequence();
+                            AnimancerUtilities.NewIfNull(ref _Sequence);
                         }
                         return _Sequence;
                     }
@@ -118,10 +118,11 @@ namespace Animancer
                 /// <summary>
                 /// Returns the runtime <see cref="AnimancerEvent.Sequence"/> compiled from this
                 /// <see cref="Serializable"/>. Each call after the first will return the same value.
-                /// <para></para>
+                /// </summary>
+                /// <remarks>
                 /// This method returns null if the sequence would be empty anyway and is used by the implicit
                 /// conversion from <see cref="Serializable"/> to <see cref="AnimancerEvent.Sequence"/>.
-                /// </summary>
+                /// </remarks>
                 public Sequence GetSequenceOptional()
                 {
                     if (_Sequence != null ||
@@ -134,15 +135,10 @@ namespace Animancer
 
                     var callbackCount = _Callbacks.Length;
 
-                    AnimancerEvent endEvent;
-                    if (callbackCount >= timeCount--)
-                    {
-                        endEvent = new AnimancerEvent(_NormalizedTimes[timeCount], GetInvoker(_Callbacks[timeCount]));
-                    }
-                    else
-                    {
-                        endEvent = new AnimancerEvent(_NormalizedTimes[timeCount], null);
-                    }
+                    var callback = callbackCount >= timeCount-- ?
+                        GetInvoker(_Callbacks[timeCount]) :
+                        null;
+                    var endEvent = new AnimancerEvent(_NormalizedTimes[timeCount], callback);
 
                     _Sequence = new Sequence(timeCount)
                     {
@@ -153,7 +149,7 @@ namespace Animancer
 
                     for (int i = 0; i < timeCount; i++)
                     {
-                        var callback = i < callbackCount ? GetInvoker(_Callbacks[i]) : DummyCallback;
+                        callback = i < callbackCount ? GetInvoker(_Callbacks[i]) : DummyCallback;
                         _Sequence._Events[i] = new AnimancerEvent(_NormalizedTimes[i], callback);
                     }
 
@@ -164,12 +160,6 @@ namespace Animancer
                 public static implicit operator Sequence(Serializable serializable) => serializable?.GetSequenceOptional();
 
                 /************************************************************************************************************************/
-
-                /// <summary>
-                /// A delegate that does nothing which is used whenever the <see cref="SerializableCallback"/> is not
-                /// defined for a particular event or it is empty.
-                /// </summary>
-                public static readonly Action DummyCallback = () => { };
 
                 /// <summary>
                 /// If the `callback` has any persistent calls, this method returns a delegate to call its
@@ -207,20 +197,18 @@ namespace Animancer
                 /// Determines if the `callback` contains any method calls that will be serialized (otherwise the
                 /// <see cref="DummyCallback"/> can be used instead of creating a new delegate to invoke the empty
                 /// `callback`).
-                /// <para></para>
+                /// </summary>
+                /// <remarks>
                 /// This method casts the `callback` to <see cref="SerializableCallback"/> so the caller does not need
                 /// to know what type is actually being used.
-                /// </summary>
+                /// </remarks>
                 public static bool HasPersistentCalls(object callback) => HasPersistentCalls((SerializableCallback)callback);
 
                 /************************************************************************************************************************/
 
-                /// <summary>
-                /// Returns the <see cref="normalizedTime"/> of the <see cref="endEvent"/>.
-                /// <para></para>
-                /// If the value is not set, the value is determined by <see cref="GetDefaultNormalizedEndTime"/>.
-                /// </summary>
-                public float GetNormalizedEndTime(float speed = 0)
+                /// <summary>Returns the <see cref="normalizedTime"/> of the <see cref="endEvent"/>.</summary>
+                /// <remarks>If the value is not set, the value is determined by <see cref="GetDefaultNormalizedEndTime"/>.</remarks>
+                public float GetNormalizedEndTime(float speed = 1)
                 {
                     if (_NormalizedTimes == null || _NormalizedTimes.Length == 0)
                         return GetDefaultNormalizedEndTime(speed);
@@ -230,12 +218,13 @@ namespace Animancer
 
                 /************************************************************************************************************************/
 
-                /// <summary>[Internal] Gets the internal details of the specified `serializable`.</summary>
-                internal void GetSerializedDetails(out int nameCount, out int timeCount, out int callbackCount)
+                /// <summary>Sets the <see cref="normalizedTime"/> of the <see cref="endEvent"/>.</summary>
+                public void SetNormalizedEndTime(float normalizedTime)
                 {
-                    nameCount = _Names != null ? _Names.Length : 0;
-                    timeCount = _NormalizedTimes != null ? _NormalizedTimes.Length : 0;
-                    callbackCount = _Callbacks != null ? _Callbacks.Length : 0;
+                    if (_NormalizedTimes == null || _NormalizedTimes.Length == 0)
+                        _NormalizedTimes = new float[] { normalizedTime };
+                    else
+                        _NormalizedTimes[_NormalizedTimes.Length - 1] = normalizedTime;
                 }
 
                 /************************************************************************************************************************/
@@ -255,8 +244,8 @@ namespace Animancer
                         _NormalizedTimes.Length <= 2)
                         goto Trim;
 
-                    var context = Editor.EventSequenceDrawer.Context.Instance;
-                    var selectedEvent = context.Property != null ? context.SelectedEvent : -1;
+                    var context = Editor.EventSequenceDrawer.Context.Current;
+                    var selectedEvent = context?.Property != null ? context.SelectedEvent : -1;
 
                     var timeCount = _NormalizedTimes.Length - 1;
 
@@ -310,7 +299,7 @@ namespace Animancer
                     }
 
                     // If the selected event was moved adjust the selection.
-                    if (context.Property != null && context.SelectedEvent != selectedEvent)
+                    if (context?.Property != null && context.SelectedEvent != selectedEvent)
                     {
                         context.SelectedEvent = selectedEvent;
                         Editor.TransitionPreviewWindow.PreviewNormalizedTime = _NormalizedTimes[selectedEvent];

@@ -2,8 +2,6 @@
 
 #if UNITY_EDITOR
 
-#pragma warning disable IDE0041 // Use 'is null' check.
-
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -33,7 +31,7 @@ namespace Animancer.Editor
 
         /// <summary>Determines whether the <see cref="AnimancerState.MainObject"/> field can occupy the whole line.</summary>
         private bool IsAssetUsedAsKey =>
-            Target.EditorName == null &&
+            Target.DebugName == null &&
             (Target.Key == null || ReferenceEquals(Target.Key, Target.MainObject));
 
         /************************************************************************************************************************/
@@ -52,9 +50,9 @@ namespace Animancer.Editor
         protected override void DoLabelGUI(Rect area)
         {
             string label;
-            if (Target.EditorName != null)
+            if (Target.DebugName != null)
             {
-                label = Target.EditorName;
+                label = Target.DebugName;
             }
             else if (IsAssetUsedAsKey)
             {
@@ -63,8 +61,8 @@ namespace Animancer.Editor
             else
             {
                 var key = Target.Key;
-                if (key is string)
-                    label = $"\"{key}\"";
+                if (key is string str)
+                    label = $"\"{str}\"";
                 else
                     label = key.ToString();
             }
@@ -85,9 +83,9 @@ namespace Animancer.Editor
                 if (EditorGUI.EndChangeCheck())
                     Target.MainObject = mainObject;
             }
-            else if (Target.EditorName != null)
+            else if (Target.DebugName != null)
             {
-                EditorGUI.LabelField(area, Target.EditorName);
+                EditorGUI.LabelField(area, Target.DebugName);
             }
             else
             {
@@ -95,33 +93,41 @@ namespace Animancer.Editor
             }
 
             // Highlight a section of the label based on the time like a loading bar.
-            if (Target.IsPlaying || Target.Time != 0)
-            {
-                var color = GUI.color;
-
-                // Green = Playing, Yelow = Paused.
-                GUI.color = Target.IsPlaying ? new Color(0.15f, 0.7f, 0.15f, 0.35f) : new Color(0.7f, 0.7f, 0.15f, 0.35f);
-
-                area = EditorGUI.IndentedRect(area);
-                area.width -= 18;
-
-                var wrappedTime = GetWrappedTime(out var length);
-                if (length > 0)
-                    area.width *= Mathf.Clamp01(wrappedTime / length);
-
-                GUI.DrawTexture(area, Texture2D.whiteTexture);
-
-                GUI.color = color;
-            }
+            area.width -= 18;// Remove the area for the Object Picker icon to line the bar up with the field.
+            DoTimeHighlightBarGUI(area, Target.IsPlaying, Target.EffectiveWeight, Target.Time, Target.Length, Target.IsLooping);
         }
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Handles Ctrl + Click on the label to CrossFade the animation.
-        /// <para></para>
-        /// If Shift is also held, the effect will be queued until after the previous animation finishes.
-        /// </summary>
+        /// <summary>Draws a progress bar to show the animation time.</summary>
+        public static void DoTimeHighlightBarGUI(Rect area, bool isPlaying, float weight, float time, float length, bool isLooping)
+        {
+            var color = GUI.color;
+
+            if (ScaleTimeBarByWeight)
+            {
+                var height = area.height;
+                area.height *= Mathf.Clamp01(weight) * 0.75f + 0.25f;
+                area.y += height - area.height;
+            }
+
+            // Green = Playing, Yelow = Paused.
+            GUI.color = isPlaying ? new Color(0.15f, 0.7f, 0.15f, 0.35f) : new Color(0.7f, 0.7f, 0.15f, 0.35f);
+
+            area = EditorGUI.IndentedRect(area);
+
+            var wrappedTime = GetWrappedTime(time, length, isLooping);
+            if (length > 0)
+                area.width *= Mathf.Clamp01(wrappedTime / length);
+
+            GUI.DrawTexture(area, Texture2D.whiteTexture);
+
+            GUI.color = color;
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Handles Ctrl + Click on the label to CrossFade the animation.</summary>
         private void HandleLabelClick(Rect area)
         {
             var currentEvent = Event.current;
@@ -131,14 +137,6 @@ namespace Animancer.Editor
                 return;
 
             currentEvent.Use();
-
-            if (currentEvent.shift)
-            {
-                AnimationQueue.CrossFadeQueued(Target);
-                return;
-            }
-
-            AnimationQueue.ClearQueue(Target.Layer);
 
             Target.Root.UnpauseGraph();
             var fadeDuration = Target.CalculateEditorFadeDuration(AnimancerPlayable.DefaultFadeDuration);
@@ -177,16 +175,19 @@ namespace Animancer.Editor
         /// Gets the current <see cref="AnimancerState.Time"/>.
         /// If the state is looping, the value is modulo by the <see cref="AnimancerState.Length"/>.
         /// </summary>
-        private float GetWrappedTime(out float length)
-        {
-            var time = Target.Time;
-            length = Target.Length;
+        private float GetWrappedTime(out float length) => GetWrappedTime(Target.Time, length = Target.Length, Target.IsLooping);
 
+        /// <summary>
+        /// Gets the current <see cref="AnimancerState.Time"/>.
+        /// If the state is looping, the value is modulo by the <see cref="AnimancerState.Length"/>.
+        /// </summary>
+        private static float GetWrappedTime(float time, float length, bool isLooping)
+        {
             var wrappedTime = time;
 
-            if (Target.IsLooping)
+            if (isLooping)
             {
-                wrappedTime = Mathf.Repeat(wrappedTime, length);
+                wrappedTime = AnimancerUtilities.Wrap(wrappedTime, length);
                 if (wrappedTime == 0 && time != 0)
                     wrappedTime = length;
             }
@@ -320,7 +321,7 @@ namespace Animancer.Editor
         {
             AddContextMenuFunctions(menu);
 
-            AnimancerEditorUtilities.AddMenuItem(menu, "Play",
+            menu.AddFunction("Play",
                 !Target.IsPlaying || Target.Weight != 1,
                 () =>
                 {
@@ -336,19 +337,12 @@ namespace Animancer.Editor
                     Target.Root.Play(Target, duration);
                 });
 
-            AnimancerEditorUtilities.AddFadeFunction(menu, "Cross Fade Queued (Ctrl + Shift + Click)",
-                Target.Weight != 1,
-                Target, (duration) =>
-                {
-                    AnimationQueue.CrossFadeQueued(Target);
-                });
-
             menu.AddSeparator("");
             menu.AddItem(new GUIContent("Destroy State"), false, () => Target.Destroy());
 
             menu.AddSeparator("");
 
-            AnimancerPlayableDrawer.AddDisplayOptions(menu);
+            AddDisplayOptions(menu);
 
             AnimancerEditorUtilities.AddDocumentationLink(menu, "State Documentation", Strings.DocsURLs.States);
         }
@@ -376,40 +370,66 @@ namespace Animancer.Editor
 
             if (Target.HasEvents)
             {
-                const string OnEndPrefix = "End Event/";
-
-                var endEvent = Target.Events.endEvent;
-                menu.AddDisabledItem(new GUIContent($"{OnEndPrefix}{nameof(AnimancerState.NormalizedTime)}: {endEvent.normalizedTime}"));
-
-                if (endEvent.callback == null)
+                var events = Target.Events;
+                for (int i = 0; i < events.Count; i++)
                 {
-                    menu.AddDisabledItem(new GUIContent(OnEndPrefix + "Callback: null"));
-                }
-                else
-                {
-                    var label = OnEndPrefix +
-                        (endEvent.callback.Target != null ? ("Target: " + endEvent.callback.Target) : "Target: null");
-
-                    var targetObject = endEvent.callback.Target as Object;
-                    AnimancerEditorUtilities.AddMenuItem(menu, label,
-                        targetObject != null,
-                        () => Selection.activeObject = targetObject);
-
-                    menu.AddDisabledItem(new GUIContent(
-                        $"{OnEndPrefix}Declaring Type: {endEvent.callback.Method.DeclaringType.FullName}"));
-
-                    menu.AddDisabledItem(new GUIContent(
-                        $"{OnEndPrefix}Method: {endEvent.callback.Method}"));
+                    var index = i;
+                    AddEventFunctions(menu, "Event " + index, events[index],
+                        () => events.SetCallback(index, AnimancerEvent.DummyCallback),
+                        () => events.Remove(index));
                 }
 
-                AnimancerEditorUtilities.AddMenuItem(menu, OnEndPrefix + "Clear",
-                    !float.IsNaN(endEvent.normalizedTime) || endEvent.callback != null,
-                    () => Target.Events.endEvent = new AnimancerEvent(float.NaN, null));
-
-                AnimancerEditorUtilities.AddMenuItem(menu, OnEndPrefix + "Invoke",
-                    endEvent.callback != null,
-                    () => Target.Events.endEvent.Invoke(Target));
+                AddEventFunctions(menu, "End Event", events.endEvent,
+                    () => events.endEvent = new AnimancerEvent(float.NaN, null), null);
             }
+        }
+
+        /************************************************************************************************************************/
+
+        private void AddEventFunctions(GenericMenu menu, string name, AnimancerEvent animancerEvent,
+            GenericMenu.MenuFunction clearEvent, GenericMenu.MenuFunction removeEvent)
+        {
+            name = $"Events/{name}/";
+
+            menu.AddDisabledItem(new GUIContent($"{name}{nameof(AnimancerState.NormalizedTime)}: {animancerEvent.normalizedTime}"));
+
+            bool canInvoke;
+            if (animancerEvent.callback == null)
+            {
+                menu.AddDisabledItem(new GUIContent(name + "Callback: null"));
+                canInvoke = false;
+            }
+            else if (animancerEvent.callback == AnimancerEvent.DummyCallback)
+            {
+                menu.AddDisabledItem(new GUIContent(name + "Callback: Dummy"));
+                canInvoke = false;
+            }
+            else
+            {
+                var label = name +
+                    (animancerEvent.callback.Target != null ? ("Target: " + animancerEvent.callback.Target) : "Target: null");
+
+                var targetObject = animancerEvent.callback.Target as Object;
+                menu.AddFunction(label,
+                    targetObject != null,
+                    () => Selection.activeObject = targetObject);
+
+                menu.AddDisabledItem(new GUIContent(
+                    $"{name}Declaring Type: {animancerEvent.callback.Method.DeclaringType.FullName}"));
+
+                menu.AddDisabledItem(new GUIContent(
+                    $"{name}Method: {animancerEvent.callback.Method}"));
+
+                canInvoke = true;
+            }
+
+            if (clearEvent != null)
+                menu.AddFunction(name + "Clear", canInvoke || !float.IsNaN(animancerEvent.normalizedTime), clearEvent);
+
+            if (removeEvent != null)
+                menu.AddFunction(name + "Remove", true, removeEvent);
+
+            menu.AddFunction(name + "Invoke", canInvoke, () => animancerEvent.Invoke(Target));
         }
 
         /************************************************************************************************************************/

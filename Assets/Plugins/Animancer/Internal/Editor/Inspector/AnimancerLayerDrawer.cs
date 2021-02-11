@@ -365,7 +365,7 @@ namespace Animancer.Editor
             menu.AddDisabledItem(new GUIContent($"{DetailsPrefix}{nameof(Target.CurrentState)}: {Target.CurrentState}"));
             menu.AddDisabledItem(new GUIContent($"{DetailsPrefix}{nameof(Target.CommandCount)}: {Target.CommandCount}"));
 
-            AnimancerEditorUtilities.AddMenuItem(menu, "Stop",
+            menu.AddFunction("Stop",
                 HasAnyStates((state) => state.IsPlaying || state.Weight != 0),
                 () => Target.Stop());
 
@@ -380,7 +380,7 @@ namespace Animancer.Editor
 
             menu.AddSeparator("");
 
-            AnimancerEditorUtilities.AddMenuItem(menu, "Destroy States",
+            menu.AddFunction("Destroy States",
                 ActiveStates.Count > 0 || InactiveStates.Count > 0,
                 () => Target.DestroyStates());
 

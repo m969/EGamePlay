@@ -16,7 +16,7 @@ namespace Animancer.Editor
     {
         /// <summary>[Editor-Only]
         /// Directly serializing an <see cref="UnityEngine.Object"/> reference doesn't always work (such as with scene
-        /// objects when entering Play Mode), so this class also serialized their instance ID and uses that if the direct
+        /// objects when entering Play Mode), so this class also serializes their instance ID and uses that if the direct
         /// reference fails.
         /// </summary>
         [Serializable]
@@ -45,7 +45,7 @@ namespace Animancer.Editor
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="ObjectReference"/> which wraps the specified
+            /// Creates a new <see cref="ObjectReference"/> which wraps the specified
             /// <see cref="UnityEngine.Object"/>.
             /// </summary>
             public ObjectReference(Object obj)
@@ -68,7 +68,7 @@ namespace Animancer.Editor
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="ObjectReference"/> which wraps the specified
+            /// Creates a new <see cref="ObjectReference"/> which wraps the specified
             /// <see cref="UnityEngine.Object"/>.
             /// </summary>
             public static implicit operator ObjectReference(Object obj) => new ObjectReference(obj);

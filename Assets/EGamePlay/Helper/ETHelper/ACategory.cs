@@ -8,8 +8,10 @@ namespace ET
 	public abstract class ACategory : ISupportInitialize
 	{
 		public abstract Type ConfigType { get; }
+		public string ConfigText { get; set; }
 
-        public virtual void BeginInit()
+
+		public virtual void BeginInit()
         {
         }
 
@@ -26,11 +28,12 @@ namespace ET
 	{
 		protected Dictionary<int, T> dict = new Dictionary<int, T>();
 
+
 		public override void BeginInit()
 		{
 			var typeName = typeof(T).Name;
 			
-			string configStr = EGamePlayInit.Instance.TypeConfigTexts[typeName].text;
+			string configStr = ConfigText;
 
 			try
 			{

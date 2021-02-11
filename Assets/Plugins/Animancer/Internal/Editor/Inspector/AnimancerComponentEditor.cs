@@ -19,33 +19,110 @@ namespace Animancer.Editor
 
         protected override bool DoOverridePropertyGUI(string path, SerializedProperty property, GUIContent label)
         {
+            if (path == Targets[0].AnimatorFieldName)
+            {
+                DoAnimatorGUI(property, label);
+                return true;
+            }
+
             if (path == Targets[0].ActionOnDisableFieldName)
             {
-                EditorGUILayout.PropertyField(property, label, true);
-                if (property.enumValueIndex == (int)AnimancerComponent.DisableAction.Reset)
-                {
-                    // Since getting all the components creates garbage, only do it during layout events.
-                    if (Event.current.type == EventType.Layout)
-                    {
-                        _ShowResetOnDisableWarning = !AreAllResettingTargetsAboveTheirAnimator();
-                    }
-
-                    if (_ShowResetOnDisableWarning)
-                    {
-                        EditorGUILayout.HelpBox("Reset only works if this component is above the Animator" +
-                            " so OnDisable can perform the Reset before the Animator actually gets disabled." +
-                            " Click here to fix." +
-                            "\n\nOtherwise you can use Stop and call Animator.Rebind before disabling this GameObject.",
-                            MessageType.Error);
-
-                        if (AnimancerGUI.TryUseClickEventInLastRect())
-                            MoveResettingTargetsAboveTheirAnimator();
-                    }
-                }
+                DoActionOnDisableGUI(property, label);
                 return true;
             }
 
             return base.DoOverridePropertyGUI(path, property, label);
+        }
+
+        /************************************************************************************************************************/
+
+        private void DoAnimatorGUI(SerializedProperty property, GUIContent label)
+        {
+            var hasAnimator = property.objectReferenceValue != null;
+
+            var color = GUI.color;
+            if (!hasAnimator)
+                GUI.color = AnimancerGUI.WarningFieldColor;
+
+            EditorGUILayout.PropertyField(property, label);
+
+            if (!hasAnimator)
+            {
+                GUI.color = color;
+
+                EditorGUILayout.HelpBox($"An {nameof(Animator)} is required in order to play animations." +
+                    " Click here to search for one nearby.",
+                    MessageType.Warning);
+
+                if (AnimancerGUI.TryUseClickEventInLastRect())
+                {
+                    Serialization.ForEachTarget(property, (targetProperty) =>
+                    {
+                        var target = (IAnimancerComponent)targetProperty.serializedObject.targetObject;
+
+                        var animator = AnimancerEditorUtilities.GetComponentInHierarchy<Animator>(target.gameObject);
+                        if (animator == null)
+                        {
+                            Debug.Log($"No {nameof(Animator)} found on '{target.gameObject.name}' or any of its parents or children." +
+                                " You must assign one manually.", target.gameObject);
+                            return;
+                        }
+
+                        targetProperty.objectReferenceValue = animator;
+                    });
+                }
+            }
+            else if (property.objectReferenceValue is Animator animator)
+            {
+                if (animator.gameObject != Targets[0].gameObject)
+                {
+                    EditorGUILayout.HelpBox(
+                        $"It is recommended that you keep this component on the same {nameof(GameObject)}" +
+                        $" as its target {nameof(Animator)} so that they get enabled and disabled at the same time.",
+                        MessageType.Info);
+                }
+
+                var initialUpdateMode = Targets[0].InitialUpdateMode;
+                var updateMode = animator.updateMode;
+                if (AnimancerPlayable.HasChangedToOrFromAnimatePhysics(initialUpdateMode, updateMode))
+                {
+                    EditorGUILayout.HelpBox(
+                        $"Changing to or from {nameof(AnimatorUpdateMode.AnimatePhysics)} mode at runtime has no effect" +
+                        $" when using the Playables API. It will continue using the original mode it had on startup.",
+                        MessageType.Warning);
+
+                    if (AnimancerGUI.TryUseClickEventInLastRect())
+                        EditorUtility.OpenWithDefaultApp(Strings.DocsURLs.UpdateModes);
+                }
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        private void DoActionOnDisableGUI(SerializedProperty property, GUIContent label)
+        {
+            EditorGUILayout.PropertyField(property, label, true);
+
+            if (property.enumValueIndex == (int)AnimancerComponent.DisableAction.Reset)
+            {
+                // Since getting all the components creates garbage, only do it during layout events.
+                if (Event.current.type == EventType.Layout)
+                {
+                    _ShowResetOnDisableWarning = !AreAllResettingTargetsAboveTheirAnimator();
+                }
+
+                if (_ShowResetOnDisableWarning)
+                {
+                    EditorGUILayout.HelpBox("Reset only works if this component is above the Animator" +
+                        " so OnDisable can perform the Reset before the Animator actually gets disabled." +
+                        " Click here to fix." +
+                        "\n\nOtherwise you can use Stop and call Animator.Rebind before disabling this GameObject.",
+                        MessageType.Error);
+
+                    if (AnimancerGUI.TryUseClickEventInLastRect())
+                        MoveResettingTargetsAboveTheirAnimator();
+                }
+            }
         }
 
         /************************************************************************************************************************/

@@ -24,7 +24,7 @@ namespace Animancer
     {
         /************************************************************************************************************************/
 
-        /// <summary>Gathers all the animations associated with this object.</summary>
+        /// <summary>Adds all the animations associated with this object to the `clips`.</summary>
         void GatherAnimationClips(ICollection<AnimationClip> clips);
 
         /************************************************************************************************************************/
@@ -213,15 +213,19 @@ namespace Animancer
         /// </summary>
         public static bool GatherFromSource(this ICollection<AnimationClip> clips, object source)
         {
-            var collectionSource = source as IAnimationClipCollection;
-            if (collectionSource != null)
+            if (source is AnimationClip clip)
+            {
+                clips.Gather(clip);
+                return true;
+            }
+
+            if (source is IAnimationClipCollection collectionSource)
             {
                 collectionSource.GatherAnimationClips(clips);
                 return true;
             }
 
-            var listSource = source as IAnimationClipSource;
-            if (listSource != null)
+            if (source is IAnimationClipSource listSource)
             {
                 clips.GatherFromSource(listSource);
                 return true;

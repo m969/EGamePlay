@@ -1,5 +1,6 @@
 ﻿using EGamePlay.Combat.Ability;
 using System.Collections.Generic;
+using ET;
 
 namespace EGamePlay.Combat.Status
 {
@@ -7,9 +8,9 @@ namespace EGamePlay.Combat.Status
     {
         //投放者、施术者
         public CombatEntity Caster { get; set; }
+        public StatusConfig StatusConfig { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
         public FloatModifier NumericModifier { get; set; }
-        //public bool ShowInStatusSlots { get; set; }
         public bool IsChildStatus { get; set; }
         public ChildStatus ChildStatusData { get; set; }
         private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
@@ -20,7 +21,6 @@ namespace EGamePlay.Combat.Status
             base.Awake(initData);
             StatusConfigObject = initData as StatusConfigObject;
             Name = StatusConfigObject.ID;
-            //ShowInStatusSlots = StatusConfigObject.ShowInStatusSlots;
         }
 
         //激活
@@ -70,26 +70,6 @@ namespace EGamePlay.Combat.Status
                     var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(numericValue);
                     var value = (float)expression.Value;
                     NumericModifier = new FloatModifier() { Value = value };
-
-                    //switch (StatusConfigObject.AttributeType)
-                    //{
-                    //    case AttributeType.None:
-                    //        break;
-                    //    case AttributeType.MoveSpeed:
-                    //        break;
-                    //    case AttributeType.AttackPower:
-                    //        break;
-                    //    case AttributeType.AttackDefense:
-                    //        break;
-                    //    case AttributeType.SpellPower:
-                    //        break;
-                    //    case AttributeType.MagicDefense:
-                    //        break;
-                    //    case AttributeType.CriticalProbability:
-                    //        break;
-                    //    default:
-                    //        break;
-                    //}
 
                     var attributeType = StatusConfigObject.AttributeType.ToString();
                     if (StatusConfigObject.ModifyType == ModifyType.Add)
@@ -151,26 +131,6 @@ namespace EGamePlay.Combat.Status
             {
                 if (StatusConfigObject.AttributeType != AttributeType.None && StatusConfigObject.NumericValue != "")
                 {
-                    //switch (StatusConfigObject.AttributeType)
-                    //{
-                    //    case AttributeType.None:
-                    //        break;
-                    //    case AttributeType.MoveSpeed:
-                    //        break;
-                    //    case AttributeType.AttackPower:
-                    //        break;
-                    //    case AttributeType.AttackDefense:
-                    //        break;
-                    //    case AttributeType.SpellPower:
-                    //        break;
-                    //    case AttributeType.MagicDefense:
-                    //        break;
-                    //    case AttributeType.CriticalProbability:
-                    //        break;
-                    //    default:
-                    //        break;
-                    //}
-
                     var attributeType = StatusConfigObject.AttributeType.ToString();
                     if (StatusConfigObject.ModifyType == ModifyType.Add)
                     {

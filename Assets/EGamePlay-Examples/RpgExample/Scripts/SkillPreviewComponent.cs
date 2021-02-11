@@ -27,19 +27,19 @@ public class SkillPreviewComponent : EGamePlay.Component
         if (Input.GetKeyDown(KeyCode.Q))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.Q] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.Q];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.W] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.W];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             UnityEngine.Cursor.visible = false;
-            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.E] as SkillAbility;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.E];
             EnterPreview();
         }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
@@ -55,18 +55,32 @@ public class SkillPreviewComponent : EGamePlay.Component
     {
         CancelPreview();
         Previewing = true;
-        if (PreviewingSkill is Skill1001Ability)
+        SkillTargetSelectType targetSelectType = SkillTargetSelectType.Auto;
+#if EGAMEPLAY_EXCEL
+        if (PreviewingSkill.SkillConfig.TargetSelect == "手动指定") targetSelectType = SkillTargetSelectType.PlayerSelect;
+        if (PreviewingSkill.SkillConfig.TargetSelect == "固定区域场检测") targetSelectType = SkillTargetSelectType.AreaSelect;
+#else
+        targetSelectType = PreviewingSkill.SkillConfig.TargetSelectType;
+#endif
+        if (targetSelectType == SkillTargetSelectType.PlayerSelect)
         {
             TargetSelectManager.Instance.Show(OnSelectedTarget);
         }
-        if (PreviewingSkill is Skill1002Ability)
+        if (targetSelectType == SkillTargetSelectType.AreaSelect)
         {
-            PointSelectManager.Instance.Show(OnInputPoint);
+            if (PreviewingSkill.SkillConfig.Id == 1002)
+            {
+                PointSelectManager.Instance.Show(OnInputPoint);
+            }
+            if (PreviewingSkill.SkillConfig.Id == 1004)
+            {
+                DirectRectSelectManager.Instance.Show(OnInputDirect);
+            }
         }
-        if (PreviewingSkill is Skill1004Ability)
-        {
-            DirectRectSelectManager.Instance.Show(OnInputDirect);
-        }
+        //if (targetSelectType == SkillTargetSelectType.AreaSelect)
+        //{
+        //    DirectRectSelectManager.Instance.Show(OnInputDirect);
+        //}
     }
 
     public void CancelPreview()
@@ -86,42 +100,40 @@ public class SkillPreviewComponent : EGamePlay.Component
 
     private void OnInputTarget(CombatEntity combatEntity)
     {
-        if (PreviewingSkill.Spelling)
-        {
+        if (GetEntity<CombatEntity>().CurrentSkillExecution != null)
             return;
-        }
+
         //Log.Debug($"OnInputTarget {combatEntity}");
         var action = GetEntity<CombatEntity>().CreateCombatAction<SpellSkillAction>();
         action.SkillAbility = PreviewingSkill;
-        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
+        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillExecution;
         action.SkillAbilityExecution.InputCombatEntity = combatEntity;
         action.SpellSkill();
     }
 
     private void OnInputPoint(Vector3 point)
     {
-        if (PreviewingSkill.Spelling)
-        {
+        if (GetEntity<CombatEntity>().CurrentSkillExecution != null)
             return;
-        }
+
         //Log.Debug($"OnInputPoint {point}");
         var action = GetEntity<CombatEntity>().CreateCombatAction<SpellSkillAction>();
         action.SkillAbility = PreviewingSkill;
-        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
+        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillExecution;
         action.SkillAbilityExecution.InputPoint = point;
         action.SpellSkill();
     }
 
-    private void OnInputDirect(float direction)
+    private void OnInputDirect(float direction, Vector3 point)
     {
-        if (PreviewingSkill.Spelling)
-        {
+        if (GetEntity<CombatEntity>().CurrentSkillExecution != null)
             return;
-        }
+
         //Log.Debug($"OnInputDirect {direction}");
         var action = GetEntity<CombatEntity>().CreateCombatAction<SpellSkillAction>();
         action.SkillAbility = PreviewingSkill;
-        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillAbilityExecution;
+        action.SkillAbilityExecution = PreviewingSkill.CreateAbilityExecution() as SkillExecution;
+        action.SkillAbilityExecution.InputPoint = point;
         action.SkillAbilityExecution.InputDirection = direction;
         action.SpellSkill();
     }

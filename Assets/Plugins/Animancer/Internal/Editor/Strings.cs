@@ -65,8 +65,6 @@ namespace Animancer
             public const string DeveloperEmail = "animancer@kybernetik.com.au";
 
             /************************************************************************************************************************/
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member.
-            /************************************************************************************************************************/
 
             public const string OptionalWarning = APIDocumentation + "/" + nameof(Animancer.OptionalWarning);
 
@@ -88,7 +86,12 @@ namespace Animancer
 
             public const string UnevenGround = Docs + "examples/ik/uneven-ground";
 
-            public const string TheAnimatorControllerField = Docs + "manual/animator-controllers#the-animator-controller-field";
+            public const string AnimancerTools = Docs + "manual/tools";
+            public const string ModifySprites = AnimancerTools + "/modify-sprites";
+            public const string RenameSprites = AnimancerTools + "/rename-sprites";
+            public const string GenerateSpriteAnimations = AnimancerTools + "/generate-sprite-animations";
+            public const string RemapSpriteAnimation = AnimancerTools + "/remap-sprite-animation";
+            public const string RemapAnimationBindings = AnimancerTools + "/remap-animation-bindings";
 
             public const string Fading = Docs + "manual/blending/fading";
 
@@ -106,8 +109,6 @@ namespace Animancer
 
             /************************************************************************************************************************/
 #endif
-            /************************************************************************************************************************/
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member.
             /************************************************************************************************************************/
         }
 

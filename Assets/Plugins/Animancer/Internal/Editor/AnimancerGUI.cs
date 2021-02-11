@@ -108,12 +108,17 @@ namespace Animancer.Editor
         /// <summary>Indicates where <see cref="LayoutSingleLineRect"/> should add the <see cref="StandardSpacing"/>.</summary>
         public enum SpacingMode
         {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member.
+            /// <summary>No extra space.</summary>
             None,
+
+            /// <summary>Add extra space before the new area.</summary>
             Before,
+
+            /// <summary>Add extra space after the new area.</summary>
             After,
+
+            /// <summary>Add extra space before and after the new area.</summary>
             BeforeAndAfter
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member.
         }
 
         /// <summary>
@@ -296,8 +301,7 @@ namespace Animancer.Editor
         /// </summary>
         public static GUIContent TempContent(string text = null, string tooltip = null, bool narrowText = true)
         {
-            if (_TempContent == null)
-                _TempContent = new GUIContent();
+            AnimancerUtilities.NewIfNull(ref _TempContent);
 
             if (narrowText)
                 text = GetNarrowText(text);
@@ -432,7 +436,8 @@ namespace Animancer.Editor
         /// <summary>
         /// Invokes `onDrop` if the <see cref="Event.current"/> is a drag and drop event inside the `dropArea`.
         /// </summary>
-        public static void HandleDragAndDrop<T>(Rect dropArea, Func<T, bool> validate, Action<T> onDrop) where T : class
+        public static void HandleDragAndDrop<T>(Rect dropArea, Func<T, bool> validate, Action<T> onDrop,
+            DragAndDropVisualMode mode = DragAndDropVisualMode.Link) where T : class
         {
             if (!dropArea.Contains(Event.current.mousePosition))
                 return;
@@ -452,15 +457,16 @@ namespace Animancer.Editor
                     return;
             }
 
-            TryDrop(DragAndDrop.objectReferences, validate, onDrop, isDrop);
+            TryDrop(DragAndDrop.objectReferences, validate, onDrop, isDrop, mode);
         }
 
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Updates the <see cref="DragAndDrop.visualMode"/> of calls `onDrop` for each of the `objects`.
+        /// Updates the <see cref="DragAndDrop.visualMode"/> or calls `onDrop` for each of the `objects`.
         /// </summary>
-        private static void TryDrop<T>(IEnumerable objects, Func<T, bool> validate, Action<T> onDrop, bool isDrop) where T : class
+        private static void TryDrop<T>(IEnumerable objects, Func<T, bool> validate, Action<T> onDrop, bool isDrop,
+            DragAndDropVisualMode mode) where T : class
         {
             if (objects == null)
                 return;
@@ -477,7 +483,7 @@ namespace Animancer.Editor
 
                     if (!isDrop)
                     {
-                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                        DragAndDrop.visualMode = mode;
                         break;
                     }
                     else
@@ -498,27 +504,28 @@ namespace Animancer.Editor
         /// Uses <see cref="HandleDragAndDrop"/> to deal with drag and drop operations involving
         /// <see cref="AnimationClip"/>s of <see cref="IAnimationClipSource"/>s.
         /// </summary>
-        public static void HandleDragAndDropAnimations(Rect dropArea, Action<AnimationClip> onDrop)
+        public static void HandleDragAndDropAnimations(Rect dropArea, Action<AnimationClip> onDrop,
+            DragAndDropVisualMode mode = DragAndDropVisualMode.Link)
         {
-            HandleDragAndDrop(dropArea, (clip) => !clip.legacy, onDrop);
+            HandleDragAndDrop(dropArea, (clip) => !clip.legacy, onDrop, mode);
 
             HandleDragAndDrop<IAnimationClipSource>(dropArea, null, (source) =>
             {
                 using (ObjectPool.Disposable.AcquireList<AnimationClip>(out var clips))
                 {
                     source.GetAnimationClips(clips);
-                    TryDrop(clips, (clip) => !clip.legacy, onDrop, true);
+                    TryDrop(clips, (clip) => !clip.legacy, onDrop, true, mode);
                 }
-            });
+            }, mode);
 
             HandleDragAndDrop<IAnimationClipCollection>(dropArea, null, (collection) =>
             {
                 using (ObjectPool.Disposable.AcquireSet<AnimationClip>(out var clips))
                 {
                     collection.GatherAnimationClips(clips);
-                    TryDrop(clips, (clip) => !clip.legacy, onDrop, true);
+                    TryDrop(clips, (clip) => !clip.legacy, onDrop, true, mode);
                 }
-            });
+            }, mode);
         }
 
         /************************************************************************************************************************/
@@ -732,7 +739,15 @@ namespace Animancer.Editor
 
             var wasEnabled = !float.IsNaN(time);
 
-            var isEnabled = GUI.Toggle(area, wasEnabled, GUIContent.none);
+            // Use the EditorGUI method instead to properly handle EditorGUI.showMixedValue.
+            //var isEnabled = GUI.Toggle(area, wasEnabled, GUIContent.none);
+
+            var indentLevel = EditorGUI.indentLevel;
+            EditorGUI.indentLevel = 0;
+
+            var isEnabled = EditorGUI.Toggle(area, wasEnabled);
+
+            EditorGUI.indentLevel = indentLevel;
 
             if (isEnabled != wasEnabled)
             {

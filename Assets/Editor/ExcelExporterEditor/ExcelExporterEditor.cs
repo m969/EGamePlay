@@ -244,14 +244,6 @@ namespace ET
                 {
                     ISheet sheet = xssfWorkbook.GetSheetAt(i);
                     ExportSheet(sheet, sw);
-                    if (i < xssfWorkbook.NumberOfSheets - 1)
-                    {
-                        sw.Write("},");
-                    }
-                    else
-                    {
-                        sw.Write("}");
-                    }
                 }
                 sw.WriteLine("}");
             }
@@ -317,7 +309,7 @@ namespace ET
 
                     if (fieldName == "Id" || fieldName == "_id")
                     {
-                        fieldName = "_id";
+                        fieldName = "Id";
                         sb.Append("\"" + fieldValue + "\":{");
                     }
 
@@ -325,7 +317,8 @@ namespace ET
                     sb.Append($"\"{fieldName}\":{Convert(fieldType, fieldValue)}");
                 }
 
-                //sb.Append("},");
+                if (i < sheet.LastRowNum) sb.Append("},");
+                else sb.Append("}");
                 sw.WriteLine(sb.ToString());
             }
         }

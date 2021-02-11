@@ -7,6 +7,8 @@ namespace Animancer
     /// <summary>Determines how <see cref="AnimancerLayer.Play(AnimancerState, float, FadeMode)"/> works.</summary>
     /// <remarks>
     /// Documentation: <see href="https://kybernetik.com.au/animancer/docs/manual/blending/fading">Fading</see>
+    /// <para></para>
+    /// Example: <see href="https://kybernetik.com.au/animancer/docs/examples/basics/playing-and-fading">Playing and Fading</see>
     /// </remarks>
     /// https://kybernetik.com.au/animancer/api/Animancer/FadeMode
     /// 

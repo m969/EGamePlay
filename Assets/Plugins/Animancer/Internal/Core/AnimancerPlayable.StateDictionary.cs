@@ -44,7 +44,7 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>[Internal] Constructs a new <see cref="StateDictionary"/>.</summary>
+            /// <summary>[Internal] Creates a new <see cref="StateDictionary"/>.</summary>
             internal StateDictionary(AnimancerPlayable root) => Root = root;
 
             /************************************************************************************************************************/

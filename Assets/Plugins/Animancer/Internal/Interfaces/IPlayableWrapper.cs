@@ -1,5 +1,6 @@
 // Animancer // https://kybernetik.com.au/animancer // Copyright 2020 Kybernetik //
 
+using UnityEngine;
 using UnityEngine.Playables;
 
 namespace Animancer
@@ -58,6 +59,70 @@ namespace Animancer
         float Speed { get; set; }
 
         /************************************************************************************************************************/
+
+        /// <summary>
+        /// Should Unity call <c>OnAnimatorIK</c> on the animated object while this object and its children have any
+        /// <see cref="AnimancerNode.Weight"/>?
+        /// </summary>
+        /// <remarks>
+        /// This is equivalent to the "IK Pass" toggle in Animator Controller layers, except that due to limitations in
+        /// the Playables API the <c>layerIndex</c> will always be zero.
+        /// <para></para>
+        /// This value starts false by default, but can be automatically changed by
+        /// <see cref="AnimancerNode.CopyIKFlags"/> when the <see cref="Parent"/> is set.
+        /// <para></para>
+        /// IK only takes effect while at least one <see cref="ClipState"/> has a <see cref="AnimancerNode.Weight"/>
+        /// above zero. Other node types either store the value to apply to their children or don't support IK.
+        /// </remarks>
+        bool ApplyAnimatorIK { get; set; }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Should this object and its children apply IK to the character's feet?</summary>
+        /// <remarks>
+        /// This is equivalent to the "Foot IK" toggle in Animator Controller states.
+        /// <para></para>
+        /// This value starts true by default for <see cref="ClipState"/>s (false for others), but can be automatically
+        /// changed by <see cref="AnimancerNode.CopyIKFlags"/> when the <see cref="Parent"/> is set.
+        /// <para></para>
+        /// IK only takes effect while at least one <see cref="ClipState"/> has a <see cref="AnimancerNode.Weight"/>
+        /// above zero. Other node types either store the value to apply to their children or don't support IK.
+        /// </remarks>
+        bool ApplyFootIK { get; set; }
+
+        /************************************************************************************************************************/
     }
 }
+
+/************************************************************************************************************************/
+#if UNITY_EDITOR
+/************************************************************************************************************************/
+
+namespace Animancer.Editor
+{
+    partial class AnimancerEditorUtilities
+    {
+        /************************************************************************************************************************/
+
+        /// <summary>
+        /// Adds functions to show and set <see cref="IPlayableWrapper.ApplyAnimatorIK"/> and
+        /// <see cref="IPlayableWrapper.ApplyFootIK"/>.
+        /// </summary>
+        public static void AddContextMenuIK(UnityEditor.GenericMenu menu, IPlayableWrapper ik)
+        {
+            menu.AddItem(new GUIContent("Inverse Kinematics/Apply Animator IK ?"),
+                ik.ApplyAnimatorIK,
+                () => ik.ApplyAnimatorIK = !ik.ApplyAnimatorIK);
+            menu.AddItem(new GUIContent("Inverse Kinematics/Apply Foot IK ?"),
+                ik.ApplyFootIK,
+                () => ik.ApplyFootIK = !ik.ApplyFootIK);
+        }
+
+        /************************************************************************************************************************/
+    }
+}
+
+/************************************************************************************************************************/
+#endif
+/************************************************************************************************************************/
 

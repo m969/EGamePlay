@@ -37,7 +37,7 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Constructs a new <see cref="ParametizedAnimancerStateDrawer{T}"/> to manage the Inspector GUI for the `state`.
+        /// Creates a new <see cref="ParametizedAnimancerStateDrawer{T}"/> to manage the Inspector GUI for the `state`.
         /// </summary>
         protected ParametizedAnimancerStateDrawer(T state) : base(state) { }
 
@@ -91,7 +91,7 @@ namespace Animancer.Editor
                         break;
 
                     default:
-                        EditorGUI.LabelField(area, name, "Unhandled Type: " + type);
+                        EditorGUI.LabelField(area, name, "Unsupported Type: " + type);
                         break;
                 }
 

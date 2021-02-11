@@ -38,14 +38,15 @@ namespace Animancer.Editor
         ///   <item>[14] = v5.1: 2020-07-27.</item>
         ///   <item>[15] = v5.2: 2020-09-16.</item>
         ///   <item>[16] = v5.3: 2020-10-06.</item>
+        ///   <item>[17] = v6.0: 2020-??-??.</item>
         /// </list></remarks>
-        private const int ReleaseNumber = 16;
+        private const int ReleaseNumber = 17;
 
         /// <summary>The display name of this Animancer version.</summary>
-        private const string VersionName = "v5.3";
+        private const string VersionName = "v6.0";
 
         /// <summary>The end of the URL for the change log of this Animancer version.</summary>
-        private const string ChangeLogSuffix = "v5-3";
+        private const string ChangeLogSuffix = "v6-0";
 
         /// <summary>The key used to save the release number.</summary>
         private const string ReleaseNumberPrefKey = "Animancer.ReleaseNumber";
@@ -127,7 +128,6 @@ namespace Animancer.Editor
                     GUILayout.Label(title, style);
                 }
                 GUILayout.EndHorizontal();
-
             }
 
             /************************************************************************************************************************/
@@ -413,9 +413,7 @@ namespace Animancer.Editor
                             var scene = AssetDatabase.LoadAssetAtPath<SceneAsset>(files[j]);
                             if (scene != null)
                             {
-                                if (scenes == null)
-                                    scenes = new List<SceneAsset>();
-
+                                AnimancerUtilities.NewIfNull(ref scenes);
                                 scenes.Add(scene);
                             }
                         }

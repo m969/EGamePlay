@@ -19,6 +19,7 @@ namespace Animancer
     public interface IAnimancerComponent
     {
         /************************************************************************************************************************/
+#pragma warning disable IDE0079 // Remove unnecessary suppression.
 #pragma warning disable IDE1006 // Naming Styles.
         /************************************************************************************************************************/
 
@@ -30,6 +31,7 @@ namespace Animancer
 
         /************************************************************************************************************************/
 #pragma warning restore IDE1006 // Naming Styles.
+#pragma warning restore IDE0079 // Remove unnecessary suppression.
         /************************************************************************************************************************/
 
         /// <summary>The <see cref="UnityEngine.Animator"/> component which this script controls.</summary>

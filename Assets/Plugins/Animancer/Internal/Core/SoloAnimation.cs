@@ -210,12 +210,13 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>[Editor-Only]
-        /// Called by the Unity Editor when this component is first added (in Edit Mode) and whenever the Reset command
-        /// is executed from its context menu.
-        /// <para></para>
         /// Tries to find an <see cref="UnityEngine.Animator"/> component on this <see cref="GameObject"/> or its
         /// children or parents (in that order).
         /// </summary>
+        /// <remarks>
+        /// Called by the Unity Editor when this component is first added (in Edit Mode) and whenever the Reset command
+        /// is executed from its context menu.
+        /// </remarks>
         private void Reset()
         {
             _Animator = Editor.AnimancerEditorUtilities.GetComponentInHierarchy<Animator>(gameObject);
@@ -224,12 +225,13 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>[Editor-Only]
-        /// Called by the Unity Editor in Edit Mode whenever an instance of this script is loaded or a value is changed
-        /// in the Inspector.
-        /// <para></para>
         /// Tries to find an <see cref="UnityEngine.Animator"/> component on this <see cref="GameObject"/> or its
         /// parents or children (in that order).
         /// </summary>
+        /// <remarks>
+        /// Called by the Unity Editor in Edit Mode whenever an instance of this script is loaded or a value is changed
+        /// in the Inspector.
+        /// </remarks>
         private void OnValidate()
         {
             if (IsInitialised)
@@ -243,11 +245,8 @@ namespace Animancer
 #endif
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by Unity when this component is first created.
-        /// <para></para>
-        /// Initialises everything needed to play the <see cref="Clip"/>.
-        /// </summary>
+        /// <summary>Initialises everything needed to play the <see cref="Clip"/>.</summary>
+        /// <remarks>Called by Unity when this component is first initialised.</remarks>
         private void Awake()
         {
             if (_Clip == null || _Animator == null)
@@ -269,11 +268,8 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by Unity when this component becomes enabled and active.
-        /// <para></para>
-        /// Plays the <see cref="Clip"/> on the target <see cref="Animator"/>.
-        /// </summary>
+        /// <summary>Plays the <see cref="Clip"/> on the target <see cref="Animator"/>.</summary>
+        /// <remarks>Called by Unity when this component becomes enabled and active.</remarks>
         private void OnEnable()
         {
             IsPlaying = true;
@@ -282,10 +278,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity every frame while this component is enabled and active.
-        /// <para></para>
         /// Checks if the animation is done so it can pause the <see cref="PlayableGraph"/> to improve performance.
         /// </summary>
+        /// <remarks>Called by Unity every frame while this component is enabled and active.</remarks>
         private void Update()
         {
             if (!IsPlaying)
@@ -304,11 +299,8 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by Unity when this component becomes disabled or inactive.
-        /// <para></para>
-        /// Ensures that the <see cref="_Graph"/> is properly cleaned up.
-        /// </summary>
+        /// <summary>Ensures that the <see cref="_Graph"/> is properly cleaned up.</summary>
+        /// <remarks>Called by Unity when this component becomes disabled or inactive.</remarks>
         private void OnDisable()
         {
             IsPlaying = false;
@@ -326,11 +318,8 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by Unity when this component is destroyed.
-        /// <para></para>
-        /// Ensures that the <see cref="PlayableGraph"/> is properly cleaned up.
-        /// </summary>
+        /// <summary>Ensures that the <see cref="PlayableGraph"/> is properly cleaned up.</summary>
+        /// <remarks>Called by Unity when this component is destroyed.</remarks>
         private void OnDestroy()
         {
             if (IsInitialised)
@@ -515,7 +504,7 @@ namespace Animancer.Editor
                 if (UnityEditor.EditorGUI.EndChangeCheck())
                     target.Time = time;
 
-                time = target.NormalizedTime.Wrap01();
+                time = AnimancerUtilities.Wrap01(target.NormalizedTime);
                 if (time == 0 && target.Time != 0)
                     time = 1;
 

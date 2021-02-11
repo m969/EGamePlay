@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Experimental.Animations;
 using UnityEngine.Playables;
+using Object = UnityEngine.Object;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -69,23 +70,17 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>Are states in this mixer are playing?</summary>
-        public override bool IsPlaying
+        /// <inheritdoc/>
+        protected override void OnSetIsPlaying()
         {
-            get => base.IsPlaying;
-            set
+            var childStates = ChildStates;
+            for (int i = childStates.Count - 1; i >= 0; i--)
             {
-                base.IsPlaying = value;
+                var state = childStates[i];
+                if (state == null)
+                    continue;
 
-                var childStates = ChildStates;
-                for (int i = childStates.Count - 1; i >= 0; i--)
-                {
-                    var state = childStates[i];
-                    if (state == null)
-                        continue;
-
-                    state.IsPlaying = value;
-                }
+                state.IsPlaying = IsPlaying;
             }
         }
 
@@ -318,6 +313,20 @@ namespace Animancer
             return state;
         }
 
+        /// <summary>Calls <see cref="CreateChild(int, AnimationClip)"/> or <see cref="CreateChild(int, ITransition)"/>.</summary>
+        public AnimancerState CreateChild(int index, Object state)
+        {
+            if (state is AnimationClip clip)
+            {
+                return CreateChild(index, clip);
+            }
+            else if (state is ITransition transition)
+            {
+                return CreateChild(index, transition);
+            }
+            else return null;
+        }
+
         /************************************************************************************************************************/
 
         /// <summary>Assigns the `state` as a child of this mixer.</summary>
@@ -333,14 +342,13 @@ namespace Animancer
             if (AutoSynchroniseChildren)
                 Synchronise(state);
 
-#if UNITY_EDITOR
+#if UNITY_ASSERTIONS
             if (_IsGeneratedName)
             {
                 _IsGeneratedName = false;
-                SetEditorName(null);
+                SetDebugName(null);
             }
 #endif
-
         }
 
         /************************************************************************************************************************/
@@ -356,11 +364,11 @@ namespace Animancer
             states[state.Index] = null;
             Root?._Graph.Disconnect(_Playable, state.Index);
 
-#if UNITY_EDITOR
+#if UNITY_ASSERTIONS
             if (_IsGeneratedName)
             {
                 _IsGeneratedName = false;
-                SetEditorName(null);
+                SetDebugName(null);
             }
 #endif
         }
@@ -422,11 +430,7 @@ namespace Animancer
                 playable.SetProcessInputs(false);
 
             for (int i = ChildCount - 1; i >= 0; i--)
-            {
-                var child = GetChild(i);
-                if (child != null)
-                    child.SetRoot(root);
-            }
+                GetChild(i)?.SetRoot(root);
 
             return playable;
         }
@@ -590,9 +594,7 @@ namespace Animancer
             get => SynchronisedChildCount > 0 ? _SynchronisedChildren.ToArray() : null;
             set
             {
-                if (_SynchronisedChildren == null)
-                    _SynchronisedChildren = new List<AnimancerState>(value.Length);
-                else
+                if (!AnimancerUtilities.NewIfNull(ref _SynchronisedChildren))
                     _SynchronisedChildren.Clear();
 
                 for (int i = 0; i < value.Length; i++)
@@ -658,10 +660,10 @@ namespace Animancer
                     $" But otherwise, the indicated state probably shouldn't be added to the synchronisation list.", Root?.Component);
 #endif
 
-            if (_SynchronisedChildren == null)
-                _SynchronisedChildren = new List<AnimancerState>();
+            AnimancerUtilities.NewIfNull(ref _SynchronisedChildren);
+
 #if UNITY_ASSERTIONS
-            else if (_SynchronisedChildren.Contains(state))
+            if (_SynchronisedChildren.Contains(state))
                 Debug.LogError($"{state} is already in the {nameof(SynchronisedChildren)} list.");
 #endif
 
@@ -927,6 +929,32 @@ namespace Animancer
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
+        #region Inverse Kinematics
+        /************************************************************************************************************************/
+
+        private bool _ApplyAnimatorIK;
+
+        /// <inheritdoc/>
+        public override bool ApplyAnimatorIK
+        {
+            get => _ApplyAnimatorIK;
+            set => base.ApplyAnimatorIK = _ApplyAnimatorIK = value;
+        }
+
+        /************************************************************************************************************************/
+
+        private bool _ApplyFootIK;
+
+        /// <inheritdoc/>
+        public override bool ApplyFootIK
+        {
+            get => _ApplyFootIK;
+            set => base.ApplyFootIK = _ApplyFootIK = value;
+        }
+
+        /************************************************************************************************************************/
+        #endregion
+        /************************************************************************************************************************/
         #region Other Methods
         /************************************************************************************************************************/
 
@@ -1103,7 +1131,8 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-#if UNITY_EDITOR
+#if UNITY_ASSERTIONS
+        /// <summary>Has the <see cref="AnimancerNode.DebugName"/> been generated from the child states?</summary>
         private bool _IsGeneratedName;
 #endif
 
@@ -1112,9 +1141,9 @@ namespace Animancer
         /// </summary>
         public override string ToString()
         {
-#if UNITY_EDITOR
-            if (EditorName != null)
-                return EditorName;
+#if UNITY_ASSERTIONS
+            if (DebugName != null)
+                return DebugName;
 #endif
 
             // Gather child names.
@@ -1208,9 +1237,9 @@ namespace Animancer
 
             var result = mixerName.ReleaseToString();
 
-#if UNITY_EDITOR
+#if UNITY_ASSERTIONS
             _IsGeneratedName = true;
-            SetEditorName(result);
+            SetDebugName(result);
 #endif
 
             return result;
@@ -1293,7 +1322,7 @@ namespace Animancer
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="Drawer{T}"/> to manage the Inspector GUI for the `state`.
+            /// Creates a new <see cref="Drawer{T}"/> to manage the Inspector GUI for the `state`.
             /// </summary>
             public Drawer(T state) : base(state) { }
 
@@ -1394,6 +1423,9 @@ namespace Animancer
             /// </summary>
             public ref TParameter[] Thresholds => ref _Thresholds;
 
+            /// <summary>The name of the serialized backing field of <see cref="Thresholds"/>.</summary>
+            public const string ThresholdsField = nameof(_Thresholds);
+
             /************************************************************************************************************************/
 
             [SerializeField]
@@ -1403,6 +1435,9 @@ namespace Animancer
             /// The initial parameter value to give the mixer when it is first created.
             /// </summary>
             public ref TParameter DefaultParameter => ref _DefaultParameter;
+
+            /// <summary>The name of the serialized backing field of <see cref="DefaultParameter"/>.</summary>
+            public const string DefaultParameterField = nameof(_DefaultParameter);
 
             /************************************************************************************************************************/
 
@@ -1508,7 +1543,7 @@ namespace Animancer
                 /************************************************************************************************************************/
 
                 /// <summary>
-                /// Constructs a new <see cref="Drawer"/> using the a wider `thresholdWidth` than usual to accomodate
+                /// Creates a new <see cref="Drawer"/> using the a wider `thresholdWidth` than usual to accomodate
                 /// both the X and Y values.
                 /// </summary>
                 public Drawer() : base(StandardThresholdWidth * 2 + 20) { }
@@ -1520,41 +1555,46 @@ namespace Animancer
                 /// <inheritdoc/>
                 protected override void AddThresholdFunctionsToMenu(GenericMenu menu)
                 {
-                    AddCalculateThresholdsFunction(menu, "From Velocity/XY", (clip, threshold) =>
+                    AddCalculateThresholdsFunction(menu, "From Velocity/XY", (state, threshold) =>
                     {
-                        var velocity = clip.averageSpeed;
-                        return new Vector2(velocity.x, velocity.y);
+                        if (AnimancerUtilities.TryGetAverageVelocity(state, out var velocity))
+                            return new Vector2(velocity.x, velocity.y);
+                        else
+                            return new Vector2(float.NaN, float.NaN);
                     });
 
-                    AddCalculateThresholdsFunction(menu, "From Velocity/XZ", (clip, threshold) =>
+                    AddCalculateThresholdsFunction(menu, "From Velocity/XZ", (state, threshold) =>
                     {
-                        var velocity = clip.averageSpeed;
-                        return new Vector2(velocity.x, velocity.z);
+                        if (AnimancerUtilities.TryGetAverageVelocity(state, out var velocity))
+                            return new Vector2(velocity.x, velocity.z);
+                        else
+                            return new Vector2(float.NaN, float.NaN);
                     });
 
                     AddCalculateThresholdsFunctionPerAxis(menu, "From Speed",
-                        (clip, threshold) => clip.apparentSpeed);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) ? velocity.magnitude : float.NaN);
                     AddCalculateThresholdsFunctionPerAxis(menu, "From Velocity X",
-                        (clip, threshold) => clip.averageSpeed.x);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) ? velocity.x : float.NaN);
                     AddCalculateThresholdsFunctionPerAxis(menu, "From Velocity Y",
-                        (clip, threshold) => clip.averageSpeed.z);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) ? velocity.y : float.NaN);
                     AddCalculateThresholdsFunctionPerAxis(menu, "From Velocity Z",
-                        (clip, threshold) => clip.averageSpeed.z);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) ? velocity.z : float.NaN);
                     AddCalculateThresholdsFunctionPerAxis(menu, "From Angular Speed (Rad)",
-                        (clip, threshold) => clip.averageAngularSpeed);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageAngularSpeed(state, out var speed) ? speed : float.NaN);
                     AddCalculateThresholdsFunctionPerAxis(menu, "From Angular Speed (Deg)",
-                        (clip, threshold) => clip.averageAngularSpeed * Mathf.Rad2Deg);
+                        (state, threshold) => AnimancerUtilities.TryGetAverageAngularSpeed(state, out var speed) ? speed * Mathf.Rad2Deg : float.NaN);
 
-                    AddPropertyModifierFunction(menu, "Initialise Standard 4 Directions", InitialiseStandard4Directions);
+                    AddPropertyModifierFunction(menu, "Initialise 4 Directions", Initialise4Directions);
+                    AddPropertyModifierFunction(menu, "Initialise 8 Directions", Initialise8Directions);
                 }
 
                 /************************************************************************************************************************/
 
-                private void InitialiseStandard4Directions(SerializedProperty property)
+                private void Initialise4Directions(SerializedProperty property)
                 {
                     var oldSpeedCount = CurrentSpeeds.arraySize;
 
-                    CurrentClips.arraySize = CurrentThresholds.arraySize = CurrentSpeeds.arraySize = 5;
+                    CurrentStates.arraySize = CurrentThresholds.arraySize = CurrentSpeeds.arraySize = 5;
                     CurrentThresholds.GetArrayElementAtIndex(0).vector2Value = Vector2.zero;
                     CurrentThresholds.GetArrayElementAtIndex(1).vector2Value = Vector2.up;
                     CurrentThresholds.GetArrayElementAtIndex(2).vector2Value = Vector2.right;
@@ -1569,22 +1609,45 @@ namespace Animancer
 
                 /************************************************************************************************************************/
 
+                private void Initialise8Directions(SerializedProperty property)
+                {
+                    var oldSpeedCount = CurrentSpeeds.arraySize;
+
+                    CurrentStates.arraySize = CurrentThresholds.arraySize = CurrentSpeeds.arraySize = 9;
+                    CurrentThresholds.GetArrayElementAtIndex(0).vector2Value = Vector2.zero;
+                    CurrentThresholds.GetArrayElementAtIndex(1).vector2Value = Vector2.up;
+                    CurrentThresholds.GetArrayElementAtIndex(2).vector2Value = new Vector2(1, 1);
+                    CurrentThresholds.GetArrayElementAtIndex(3).vector2Value = Vector2.right;
+                    CurrentThresholds.GetArrayElementAtIndex(4).vector2Value = new Vector2(1, -1);
+                    CurrentThresholds.GetArrayElementAtIndex(5).vector2Value = Vector2.down;
+                    CurrentThresholds.GetArrayElementAtIndex(6).vector2Value = new Vector2(-1, -1);
+                    CurrentThresholds.GetArrayElementAtIndex(7).vector2Value = Vector2.left;
+                    CurrentThresholds.GetArrayElementAtIndex(8).vector2Value = new Vector2(-1, 1);
+
+                    InitialiseSpeeds(oldSpeedCount);
+
+                    var type = property.FindPropertyRelative(nameof(_Type));
+                    type.enumValueIndex = (int)MixerType.Directional;
+                }
+
+                /************************************************************************************************************************/
+
                 private void AddCalculateThresholdsFunction(GenericMenu menu, string label,
-                    Func<AnimationClip, Vector2, Vector2> calculateThreshold)
+                    Func<Object, Vector2, Vector2> calculateThreshold)
                 {
                     AddPropertyModifierFunction(menu, label, (property) =>
                     {
                         GatherSubProperties(property);
-                        var count = CurrentClips.arraySize;
+                        var count = CurrentStates.arraySize;
                         for (int i = 0; i < count; i++)
                         {
-                            var clip = CurrentClips.GetArrayElementAtIndex(i).objectReferenceValue as AnimationClip;
-                            if (clip == null)
+                            var state = CurrentStates.GetArrayElementAtIndex(i).objectReferenceValue;
+                            if (state == null)
                                 continue;
 
                             var threshold = CurrentThresholds.GetArrayElementAtIndex(i);
-                            var value = calculateThreshold(clip, threshold.vector2Value);
-                            if (!float.IsNaN(value.x) && !float.IsNaN(value.y))
+                            var value = calculateThreshold(state, threshold.vector2Value);
+                            if (!Editor.AnimancerEditorUtilities.IsNaN(value))
                                 threshold.vector2Value = value;
                         }
                     });
@@ -1593,28 +1656,28 @@ namespace Animancer
                 /************************************************************************************************************************/
 
                 private void AddCalculateThresholdsFunctionPerAxis(GenericMenu menu, string label,
-                    Func<AnimationClip, float, float> calculateThreshold)
+                    Func<Object, float, float> calculateThreshold)
                 {
                     AddCalculateThresholdsFunction(menu, "X/" + label, 0, calculateThreshold);
                     AddCalculateThresholdsFunction(menu, "Y/" + label, 1, calculateThreshold);
                 }
 
                 private void AddCalculateThresholdsFunction(GenericMenu menu, string label, int axis,
-                    Func<AnimationClip, float, float> calculateThreshold)
+                    Func<Object, float, float> calculateThreshold)
                 {
                     AddPropertyModifierFunction(menu, label, (property) =>
                     {
-                        var count = CurrentClips.arraySize;
+                        var count = CurrentStates.arraySize;
                         for (int i = 0; i < count; i++)
                         {
-                            var clip = CurrentClips.GetArrayElementAtIndex(i).objectReferenceValue as AnimationClip;
-                            if (clip == null)
+                            var state = CurrentStates.GetArrayElementAtIndex(i).objectReferenceValue;
+                            if (state == null)
                                 continue;
 
                             var threshold = CurrentThresholds.GetArrayElementAtIndex(i);
 
                             var value = threshold.vector2Value;
-                            var newValue = calculateThreshold(clip, value[axis]);
+                            var newValue = calculateThreshold(state, value[axis]);
                             if (!float.IsNaN(newValue))
                                 value[axis] = newValue;
                             threshold.vector2Value = value;
@@ -1679,12 +1742,12 @@ namespace Animancer
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="TransitionDrawer"/> using the default <see cref="StandardThresholdWidth"/>.
+            /// Creates a new <see cref="TransitionDrawer"/> using the default <see cref="StandardThresholdWidth"/>.
             /// </summary>
             public TransitionDrawer() : this(StandardThresholdWidth) { }
 
             /// <summary>
-            /// Constructs a new <see cref="TransitionDrawer"/> using a custom width for its threshold labels.
+            /// Creates a new <see cref="TransitionDrawer"/> using a custom width for its threshold labels.
             /// </summary>
             protected TransitionDrawer(float thresholdWidth) => ThresholdWidth = thresholdWidth;
 
@@ -1703,10 +1766,10 @@ namespace Animancer
             {
                 base.GatherSubProperties(property);
 
-                CurrentThresholds = property.FindPropertyRelative("_Thresholds");
+                CurrentThresholds = property.FindPropertyRelative(Transition2D.ThresholdsField);
 
-                var count = Math.Max(CurrentClips.arraySize, CurrentThresholds.arraySize);
-                CurrentClips.arraySize = count;
+                var count = Math.Max(CurrentStates.arraySize, CurrentThresholds.arraySize);
+                CurrentStates.arraySize = count;
                 CurrentThresholds.arraySize = count;
                 if (CurrentSpeeds.arraySize != 0)
                     CurrentSpeeds.arraySize = count;
@@ -1773,7 +1836,7 @@ namespace Animancer
             /// <inheritdoc/>
             protected override void OnAddElement(ReorderableList list)
             {
-                var index = CurrentClips.arraySize;
+                var index = CurrentStates.arraySize;
                 base.OnAddElement(list);
                 CurrentThresholds.InsertArrayElementAtIndex(index);
             }

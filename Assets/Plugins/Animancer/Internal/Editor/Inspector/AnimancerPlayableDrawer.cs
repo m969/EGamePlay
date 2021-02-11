@@ -4,8 +4,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Playables;
 using Object = UnityEngine.Object;
@@ -42,6 +42,8 @@ namespace Animancer.Editor
         /// <summary>Draws the GUI of the <see cref="IAnimancerComponent.Playable"/>.</summary>
         public void DoGUI(IAnimancerComponent target)
         {
+            DoNativeAnimatorControllerGUI(target);
+
             if (!target.IsPlayableInitialised)
             {
                 DoPlayableNotInitialisedGUI(target);
@@ -71,6 +73,89 @@ namespace Animancer.Editor
 
             if (EditorGUI.EndChangeCheck() && !playable.IsGraphPlaying)
                 playable.Evaluate();
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Draws a GUI for the <see cref="Animator.runtimeAnimatorController"/> if there is one.</summary>
+        private void DoNativeAnimatorControllerGUI(IAnimancerComponent target)
+        {
+            if (!EditorApplication.isPlaying &&
+                !target.IsPlayableInitialised)
+                return;
+
+            var animator = target.Animator;
+            if (animator == null)
+                return;
+
+            var controller = (AnimatorController)animator.runtimeAnimatorController;
+            if (controller == null)
+                return;
+
+            AnimancerGUI.BeginVerticalBox(GUI.skin.box);
+
+            var label = AnimancerGUI.GetNarrowText("Native Animator Controller");
+
+            EditorGUI.BeginChangeCheck();
+            controller = (AnimatorController)EditorGUILayout.ObjectField(label, controller, typeof(AnimatorController), true);
+            if (EditorGUI.EndChangeCheck())
+                animator.runtimeAnimatorController = controller;
+
+            var layers = controller.layers;
+            for (int i = 0; i < layers.Length; i++)
+            {
+                var layer = layers[i];
+
+                var runtimeState = animator.IsInTransition(i) ?
+                    animator.GetNextAnimatorStateInfo(i) :
+                    animator.GetCurrentAnimatorStateInfo(i);
+
+                var states = layer.stateMachine.states;
+                var editorState = GetState(states, runtimeState.shortNameHash);
+
+                var area = AnimancerGUI.LayoutSingleLineRect(AnimancerGUI.SpacingMode.Before);
+
+                var weight = i == 0 ? 1 : animator.GetLayerWeight(i);
+
+                string stateName;
+                if (editorState != null)
+                {
+                    stateName = editorState.name;
+
+                    var isLooping = editorState.motion != null && editorState.motion.isLooping;
+                    AnimancerStateDrawer<ClipState>.DoTimeHighlightBarGUI(
+                        area, true, weight, runtimeState.normalizedTime * runtimeState.length, runtimeState.length, isLooping);
+                }
+                else
+                {
+                    stateName = "State Not Found";
+                }
+
+                AnimancerGUI.DoWeightLabel(ref area, weight);
+
+                stateName = AnimancerGUI.GetNarrowText(stateName);
+
+                EditorGUI.LabelField(area, layer.name, stateName);
+            }
+
+            AnimancerGUI.EndVerticalBox(GUI.skin.box);
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Returns the state with the specified <see cref="AnimatorState.nameHash"/>.</summary>
+        private static AnimatorState GetState(ChildAnimatorState[] states, int nameHash)
+        {
+            for (int i = 0; i < states.Length; i++)
+            {
+                var state = states[i].state;
+                if (state.nameHash == nameHash)
+                {
+                    return state;
+                }
+            }
+
+            return null;
         }
 
         /************************************************************************************************************************/
@@ -143,39 +228,41 @@ namespace Animancer.Editor
                 EditorGUILayout.HelpBox(
                     "No layers have been created, which likely means no animations have been played yet.",
                     MessageType.Warning);
-            }
-            else if (!target.gameObject.activeInHierarchy || !target.enabled)
-            {
                 return;
             }
-            else if (_LayerCount == 1)
+
+            if (!target.gameObject.activeInHierarchy ||
+                !target.enabled ||
+                (target.Animator != null && target.Animator.runtimeAnimatorController != null))
+                return;
+
+            if (_LayerCount == 1)
             {
                 var layer = LayerInfos[0].Target;
                 if (layer.Weight == 0)
                     EditorGUILayout.HelpBox(
                         layer + " is at 0 weight, which likely means no animations have been played yet.",
                         MessageType.Warning);
+                return;
             }
-            else
+
+            for (int i = 0; i < _LayerCount; i++)
             {
-                for (int i = 0; i < _LayerCount; i++)
-                {
-                    var layer = LayerInfos[i].Target;
-                    if (layer.Weight == 1 &&
-                        !layer.IsAdditive &&
-                        layer._Mask == null &&
-                        Mathf.Approximately(layer.GetTotalWeight(), 1))
-                        return;
-                }
-
-                EditorGUILayout.HelpBox(
-                    "There are no Override layers at weight 1, which will likely give undesirable results." +
-                    " Click here for more information.",
-                    MessageType.Warning);
-
-                if (AnimancerGUI.TryUseClickEventInLastRect())
-                    EditorUtility.OpenWithDefaultApp(Strings.DocsURLs.Layers + "#blending");
+                var layer = LayerInfos[i].Target;
+                if (layer.Weight == 1 &&
+                    !layer.IsAdditive &&
+                    layer._Mask == null &&
+                    Mathf.Approximately(layer.GetTotalWeight(), 1))
+                    return;
             }
+
+            EditorGUILayout.HelpBox(
+                "There are no Override layers at weight 1, which will likely give undesirable results." +
+                " Click here for more information.",
+                MessageType.Warning);
+
+            if (AnimancerGUI.TryUseClickEventInLastRect())
+                EditorUtility.OpenWithDefaultApp(Strings.DocsURLs.Layers + "#blending");
         }
 
         /************************************************************************************************************************/
@@ -252,10 +339,10 @@ namespace Animancer.Editor
         /// <summary>Adds functions for controlling the `playable`.</summary>
         public static void AddRootFunctions(GenericMenu menu, AnimancerPlayable playable)
         {
-            AnimancerEditorUtilities.AddMenuItem(menu, "Add Layer",
+            menu.AddFunction("Add Layer",
                 playable.Layers.Count < AnimancerPlayable.LayerList.DefaultCapacity,
                 () => playable.Layers.Count++);
-            AnimancerEditorUtilities.AddMenuItem(menu, "Remove Layer",
+            menu.AddFunction("Remove Layer",
                 playable.Layers.Count > 0,
                 () => playable.Layers.Count--);
 
@@ -305,7 +392,7 @@ namespace Animancer.Editor
         {
             var type = Type.GetType("GraphVisualizer.PlayableGraphVisualizerWindow, Unity.PlayableGraphVisualizer.Editor");
 
-            AnimancerEditorUtilities.AddMenuItem(menu, prefix + "Playable Graph Visualizer", type != null, () =>
+            menu.AddFunction(prefix + "Playable Graph Visualizer", type != null, () =>
             {
                 var window = EditorWindow.GetWindow(type);
 
@@ -331,6 +418,7 @@ namespace Animancer.Editor
             HideInactiveStates = new BoolPref(KeyPrefix, MenuPrefix + "Hide Inactive States", false),
             RepaintConstantly = new BoolPref(KeyPrefix, MenuPrefix + "Repaint Constantly", true),
             SeparateActiveFromInactiveStates = new BoolPref(KeyPrefix, MenuPrefix + "Separate Active From Inactive States", false),
+            ScaleTimeBarByWeight = new BoolPref(KeyPrefix, MenuPrefix + "Scale Time Bar by Weight", true),
             ShowInternalDetails = new BoolPref(KeyPrefix, MenuPrefix + "Show Internal Details", false),
             VerifyAnimationBindings = new BoolPref(KeyPrefix, MenuPrefix + "Verify Animation Bindings", true),
             AutoNormalizeWeights = new BoolPref(KeyPrefix, MenuPrefix + "Auto Normalize Weights", true),
@@ -347,6 +435,7 @@ namespace Animancer.Editor
             SortStatesByName.AddToggleFunction(menu);
             HideInactiveStates.AddToggleFunction(menu);
             SeparateActiveFromInactiveStates.AddToggleFunction(menu);
+            ScaleTimeBarByWeight.AddToggleFunction(menu);
             VerifyAnimationBindings.AddToggleFunction(menu);
             ShowInternalDetails.AddToggleFunction(menu);
             AutoNormalizeWeights.AddToggleFunction(menu);

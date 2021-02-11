@@ -1,6 +1,7 @@
 // Animancer // https://kybernetik.com.au/animancer // Copyright 2020 Kybernetik //
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -15,7 +16,7 @@ namespace Animancer
     /// </remarks>
     /// https://kybernetik.com.au/animancer/api/Animancer/AnimancerEvent
     /// 
-    public partial struct AnimancerEvent
+    public partial struct AnimancerEvent : IEquatable<AnimancerEvent>
     {
         /************************************************************************************************************************/
         #region Event
@@ -27,12 +28,28 @@ namespace Animancer
         /// <summary>The delegate to invoke when the <see cref="normalizedTime"/> passes.</summary>
         public Action callback;
 
+        /************************************************************************************************************************/
+
         /// <summary>The largest possible float value less than 1.</summary>
+        /// <remarks>
+        /// This value is useful for placing events at the end of a looping animation since they do not allow the
+        /// <see cref="normalizedTime"/> to be greater than or equal to 1.
+        /// </remarks>
         public const float AlmostOne = 0.99999994f;
 
         /************************************************************************************************************************/
 
-        /// <summary>Constructs a new <see cref="AnimancerEvent"/>.</summary>
+        /// <summary>Does nothing.</summary>
+        /// <remarks>This delegate is used for events which would otherwise have a <c>null</c> <see cref="callback"/>.</remarks>
+        public static readonly Action DummyCallback = Dummy;
+
+        /// <summary>Does nothing.</summary>
+        /// <remarks>Used by <see cref="DummyCallback"/>.</remarks>
+        private static void Dummy() { }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Creates a new <see cref="AnimancerEvent"/>.</summary>
         public AnimancerEvent(float normalizedTime, Action callback)
         {
             this.normalizedTime = normalizedTime;
@@ -78,8 +95,8 @@ namespace Animancer
 
             if (callback != null)
             {
-                text.Append(delimiter).Append(name).Append(".Target: ").Append(callback.Target);
-                text.Append(delimiter).Append(name).Append(".Method: ").Append(callback.Method);
+                text.Append(delimiter).Append(name).Append($".{nameof(callback.Target)}: ").Append(callback.Target);
+                text.Append(delimiter).Append(name).Append($".{nameof(callback.Method)}: ").Append(callback.Method);
             }
         }
 
@@ -165,6 +182,45 @@ namespace Animancer
             }
 
             return Math.Max(minDuration, remainingDuration);
+        }
+
+        /************************************************************************************************************************/
+        #endregion
+        /************************************************************************************************************************/
+        #region Operators
+        /************************************************************************************************************************/
+
+        /// <summary>Are the <see cref="normalizedTime"/> and <see cref="callback"/> equal?</summary>
+        public static bool operator ==(AnimancerEvent a, AnimancerEvent b) =>
+            a.normalizedTime == b.normalizedTime &&
+            a.callback == b.callback;
+
+        /// <summary>Are the <see cref="normalizedTime"/> and <see cref="callback"/> not equal?</summary>
+        public static bool operator !=(AnimancerEvent a, AnimancerEvent b) => !(a == b);
+
+        /************************************************************************************************************************/
+
+        /// <summary>[<see cref="IEquatable{AnimancerEvent}"/>]
+        /// Are the <see cref="normalizedTime"/> and <see cref="callback"/> of this event equal to those of the
+        /// `animancerEvent`?
+        /// </summary>
+        public bool Equals(AnimancerEvent animancerEvent) => this == animancerEvent;
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj) => obj is AnimancerEvent animancerEvent && this == animancerEvent;
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            const int Multiplyer = -1521134295;
+
+            var hashCode = -78069441;
+            hashCode = hashCode * Multiplyer + normalizedTime.GetHashCode();
+
+            if (callback != null)
+                hashCode = hashCode * Multiplyer + callback.GetHashCode();
+
+            return hashCode;
         }
 
         /************************************************************************************************************************/

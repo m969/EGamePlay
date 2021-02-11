@@ -104,11 +104,7 @@ namespace Animancer
             RecreatePlayable();
 
             for (int i = ChildCount - 1; i >= 0; i--)
-            {
-                var child = GetChild(i);
-                if (child != null)
-                    child.RecreatePlayableRecursive();
-            }
+                GetChild(i)?.RecreatePlayableRecursive();
         }
 
         /************************************************************************************************************************/
@@ -178,8 +174,8 @@ namespace Animancer
                 OptionalWarning.UnusedNode.IsDisabled())
                 return;
 
-#if UNITY_EDITOR
-            var name = EditorName;
+#if UNITY_ASSERTIONS
+            var name = DebugName;
             if (name == null)
 #else
             string name = null;
@@ -342,12 +338,18 @@ namespace Animancer
         /// <summary>Called when a child is connected with this node as its <see cref="AnimancerState.Parent"/>.</summary>
         /// <exception cref="NotSupportedException">This node can't have children.</exception>
         protected internal virtual void OnAddChild(AnimancerState state)
-            => throw new NotSupportedException(this + " can't have children.");
+        {
+            state.ClearParent();
+            throw new NotSupportedException(this + " can't have children.");
+        }
 
         /// <summary>Called when a child's <see cref="AnimancerState.Parent"/> is changed from this node.</summary>
         /// <exception cref="NotSupportedException">This node can't have children.</exception>
         protected internal virtual void OnRemoveChild(AnimancerState state)
-            => throw new NotSupportedException(this + " can't have children.");
+        {
+            state.ClearParent();
+            throw new NotSupportedException(this + " can't have children.");
+        }
 
         /************************************************************************************************************************/
 
@@ -384,15 +386,6 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>[Internal]
-        /// Called by <see cref="AnimancerState.Destroy"/> for any states connected to this mixer.
-        /// Adds the `state`s port to a list of spares to be reused by another state and notifies the root
-        /// <see cref="AnimancerPlayable"/>.
-        /// </summary>
-        protected internal virtual void OnChildDestroyed(AnimancerState state) { }
-
-        /************************************************************************************************************************/
-
         /// <summary>
         /// Indicates whether child playables should stay connected to this mixer at all times (default false).
         /// </summary>
@@ -407,7 +400,7 @@ namespace Animancer
                 ConnectToGraph();
 
             for (int i = ChildCount - 1; i >= 0; i--)
-                GetChild(i).ConnectAllChildrenToGraph();
+                GetChild(i)?.ConnectAllChildrenToGraph();
         }
 
         /// <summary>
@@ -420,7 +413,7 @@ namespace Animancer
                 DisconnectFromGraph();
 
             for (int i = ChildCount - 1; i >= 0; i--)
-                GetChild(i).DisconnectWeightlessChildrenFromGraph();
+                GetChild(i)?.DisconnectWeightlessChildrenFromGraph();
         }
 
         /************************************************************************************************************************/
@@ -551,7 +544,6 @@ namespace Animancer
         }
 
         /************************************************************************************************************************/
-
         #endregion
         /************************************************************************************************************************/
         #region Fading
@@ -695,15 +687,45 @@ namespace Animancer
         #region Inverse Kinematics
         /************************************************************************************************************************/
 
-        /// <summary>[<see cref="IHasIK"/>]
-        /// Determines whether <c>OnAnimatorIK(int layerIndex)</c> will be called on the animated object while this
-        /// node and its children are active. The initial value is determined by
-        /// <see cref="AnimancerPlayable.DefaultApplyAnimatorIK"/>.
-        /// <para></para>
-        /// This is equivalent to the "IK Pass" toggle in Animator Controller layers.
-        /// <para></para>
-        /// Note that this property only applies to <see cref="ClipState"/>s.
+        /// <summary>
+        /// Should setting the <see cref="Parent"/> also set this node's <see cref="ApplyAnimatorIK"/> to match it?
+        /// Default is true.
         /// </summary>
+        public static bool ApplyParentAnimatorIK { get; set; } = true;
+
+        /// <summary>
+        /// Should setting the <see cref="Parent"/> also set this node's <see cref="ApplyFootIK"/> to match it?
+        /// Default is true.
+        /// </summary>
+        public static bool ApplyParentFootIK { get; set; } = true;
+
+        /************************************************************************************************************************/
+
+        /// <summary>
+        /// Copies the <see cref="ApplyAnimatorIK"/> and <see cref="ApplyFootIK"/> settings from the
+        /// <see cref="Parent"/> if <see cref="ApplyParentAnimatorIK"/> and <see cref="ApplyParentFootIK"/> are true
+        /// respectively.
+        /// </summary>
+        public virtual void CopyIKFlags(AnimancerNode node)
+        {
+            if (Root == null)
+                return;
+
+            if (ApplyParentAnimatorIK)
+            {
+                ApplyAnimatorIK = node.ApplyAnimatorIK;
+                if (ApplyParentFootIK)
+                    ApplyFootIK = node.ApplyFootIK;
+            }
+            else if (ApplyParentFootIK)
+            {
+                ApplyFootIK = node.ApplyFootIK;
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        /// <inheritdoc/>
         public virtual bool ApplyAnimatorIK
         {
             get
@@ -735,14 +757,7 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>[<see cref="IHasIK"/>]
-        /// Determines whether this node and its children are applying IK to the character's feet.
-        /// The initial value is determined by <see cref="AnimancerPlayable.DefaultApplyFootIK"/>.
-        /// <para></para>
-        /// This is equivalent to the "Foot IK" toggle in Animator Controller states.
-        /// <para></para>
-        /// Note that this property only applies to <see cref="ClipState"/>s.
-        /// </summary>
+        /// <inheritdoc/>
         public virtual bool ApplyFootIK
         {
             get
@@ -780,21 +795,18 @@ namespace Animancer
 
         private float _Speed = 1;
 
-        /// <summary>[Pro-Only]
-        /// How fast the <see cref="AnimancerState.Time"/> is advancing every frame.
-        /// <para></para>
-        /// 1 is the normal speed.
-        /// <para></para>
-        /// A negative value will play the animation backwards.
-        /// </summary>
+        /// <summary>[Pro-Only] How fast the <see cref="AnimancerState.Time"/> is advancing every frame (default 1).</summary>
         /// 
         /// <remarks>
-        /// Instead of setting this value to 0 to pause an animation, consider setting
-        /// <see cref="AnimancerState.IsPlaying"/> to false.
+        /// A negative value will play the animation backwards.
+        /// <para></para>
+        /// To pause an animation, consider setting <see cref="AnimancerState.IsPlaying"/> to false instead of setting
+        /// this value to 0.
+        /// <para></para>
+        /// <em>Animancer Lite does not allow this value to be changed in runtime builds.</em>
         /// </remarks>
         ///
-        /// <example>
-        /// <code>
+        /// <example><code>
         /// void PlayAnimation(AnimancerComponent animancer, AnimationClip clip)
         /// {
         ///     var state = animancer.Play(clip);
@@ -804,8 +816,7 @@ namespace Animancer
         ///     state.Speed = 0.5f;// Half speed.
         ///     state.Speed = -1;// Normal speed playing backwards.
         /// }
-        /// </code>
-        /// </example>
+        /// </code></example>
         public float Speed
         {
             get => _Speed;
@@ -863,31 +874,31 @@ namespace Animancer
         #region Descriptions
         /************************************************************************************************************************/
 
-#if UNITY_EDITOR
-        /// <summary>[Editor-Only] The Inspector display name of this node.</summary>
-        /// <remarks>Set using <see cref="SetEditorName"/>.</remarks>
-        public string EditorName { get; private set; }
+#if UNITY_ASSERTIONS
+        /// <summary>[Assert-Only] The Inspector display name of this node.</summary>
+        /// <remarks>Set using <see cref="SetDebugName"/>.</remarks>
+        public string DebugName { get; private set; }
 #endif
 
         /// <summary>The Inspector display name of this node.</summary>
         public override string ToString()
         {
-#if UNITY_EDITOR
-            if (EditorName != null)
-                return EditorName;
+#if UNITY_ASSERTIONS
+            if (DebugName != null)
+                return DebugName;
 #endif
 
             return base.ToString();
         }
 
-        /// <summary>[Editor-Conditional]
+        /// <summary>[Assert-Conditional]
         /// Sets the Inspector display name of this node. <see cref="ToString"/> returns the name.
         /// </summary>
-        [System.Diagnostics.Conditional(Strings.UnityEditor)]
-        public void SetEditorName(string name)
+        [System.Diagnostics.Conditional(Strings.Assertions)]
+        public void SetDebugName(string name)
         {
-#if UNITY_EDITOR
-            EditorName = name;
+#if UNITY_ASSERTIONS
+            DebugName = name;
 #endif
         }
 
@@ -954,6 +965,33 @@ namespace Animancer
             {
                 text.Append(delimiter).Append($"{nameof(TargetWeight)}: ").Append(TargetWeight);
                 text.Append(delimiter).Append($"{nameof(FadeSpeed)}: ").Append(FadeSpeed);
+            }
+
+            AppendIKDetails(text, delimiter, this);
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>
+        /// Appends the details of <see cref="IPlayableWrapper.ApplyAnimatorIK"/> and
+        /// <see cref="IPlayableWrapper.ApplyFootIK"/>.
+        /// </summary>
+        public static void AppendIKDetails(StringBuilder text, string delimiter, IPlayableWrapper node)
+        {
+            text.Append(delimiter).Append("InverseKinematics: ");
+            if (node.ApplyAnimatorIK)
+            {
+                text.Append("OnAnimatorIK");
+                if (node.ApplyFootIK)
+                    text.Append(", FootIK");
+            }
+            else if (node.ApplyFootIK)
+            {
+                text.Append("FootIK");
+            }
+            else
+            {
+                text.Append("None");
             }
         }
 

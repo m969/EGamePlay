@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using Object = UnityEngine.Object;
+using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -112,6 +113,30 @@ namespace Animancer
         }
 
         /************************************************************************************************************************/
+
+        /// <summary>
+        /// Initialises this mixer by calling <see cref="MixerState.CreateChild(int, Object)"/> for each of the
+        /// `states`.
+        /// </summary>
+        public void Initialise(params Object[] states)
+        {
+#if UNITY_ASSERTIONS
+            if (states == null)
+                throw new ArgumentNullException(nameof(states));
+#endif
+
+            var count = states.Length;
+            Initialise(count);
+
+            for (int i = 0; i < count; i++)
+            {
+                var state = states[i];
+                if (state != null)
+                    CreateChild(i, state);
+            }
+        }
+
+        /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
         #region Transition
@@ -157,12 +182,17 @@ namespace Animancer
             /************************************************************************************************************************/
 
             [SerializeField, HideInInspector]
-            private AnimationClip[] _Clips;
+            [FormerlySerializedAs("_Clips")]
+            private Object[] _States;
 
-            /// <summary>[<see cref="SerializeField"/>]
-            /// The <see cref="ClipState.Clip"/> to use for each state in the mixer.
-            /// </summary>
-            public ref AnimationClip[] Clips => ref _Clips;
+            /// <summary>[<see cref="SerializeField"/>] Objects that define how to create each state in the mixer.</summary>
+            /// <remarks>See <see cref="Initialise(Object[])"/> for more information.</remarks>
+            public ref Object[] States => ref _States;
+
+            /// <summary>The name of the serialized backing field of <see cref="States"/>.</summary>
+            public const string StatesField = nameof(_States);
+
+            /************************************************************************************************************************/
 
             [SerializeField, HideInInspector]
             private float[] _Speeds;
@@ -170,8 +200,11 @@ namespace Animancer
             /// <summary>[<see cref="SerializeField"/>]
             /// The <see cref="AnimancerNode.Speed"/> to use for each state in the mixer.
             /// </summary>
-            /// <remarks>If the size of this array doesn't match the <see cref="Clips"/>, it will be ignored.</remarks>
+            /// <remarks>If the size of this array doesn't match the <see cref="States"/>, it will be ignored.</remarks>
             public ref float[] Speeds => ref _Speeds;
+
+            /// <summary>The name of the serialized backing field of <see cref="Speeds"/>.</summary>
+            public const string SpeedsField = nameof(_Speeds);
 
             /************************************************************************************************************************/
 
@@ -184,22 +217,20 @@ namespace Animancer
             /// <remarks>The array can be null or empty. Any elements not in the array will be treated as true.</remarks>
             public ref bool[] SynchroniseChildren => ref _SynchroniseChildren;
 
+            /// <summary>The name of the serialized backing field of <see cref="SynchroniseChildren"/>.</summary>
+            public const string SynchroniseChildrenField = nameof(_SynchroniseChildren);
+
             /************************************************************************************************************************/
 
-            /// <summary>[<see cref="ITransitionDetailed"/>]
-            /// Returns true is any of the <see cref="Clips"/> are looping.
-            /// </summary>
+            /// <summary>[<see cref="ITransitionDetailed"/>] Are any of the <see cref="States"/> looping?</summary>
             public override bool IsLooping
             {
                 get
                 {
-                    for (int i = _Clips.Length - 1; i >= 0; i--)
+                    for (int i = _States.Length - 1; i >= 0; i--)
                     {
-                        var clip = _Clips[i];
-                        if (clip == null)
-                            continue;
-
-                        if (clip.isLooping)
+                        if (AnimancerUtilities.TryGetIsLooping(_States[i], out var isLooping) &&
+                            isLooping)
                             return true;
                     }
 
@@ -212,19 +243,16 @@ namespace Animancer
             {
                 get
                 {
-                    if (_Clips == null)
+                    if (_States == null)
                         return 0;
 
                     var duration = 0f;
-                    var hasSpeeds = _Speeds != null && _Speeds.Length == _Clips.Length;
+                    var hasSpeeds = _Speeds != null && _Speeds.Length == _States.Length;
 
-                    for (int i = _Clips.Length - 1; i >= 0; i--)
+                    for (int i = _States.Length - 1; i >= 0; i--)
                     {
-                        var clip = _Clips[i];
-                        if (clip == null)
+                        if (!AnimancerUtilities.TryGetLength(_States[i], out var length))
                             continue;
-
-                        var length = clip.length;
 
                         if (hasSpeeds)
                             length *= _Speeds[i];
@@ -234,6 +262,62 @@ namespace Animancer
                     }
 
                     return duration;
+                }
+            }
+
+            /// <inheritdoc/>
+            public override float AverageAngularSpeed
+            {
+                get
+                {
+                    if (_States == null)
+                        return default;
+
+                    var average = 0f;
+                    var hasSpeeds = _Speeds != null && _Speeds.Length == _States.Length;
+
+                    var count = 0;
+                    for (int i = _States.Length - 1; i >= 0; i--)
+                    {
+                        if (AnimancerUtilities.TryGetAverageAngularSpeed(_States[i], out var speed))
+                        {
+                            if (hasSpeeds)
+                                speed *= _Speeds[i];
+
+                            average += speed;
+                            count++;
+                        }
+                    }
+
+                    return average / count;
+                }
+            }
+
+            /// <inheritdoc/>
+            public override Vector3 AverageVelocity
+            {
+                get
+                {
+                    if (_States == null)
+                        return default;
+
+                    var average = new Vector3();
+                    var hasSpeeds = _Speeds != null && _Speeds.Length == _States.Length;
+
+                    var count = 0;
+                    for (int i = _States.Length - 1; i >= 0; i--)
+                    {
+                        if (AnimancerUtilities.TryGetAverageVelocity(_States[i], out var velocity))
+                        {
+                            if (hasSpeeds)
+                                velocity *= _Speeds[i];
+
+                            average += velocity;
+                            count++;
+                        }
+                    }
+
+                    return average / count;
                 }
             }
 
@@ -250,7 +334,7 @@ namespace Animancer
                 try
                 {
                     AutoSynchroniseChildren = false;
-                    mixer.Initialise(_Clips);
+                    mixer.Initialise(_States);
                 }
                 finally
                 {
@@ -262,10 +346,10 @@ namespace Animancer
                 if (_Speeds != null)
                 {
 #if UNITY_ASSERTIONS
-                    if (_Speeds.Length != 0 && _Speeds.Length != _Clips.Length)
+                    if (_Speeds.Length != 0 && _Speeds.Length != _States.Length)
                         Debug.LogError(
-                            $"The number of serialized speeds ({_Speeds.Length})" +
-                            $" does not match the number of clips ({_Clips.Length}).",
+                            $"The number of serialized {nameof(Speeds)} ({_Speeds.Length})" +
+                            $" does not match the number of {nameof(States)} ({_States.Length}).",
                             mixer.Root?.Component as Object);
 #endif
 
@@ -277,9 +361,7 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>
-            /// Called by <see cref="AnimancerPlayable.Play(ITransition)"/> to apply the <see cref="Speed"/>.
-            /// </summary>
+            /// <inheritdoc/>
             public override void Apply(AnimancerState state)
             {
                 base.Apply(state);
@@ -290,8 +372,8 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>Adds the <see cref="Clips"/> to the collection.</summary>
-            void IAnimationClipCollection.GatherAnimationClips(ICollection<AnimationClip> clips) => clips.Gather(_Clips);
+            /// <summary>Adds the <see cref="States"/> to the collection.</summary>
+            void IAnimationClipCollection.GatherAnimationClips(ICollection<AnimationClip> clips) => clips.GatherFromSource(_States);
 
             /************************************************************************************************************************/
         }
@@ -359,8 +441,8 @@ namespace Animancer
                 /// </summary>
                 public static SerializedProperty CurrentProperty { get; private set; }
 
-                /// <summary>The <see cref="Transition{TState}.Clips"/> field.</summary>
-                public static SerializedProperty CurrentClips { get; private set; }
+                /// <summary>The <see cref="Transition{TState}.States"/> field.</summary>
+                public static SerializedProperty CurrentStates { get; private set; }
 
                 /// <summary>The <see cref="Transition{TState}.Speeds"/> field.</summary>
                 public static SerializedProperty CurrentSpeeds { get; private set; }
@@ -389,7 +471,7 @@ namespace Animancer
 
                     if (!PropertyPathToStates.TryGetValue(propertyPath, out var states))
                     {
-                        states = new ReorderableList(CurrentClips.serializedObject, CurrentClips)
+                        states = new ReorderableList(CurrentStates.serializedObject, CurrentStates)
                         {
                             drawHeaderCallback = DoStateListHeaderGUI,
                             elementHeightCallback = GetElementHeight,
@@ -402,7 +484,7 @@ namespace Animancer
                         PropertyPathToStates.Add(propertyPath, states);
                     }
 
-                    states.serializedProperty = CurrentClips;
+                    states.serializedProperty = CurrentStates;
 
                     return states;
                 }
@@ -416,12 +498,12 @@ namespace Animancer
                 protected virtual void GatherSubProperties(SerializedProperty property)
                 {
                     CurrentProperty = property;
-                    CurrentClips = property.FindPropertyRelative("_Clips");
-                    CurrentSpeeds = property.FindPropertyRelative("_Speeds");
-                    CurrentSynchroniseChildren = property.FindPropertyRelative("_SynchroniseChildren");
+                    CurrentStates = property.FindPropertyRelative(StatesField);
+                    CurrentSpeeds = property.FindPropertyRelative(SpeedsField);
+                    CurrentSynchroniseChildren = property.FindPropertyRelative(SynchroniseChildrenField);
 
                     if (CurrentSpeeds.arraySize != 0)
-                        CurrentSpeeds.arraySize = CurrentClips.arraySize;
+                        CurrentSpeeds.arraySize = CurrentStates.arraySize;
                 }
 
                 /************************************************************************************************************************/
@@ -553,8 +635,8 @@ namespace Animancer
                 protected static void DoAnimationHeaderGUI(Rect area)
                 {
                     var content = Editor.AnimancerGUI.TempContent("Animation",
-                        "The animations that will be used for each child state");
-                    DoHeaderDropdownGUI(area, CurrentClips, content, null);
+                        $"The {nameof(AnimationClip)}s or {nameof(ITransition)}s that will be used for each child state");
+                    DoHeaderDropdownGUI(area, CurrentStates, content, null);
                 }
 
                 /************************************************************************************************************************/
@@ -586,7 +668,7 @@ namespace Animancer
                 {
                     var speedCount = CurrentSpeeds.arraySize;
 
-                    var lengths = new float[CurrentClips.arraySize];
+                    var lengths = new float[CurrentStates.arraySize];
                     if (lengths.Length <= 1)
                         return;
 
@@ -595,12 +677,13 @@ namespace Animancer
                     float totalSpeed = 0;
                     for (int i = 0; i < lengths.Length; i++)
                     {
-                        var clip = CurrentClips.GetArrayElementAtIndex(i).objectReferenceValue as AnimationClip;
-                        if (clip != null && clip.length > 0)
+                        var state = CurrentStates.GetArrayElementAtIndex(i).objectReferenceValue;
+                        if (AnimancerUtilities.TryGetLength(state, out var length) &&
+                            length > 0)
                         {
                             nonZeroLengths++;
-                            totalLength += clip.length;
-                            lengths[i] = clip.length;
+                            totalLength += length;
+                            lengths[i] = length;
 
                             if (speedCount > 0)
                                 totalSpeed += CurrentSpeeds.GetArrayElementAtIndex(i).floatValue;
@@ -659,7 +742,7 @@ namespace Animancer
                         AddPropertyModifierFunction(menu, "All", allState,
                             (_) => CurrentSynchroniseChildren.arraySize = 0);
 
-                        var syncNone = syncCount == CurrentClips.arraySize;
+                        var syncNone = syncCount == CurrentStates.arraySize;
                         if (syncNone)
                         {
                             for (int i = 0; i < syncCount; i++)
@@ -674,49 +757,50 @@ namespace Animancer
                         var noneState = syncNone ? Editor.MenuFunctionState.Selected : Editor.MenuFunctionState.Normal;
                         AddPropertyModifierFunction(menu, "None", noneState, (_) =>
                         {
-                            var count = CurrentSynchroniseChildren.arraySize = CurrentClips.arraySize;
+                            var count = CurrentSynchroniseChildren.arraySize = CurrentStates.arraySize;
                             for (int i = 0; i < count; i++)
                                 CurrentSynchroniseChildren.GetArrayElementAtIndex(i).boolValue = false;
                         });
 
                         AddPropertyModifierFunction(menu, "Invert", Editor.MenuFunctionState.Normal, (_) =>
+                        {
+                            var count = CurrentSynchroniseChildren.arraySize;
+                            for (int i = 0; i < count; i++)
                             {
-                                var count = CurrentSynchroniseChildren.arraySize;
-                                for (int i = 0; i < count; i++)
-                                {
-                                    var property = CurrentSynchroniseChildren.GetArrayElementAtIndex(i);
-                                    property.boolValue = !property.boolValue;
-                                }
+                                var property = CurrentSynchroniseChildren.GetArrayElementAtIndex(i);
+                                property.boolValue = !property.boolValue;
+                            }
 
-                                var newCount = CurrentSynchroniseChildren.arraySize = CurrentClips.arraySize;
-                                for (int i = count; i < newCount; i++)
-                                    CurrentSynchroniseChildren.GetArrayElementAtIndex(i).boolValue = false;
-                            });
+                            var newCount = CurrentSynchroniseChildren.arraySize = CurrentStates.arraySize;
+                            for (int i = count; i < newCount; i++)
+                                CurrentSynchroniseChildren.GetArrayElementAtIndex(i).boolValue = false;
+                        });
 
                         AddPropertyModifierFunction(menu, "Non-Stationary", Editor.MenuFunctionState.Normal, (_) =>
+                        {
+                            var count = CurrentStates.arraySize;
+
+                            for (int i = 0; i < count; i++)
                             {
-                                var count = CurrentClips.arraySize;
+                                var state = CurrentStates.GetArrayElementAtIndex(i).objectReferenceValue;
+                                if (state == null)
+                                    continue;
 
-                                for (int i = 0; i < count; i++)
+                                if (i >= syncCount)
                                 {
-                                    var clip = CurrentClips.GetArrayElementAtIndex(i).objectReferenceValue as AnimationClip;
-                                    if (clip == null)
-                                        continue;
-
-                                    if (i >= syncCount)
-                                    {
-                                        CurrentSynchroniseChildren.arraySize = i + 1;
-                                        for (int j = syncCount; j < i; j++)
-                                            CurrentSynchroniseChildren.GetArrayElementAtIndex(j).boolValue = true;
-                                        syncCount = i + 1;
-                                    }
-
-                                    CurrentSynchroniseChildren.GetArrayElementAtIndex(i).boolValue =
-                                        clip.averageSpeed != Vector3.zero;
+                                    CurrentSynchroniseChildren.arraySize = i + 1;
+                                    for (int j = syncCount; j < i; j++)
+                                        CurrentSynchroniseChildren.GetArrayElementAtIndex(j).boolValue = true;
+                                    syncCount = i + 1;
                                 }
 
-                                TryCollapseSync();
-                            });
+                                CurrentSynchroniseChildren.GetArrayElementAtIndex(i).boolValue =
+                                    AnimancerUtilities.TryGetAverageVelocity(state, out var velocity) &&
+                                    velocity != Vector3.zero;
+                            }
+
+                            TryCollapseSync();
+                        });
                     });
                 }
 
@@ -724,7 +808,7 @@ namespace Animancer
 
                 private static void SyncNone()
                 {
-                    var count = CurrentSynchroniseChildren.arraySize = CurrentClips.arraySize;
+                    var count = CurrentSynchroniseChildren.arraySize = CurrentStates.arraySize;
                     for (int i = 0; i < count; i++)
                         CurrentSynchroniseChildren.GetArrayElementAtIndex(i).boolValue = false;
                 }
@@ -770,30 +854,30 @@ namespace Animancer
                 /// <summary>Draws the GUI of the state at the specified `index`.</summary>
                 private void DoElementGUI(Rect area, int index, bool isActive, bool isFocused)
                 {
-                    if (index < 0 || index > CurrentClips.arraySize)
+                    if (index < 0 || index > CurrentStates.arraySize)
                         return;
 
-                    var clip = CurrentClips.GetArrayElementAtIndex(index);
+                    var state = CurrentStates.GetArrayElementAtIndex(index);
                     var speed = CurrentSpeeds.arraySize > 0 ? CurrentSpeeds.GetArrayElementAtIndex(index) : null;
-                    DoElementGUI(area, index, clip, speed);
+                    DoElementGUI(area, index, state, speed);
                 }
 
                 /************************************************************************************************************************/
 
                 /// <summary>Draws the GUI of the state at the specified `index`.</summary>
                 protected virtual void DoElementGUI(Rect area, int index,
-                    SerializedProperty clip, SerializedProperty speed)
+                    SerializedProperty state, SerializedProperty speed)
                 {
                     SplitListRect(area, false, out var animationArea, out var speedArea, out var syncArea);
 
-                    DoElementGUI(animationArea, speedArea, syncArea, index, clip, speed);
+                    DoElementGUI(animationArea, speedArea, syncArea, index, state, speed);
                 }
 
                 /// <summary>Draws the GUI of the state at the specified `index`.</summary>
                 protected void DoElementGUI(Rect animationArea, Rect speedArea, Rect syncArea, int index,
-                    SerializedProperty clip, SerializedProperty speed)
+                    SerializedProperty state, SerializedProperty speed)
                 {
-                    EditorGUI.PropertyField(animationArea, clip, GUIContent.none);
+                    DoClipOrTransitionField(animationArea, state, GUIContent.none);
 
                     if (speed != null)
                     {
@@ -808,7 +892,7 @@ namespace Animancer
                         {
                             CurrentSpeeds.InsertArrayElementAtIndex(0);
                             CurrentSpeeds.GetArrayElementAtIndex(0).floatValue = 1;
-                            CurrentSpeeds.arraySize = CurrentClips.arraySize;
+                            CurrentSpeeds.arraySize = CurrentStates.arraySize;
                             CurrentSpeeds.GetArrayElementAtIndex(index).floatValue = value;
                         }
 
@@ -817,6 +901,31 @@ namespace Animancer
 
                     DoSyncToggleGUI(syncArea, index);
                 }
+
+                /************************************************************************************************************************/
+
+                /// <summary>
+                /// Draws an <see cref="EditorGUI.ObjectField(Rect, GUIContent, Object, Type, bool)"/> that accepts
+                /// <see cref="AnimationClip"/>s and <see cref="ITransition"/>s
+                /// </summary>
+                public static void DoClipOrTransitionField(Rect area, SerializedProperty property, GUIContent label)
+                {
+                    var targetObject = property.serializedObject.targetObject;
+                    var oldReference = property.objectReferenceValue;
+
+                    EditorGUI.BeginChangeCheck();
+                    EditorGUI.ObjectField(area, property, label);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        var newReference = property.objectReferenceValue;
+                        if (newReference == null || !IsClipOrTransition(newReference) || newReference == targetObject)
+                            property.objectReferenceValue = oldReference;
+                    }
+                }
+
+                /// <summary>Is the `clipOrTransition` an <see cref="AnimationClip"/> or <see cref="ITransition"/>?</summary>
+                public static bool IsClipOrTransition(Object clipOrTransition)
+                    => clipOrTransition is AnimationClip || clipOrTransition is ITransition;
 
                 /************************************************************************************************************************/
 
@@ -871,8 +980,8 @@ namespace Animancer
                 /// </summary>
                 protected virtual void OnAddElement(ReorderableList list)
                 {
-                    var index = CurrentClips.arraySize;
-                    CurrentClips.InsertArrayElementAtIndex(index);
+                    var index = CurrentStates.arraySize;
+                    CurrentStates.InsertArrayElementAtIndex(index);
 
                     if (CurrentSpeeds.arraySize > 0)
                         CurrentSpeeds.InsertArrayElementAtIndex(index);
@@ -888,7 +997,7 @@ namespace Animancer
                 {
                     var index = list.index;
 
-                    Editor.Serialization.RemoveArrayElement(CurrentClips, index);
+                    Editor.Serialization.RemoveArrayElement(CurrentStates, index);
 
                     if (CurrentSpeeds.arraySize > 0)
                         Editor.Serialization.RemoveArrayElement(CurrentSpeeds, index);

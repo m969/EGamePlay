@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8957007620084665256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8957007620084665263}
+  - component: {fileID: 8957007620084665262}
+  m_Layer: 0
+  m_Name: Configs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8957007620084665263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8957007620084665256}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8957007620084665262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8957007620084665256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a7d8991c4ce384690cd5e95ead9e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+  - key: SkillAddStatusEffectConfig
+    gameObject: {fileID: 4900000, guid: 721ae5a241435914c91eab741b3675e6, type: 3}
+  - key: SkillConfig
+    gameObject: {fileID: 4900000, guid: 23634d520f9e666409d18131e3c6bbc5, type: 3}
+  - key: SkillDamageEffectConfig
+    gameObject: {fileID: 4900000, guid: 84eaa9ec26922294f84067377e7d314b, type: 3}
+  - key: StatusAddStatusEffectConfig
+    gameObject: {fileID: 4900000, guid: 1b3a9c9a238a0de43904a27e50c23d70, type: 3}
+  - key: StatusConfig
+    gameObject: {fileID: 4900000, guid: 2bc72c3b6ec844f459adcb42fc92e30e, type: 3}
+  - key: StatusDamageEffectConfig
+    gameObject: {fileID: 4900000, guid: 411e2c73a0a00c74a8eb66d67632a6b7, type: 3}
+  - key: UnitConfig
+    gameObject: {fileID: 4900000, guid: 79f1713de1c57e646a74288a5fe0f14f, type: 3}

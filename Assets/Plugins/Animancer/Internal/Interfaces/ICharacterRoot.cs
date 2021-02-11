@@ -12,6 +12,7 @@ namespace Animancer
     /// 
     public interface ICharacterRoot
     {
+#pragma warning disable IDE0079 // Remove unnecessary suppression.
 #pragma warning disable IDE1006 // Naming Styles.
         /// <summary>
         /// The <see cref="Transform"/> to search for <see cref="AnimationClip"/>s beneath.
@@ -32,6 +33,7 @@ namespace Animancer
         /// </example>
         Transform transform { get; }
 #pragma warning restore IDE1006 // Naming Styles.
+#pragma warning restore IDE0079 // Remove unnecessary suppression.
     }
 }
 
@@ -41,7 +43,7 @@ namespace Animancer
 
 namespace Animancer.Editor
 {
-    public static partial class AnimancerEditorUtilities
+    partial class AnimancerEditorUtilities
     {
         /************************************************************************************************************************/
 

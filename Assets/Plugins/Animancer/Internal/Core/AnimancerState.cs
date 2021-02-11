@@ -10,6 +10,7 @@ using Object = UnityEngine.Object;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using Animancer.Editor;
 #endif
 
 namespace Animancer
@@ -64,11 +65,10 @@ namespace Animancer
             }
 
             for (int i = ChildCount - 1; i >= 0; i--)
-            {
-                var child = GetChild(i);
-                if (child != null)
-                    child.SetRoot(root);
-            }
+                GetChild(i)?.SetRoot(root);
+
+            if (_Parent != null)
+                CopyIKFlags(_Parent);
         }
 
         /************************************************************************************************************************/
@@ -100,6 +100,7 @@ namespace Animancer
             Index = index;
             _Parent = parent;
             parent.OnAddChild(this);
+            CopyIKFlags(parent);
         }
 
         /// <summary>[Internal]
@@ -254,8 +255,7 @@ namespace Animancer
 
         /// <summary>Is the <see cref="Time"/> automatically advancing?</summary>
         ///
-        /// <example>
-        /// <code>
+        /// <example><code>
         /// void IsPlayingExample(AnimancerComponent animancer, AnimationClip clip)
         /// {
         ///     var state = animancer.States.GetOrCreate(clip);
@@ -269,9 +269,8 @@ namespace Animancer
         ///
         ///     state.IsPlaying = true;// Unpause the animation.
         /// }
-        /// </code>
-        /// </example>
-        public virtual bool IsPlaying
+        /// </code></example>
+        public bool IsPlaying
         {
             get => _IsPlaying;
             set
@@ -293,8 +292,13 @@ namespace Animancer
                     _IsPlayingDirty = true;
                     RequireUpdate();
                 }
+
+                OnSetIsPlaying();
             }
         }
+
+        /// <summary>Called when the value of <see cref="IsPlaying"/> is changed.</summary>
+        protected virtual void OnSetIsPlaying() { }
 
         /// <summary>Creates and assigns the <see cref="Playable"/> managed by this state.</summary>
         /// <remarks>This method also applies the <see cref="AnimancerNode.Speed"/> and <see cref="IsPlaying"/>.</remarks>
@@ -412,8 +416,7 @@ namespace Animancer
         /// <em>Animancer Lite does not allow this value to be changed in runtime builds (except resetting it to 0).</em>
         /// </remarks>
         ///
-        /// <example>
-        /// <code>
+        /// <example><code>
         /// void PlayAnimation(AnimancerComponent animancer, AnimationClip clip)
         /// {
         ///     var state = animancer.Play(clip);
@@ -428,8 +431,7 @@ namespace Animancer
         ///     state.NormalizedTime = 1;
         ///     state.Speed = -1;
         /// }
-        /// </code>
-        /// </example>
+        /// </code></example>
         public float Time
         {
             get
@@ -521,8 +523,7 @@ namespace Animancer
         /// <em>Animancer Lite does not allow this value to be changed to a value other than 0 in runtime builds.</em>
         /// </remarks>
         ///
-        /// <example>
-        /// <code>
+        /// <example><code>
         /// void PlayAnimation(AnimancerComponent animancer, AnimationClip clip)
         /// {
         ///     var state = animancer.Play(clip);
@@ -537,8 +538,7 @@ namespace Animancer
         ///     state.NormalizedTime = 1;
         ///     state.Speed = -1;
         /// }
-        /// </code>
-        /// </example>
+        /// </code></example>
         public float NormalizedTime
         {
             get
@@ -592,19 +592,18 @@ namespace Animancer
 
         /// <summary>
         /// The number of seconds the animation will take to play fully at its current
-        /// <see cref="AnimancerNode.Speed"/>.
+        /// <see cref="AnimancerNode.EffectiveSpeed"/>.
         /// </summary>
         /// 
         /// <remarks>
         /// For the time remaining from now until it reaches the end, use <see cref="RemainingDuration"/> instead.
         /// <para></para>
-        /// Setting this value modifies the <see cref="AnimancerNode.Speed"/>, not the <see cref="Length"/>.
+        /// Setting this value modifies the <see cref="AnimancerNode.EffectiveSpeed"/>, not the <see cref="Length"/>.
         /// <para></para>
         /// <em>Animancer Lite does not allow this value to be changed in runtime builds.</em>
         /// </remarks>
         ///
-        /// <example>
-        /// <code>
+        /// <example><code>
         /// void PlayAnimation(AnimancerComponent animancer, AnimationClip clip)
         /// {
         ///     var state = animancer.Play(clip);
@@ -615,44 +614,61 @@ namespace Animancer
         ///     state.Duration = -1;// Play backwards fully in 1 second.
         ///     state.NormalizedTime = 1; state.Duration = -1;// Play backwards from the end in 1 second.
         /// }
-        /// </code>
-        /// </example>
+        /// </code></example>
         public float Duration
         {
             get
             {
-                var speed = Speed;
-                if (speed == 0)
-                    return float.PositiveInfinity;
-                else
-                    return Length / Math.Abs(speed);
+                var speed = EffectiveSpeed;
+                if (_EventRunner != null)
+                {
+                    var endTime = _EventRunner.Events.NormalizedEndTime;
+                    if (!float.IsNaN(endTime))
+                    {
+                        if (speed > 0)
+                            return Length * endTime / speed;
+                        else
+                            return Length * (1 - endTime) / -speed;
+                    }
+                }
+
+                return Length / Math.Abs(speed);
             }
             set
             {
-                if (value == 0)
-                    Speed = float.PositiveInfinity;
-                else
-                    Speed = Length / value;
+                var length = Length;
+                if (_EventRunner != null)
+                {
+                    var endTime = _EventRunner.Events.NormalizedEndTime;
+                    if (!float.IsNaN(endTime))
+                    {
+                        if (EffectiveSpeed > 0)
+                            length *= endTime;
+                        else
+                            length *= 1 - endTime;
+                    }
+                }
+
+                EffectiveSpeed = length / value;
             }
         }
 
         /************************************************************************************************************************/
 
         /// <summary>
-        /// The number of seconds the animation will take to reach the <see cref="NormalizedEndTime"/> at its current
-        /// <see cref="AnimancerNode.Speed"/>.
+        /// The number of seconds this state will take to go from its current <see cref="NormalizedTime"/> to the
+        /// <see cref="NormalizedEndTime"/> at its current <see cref="AnimancerNode.EffectiveSpeed"/>.
         /// </summary>
         /// 
         /// <remarks>
-        /// For the time it would take to play fully from the start, use <see cref="Duration"/> instead.
+        /// For the time it would take to play fully from the start, use the <see cref="Duration"/> instead.
         /// <para></para>
-        /// Setting this value modifies the <see cref="AnimancerNode.Speed"/>, not the <see cref="Length"/>.
+        /// Setting this value modifies the <see cref="AnimancerNode.EffectiveSpeed"/>, not the <see cref="Length"/>.
         /// <para></para>
         /// <em>Animancer Lite does not allow this value to be changed in runtime builds.</em>
         /// </remarks>
         ///
-        /// <example>
-        /// <code>
+        /// <example><code>
         /// void PlayAnimation(AnimancerComponent animancer, AnimationClip clip)
         /// {
         ///     var state = animancer.Play(clip);
@@ -660,53 +676,13 @@ namespace Animancer
         ///     state.RemainingDuration = 1;// Play from the current time to the end in 1 second.
         ///     state.RemainingDuration = 2;// Play from the current time to the end in 2 seconds.
         ///     state.RemainingDuration = 0.5f;// Play from the current time to the end in half a second.
-        ///     state.RemainingDuration = -1;// Play backwards from the current time to the end in 1 second.
+        ///     state.RemainingDuration = -1;// Play from the current time away from the end.
         /// }
-        /// </code>
-        /// </example>
+        /// </code></example>
         public float RemainingDuration
         {
-            get
-            {
-                var speed = Speed;
-                if (speed == 0)
-                    return float.PositiveInfinity;
-
-                var length = Length;
-                if (_EventRunner != null)
-                {
-                    if (speed > 0)
-                        length *= _EventRunner.Events.NormalizedEndTime;
-                    else
-                        length *= 1 - _EventRunner.Events.NormalizedEndTime;
-                }
-
-                var time = Time;
-                if (IsLooping)
-                    time = Mathf.Repeat(time, length);
-
-                return (length - time) / Math.Abs(speed);
-            }
-            set
-            {
-                if (value == 0)
-                    throw new ArgumentException($"{nameof(Duration)} cannot be set to 0 because that would require infinite speed.");
-
-                var length = Length;
-                if (_EventRunner != null)
-                {
-                    if (value > 0)
-                        length *= _EventRunner.Events.NormalizedEndTime;
-                    else
-                        length *= 1 - _EventRunner.Events.NormalizedEndTime;
-                }
-
-                var time = Time;
-                if (IsLooping)
-                    time = Mathf.Repeat(time, length);
-
-                Speed = (length - time) / value;
-            }
+            get => (Length * NormalizedEndTime - Time) / EffectiveSpeed;
+            set => EffectiveSpeed = (Length * NormalizedEndTime - Time) / value;
         }
 
         /************************************************************************************************************************/
@@ -840,14 +816,14 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns the <see cref="AnimancerNode.EditorName"/> if one is set, otherwise a string describing the type of this
+        /// Returns the <see cref="AnimancerNode.DebugName"/> if one is set, otherwise a string describing the type of this
         /// state and the name of the <see cref="MainObject"/>.
         /// </summary>
         public override string ToString()
         {
-#if UNITY_EDITOR
-            if (EditorName != null)
-                return EditorName;
+#if UNITY_ASSERTIONS
+            if (DebugName != null)
+                return DebugName;
 #endif
 
             var type = GetType().Name;
@@ -865,8 +841,8 @@ namespace Animancer
 #if UNITY_EDITOR
 
         /// <summary>[Editor-Only] Returns a custom drawer for this state.</summary>
-        protected internal virtual Editor.IAnimancerNodeDrawer CreateDrawer()
-            => new Editor.AnimancerStateDrawer<AnimancerState>(this);
+        protected internal virtual IAnimancerNodeDrawer CreateDrawer()
+            => new AnimancerStateDrawer<AnimancerState>(this);
 #endif
 
         /************************************************************************************************************************/
@@ -1035,18 +1011,35 @@ namespace Animancer
             /// <summary>[<see cref="ITransitionDetailed"/>]
             /// The maximum amount of time the animation is expected to take (in seconds).
             /// </summary>
+            /// <remarks>The actual duration can vary in states like <see cref="MixerState"/>.</remarks>
             public abstract float MaximumDuration { get; }
+
+            /// <summary>[<see cref="ITransitionDetailed"/>]
+            /// The <see cref="Motion.averageAngularSpeed"/> that the created state will have.
+            /// </summary>
+            /// <remarks>The actual average velocity can vary in states like <see cref="MixerState"/>.</remarks>
+            public virtual float AverageAngularSpeed => 0;
+
+            /// <summary>[<see cref="ITransitionDetailed"/>]
+            /// The <see cref="Motion.averageSpeed"/> that the created state will have.
+            /// </summary>
+            /// <remarks>The actual average velocity can vary in states like <see cref="MixerState"/>.</remarks>
+            public virtual Vector3 AverageVelocity => default;
 
             /************************************************************************************************************************/
 
             [SerializeField, Tooltip(Strings.ProOnlyTag + "Events which will be triggered as the animation plays")]
             private AnimancerEvent.Sequence.Serializable _Events;
 
-            /// <summary>[<see cref="SerializeField"/>] Events which will be triggered as the animation plays.</summary>
+            /// <summary>[<see cref="SerializeField"/>] [<see cref="ITransitionDetailed"/>]
+            /// Events which will be triggered as the animation plays.
+            /// </summary>
             /// <remarks>This property returns the <see cref="AnimancerEvent.Sequence.Serializable.Sequence"/>.</remarks>
             public AnimancerEvent.Sequence Events => _Events.Sequence;
 
-            /// <summary>[<see cref="SerializeField"/>] Events which will be triggered as the animation plays.</summary>
+            /// <summary>[<see cref="SerializeField"/>] [<see cref="ITransitionDetailed"/>]
+            /// Events which will be triggered as the animation plays.
+            /// </summary>
             public ref AnimancerEvent.Sequence.Serializable SerializedEvents => ref _Events;
 
             /************************************************************************************************************************/
@@ -1138,10 +1131,11 @@ namespace Animancer
             /************************************************************************************************************************/
 
             /// <summary>[<see cref="ITransition"/>]
-            /// Called by <see cref="AnimancerPlayable.Play(ITransition)"/> to set the <see cref="BaseState"/>
-            /// and apply any other modifications to the `state`.
+            /// Sets the <see cref="BaseState"/> and applies any other modifications to the `state`.
             /// </summary>
             /// <remarks>
+            /// Called by <see cref="AnimancerPlayable.Play(ITransition)"/>.
+            /// <para></para>
             /// This method also clears the <see cref="State"/> if necessary, so it will re-cast the
             /// <see cref="BaseState"/> when it gets accessed again.
             /// </remarks>
@@ -1183,59 +1177,12 @@ namespace Animancer
             }
 
             /************************************************************************************************************************/
-#if UNITY_EDITOR
-            /************************************************************************************************************************/
 
+#if UNITY_EDITOR
             /// <summary>[Editor-Only] Don't use Inspector Gadgets Nested Object Drawers.</summary>
             private const bool NestedObjectDrawers = false;
-
-            /************************************************************************************************************************/
-
-            /// <summary>[Editor-Only] Adds context menu functions for this transition.</summary>
-            void ITransitionDetailed.AddItemsToContextMenu(GenericMenu menu, SerializedProperty property,
-                Editor.Serialization.PropertyAccessor accessor)
-                => AddItemsToContextMenu(menu, property, accessor);
-
-            /// <summary>[Editor-Only] Adds context menu functions for this transition.</summary>
-            protected virtual void AddItemsToContextMenu(GenericMenu menu, SerializedProperty property,
-                Editor.Serialization.PropertyAccessor accessor)
-            {
-                var transition = (Transition<TState>)accessor.GetValue(property);
-
-                const string EventsPrefix = "Transition Event Details/Serialized ";
-                transition._Events.GetSerializedDetails(out var nameCount, out var timeCount, out var callbackCount);
-                menu.AddDisabledItem(new GUIContent(EventsPrefix + "Name Count: " + nameCount));
-                menu.AddDisabledItem(new GUIContent(EventsPrefix + "Time Count: " + timeCount));
-                menu.AddDisabledItem(new GUIContent(EventsPrefix + "Callback Count: " + callbackCount));
-
-                Editor.Serialization.AddPropertyModifierFunction(menu, property, "Reset Transition", true, Reset);
-            }
-
-            /************************************************************************************************************************/
-
-            private static void Reset(SerializedProperty property)
-            {
-                var transition = Editor.Serialization.GetValue(property);
-                if (transition == null)
-                    return;
-
-                var type = transition.GetType();
-                var constructor = type.GetConstructor(Editor.AnimancerEditorUtilities.InstanceBindings, null, Type.EmptyTypes, null);
-                if (constructor == null)
-                {
-                    Debug.LogError("Parameterless constructor not found in " + type);
-                    return;
-                }
-
-                Editor.Serialization.RecordUndo(property);
-
-                constructor.Invoke(transition, null);
-
-                Editor.Serialization.OnPropertyChanged(property);
-            }
-
-            /************************************************************************************************************************/
 #endif
+
             /************************************************************************************************************************/
         }
 

@@ -34,20 +34,15 @@ namespace Animancer.Editor
         /// </summary>
         protected readonly string MainPropertyName;
 
-        /// <summary>
-        /// "." + <see cref="MainPropertyName"/> (to avoid creating garbage repeatedly).
-        /// </summary>
+        /// <summary>"." + <see cref="MainPropertyName"/> (to avoid creating garbage repeatedly).</summary>
         protected readonly string MainPropertyPathSuffix;
 
         /************************************************************************************************************************/
 
-        /// <summary>Constructs a new <see cref="TransitionDrawer"/>.</summary>
+        /// <summary>Creates a new <see cref="TransitionDrawer"/>.</summary>
         public TransitionDrawer() { }
 
-        /// <summary>
-        /// Constructs a new <see cref="TransitionDrawer"/> and sets the
-        /// <see cref="MainPropertyName"/>.
-        /// </summary>
+        /// <summary>Creates a new <see cref="TransitionDrawer"/> and sets the <see cref="MainPropertyName"/>.</summary>
         public TransitionDrawer(string mainPropertyName)
         {
             MainPropertyName = mainPropertyName;
@@ -90,9 +85,7 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Draws the root `property` GUI and calls <see cref="DoPropertyGUI"/> for each of its children.
-        /// </summary>
+        /// <summary>Draws the root `property` GUI and calls <see cref="DoPropertyGUI"/> for each of its children.</summary>
         public override void OnGUI(Rect area, SerializedProperty property, GUIContent label)
         {
             InitialiseMode(property);
@@ -171,7 +164,22 @@ namespace Animancer.Editor
             var mainProperty = GetMainProperty(property);
             if (mainProperty != null)
             {
+                var mainPropertyReferenceIsMissing =
+                    mainProperty.propertyType == SerializedPropertyType.ObjectReference &&
+                    mainProperty.objectReferenceValue == null;
+
                 DoPropertyGUI(ref area, property, mainProperty, label);
+
+                // If the main Object reference was just assigned and all fields were at their type default,
+                // reset the value to run its default constructor and field initialisers then reassign the reference.
+                var reference = mainProperty.objectReferenceValue;
+                if (mainPropertyReferenceIsMissing && reference != null)
+                {
+                    mainProperty.objectReferenceValue = null;
+                    if (Serialization.IsDefaultValueByType(property))
+                        Serialization.ResetValue(property);
+                    mainProperty.objectReferenceValue = reference;
+                }
 
                 if (_Mode != Mode.AlwaysExpanded)
                 {
@@ -349,29 +357,6 @@ namespace Animancer.Editor
             }
 
             return true;
-        }
-
-        /************************************************************************************************************************/
-
-        [InitializeOnLoadMethod]
-        private static void OnPropertyContextMenu()
-        {
-            EditorApplication.contextualPropertyMenu += (menu, property) =>
-            {
-                var accessor = property.GetAccessor();
-                while (accessor != null)
-                {
-                    if (typeof(ITransitionDetailed).IsAssignableFrom(accessor.FieldType))
-                    {
-                        property = property.serializedObject.FindProperty(accessor.GetPath());
-                        var transition = (ITransitionDetailed)accessor.GetValue(property);
-                        transition.AddItemsToContextMenu(menu, property, accessor);
-                        return;
-                    }
-
-                    accessor = accessor.Parent;
-                }
-            };
         }
 
         /************************************************************************************************************************/

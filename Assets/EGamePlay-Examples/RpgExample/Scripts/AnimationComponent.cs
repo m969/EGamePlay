@@ -13,6 +13,7 @@ public class AnimationComponent : MonoBehaviour
     public AnimationClip AttackAnimation;
     public AnimationClip SkillAnimation;
     public AnimationClip StunAnimation;
+    public AnimationClip[] AnimationClips;
     public float Speed { get; set; } = 1f;
     
     
@@ -25,6 +26,10 @@ public class AnimationComponent : MonoBehaviour
         AnimancerComponent.States.CreateIfNew(AttackAnimation);
         AnimancerComponent.States.CreateIfNew(SkillAnimation);
         AnimancerComponent.States.CreateIfNew(StunAnimation);
+        foreach (var item in AnimationClips)
+        {
+            AnimancerComponent.States.CreateIfNew(item);
+        }
     }
 
     public void Play(AnimationClip clip)

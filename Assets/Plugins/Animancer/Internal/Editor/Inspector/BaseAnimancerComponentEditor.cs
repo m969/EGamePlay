@@ -20,10 +20,6 @@ namespace Animancer.Editor
         /// <summary><see cref="UnityEditor.Editor.targets"/> casted to <see cref="IAnimancerComponent"/>.</summary>
         public IAnimancerComponent[] Targets => _Targets;
 
-        /// <summary>The serialized backing field for the target's <see cref="Animator"/> reference.</summary>
-        [NonSerialized]
-        private NestedAnimatorEditor _AnimatorEditor;
-
         /// <summary>The drawer for the <see cref="IAnimancerComponent.Playable"/>.</summary>
         private readonly AnimancerPlayableDrawer
             PlayableDrawer = new AnimancerPlayableDrawer();
@@ -36,8 +32,6 @@ namespace Animancer.Editor
             var targets = this.targets;
             _Targets = new IAnimancerComponent[targets.Length];
             GatherTargets();
-
-            _AnimatorEditor = new NestedAnimatorEditor(_Targets, serializedObject.FindProperty(_Targets[0].AnimatorFieldName));
         }
 
         /************************************************************************************************************************/
@@ -49,17 +43,6 @@ namespace Animancer.Editor
         {
             for (int i = 0; i < _Targets.Length; i++)
                 _Targets[i] = (IAnimancerComponent)targets[i];
-        }
-
-        /************************************************************************************************************************/
-
-        /// <summary>
-        /// Cleans up this <see cref="UnityEditor.Editor"/>.
-        /// </summary>
-        protected virtual void OnDisable()
-        {
-            if (_AnimatorEditor != null)
-                _AnimatorEditor.Destroy();
         }
 
         /************************************************************************************************************************/
@@ -77,7 +60,6 @@ namespace Animancer.Editor
 
             var area = GUILayoutUtility.GetRect(0, 0);
 
-            _AnimatorEditor.DoInspectorGUI();
             DoOtherFieldsGUI();
             PlayableDrawer.DoGUI(_Targets);
 
@@ -98,9 +80,17 @@ namespace Animancer.Editor
         /// </summary>
         public override bool RequiresConstantRepaint()
         {
-            if (_Targets.Length != 1 ||
-                !_Targets[0].IsPlayableInitialised)
+            if (_Targets.Length != 1)
                 return false;
+
+            var target = _Targets[0];
+            if (!target.IsPlayableInitialised)
+            {
+                if (!EditorApplication.isPlaying ||
+                    target.Animator == null ||
+                    target.Animator.runtimeAnimatorController == null)
+                    return false;
+            }
 
             if (AnimancerPlayableDrawer.RepaintConstantly)
                 return true;
@@ -113,12 +103,19 @@ namespace Animancer.Editor
         /// <summary>Draws the rest of the Inspector fields after the Animator field.</summary>
         protected void DoOtherFieldsGUI()
         {
-            var property = _AnimatorEditor.AnimatorProperty.Copy();
+            var property = serializedObject.GetIterator();
 
-            while (property.NextVisible(false))
+            if (!property.NextVisible(true))
+                return;
+
+            do
             {
                 using (ObjectPool.Disposable.Acquire<GUIContent>(out var label))
                 {
+                    var path = property.propertyPath;
+                    if (path == "m_Script")
+                        continue;
+
                     label.text = AnimancerGUI.GetNarrowText(property.displayName);
                     label.tooltip = property.tooltip;
 
@@ -130,6 +127,7 @@ namespace Animancer.Editor
                     EditorGUILayout.PropertyField(property, label, true);
                 }
             }
+            while (property.NextVisible(false));
         }
 
         /************************************************************************************************************************/

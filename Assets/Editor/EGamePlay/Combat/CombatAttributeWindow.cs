@@ -180,7 +180,7 @@ namespace EGamePlay.Combat
 		}
 
 
-        [MenuItem("Tools/EGamePlay/战斗属性编辑界面")]
+        //[MenuItem("Tools/EGamePlay/战斗属性编辑界面")]
         private static void ShowWindow()
 		{
 			var window = GetWindowWithRect<CombatAttributeWindow>(new Rect(0, 0, 800, 600), true, "战斗属性编辑界面");

@@ -33,6 +33,7 @@ namespace EGamePlay.Combat.Ability
             try
             {
                 var projectile = GameObject.Instantiate(CastProjectileData.ProjectilePrefab);
+                projectile.SetActive(true);
                 projectile.transform.position = GetParent<CombatEntity>().Position + Vector3.up;
 
                 while (true)

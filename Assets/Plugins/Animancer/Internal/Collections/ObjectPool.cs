@@ -246,7 +246,7 @@ namespace Animancer
                 if (count < value)
                 {
                     if (Items.Capacity < value)
-                        Items.Capacity = value;
+                        Items.Capacity = Mathf.NextPowerOfTwo(value);
 
                     do
                     {

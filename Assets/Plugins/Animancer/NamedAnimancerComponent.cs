@@ -90,12 +90,13 @@ namespace Animancer
 
 #if UNITY_EDITOR
         /// <summary>[Editor-Only]
-        /// Called by the Unity Editor in Edit Mode whenever an instance of this script is loaded or a value is changed
-        /// in the Inspector.
-        /// <para></para>
         /// Uses <see cref="ClipState.ValidateClip"/> to ensure that all of the clips in the <see cref="Animations"/>
         /// array are supported by the <see cref="Animancer"/> system and removes any others.
         /// </summary>
+        /// <remarks>
+        /// Called by the Unity Editor in Edit Mode whenever an instance of this script is loaded or a value is changed
+        /// in the Inspector.
+        /// </remarks>
         protected virtual void OnValidate()
         {
             if (_Animations == null)
@@ -126,11 +127,8 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by Unity when this component is being loaded.
-        /// <para></para>
-        /// Creates a state for each clip in the <see cref="Animations"/> array.
-        /// </summary>
+        /// <summary>Creates a state for each clip in the <see cref="Animations"/> array.</summary>
+        /// <remarks>Called by Unity when this component is being loaded.</remarks>
         protected virtual void Awake()
         {
             if (_Animations != null && _Animations.Length > 0)
@@ -140,12 +138,11 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity when this component becomes enabled and active.
-        /// <para></para>
         /// Plays the first clip in the <see cref="Animations"/> array if <see cref="PlayAutomatically"/> is true.
         /// <para></para>
-        /// Plays the <see cref="PlayableGraph"/> if it was stopped.
+        /// Ensures that the <see cref="PlayableGraph"/> is playing.
         /// </summary>
+        /// <remarks>Called by Unity when this component becomes enabled and active.</remarks>
         protected override void OnEnable()
         {
             base.OnEnable();

@@ -21,16 +21,19 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: false
     - Name: Effects
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.DamageEffect, EGamePlay
+      Data: 1|EGamePlay.Combat.DamageEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -76,7 +79,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: 1004
+  Id: 1004
   Name: "\u8840\u7EA2\u6FC0\u5149\u70AE"
   SkillSpellType: 0
   TargetSelectType: 3
@@ -87,8 +90,7 @@ MonoBehaviour:
   AffectTargetType: 2
   ColdTime: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillAnimationClip: {fileID: 0}
-  SkillEffectObject: {fileID: 7309238267138036022, guid: 78e17007713a29b4ba1643b3a41eee9e,
+  SkillExecutionAsset: {fileID: 6525200920727234715, guid: e91ff95ebfb4f5b4ca96861b6fbb1d10,
     type: 3}
   SkillAudio: {fileID: 0}
   SkillDescription: 

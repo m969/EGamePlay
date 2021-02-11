@@ -160,20 +160,18 @@ namespace Animancer
                 runner._IsLooping = state.IsLooping;
                 runner._State = state;
                 state._EventRunner = runner;
-                state.Root.RequireUpdate(runner);
+                state.Root?.RequireUpdate(runner);
             }
 
             /************************************************************************************************************************/
 
-            /// <summary>
-            /// Returns this <see cref="EventRunner"/> to the <see cref="ObjectPool"/>.
-            /// </summary>
+            /// <summary>Returns this <see cref="EventRunner"/> to the <see cref="ObjectPool"/>.</summary>
             private void Release()
             {
                 if (_State == null)
                     return;
 
-                _State.Root.CancelUpdate(this);
+                _State.Root?.CancelUpdate(this);
 
                 Events = null;
                 _State._EventRunner = null;
@@ -599,7 +597,7 @@ namespace Animancer
                         _WasPlayingForwards = false;
 
                         if (_IsLooping)
-                            previousTime = previousTime.Wrap01();
+                            previousTime = AnimancerUtilities.Wrap01(previousTime);
 
                         while (_NextEventIndex > 0 &&
                             _Events[_NextEventIndex].normalizedTime > previousTime)
@@ -623,7 +621,7 @@ namespace Animancer
 
                         var previousTime = _PreviousTime;
                         if (_IsLooping)
-                            previousTime = previousTime.Wrap01();
+                            previousTime = AnimancerUtilities.Wrap01(previousTime);
 
                         var max = _Events.Count - 1;
                         while (_NextEventIndex < max &&

@@ -23,18 +23,23 @@ namespace Animancer
     /// </remarks>
     /// https://kybernetik.com.au/animancer/api/Animancer/AnimancerLayer
     /// 
-    public sealed class AnimancerLayer : AnimancerNode, IAnimationClipCollection, IHasIK
+    public sealed class AnimancerLayer : AnimancerNode, IAnimationClipCollection
     {
         /************************************************************************************************************************/
         #region Fields and Properties
         /************************************************************************************************************************/
 
-        /// <summary>[Internal] Constructs a new <see cref="AnimancerLayer"/>.</summary>
+        /// <summary>[Internal] Creates a new <see cref="AnimancerLayer"/>.</summary>
         internal AnimancerLayer(AnimancerPlayable root, int index)
         {
             Root = root;
             Index = index;
             CreatePlayable();
+
+            if (ApplyParentAnimatorIK)
+                _ApplyAnimatorIK = root.ApplyAnimatorIK;
+            if (ApplyParentFootIK)
+                _ApplyFootIK = root.ApplyFootIK;
         }
 
         /************************************************************************************************************************/
@@ -114,10 +119,8 @@ namespace Animancer
             Root.Layers.SetMask(Index, mask);
         }
 
-#if UNITY_EDITOR
-        /// <summary>[Editor-Only]
-        /// The <see cref="AvatarMask"/> that determines which bones this layer will affect.
-        /// </summary>
+#if UNITY_ASSERTIONS
+        /// <summary>[Assert-Only] The <see cref="AvatarMask"/> that determines which bones this layer will affect.</summary>
         internal AvatarMask _Mask;
 #endif
 
@@ -407,13 +410,8 @@ namespace Animancer
         /************************************************************************************************************************/
         #region Play Management
         /************************************************************************************************************************/
-        // Starting
-        /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by <see cref="AnimancerNode.StartFade"/> (when this layer starts fading, not when one of its states
-        /// starts fading). Clears the <see cref="AnimancerState.Events"/> of all states.
-        /// </summary>
+        /// <inheritdoc/>
         protected internal override void OnStartFade()
         {
             for (int i = States.Count - 1; i >= 0; i--)
@@ -421,21 +419,22 @@ namespace Animancer
         }
 
         /************************************************************************************************************************/
+        // Play Immediately.
+        /************************************************************************************************************************/
 
-        /// <summary>
-        /// Stops all other animations, plays the `clip`, and returns its state.
-        /// <para></para>
+        /// <summary>Stops all other animations, plays the `clip`, and returns its state.</summary>
+        /// <remarks>
         /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
         /// To restart it from the beginning you can use <c>...Play(clip).Time = 0;</c>.
-        /// </summary>
-        public AnimancerState Play(AnimationClip clip) => Play(GetOrCreateState(clip));
+        /// </remarks>
+        public AnimancerState Play(AnimationClip clip)
+            => Play(GetOrCreateState(clip));
 
-        /// <summary>
-        /// Stops all other animations, plays the `state`, and returns it.
-        /// <para></para>
+        /// <summary>Stops all other animations, plays the `state`, and returns it.</summary>
+        /// <remarks>
         /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
-        /// If you wish to force it back to the start, you can simply set the `state`s time to 0.
-        /// </summary>
+        /// To restart it from the beginning you can use <c>...Play(clip).Time = 0;</c>.
+        /// </remarks>
         public AnimancerState Play(AnimancerState state)
         {
             if (Weight == 0 && TargetWeight == 0)
@@ -457,29 +456,15 @@ namespace Animancer
             return state;
         }
 
-        /// <summary>
-        /// Creates a state for the `transition` if it didn't already exist, then calls
-        /// <see cref="Play(AnimancerState)"/> or <see cref="Play(AnimancerState, float, FadeMode)"/>
-        /// depending on the <see cref="ITransition.FadeDuration"/>.
-        /// </summary>
-        public AnimancerState Play(ITransition transition) => Play(transition, transition.FadeDuration, transition.FadeMode);
-
-        /// <summary>
-        /// Stops all other animations, plays the animation registered with the `key`, and returns that
-        /// state. If no state is registered with the `key`, this method does nothing and returns null.
-        /// <para></para>
-        /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
-        /// If you wish to force it back to the start, you can simply set the returned state's time to 0.
-        /// on the returned state.
-        /// </summary>
-        public AnimancerState Play(object key) => Root.States.TryGet(key, out var state) ? Play(state) : null;
-
+        /************************************************************************************************************************/
+        // Cross Fade.
         /************************************************************************************************************************/
 
         /// <summary>
         /// Starts fading in the `clip` over the course of the `fadeDuration` while fading out all others in the same
         /// layer. Returns its state.
-        /// <para></para>
+        /// </summary>
+        /// <remarks>
         /// If the `state` was already playing and fading in with less time remaining than the `fadeDuration`, this
         /// method will allow it to complete the existing fade rather than starting a slower one.
         /// <para></para>
@@ -487,14 +472,15 @@ namespace Animancer
         /// and simply <see cref="AnimancerState.Play"/> the `state`.
         /// <para></para>
         /// <em>Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in runtime builds.</em>
-        /// </summary>
+        /// </remarks>
         public AnimancerState Play(AnimationClip clip, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
             => Play(Root.States.GetOrCreate(clip), fadeDuration, mode);
 
         /// <summary>
         /// Starts fading in the `state` over the course of the `fadeDuration` while fading out all others in this
         /// layer. Returns the `state`.
-        /// <para></para>
+        /// </summary>
+        /// <remarks>
         /// If the `state` was already playing and fading in with less time remaining than the `fadeDuration`, this
         /// method will allow it to complete the existing fade rather than starting a slower one.
         /// <para></para>
@@ -502,15 +488,17 @@ namespace Animancer
         /// and simply <see cref="AnimancerState.Play"/> the `state`.
         /// <para></para>
         /// <em>Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in runtime builds.</em>
-        /// </summary>
+        /// </remarks>
         public AnimancerState Play(AnimancerState state, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
         {
-            if (fadeDuration <= 0 ||// With no fade duration, Play immediately.
-                (Index == 0 && Weight == 0))// First animation on Layer 0 snap Weight to 1.
+            // Skip the fade if:
+            if (fadeDuration <= 0 ||// There is no duration.
+                (Root.SkipFirstFade && Index == 0 && Weight == 0))// Or this is Layer 0 and it has no weight.
             {
                 if (mode == FadeMode.FromStart || mode == FadeMode.NormalizedFromStart)
                     state.Time = 0;
 
+                Weight = 1;
                 return Play(state);
             }
 
@@ -547,6 +535,18 @@ namespace Animancer
             return state;
         }
 
+        /************************************************************************************************************************/
+        // Transition.
+        /************************************************************************************************************************/
+
+        /// <summary>
+        /// Creates a state for the `transition` if it didn't already exist, then calls
+        /// <see cref="Play(AnimancerState)"/> or <see cref="Play(AnimancerState, float, FadeMode)"/>
+        /// depending on the <see cref="ITransition.FadeDuration"/>.
+        /// </summary>
+        public AnimancerState Play(ITransition transition)
+            => Play(transition, transition.FadeDuration, transition.FadeMode);
+
         /// <summary>
         /// Creates a state for the `transition` if it didn't already exist, then calls
         /// <see cref="Play(AnimancerState)"/> or <see cref="Play(AnimancerState, float, FadeMode)"/>
@@ -560,10 +560,27 @@ namespace Animancer
             return state;
         }
 
+        /************************************************************************************************************************/
+        // Try Play.
+        /************************************************************************************************************************/
+
         /// <summary>
-        /// Starts fading in the animation registered with the `key` over the course of the `fadeDuration` while fading
-        /// out all others in the same layer. Returns the animation's state (or null if none was registered).
-        /// <para></para>
+        /// Stops all other animations on the same layer, plays the animation registered with the `key`, and returns
+        /// that state. Or if no state is registered with that `key`, this method does nothing and returns null.
+        /// </summary>
+        /// <remarks>
+        /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
+        /// To restart it from the beginning you can simply set the returned state's time to 0.
+        /// </remarks>
+        public AnimancerState TryPlay(object key)
+            => Root.States.TryGet(key, out var state) ? Play(state) : null;
+
+        /// <summary>
+        /// Starts fading in the animation registered with the `key` while fading out all others in the same layer
+        /// over the course of the `fadeDuration`. Or if no state is registered with that `key`, this method does
+        /// nothing and returns null.
+        /// </summary>
+        /// <remarks>
         /// If the `state` was already playing and fading in with less time remaining than the `fadeDuration`, this
         /// method will allow it to complete the existing fade rather than starting a slower one.
         /// <para></para>
@@ -571,8 +588,8 @@ namespace Animancer
         /// and simply <see cref="AnimancerState.Play"/> the `state`.
         /// <para></para>
         /// <em>Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in runtime builds.</em>
-        /// </summary>
-        public AnimancerState Play(object key, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
+        /// </remarks>
+        public AnimancerState TryPlay(object key, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
             => Root.States.TryGet(key, out var state) ? Play(state, fadeDuration, mode) : null;
 
         /************************************************************************************************************************/
@@ -806,6 +823,32 @@ namespace Animancer
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
+        #region Inverse Kinematics
+        /************************************************************************************************************************/
+
+        private bool _ApplyAnimatorIK;
+
+        /// <inheritdoc/>
+        public override bool ApplyAnimatorIK
+        {
+            get => _ApplyAnimatorIK;
+            set => base.ApplyAnimatorIK = _ApplyAnimatorIK = value;
+        }
+
+        /************************************************************************************************************************/
+
+        private bool _ApplyFootIK;
+
+        /// <inheritdoc/>
+        public override bool ApplyFootIK
+        {
+            get => _ApplyFootIK;
+            set => base.ApplyFootIK = _ApplyFootIK = value;
+        }
+
+        /************************************************************************************************************************/
+        #endregion
+        /************************************************************************************************************************/
         #region Inspector
         /************************************************************************************************************************/
 
@@ -819,13 +862,13 @@ namespace Animancer
         /// <summary>The Inspector display name of this layer.</summary>
         public override string ToString()
         {
-#if UNITY_EDITOR
-            if (EditorName == null)
+#if UNITY_ASSERTIONS
+            if (DebugName == null)
             {
                 if (_Mask != null)
                     return _Mask.name;
 
-                SetEditorName(Index == 0 ? "Base Layer" : "Layer " + Index);
+                SetDebugName(Index == 0 ? "Base Layer" : "Layer " + Index);
             }
 
             return base.ToString();
@@ -845,7 +888,7 @@ namespace Animancer
             text.Append(delimiter).Append($"{nameof(CommandCount)}: ").Append(CommandCount);
             text.Append(delimiter).Append($"{nameof(IsAdditive)}: ").Append(IsAdditive);
 
-#if UNITY_EDITOR
+#if UNITY_ASSERTIONS
             text.Append(delimiter).Append($"{nameof(AvatarMask)}: ").Append(AnimancerUtilities.ToStringOrNull(_Mask));
 #endif
         }

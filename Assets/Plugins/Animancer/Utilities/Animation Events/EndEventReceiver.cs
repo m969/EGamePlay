@@ -44,10 +44,8 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Called by Animation Events with the Function Name "End".
-        /// Calls <see cref="End(AnimancerComponent, AnimationEvent)"/>.
-        /// </summary>
+        /// <summary>Calls <see cref="End(AnimancerComponent, AnimationEvent)"/>.</summary>
+        /// <remarks>Called by Animation Events with the Function Name "End".</remarks>
         private void End(AnimationEvent animationEvent)
         {
             End(_Animancer, animationEvent);
@@ -139,8 +137,9 @@ namespace Animancer
             for (int i = 0; i < childCount; i++)
             {
                 var child = node.GetChild(i);
-                if (TryInvokeOnEndEvent(child, animationEvent) ||
-                    TryInvokeOnEndEventRecursive(child, animationEvent))
+                if (child != null &&
+                    (TryInvokeOnEndEvent(child, animationEvent) ||
+                    TryInvokeOnEndEventRecursive(child, animationEvent)))
                     return true;
             }
 

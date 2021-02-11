@@ -17,54 +17,38 @@ namespace Animancer
     {
         /************************************************************************************************************************/
 
-        private Parameter _Parameter;
+        private ParameterID _ParameterID;
 
-        /// <summary>
-        /// The name of the parameter which <see cref="Parameter"/> will get and set.
-        /// This will be null if the <see cref="ParameterHash"/> was assigned directly.
-        /// </summary>
-        public string ParameterName
+        /// <summary>The identifier of the parameter which <see cref="Parameter"/> will get and set.</summary>
+        public new ParameterID ParameterID
         {
-            get => _Parameter.Name;
+            get => _ParameterID;
             set
             {
-                _Parameter.Name = value;
-                _Parameter.ValidateHasParameter(Controller, AnimatorControllerParameterType.Float);
-            }
-        }
-
-        /// <summary>
-        /// The name hash of the parameter which <see cref="Parameter"/> will get and set.
-        /// </summary>
-        public int ParameterHash
-        {
-            get => _Parameter.Hash;
-            set
-            {
-                _Parameter.Hash = value;
-                _Parameter.ValidateHasParameter(Controller, AnimatorControllerParameterType.Float);
+                _ParameterID = value;
+                _ParameterID.ValidateHasParameter(Controller, AnimatorControllerParameterType.Float);
             }
         }
 
         /// <summary>
         /// Gets and sets a float parameter in the <see cref="ControllerState.Controller"/> using the
-        /// <see cref="ParameterHash"/> as the id.
+        /// <see cref="ParameterID"/>.
         /// </summary>
-        public new float Parameter
+        public float Parameter
         {
-            get => Playable.GetFloat(_Parameter);
-            set => Playable.SetFloat(_Parameter, value);
+            get => Playable.GetFloat(_ParameterID.Hash);
+            set => Playable.SetFloat(_ParameterID.Hash, value);
         }
 
         /************************************************************************************************************************/
 
-        /// <summary>Constructs a new <see cref="Float1ControllerState"/> to play the `controller`.</summary>
-        public Float1ControllerState(RuntimeAnimatorController controller, Parameter parameter,
-            bool resetStatesOnStop = true)
-            : base(controller, resetStatesOnStop)
+        /// <summary>Creates a new <see cref="Float1ControllerState"/> to play the `controller`.</summary>
+        public Float1ControllerState(RuntimeAnimatorController controller, ParameterID parameter,
+            bool keepStateOnStop = false)
+            : base(controller, keepStateOnStop)
         {
-            _Parameter = parameter;
-            _Parameter.ValidateHasParameter(controller, AnimatorControllerParameterType.Float);
+            _ParameterID = parameter;
+            _ParameterID.ValidateHasParameter(controller, AnimatorControllerParameterType.Float);
         }
 
         /************************************************************************************************************************/
@@ -73,7 +57,7 @@ namespace Animancer
         public override int ParameterCount => 1;
 
         /// <inheritdoc/>
-        public override int GetParameterHash(int index) => ParameterHash;
+        public override int GetParameterHash(int index) => _ParameterID;
 
         /************************************************************************************************************************/
         #region Transition
@@ -99,17 +83,15 @@ namespace Animancer
             [SerializeField]
             private string _ParameterName;
 
-            /// <summary>[<see cref="SerializeField"/>]
-            /// The <see cref="Float1ControllerState.ParameterName"/> that will be used for the created state.
-            /// </summary>
+            /// <summary>[<see cref="SerializeField"/>] The name that will be used to access <see cref="Parameter"/>.</summary>
             public ref string ParameterName => ref _ParameterName;
 
             /************************************************************************************************************************/
 
-            /// <summary>Constructs a new <see cref="Transition"/>.</summary>
+            /// <summary>Creates a new <see cref="Transition"/>.</summary>
             public Transition() { }
 
-            /// <summary>Constructs a new <see cref="Transition"/> with the specified Animator Controller and parameter.</summary>
+            /// <summary>Creates a new <see cref="Transition"/> with the specified Animator Controller and parameter.</summary>
             public Transition(RuntimeAnimatorController controller, string parameterName)
             {
                 Controller = controller;
@@ -147,7 +129,7 @@ namespace Animancer
                 /************************************************************************************************************************/
 
                 /// <summary>
-                /// Constructs a new <see cref="Drawer"/> and sets the
+                /// Creates a new <see cref="Drawer"/> and sets the
                 /// <see cref="ControllerState.Transition.Drawer.Parameters"/>.
                 /// </summary>
                 public Drawer() : base(nameof(_ParameterName)) { }

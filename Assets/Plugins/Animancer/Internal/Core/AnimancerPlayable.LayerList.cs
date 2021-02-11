@@ -39,7 +39,7 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>[Internal] Constructs a new <see cref="LayerList"/>.</summary>
+            /// <summary>[Internal] Creates a new <see cref="LayerList"/>.</summary>
             internal LayerList(AnimancerPlayable root, out Playable layerMixer)
             {
                 Root = root;
@@ -108,24 +108,6 @@ namespace Animancer
             {
                 if (Count < min)
                     Count = min;
-            }
-
-            /************************************************************************************************************************/
-
-            /// <summary>[Pro-Only]
-            /// Sets the <see cref="AnimationLayerMixerPlayable"/> to have at least two inputs because a Unity Bug
-            /// (1159548) causes it to ignore the <see cref="AnimancerNode.Weight"/> of the layer when there is only
-            /// one. Usually this does not matter, however in Unity 2019.1+ it is possible to blend Animancer with
-            /// the regular <see cref="Animator.runtimeAnimatorController"/> field as long as it's using a Generic Rig,
-            /// in which case the layer weight is important.
-            /// </summary>
-            public void RespectSingleLayerWeight()
-            {
-                if (Count < 2)
-                {
-                    Count = 1;
-                    Root._LayerMixer.SetInputCount(2);
-                }
             }
 
             /************************************************************************************************************************/
@@ -312,12 +294,11 @@ namespace Animancer
             {
                 SetMinCount(index + 1);
 
-#if UNITY_EDITOR
+#if UNITY_ASSERTIONS
                 _Layers[index]._Mask = mask;
 #endif
 
-                if (mask == null)
-                    mask = new AvatarMask();
+                AnimancerUtilities.NewIfNull(ref mask);
 
                 LayerMixer.SetLayerMaskFromAvatarMask((uint)index, mask);
             }
@@ -329,7 +310,7 @@ namespace Animancer
             /// so any calls to this method will automatically be compiled out of runtime builds.
             /// </summary>
             [System.Diagnostics.Conditional(Strings.UnityEditor)]
-            public void SetName(int index, string name) => this[index].SetEditorName(name);
+            public void SetName(int index, string name) => this[index].SetDebugName(name);
 
             /************************************************************************************************************************/
 

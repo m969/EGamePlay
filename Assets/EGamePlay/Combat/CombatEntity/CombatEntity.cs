@@ -14,6 +14,7 @@ namespace EGamePlay.Combat
     public sealed class CombatEntity : Entity
     {
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
+        public SkillExecution CurrentSkillExecution { get; set; }
         public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
         public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
         public Dictionary<string, List<StatusAbility>> TypeIdStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
@@ -94,7 +95,7 @@ namespace EGamePlay.Combat
         public T AttachSkill<T>(object configObject) where T : SkillAbility, new()
         {
             var skill = AttachAbility<T>(configObject);
-            NameSkills.Add(skill.SkillConfigObject.Name, skill);
+            NameSkills.Add(skill.SkillConfig.Name, skill);
             return skill;
         }
 

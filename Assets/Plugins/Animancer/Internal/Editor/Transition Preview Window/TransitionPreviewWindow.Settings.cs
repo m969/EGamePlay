@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Animancer.Editor
 {
@@ -157,22 +158,14 @@ namespace Animancer.Editor
 
                     EditorGUILayout.ObjectField(model);
 
-                    if (GUILayout.Button("x", AnimancerGUI.MiniButton) || model.objectReferenceValue == null)
+                    if (GUILayout.Button("x", AnimancerGUI.MiniButton))
                     {
                         Serialization.RemoveArrayElement(property, i);
                         property.serializedObject.ApplyModifiedProperties();
 
-                        if (Event.current.type == EventType.Layout)
-                        {
-                            i--;
-                            count--;
-                        }
-                        else
-                        {
-                            AnimancerGUI.Deselect();
-                            GUIUtility.ExitGUI();
-                            return;
-                        }
+                        AnimancerGUI.Deselect();
+                        GUIUtility.ExitGUI();
+                        return;
                     }
 
                     GUILayout.Space(EditorStyles.objectField.margin.right);
@@ -189,7 +182,34 @@ namespace Animancer.Editor
             private List<GameObject> _Models;
 
             public static List<GameObject> Models
-                => Instance._Models ?? (Instance._Models = new List<GameObject>());
+            {
+                get
+                {
+                    if (AnimancerUtilities.NewIfNull(ref Instance._Models))
+                        return Instance._Models;
+
+                    var previousModels = ObjectPool.AcquireSet<Object>();
+                    var modified = false;
+                    for (int i = Instance._Models.Count - 1; i >= 0; i--)
+                    {
+                        var model = Instance._Models[i];
+                        if (model == null || previousModels.Contains(model))
+                        {
+                            Instance._Models.RemoveAt(i);
+                            modified = true;
+                        }
+                        else
+                        {
+                            previousModels.Add(model);
+                        }
+                    }
+                    ObjectPool.Release(previousModels);
+                    if (modified)
+                        ModelsProperty.OnPropertyChanged();
+
+                    return Instance._Models;
+                }
+            }
 
             private static SerializedProperty ModelsProperty => Instance.GetSerializedProperty(nameof(_Models));
 
@@ -294,8 +314,7 @@ namespace Animancer.Editor
                 if (exceptions == null || exceptions.Count == 0)
                     return;
 
-                if (_ExceptionDetails == null)
-                    _ExceptionDetails = new List<ExceptionDetails>(exceptions.Capacity);
+                AnimancerUtilities.NewIfNull(ref _ExceptionDetails);
 
                 if (Event.current.type == EventType.Layout)
                 {

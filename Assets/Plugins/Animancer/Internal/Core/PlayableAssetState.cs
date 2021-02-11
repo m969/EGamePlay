@@ -46,8 +46,48 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
+        /// <inheritdoc/>
+        protected override void OnSetIsPlaying()
+        {
+            var inputCount = _Playable.GetInputCount();
+            for (int i = 0; i < inputCount; i++)
+            {
+                var playable = _Playable.GetInput(i);
+                if (!playable.IsValid())
+                    continue;
+
+                if (IsPlaying)
+                    playable.Play();
+                else
+                    playable.Pause();
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>IK cannot be dynamically enabled on a <see cref="PlayableAssetState"/>.</summary>
+        public override void CopyIKFlags(AnimancerNode node) { }
+
+        /************************************************************************************************************************/
+
         /// <summary>IK cannot be dynamically enabled on a <see cref="PlayableAssetState"/>.</summary>
         public override bool ApplyAnimatorIK
+        {
+            get => false;
+            set
+            {
+#if UNITY_ASSERTIONS
+                if (value)
+                    OptionalWarning.UnsupportedIK.Log(
+                        $"IK cannot be dynamically enabled on a {nameof(PlayableAssetState)}.", Root?.Component);
+#endif
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>IK cannot be dynamically enabled on a <see cref="PlayableAssetState"/>.</summary>
+        public override bool ApplyFootIK
         {
             get => false;
             set
@@ -66,7 +106,7 @@ namespace Animancer
         #region Methods
         /************************************************************************************************************************/
 
-        /// <summary>Constructs a new <see cref="PlayableAssetState"/> to play the `asset`.</summary>
+        /// <summary>Creates a new <see cref="PlayableAssetState"/> to play the `asset`.</summary>
         /// <exception cref="ArgumentNullException">The `asset` is null.</exception>
         public PlayableAssetState(PlayableAsset asset)
         {
@@ -81,10 +121,10 @@ namespace Animancer
         /// <inheritdoc/>
         protected override void CreatePlayable(out Playable playable)
         {
-            var root = Root;
-            playable = _Asset.CreatePlayable(root._Graph, root.Component.gameObject);
+            playable = _Asset.CreatePlayable(Root._Graph, Root.Component.gameObject);
             _Length = (float)_Asset.duration;
-            InitialiseBindings(root);
+            if (!_HasInitialisedBindings)
+                InitialiseBindings();
         }
 
         /************************************************************************************************************************/
@@ -94,15 +134,14 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>The objects controlled by each Timeline Track.</summary>
+        /// <summary>The objects controlled by each track in the asset.</summary>
         public IList<Object> Bindings
         {
             get => _Bindings;
             set
             {
                 _Bindings = value;
-                _HasInitialisedBindings = false;
-                InitialiseBindings(Root);
+                InitialiseBindings();
             }
         }
 
@@ -116,9 +155,9 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        private void InitialiseBindings(AnimancerPlayable root)
+        private void InitialiseBindings()
         {
-            if (_HasInitialisedBindings || _Bindings == null || root == null)
+            if (_Bindings == null || Root == null)
                 return;
 
             _HasInitialisedBindings = true;
@@ -128,7 +167,7 @@ namespace Animancer
                 return;
 
             var output = _Asset.outputs.GetEnumerator();
-            var graph = root._Graph;
+            var graph = Root._Graph;
 
             for (int i = 0; i < bindingCount; i++)
             {
@@ -142,7 +181,7 @@ namespace Animancer
                 }
 
                 var binding = _Bindings[i];
-                if (binding == null)
+                if (binding == null && type != null)
                     continue;
 
 #if UNITY_ASSERTIONS
@@ -313,10 +352,7 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>
-            /// Called by <see cref="AnimancerPlayable.Play(ITransition)"/> to apply the <see cref="Speed"/>
-            /// and <see cref="NormalizedStartTime"/>.
-            /// </summary>
+            /// <inheritdoc/>
             public override void Apply(AnimancerState state)
             {
                 base.Apply(state);
@@ -351,7 +387,7 @@ namespace Animancer
             {
                 /************************************************************************************************************************/
 
-                /// <summary>Constructs a new <see cref="Drawer"/>.</summary>
+                /// <summary>Creates a new <see cref="Drawer"/>.</summary>
                 public Drawer() : base(nameof(_Asset)) { }
 
                 /************************************************************************************************************************/
@@ -461,39 +497,49 @@ namespace Animancer
                                 label = UnityEditor.EditorGUI.BeginProperty(area, label, property);
                                 var fieldArea = area;
                                 var obj = property.objectReferenceValue;
+                                var objExists = obj != null;
 
-                                if (i == 0 && type == typeof(Animator))
+                                if (objExists)
                                 {
-                                    label.tooltip = "This Animation Track is the first Track" +
-                                        " so it will automatically control the Animancer output and likely does not need a binding.";
-
-                                    if (obj != null)
+                                    if (i == 0 && type == typeof(Animator))
                                     {
-                                        GUI.color = Editor.AnimancerGUI.WarningFieldColor;
-
-                                        label.text = "x";
-
-                                        var xWidth = Editor.AnimancerGUI.CalculateWidth(miniButton, label);
-                                        var xArea = Editor.AnimancerGUI.StealFromRight(
-                                            ref fieldArea, xWidth, Editor.AnimancerGUI.StandardSpacing);
-                                        if (GUI.Button(xArea, label, miniButton))
-                                            property.objectReferenceValue = obj = null;
-
-                                        label.text = name;
+                                        DoRemoveButton(ref fieldArea, label, property, ref obj,
+                                            "This Animation Track is the first Track" +
+                                            " so it will automatically control the Animancer output and likely does not need a binding.");
+                                    }
+                                    else if (type == null)
+                                    {
+                                        DoRemoveButton(ref fieldArea, label, property, ref obj,
+                                            "This Animation Track does not need a binding.");
+                                        type = typeof(Object);
+                                    }
+                                    else if (!type.IsAssignableFrom(obj.GetType()))
+                                    {
+                                        DoRemoveButton(ref fieldArea, label, property, ref obj,
+                                            "This binding has the wrong type for this Animation Track.");
                                     }
                                 }
 
-                                property.objectReferenceValue =
-                                    UnityEditor.EditorGUI.ObjectField(fieldArea, label, obj, type, allowSceneObjects);
+                                if (type != null || objExists)
+                                {
+                                    property.objectReferenceValue =
+                                        UnityEditor.EditorGUI.ObjectField(fieldArea, label, obj, type, allowSceneObjects);
+                                }
+                                else
+                                {
+                                    UnityEditor.EditorGUI.LabelField(fieldArea, label);
+                                }
 
                                 UnityEditor.EditorGUI.EndProperty();
-
-                                GUI.color = color;
                             }
                             else
                             {
+                                GUI.color = Editor.AnimancerGUI.WarningFieldColor;
+
                                 UnityEditor.EditorGUI.PropertyField(area, property, false);
                             }
+
+                            GUI.color = color;
                         }
 
                         UnityEditor.EditorGUI.indentLevel--;
@@ -501,6 +547,27 @@ namespace Animancer
                     }
 
                     base.DoPropertyGUI(ref area, rootProperty, property, label);
+                }
+
+                /************************************************************************************************************************/
+
+                private static void DoRemoveButton(ref Rect area, GUIContent label, UnityEditor.SerializedProperty property,
+                    ref Object obj, string tooltip)
+                {
+                    label.tooltip = tooltip;
+                    GUI.color = Editor.AnimancerGUI.WarningFieldColor;
+                    var miniButton = Editor.AnimancerGUI.MiniButton;
+
+                    var text = label.text;
+                    label.text = "x";
+
+                    var xWidth = Editor.AnimancerGUI.CalculateWidth(miniButton, label);
+                    var xArea = Editor.AnimancerGUI.StealFromRight(
+                        ref area, xWidth, Editor.AnimancerGUI.StandardSpacing);
+                    if (GUI.Button(xArea, label, miniButton))
+                        property.objectReferenceValue = obj = null;
+
+                    label.text = text;
                 }
 
                 /************************************************************************************************************************/

@@ -1,10 +1,7 @@
 // Animancer // https://kybernetik.com.au/animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0618 // Type or member is obsolete (for ControllerStates in Animancer Lite).
-
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 
 namespace Animancer
 {
@@ -39,21 +36,23 @@ namespace Animancer
 
 #if UNITY_EDITOR
         /// <summary>[Editor-Only]
-        /// Called by the Unity Editor when this component is first added (in Edit Mode) and whenever the Reset command
-        /// is executed from its context menu.
-        /// <para></para>
         /// Sets <see cref="PlayAutomatically"/> = false by default so that <see cref="OnEnable"/> will play the
         /// <see cref="Controller"/> instead of the first animation in the
         /// <see cref="NamedAnimancerComponent.Animations"/> array.
         /// </summary>
+        /// <remarks>
+        /// Called by the Unity Editor when this component is first added (in Edit Mode) and whenever the Reset command
+        /// is executed from its context menu.
+        /// </remarks>
         protected override void Reset()
         {
-            // The base.Animator property is not assigned yet and we need it before base.Reset clears the controller.
-            var animator = Editor.AnimancerEditorUtilities.GetComponentInHierarchy<Animator>(gameObject);
-            if (animator != null && animator.runtimeAnimatorController != null)
-                Controller = animator.runtimeAnimatorController;
-
             base.Reset();
+
+            if (Animator != null)
+            {
+                Controller = Animator.runtimeAnimatorController;
+                Animator.runtimeAnimatorController = null;
+            }
 
             PlayAutomatically = false;
         }
@@ -62,11 +61,10 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity when this component becomes enabled and active.
-        /// <para></para>
         /// Plays the <see cref="Controller"/> if <see cref="PlayAutomatically"/> is false (otherwise it plays the
         /// first animation in the <see cref="NamedAnimancerComponent.Animations"/> array).
         /// </summary>
+        /// <remarks>Called by Unity when this component becomes enabled and active.</remarks>
         protected override void OnEnable()
         {
             PlayController();

@@ -43,16 +43,19 @@ namespace Animancer
         /// </summary>
         /// <remarks>
         /// Unlike <see cref="CreateState"/>, this method is called every time the transition is used so it can do
-        /// things like set the <see cref="AnimancerState.Events"/> or <see cref="AnimancerState.Time"/>.
+        /// things like set the <see cref="AnimancerState.Events"/> or starting <see cref="AnimancerState.Time"/>.
         /// </remarks>
         void Apply(AnimancerState state);
 
         /************************************************************************************************************************/
     }
 
-    /// <summary>
-    /// An <see cref="ITransition"/> with some additional details for the Unity Editor GUI.
-    /// </summary>
+    /// <summary>An <see cref="ITransition"/> with some additional details for the Unity Editor GUI.</summary>
+    /// <remarks>
+    /// Documentation: <see href="https://kybernetik.com.au/animancer/docs/manual/transitions">Transitions</see>
+    /// </remarks>
+    /// https://kybernetik.com.au/animancer/api/Animancer/ITransitionDetailed
+    /// 
     public interface ITransitionDetailed : ITransition
     {
         /************************************************************************************************************************/
@@ -66,8 +69,23 @@ namespace Animancer
         /// <summary>Determines how fast the animation plays (1x = normal speed).</summary>
         float Speed { get; set; }
 
+        /// <summary>Events which will be triggered as the animation plays.</summary>
+        AnimancerEvent.Sequence Events { get; }
+
+        /// <summary>[<see cref="SerializeField"/>] Events which will be triggered as the animation plays.</summary>
+        ref AnimancerEvent.Sequence.Serializable SerializedEvents { get; }
+
         /// <summary>The maximum amount of time the animation is expected to take (in seconds).</summary>
+        /// <remarks>The actual duration can vary in states like <see cref="MixerState"/>.</remarks>
         float MaximumDuration { get; }
+
+        /// <summary>The <see cref="Motion.averageAngularSpeed"/> that the created state will have.</summary>
+        /// <remarks>The actual average velocity can vary in states like <see cref="MixerState"/>.</remarks>
+        float AverageAngularSpeed { get; }
+
+        /// <summary>The <see cref="Motion.averageSpeed"/> that the created state will have.</summary>
+        /// <remarks>The actual average velocity can vary in states like <see cref="MixerState"/>.</remarks>
+        Vector3 AverageVelocity { get; }
 
         /// <summary>Indicates whether this transition can create a valid <see cref="AnimancerState"/>.</summary>
         bool IsValid { get; }
@@ -75,11 +93,116 @@ namespace Animancer
         /// <summary>The <see cref="AnimancerState.MainObject"/> that the created state will have.</summary>
         Object MainObject { get; }
 
-#if UNITY_EDITOR
-        /// <summary>[Editor-Only] Adds context menu functions for this transition.</summary>
-        void AddItemsToContextMenu(UnityEditor.GenericMenu menu, UnityEditor.SerializedProperty property,
-            Editor.Serialization.PropertyAccessor accessor);
-#endif
+        /************************************************************************************************************************/
+    }
+
+    public partial class AnimancerUtilities
+    {
+        /************************************************************************************************************************/
+
+        /// <summary>Calls <see cref="AnimancerPlayable.Play(AnimationClip)"/> or <see cref="AnimancerPlayable.Play(ITransition)"/>.</summary>
+        /// <remarks>Returns null if the `clipOrTransition` is null or an unsupported type.</remarks>
+        public static AnimancerState TryPlay(AnimancerPlayable animancer, Object clipOrTransition)
+        {
+            if (clipOrTransition is AnimationClip clip)
+                return animancer.Play(clip);
+            else if (clipOrTransition is ITransitionDetailed transition)
+                return animancer.Play(transition);
+            else
+                return null;
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Outputs the <see cref="Motion.averageAngularSpeed"/> or <see cref="ITransitionDetailed.AverageAngularSpeed"/>.</summary>
+        /// <remarks>Returns false if the `clipOrTransition` is null or an unsupported type.</remarks>
+        public static bool TryGetAverageAngularSpeed(Object clipOrTransition, out float averageAngularSpeed)
+        {
+            if (clipOrTransition is Motion motion)
+            {
+                averageAngularSpeed = motion.averageAngularSpeed;
+                return true;
+            }
+            else if (clipOrTransition is ITransitionDetailed transition)
+            {
+                averageAngularSpeed = transition.AverageAngularSpeed;
+                return true;
+            }
+            else
+            {
+                averageAngularSpeed = default;
+                return false;
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Outputs the <see cref="Motion.averageSpeed"/> or <see cref="ITransitionDetailed.AverageVelocity"/>.</summary>
+        /// <remarks>Returns false if the `clipOrTransition` is null or an unsupported type.</remarks>
+        public static bool TryGetAverageVelocity(Object clipOrTransition, out Vector3 averageVelocity)
+        {
+            if (clipOrTransition is Motion motion)
+            {
+                averageVelocity = motion.averageSpeed;
+                return true;
+            }
+            else if (clipOrTransition is ITransitionDetailed transition)
+            {
+                averageVelocity = transition.AverageVelocity;
+                return true;
+            }
+            else
+            {
+                averageVelocity = default;
+                return false;
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Outputs the <see cref="Motion.isLooping"/> or <see cref="ITransitionDetailed.IsLooping"/>.</summary>
+        /// <remarks>Returns false if the `clipOrTransition` is null or an unsupported type.</remarks>
+        public static bool TryGetIsLooping(Object clipOrTransition, out bool isLooping)
+        {
+            if (clipOrTransition is Motion motion)
+            {
+                isLooping = motion.isLooping;
+                return true;
+            }
+            else if (clipOrTransition is ITransitionDetailed transition)
+            {
+                isLooping = transition.IsLooping;
+                return true;
+            }
+            else
+            {
+                isLooping = false;
+                return false;
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Outputs the <see cref="AnimationClip.length"/> or <see cref="ITransitionDetailed.MaximumDuration"/>.</summary>
+        /// <remarks>Returns false if the `clipOrTransition` is null or an unsupported type.</remarks>
+        public static bool TryGetLength(Object clipOrTransition, out float length)
+        {
+            if (clipOrTransition is AnimationClip clip)
+            {
+                length = clip.length;
+                return true;
+            }
+            else if (clipOrTransition is ITransitionDetailed transition)
+            {
+                length = transition.MaximumDuration;
+                return true;
+            }
+            else
+            {
+                length = 0;
+                return false;
+            }
+        }
 
         /************************************************************************************************************************/
     }

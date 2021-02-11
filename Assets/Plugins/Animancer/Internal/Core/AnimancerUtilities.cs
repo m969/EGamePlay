@@ -18,12 +18,23 @@ namespace Animancer
         #region Misc
         /************************************************************************************************************************/
 
-        /// <summary>[Animancer Extension] Loops the `value` so that <c>0 &lt;= value &lt; 1</c>.</summary>
-        /// <remarks>This is more efficient than using <see cref="Mathf.Repeat"/> with a length of 1.</remarks>
-        public static float Wrap01(this float value)
+        /// <summary>Loops the `value` so that <c>0 &lt;= value &lt; 1</c>.</summary>
+        /// <remarks>This is more efficient than using <see cref="Wrap"/> with a <c>length</c> of 1.</remarks>
+        public static float Wrap01(float value)
         {
             var valueAsDouble = (double)value;
-            return (float)(valueAsDouble - Math.Floor(valueAsDouble));
+            value = (float)(valueAsDouble - Math.Floor(valueAsDouble));
+            return value < 1 ? value : 0;
+        }
+
+        /// <summary>Loops the `value` so that <c>0 &lt;= value &lt; length</c>.</summary>
+        /// <remarks>Unike <see cref="Mathf.Repeat"/>, this method will never return the `length`.</remarks>
+        public static float Wrap(float value, float length)
+        {
+            var valueAsDouble = (double)value;
+            var lengthAsDouble = (double)length;
+            value = (float)(valueAsDouble - Math.Floor(valueAsDouble / lengthAsDouble) * lengthAsDouble);
+            return value < length ? value : 0;
         }
 
         /************************************************************************************************************************/
@@ -31,6 +42,19 @@ namespace Animancer
         /// <summary>[Animancer Extension] Returns true as long as the `value` is not NaN or Infinity.</summary>
         /// <remarks>Newer versions of the .NET framework apparently have a <c>float.IsFinite</c> method.</remarks>
         public static bool IsFinite(this float value) => !float.IsNaN(value) && !float.IsInfinity(value);
+
+        /************************************************************************************************************************/
+
+        /// <summary>Assigns a new <typeparamref name="T"/> and returns true if `t` is null.</summary>
+        public static bool NewIfNull<T>(ref T t) where T : class, new()
+        {
+            if (t == null)
+            {
+                t = new T();
+                return true;
+            }
+            else return false;
+        }
 
         /************************************************************************************************************************/
 
@@ -70,7 +94,6 @@ namespace Animancer
         /// </summary>
         public static T AddAnimancerComponent<T>(this Animator animator) where T : Component, IAnimancerComponent
         {
-            animator.runtimeAnimatorController = null;
             var animancer = animator.gameObject.AddComponent<T>();
             animancer.Animator = animator;
             return animancer;
@@ -96,7 +119,7 @@ namespace Animancer
         /// <summary>Returns true if the `node` is not null and <see cref="AnimancerNode.IsValid"/>.</summary>
         public static bool IsValid(this AnimancerNode node) => node != null && node.IsValid;
 
-        /// <summary>Returns true if the `node` is not null and <see cref="ITransitionDetailed.IsValid"/>.</summary>
+        /// <summary>Returns true if the `transition` is not null and <see cref="ITransitionDetailed.IsValid"/>.</summary>
         public static bool IsValid(this ITransitionDetailed transition) => transition != null && transition.IsValid;
 
         /************************************************************************************************************************/
@@ -125,9 +148,7 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>[Pro-Only]
-        /// Reconnects the input of the specified `playable` to its output.
-        /// </summary>
+        /// <summary>[Pro-Only] Reconnects the input of the specified `playable` to its output.</summary>
         public static void RemovePlayable(Playable playable, bool destroy = true)
         {
             if (!playable.IsValid())
@@ -258,7 +279,7 @@ namespace Animancer
                     return animator.GetBool(parameter.nameHash);
 
                 default:
-                    throw new ArgumentException($"Unhandled {nameof(AnimatorControllerParameterType)}: " + parameter.type);
+                    throw new ArgumentException($"Unsupported {nameof(AnimatorControllerParameterType)}: " + parameter.type);
             }
         }
 
@@ -278,7 +299,7 @@ namespace Animancer
                     return playable.GetBool(parameter.nameHash);
 
                 default:
-                    throw new ArgumentException($"Unhandled {nameof(AnimatorControllerParameterType)}: " + parameter.type);
+                    throw new ArgumentException($"Unsupported {nameof(AnimatorControllerParameterType)}: " + parameter.type);
             }
         }
 
@@ -309,7 +330,7 @@ namespace Animancer
                     break;
 
                 default:
-                    throw new ArgumentException($"Unhandled {nameof(AnimatorControllerParameterType)}: " + parameter.type);
+                    throw new ArgumentException($"Unsupported {nameof(AnimatorControllerParameterType)}: " + parameter.type);
             }
         }
 
@@ -338,7 +359,7 @@ namespace Animancer
                     break;
 
                 default:
-                    throw new ArgumentException($"Unhandled {nameof(AnimatorControllerParameterType)}: " + parameter.type);
+                    throw new ArgumentException($"Unsupported {nameof(AnimatorControllerParameterType)}: " + parameter.type);
             }
         }
 
@@ -352,63 +373,6 @@ namespace Animancer
         {
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(target);
-#endif
-        }
-
-        /************************************************************************************************************************/
-
-        /// <summary>[Editor-Conditional]
-        /// If there are multiple components which inherit from <typeparamref name="T"/>, the first one is changed to
-        /// the type of the second and any after the first are destroyed. This allows you to change the type without
-        /// losing the values of any serialized fields they share.
-        /// <para></para>
-        /// The `currentComponent` is used to determine which <see cref="GameObject"/> to examine and the base
-        /// component type <typeparamref name="T"/>.
-        /// </summary>
-        /// <example><code>
-        /// protected void Reset()
-        /// {
-        ///     AnimancerUtilities.IfMultiComponentThenChangeType(this);
-        /// }
-        /// </code></example>
-        [System.Diagnostics.Conditional(Strings.UnityEditor)]
-        public static void IfMultiComponentThenChangeType<T>(T currentComponent) where T : MonoBehaviour
-        {
-#if UNITY_EDITOR
-            if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
-                return;
-
-            // If there is already another instance of this component on the same object, delete this new instance and
-            // change the original's type to match this one.
-            var components = currentComponent.GetComponents<T>();
-            if (components.Length > 1)
-            {
-                var oldComponent = components[0];
-                var newComponent = components[1];
-
-                if (oldComponent.GetType() != newComponent.GetType())
-                {
-                    // All we have to do is change the Script field to the new type and Unity will immediately deserialize
-                    // the existing data as that type, so any fields shared between both types will keep their data.
-
-                    using (var serializedObject = new UnityEditor.SerializedObject(oldComponent))
-                    {
-                        var scriptProperty = serializedObject.FindProperty("m_Script");
-                        scriptProperty.objectReferenceValue = UnityEditor.MonoScript.FromMonoBehaviour(newComponent);
-                        serializedObject.ApplyModifiedProperties();
-                    }
-                }
-
-                // Destroy all components other than the first (the oldest).
-                UnityEditor.EditorApplication.delayCall += () =>
-                {
-                    var i = 1;
-                    for (; i < components.Length; i++)
-                    {
-                        Object.DestroyImmediate(components[i], true);
-                    }
-                };
-            }
 #endif
         }
 

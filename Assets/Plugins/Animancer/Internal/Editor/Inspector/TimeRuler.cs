@@ -112,57 +112,65 @@ namespace Animancer.Editor
         {
             BeginGUI(area);
 
-            var transition = context.TransitionContext.Transition;
-
-            _Speed = transition.Speed;
-            var playDirection = _Speed < 0 ? -1 : 1;
-
-            _Duration = context.TransitionContext.MaximumDuration;
-            if (_Duration <= 0)
-                _Duration = 1;
-
-            GatherEventTimes(context);
-
-            _StartTime = transition.NormalizedStartTime;
-            if (float.IsNaN(_StartTime))
+            if (context.Property.hasMultipleDifferentValues)
             {
-                _StartTime = _Speed < 0 ? _Duration : 0;
+                GUI.Label(_Area, "Multi-editing is not supported");
+                addEventNormalizedTime = float.NaN;
             }
             else
             {
-                _StartTime *= _Duration;
-            }
+                var transition = context.TransitionContext.Transition;
 
-            _FadeInEnd = _StartTime + transition.FadeDuration * playDirection;
+                _Speed = transition.Speed;
+                var playDirection = _Speed < 0 ? -1 : 1;
 
-            _FadeOutEnd = GetFadeOutEnd(_Speed, _EndTime, _Duration);
+                _Duration = context.TransitionContext.MaximumDuration;
+                if (_Duration <= 0)
+                    _Duration = 1;
 
-            _MinTime = Mathf.Min(0, _StartTime);
-            _MinTime = Mathf.Min(_MinTime, _FadeOutEnd);
-            _MinTime = Mathf.Min(_MinTime, EventTimes[0]);
+                GatherEventTimes(context);
 
-            _MaxTime = Mathf.Max(_StartTime, _FadeOutEnd);
-            if (EventTimes.Count >= 2)
-                _MaxTime = Mathf.Max(_MaxTime, EventTimes[EventTimes.Count - 2]);
+                _StartTime = transition.NormalizedStartTime;
+                if (float.IsNaN(_StartTime))
+                {
+                    _StartTime = _Speed < 0 ? _Duration : 0;
+                }
+                else
+                {
+                    _StartTime *= _Duration;
+                }
 
-            if (_MaxTime < _Duration)
-                _MaxTime = _Duration;
+                _FadeInEnd = _StartTime + transition.FadeDuration * playDirection;
 
-            _SecondsToPixels = _Area.width / (_MaxTime - _MinTime);
+                _FadeOutEnd = GetFadeOutEnd(_Speed, _EndTime, _Duration);
 
-            DoFadeHighlightGUI();
-            DoEventsGUI(context, out addEventNormalizedTime);
-            DoRulerGUI();
+                _MinTime = Mathf.Min(0, _StartTime);
+                _MinTime = Mathf.Min(_MinTime, _FadeOutEnd);
+                _MinTime = Mathf.Min(_MinTime, EventTimes[0]);
 
-            if (_Speed > 0)
-            {
-                if (_StartTime > _EndTime)
-                    GUI.Label(_Area, "Start Time is after End Time");
-            }
-            else if (_Speed < 0)
-            {
-                if (_StartTime < _EndTime)
-                    GUI.Label(_Area, "Start Time is before End Time");
+                _MaxTime = Mathf.Max(_StartTime, _FadeOutEnd);
+                if (EventTimes.Count >= 2)
+                    _MaxTime = Mathf.Max(_MaxTime, EventTimes[EventTimes.Count - 2]);
+
+                if (_MaxTime < _Duration)
+                    _MaxTime = _Duration;
+
+                _SecondsToPixels = _Area.width / (_MaxTime - _MinTime);
+
+                DoFadeHighlightGUI();
+                DoEventsGUI(context, out addEventNormalizedTime);
+                DoRulerGUI();
+
+                if (_Speed > 0)
+                {
+                    if (_StartTime > _EndTime)
+                        GUI.Label(_Area, "Start Time is after End Time");
+                }
+                else if (_Speed < 0)
+                {
+                    if (_StartTime < _EndTime)
+                        GUI.Label(_Area, "Start Time is before End Time");
+                }
             }
 
             EndGUI();
@@ -275,6 +283,15 @@ namespace Animancer.Editor
                         OnMouseDown(currentGUIEvent, context, out addEventNormalizedTime);
                     break;
 
+                case EventType.MouseUp:
+                    if (currentGUIEvent.button == 1 &&
+                        _Area.Contains(currentGUIEvent.mousePosition))
+                    {
+                        ShowContextMenu(currentGUIEvent, context);
+                        currentGUIEvent.Use();
+                    }
+                    break;
+
                 case EventType.MouseDrag:
                     if (_Duration <= 0)
                         break;
@@ -321,8 +338,8 @@ namespace Animancer.Editor
                             exitGUI = true;
                             break;
 
-                        case KeyCode.LeftArrow: NudgeEventTime(context, false); break;
-                        case KeyCode.RightArrow: NudgeEventTime(context, true); break;
+                        case KeyCode.LeftArrow: NudgeEventTime(context, Event.current.shift ? -10 : -1); break;
+                        case KeyCode.RightArrow: NudgeEventTime(context, Event.current.shift ? 10 : 1); break;
 
                         case KeyCode.Space: RoundEventTime(context); break;
 
@@ -413,6 +430,60 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
+        private void ShowContextMenu(Event currentGUIEvent, EventSequenceDrawer.Context context)
+        {
+            context = context.Copy();
+            var time = SecondsToNormalized(PixelsToSeconds(currentGUIEvent.mousePosition.x));
+            var hasSelectedEvent = context.SelectedEvent >= 0;
+
+            var menu = new GenericMenu();
+
+            AddContextFunction(menu, context, "Add Event (Double Click)", true,
+                () => EventSequenceDrawer.AddEvent(context, time));
+
+            AddContextFunction(menu, context, "Remove Event (Delete)", hasSelectedEvent,
+                () => EventSequenceDrawer.RemoveEvent(context, context.SelectedEvent));
+
+            const string NudgePrefix = "Nudge Event Time/";
+            AddContextFunction(menu, context, NudgePrefix + "Left 1 Pixel (Left Arrow)", hasSelectedEvent,
+                () => NudgeEventTime(context, -1));
+            AddContextFunction(menu, context, NudgePrefix + "Left 10 Pixels (Shift + Left Arrow)", hasSelectedEvent,
+                () => NudgeEventTime(context, -10));
+            AddContextFunction(menu, context, NudgePrefix + "Right 1 Pixel (Right Arrow)", hasSelectedEvent,
+                () => NudgeEventTime(context, 1));
+            AddContextFunction(menu, context, NudgePrefix + "Right 10 Pixels (Shift + Right Arrow)", hasSelectedEvent,
+                () => NudgeEventTime(context, 10));
+
+            var canRoundTime = hasSelectedEvent;
+            if (canRoundTime)
+            {
+                time = context.Times.GetElement(context.SelectedEvent).floatValue;
+                canRoundTime = TryRoundValue(ref time);
+            }
+
+            AddContextFunction(menu, context, $"Round Event Time to {time}x (Space)", canRoundTime,
+                () => RoundEventTime(context));
+
+            menu.ShowAsContext();
+        }
+
+        /************************************************************************************************************************/
+
+        private static void AddContextFunction(
+            GenericMenu menu, EventSequenceDrawer.Context context, string label, bool enabled, Action function)
+        {
+            menu.AddFunction(label, enabled, () =>
+            {
+                using (context.SetAsCurrent())
+                {
+                    function();
+                    GUI.changed = true;
+                }
+            });
+        }
+
+        /************************************************************************************************************************/
+
         private void SetPreviewTime(Event currentGUIEvent)
         {
             if (_Duration > 0)
@@ -436,7 +507,7 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        private void NudgeEventTime(EventSequenceDrawer.Context context, bool right)
+        private void NudgeEventTime(EventSequenceDrawer.Context context, float offsetPixels)
         {
             var time = context.Times.GetElement(context.SelectedEvent);
 
@@ -444,10 +515,7 @@ namespace Animancer.Editor
             value = NormalizedToSeconds(value);
             value = SecondsToPixels(value);
 
-            var nudge = right ? 1f : -1f;
-            if (Event.current.shift)
-                nudge *= 10;
-            value += nudge;
+            value += offsetPixels;
 
             value = PixelsToSeconds(value);
             value = SecondsToNormalized(value);
@@ -461,22 +529,33 @@ namespace Animancer.Editor
             var time = context.Times.GetElement(context.SelectedEvent);
             var value = time.floatValue;
 
+            if (TryRoundValue(ref value))
+                time.floatValue = value;
+        }
+
+        private static bool TryRoundValue(ref float value)
+        {
             var format = System.Globalization.NumberFormatInfo.InvariantInfo;
             var text = value.ToString(format);
             var dot = text.IndexOf('.');
             if (dot < 0)
-                return;
+                return false;
 
             Round:
-            var newValue = (float)System.Math.Round(value, text.Length - dot - 2, System.MidpointRounding.AwayFromZero);
-
+            var newValue = (float)Math.Round(value, text.Length - dot - 2, MidpointRounding.AwayFromZero);
             if (newValue == value)
             {
                 dot--;
-                goto Round;
+                if (dot > 0)
+                    goto Round;
             }
 
-            time.floatValue = newValue;
+            if (value != newValue)
+            {
+                value = newValue;
+                return true;
+            }
+            else return false;
         }
 
         /************************************************************************************************************************/

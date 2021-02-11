@@ -5,7 +5,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -14,14 +13,9 @@ namespace Animancer.Editor
     /// <summary>[Editor-Only]
     /// A system that procedurally gathers animations throughout the hierarchy without needing explicit references.
     /// </summary>
-    /// <remarks>
-    /// This class is [Editor-Only] because it uses reflection and is not particularly efficient, but it does not
-    /// actually use any Editor Only functionality so it could be made usable at runtime by simply removing the
-    /// <c>#if UNITY_EDITOR</c> at the top of the file and <c>#endif</c> at the bottom.
-    /// </remarks>
     /// https://kybernetik.com.au/animancer/api/Animancer.Editor/AnimationGatherer
     /// 
-    public static class AnimationGatherer
+    public sealed class AnimationGatherer : IAnimationClipCollection
     {
         /************************************************************************************************************************/
         #region Recursion Guard
@@ -54,11 +48,42 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
+        #region Fields and Accessors
+        /************************************************************************************************************************/
+
+        /// <summary>All the <see cref="AnimationClip"/>s that have been gathered.</summary>
+        public readonly HashSet<AnimationClip> Clips = new HashSet<AnimationClip>();
+
+        /// <summary>All the <see cref="ITransition"/>s that have been gathered.</summary>
+        public readonly HashSet<ITransition> Transitions = new HashSet<ITransition>();
+
+        /************************************************************************************************************************/
+
+        /// <inheritdoc/>
+        public void GatherAnimationClips(ICollection<AnimationClip> clips)
+        {
+            try
+            {
+                foreach (var clip in Clips)
+                    clips.Add(clip);
+
+                foreach (var transition in Transitions)
+                    clips.GatherFromSource(transition);
+            }
+            catch (Exception exception)
+            {
+                HandleException(exception);
+            }
+        }
+
+        /************************************************************************************************************************/
+        #endregion
+        /************************************************************************************************************************/
         #region Cache
         /************************************************************************************************************************/
 
-        private static readonly Dictionary<GameObject, HashSet<AnimationClip>>
-            ObjectToClips = new Dictionary<GameObject, HashSet<AnimationClip>>();
+        private static readonly Dictionary<GameObject, AnimationGatherer>
+            ObjectToGatherer = new Dictionary<GameObject, AnimationGatherer>();
 
         /************************************************************************************************************************/
 
@@ -72,44 +97,18 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        /// <summary>Clears all cached animations.</summary>
-        public static void ClearCache()
-        {
-            if (ObjectToClips.Count == 0)
-                return;
-
-            foreach (var clips in ObjectToClips.Values)
-            {
-                ObjectPool.Release(clips);
-            }
-
-            ObjectToClips.Clear();
-        }
+        /// <summary>Clears all cached gatherers.</summary>
+        public static void ClearCache() => ObjectToGatherer.Clear();
 
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
         #region Exceptions
         /************************************************************************************************************************/
-
-        /// <summary>An action that can be performed in response to an exception.</summary>
-        public enum ExceptionHandler
-        {
-            /// <summary>
-            /// Store the exception in a list so it can be displayed in the <see cref="TransitionPreviewWindow"/> if
-            /// the user wants to debug it. This is the default because some systems are not prepared to have their
-            /// members accessed via reflection and we don't want to bother the user with non-critical errors.
-            /// </summary>
-            /// <remarks>Only</remarks>
-            Store,
-
-            /// <summary>Log the exception normally.</summary>
-            Log,
-        }
-
+#if UNITY_EDITOR
         /************************************************************************************************************************/
 
-        /// <summary>
+        /// <summary>[Editor-Only] [Internal]
         /// The exceptions that have been stored according to the <see cref="ExceptionCapacity"/>.
         /// This property is null if no exceptions have been thrown yet.
         /// </summary>
@@ -117,7 +116,7 @@ namespace Animancer.Editor
 
         private static int _ExceptionCapacity = 10;
 
-        /// <summary>
+        /// <summary>[Editor-Only]
         /// A positive value causes exceptions thrown while gathering animations to be stores in a list so they can be
         /// displayed in the <see cref="TransitionPreviewWindow"/> if the user wants to debug them rather than logging
         /// them immediately.
@@ -148,9 +147,12 @@ namespace Animancer.Editor
         }
 
         /************************************************************************************************************************/
+#endif
+        /************************************************************************************************************************/
 
         private static void HandleException(Exception exception)
         {
+#if UNITY_EDITOR
             if (_ExceptionCapacity > 0)
             {
                 if (Exceptions == null)
@@ -160,6 +162,7 @@ namespace Animancer.Editor
                     Exceptions.Add(exception);
             }
             else if (_ExceptionCapacity < 0)
+#endif
             {
                 Debug.LogException(exception);
             }
@@ -170,29 +173,30 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Fills the `clips` with any <see cref="AnimationClip"/>s referenced by components in the same hierarchy as
-        /// the `gameObject`. See <see cref="ICharacterRoot"/> for details.
+        /// Returns a cached <see cref="AnimationGatherer"/> containing any <see cref="AnimationClip"/>s referenced by
+        /// components in the same hierarchy as the `gameObject`. See <see cref="ICharacterRoot"/> for details.
         /// </summary>
-        public static void GatherFromGameObject(GameObject gameObject, ICollection<AnimationClip> clips)
+        public static AnimationGatherer GatherFromGameObject(GameObject gameObject)
         {
             if (!BeginRecursionGuard(gameObject))
-                return;
+                return null;
 
             try
             {
                 _CallCount++;
-                if (!ObjectToClips.TryGetValue(gameObject, out var clipSet))
+                if (!ObjectToGatherer.TryGetValue(gameObject, out var gatherer))
                 {
-                    clipSet = ObjectPool.AcquireSet<AnimationClip>();
-                    GatherFromComponents(gameObject, clipSet);
-                    ObjectToClips.Add(gameObject, clipSet);
+                    gatherer = new AnimationGatherer();
+                    ObjectToGatherer.Add(gameObject, gatherer);
+                    gatherer.GatherFromComponents(gameObject);
                 }
 
-                clips.Gather(clipSet);
+                return gatherer;
             }
             catch (Exception exception)
             {
                 HandleException(exception);
+                return null;
             }
             finally
             {
@@ -205,55 +209,52 @@ namespace Animancer.Editor
         /// Fills the `clips` with any <see cref="AnimationClip"/>s referenced by components in the same hierarchy as
         /// the `gameObject`. See <see cref="ICharacterRoot"/> for details.
         /// </summary>
+        public static void GatherFromGameObject(GameObject gameObject, ICollection<AnimationClip> clips)
+        {
+            var gatherer = GatherFromGameObject(gameObject);
+            gatherer?.GatherAnimationClips(clips);
+        }
+
+        /// <summary>
+        /// Fills the `clips` with any <see cref="AnimationClip"/>s referenced by components in the same hierarchy as
+        /// the `gameObject`. See <see cref="ICharacterRoot"/> for details.
+        /// </summary>
         public static void GatherFromGameObject(GameObject gameObject, ref AnimationClip[] clips, bool sort)
         {
-            if (!BeginRecursionGuard(gameObject))
+            var gatherer = GatherFromGameObject(gameObject);
+            if (gatherer == null)
                 return;
 
-            try
+            using (ObjectPool.Disposable.AcquireSet<AnimationClip>(out var clipSet))
             {
-                _CallCount++;
+                gatherer.GatherAnimationClips(clipSet);
 
-                using (ObjectPool.Disposable.AcquireSet<AnimationClip>(out var clipSet))
-                {
-                    GatherFromComponents(gameObject, clipSet);
+                if (clips == null || clips.Length != clipSet.Count)
+                    clips = new AnimationClip[clipSet.Count];
 
-                    if (clips == null || clips.Length != clipSet.Count)
-                        clips = new AnimationClip[clipSet.Count];
-
-                    clipSet.CopyTo(clips);
-                }
-
-                if (sort)
-                    Array.Sort(clips, (a, b) => a.name.CompareTo(b.name));
+                clipSet.CopyTo(clips);
             }
-            catch (Exception exception)
-            {
-                HandleException(exception);
-            }
-            finally
-            {
-                _CallCount--;
-                EndCall();
-            }
+
+            if (sort)
+                Array.Sort(clips, (a, b) => a.name.CompareTo(b.name));
         }
 
         /************************************************************************************************************************/
 
-        private static void GatherFromComponents(GameObject gameObject, HashSet<AnimationClip> clips)
+        private void GatherFromComponents(GameObject gameObject)
         {
             var root = AnimancerEditorUtilities.FindRoot(gameObject);
 
             using (ObjectPool.Disposable.AcquireList<MonoBehaviour>(out var components))
             {
                 root.GetComponentsInChildren(true, components);
-                GatherFromComponents(components, clips);
+                GatherFromComponents(components);
             }
         }
 
         /************************************************************************************************************************/
 
-        private static void GatherFromComponents(List<MonoBehaviour> components, HashSet<AnimationClip> clips)
+        private void GatherFromComponents(List<MonoBehaviour> components)
         {
             var i = components.Count;
             GatherClips:
@@ -261,7 +262,7 @@ namespace Animancer.Editor
             {
                 while (--i >= 0)
                 {
-                    GatherFromObject(components[i], clips, 0);
+                    GatherFromObject(components[i], 0);
                 }
             }
             catch (Exception exception)
@@ -274,11 +275,11 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
 
         /// <summary>Gathers all animations from the `source`s fields.</summary>
-        private static void GatherFromObject(object source, ICollection<AnimationClip> clips, int depth)
+        private void GatherFromObject(object source, int depth)
         {
             if (source is AnimationClip clip)
             {
-                clips.Add(clip);
+                Clips.Add(clip);
                 return;
             }
 
@@ -290,7 +291,7 @@ namespace Animancer.Editor
 
             try
             {
-                if (clips.GatherFromSource(source))
+                if (Clips.GatherFromSource(source))
                     return;
             }
             catch (Exception exception)
@@ -302,19 +303,19 @@ namespace Animancer.Editor
                 RecursionGuard.Remove(source);
             }
 
-            GatherFromFields(source, clips, depth);
+            GatherFromFields(source, depth);
         }
 
         /************************************************************************************************************************/
 
         /// <summary>Types mapped to a delegate that can quickly gather their clips.</summary>
-        private static readonly Dictionary<Type, Action<object, ICollection<AnimationClip>>>
-            TypeToGatherer = new Dictionary<Type, Action<object, ICollection<AnimationClip>>>();
+        private static readonly Dictionary<Type, Action<object, AnimationGatherer>>
+            TypeToGathererDelegate = new Dictionary<Type, Action<object, AnimationGatherer>>();
 
         /// <summary>
         /// Uses reflection to gather <see cref="AnimationClip"/>s from fields on the `source` object.
         /// </summary>
-        private static void GatherFromFields(object source, ICollection<AnimationClip> clips, int depth)
+        private void GatherFromFields(object source, int depth)
         {
             if (depth >= MaxFieldDepth ||
                 source == null ||
@@ -323,13 +324,13 @@ namespace Animancer.Editor
 
             var type = source.GetType();
 
-            if (!TypeToGatherer.TryGetValue(type, out var gatherClips))
+            if (!TypeToGathererDelegate.TryGetValue(type, out var gatherClips))
             {
-                gatherClips = BuildClipGatherer(type, depth);
-                TypeToGatherer.Add(type, gatherClips);
+                gatherClips = BuildClipGathererDelegate(type, depth);
+                TypeToGathererDelegate.Add(type, gatherClips);
             }
 
-            gatherClips?.Invoke(source, clips);
+            gatherClips?.Invoke(source, this);
         }
 
         /************************************************************************************************************************/
@@ -337,12 +338,12 @@ namespace Animancer.Editor
         /// <summary>
         /// Creates a delegate to gather <see cref="AnimationClip"/>s from all relevant fields in a given `type`.
         /// </summary>
-        private static Action<object, ICollection<AnimationClip>> BuildClipGatherer(Type type, int depth)
+        private static Action<object, AnimationGatherer> BuildClipGathererDelegate(Type type, int depth)
         {
             if (!MightContainAnimations(type))
                 return null;
 
-            Action<object, ICollection<AnimationClip>> gatherer = null;
+            Action<object, AnimationGatherer> gathererDelegate = null;
 
             while (type != null)
             {
@@ -356,45 +357,45 @@ namespace Animancer.Editor
 
                     if (fieldType == typeof(AnimationClip))
                     {
-                        gatherer += (obj, clips) =>
+                        gathererDelegate += (obj, gatherer) =>
                         {
                             var clip = (AnimationClip)field.GetValue(obj);
-                            clips.Gather(clip);
+                            gatherer.Clips.Gather(clip);
                         };
                     }
                     else if (typeof(IAnimationClipSource).IsAssignableFrom(fieldType) ||
                         typeof(IAnimationClipCollection).IsAssignableFrom(fieldType))
                     {
-                        gatherer += (obj, clips) =>
+                        gathererDelegate += (obj, gatherer) =>
                         {
                             var source = field.GetValue(obj);
-                            clips.GatherFromSource(source);
+                            gatherer.Clips.GatherFromSource(source);
                         };
                     }
                     else if (typeof(ICollection).IsAssignableFrom(fieldType))
                     {
-                        gatherer += (obj, clips) =>
+                        gathererDelegate += (obj, gatherer) =>
                         {
                             var collection = (ICollection)field.GetValue(obj);
                             if (collection != null)
                             {
                                 foreach (var item in collection)
                                 {
-                                    GatherFromObject(item, clips, depth + 1);
+                                    gatherer.GatherFromObject(item, depth + 1);
                                 }
                             }
                         };
                     }
                     else
                     {
-                        gatherer += (obj, clips) =>
+                        gathererDelegate += (obj, gatherer) =>
                         {
                             var source = field.GetValue(obj);
                             if (source == null ||
                                 (source is Object sourceObject && sourceObject == null))
                                 return;
 
-                            GatherFromObject(source, clips, depth + 1);
+                            gatherer.GatherFromObject(source, depth + 1);
                         };
                     }
                 }
@@ -402,7 +403,7 @@ namespace Animancer.Editor
                 type = type.BaseType;
             }
 
-            return gatherer;
+            return gathererDelegate;
         }
 
         /************************************************************************************************************************/

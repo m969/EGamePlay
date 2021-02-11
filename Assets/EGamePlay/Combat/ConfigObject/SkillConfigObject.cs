@@ -16,10 +16,13 @@ namespace EGamePlay.Combat
 {
     [CreateAssetMenu(fileName = "技能配置", menuName = "技能|状态/技能配置")]
     [LabelText("技能配置")]
-    public class SkillConfigObject : SerializedScriptableObject
+    public class SkillConfigObject
+#if !SERVER
+        : SerializedScriptableObject
+#endif
     {
         [LabelText("技能ID"), DelayedProperty]
-        public uint ID;
+        public int Id;
         [LabelText("技能名称"), DelayedProperty]
         public string Name = "技能1";
         public SkillSpellType SkillSpellType;
@@ -92,9 +95,9 @@ namespace EGamePlay.Combat
 
         [OnInspectorGUI("BeginBox", append: false)]
         [LabelText("技能执行")]
-        public TimelineAsset SkillExecutionAsset;
-        [LabelText("技能特效")]
-        public GameObject SkillEffectObject;
+        public GameObject SkillExecutionAsset;
+        //[LabelText("技能特效")]
+        //public GameObject SkillEffectObject;
         [LabelText("技能音效")]
         [OnInspectorGUI("EndBox", append: true)]
         public AudioClip SkillAudio;
@@ -163,7 +166,7 @@ namespace EGamePlay.Combat
                     return;
                 }
                 var fileName = Path.GetFileName(assetPath);
-                var newName = $"Skill_{this.ID}_{this.Name}";
+                var newName = $"Skill_{this.Id}_{this.Name}";
                 if (!fileName.StartsWith(newName))
                 {
                     //Debug.Log(assetPath);

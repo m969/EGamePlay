@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EGamePlay;
@@ -37,17 +38,31 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.AddComponent<SkillPreviewComponent>();
         //CombatEntity.GetComponent<MotionComponent>().Enable = false;
 
+#if EGAMEPLAY_EXCEL
+        var config = ConfigHelper.Get<SkillConfig>(1001);
+        SkillAbility ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.Q);
+
+        config = ConfigHelper.Get<SkillConfig>(1002);
+        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.W);
+
+        config = ConfigHelper.Get<SkillConfig>(1004);
+        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.E);
+#else
         SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        SkillAbility abilityA = CombatEntity.AttachSkill<Skill1001Ability>(config);
-        CombatEntity.BindSkillInput(abilityA, KeyCode.Q);
+        SkillAbility ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.Q);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
-        abilityA = CombatEntity.AttachSkill<Skill1002Ability>(config);
-        CombatEntity.BindSkillInput(abilityA, KeyCode.W);
+        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.W);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
-        abilityA = CombatEntity.AttachSkill<Skill1004Ability>(config);
-        CombatEntity.BindSkillInput(abilityA, KeyCode.E);
+        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.E);
+#endif
 
         AnimTimer.MaxTime = AnimTime;
     }
@@ -56,6 +71,7 @@ public sealed class Hero : MonoBehaviour
     void Update()
     {
         CombatEntity.Position = transform.position;
+        CombatEntity.Direction = transform.GetChild(0).localEulerAngles.y;
 
         //AnimTimer.UpdateAsFinish(Time.deltaTime);
         //if (!AnimTimer.IsFinished)
@@ -74,10 +90,8 @@ public sealed class Hero : MonoBehaviour
         //    transform.position = new Vector3(p.x + h, 0, p.z + v);
         //}
 
-        if (SkillPlaying)
-        {
+        if (CombatEntity.CurrentSkillExecution != null)
             return;
-        }
 
         if (Input.GetMouseButtonDown((int)MouseButton.RightMouse))
         {
@@ -85,9 +99,9 @@ public sealed class Hero : MonoBehaviour
             {
                 var time = Vector3.Distance(transform.position, point) * MoveSpeed * 0.5f;
                 StopMove();
-                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear)/*.OnUpdate(()=> { if (!SkillPlaying) {  } })*/.OnComplete(()=>{ AnimationComponent.PlayFade(AnimationComponent.IdleAnimation); });
+                MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear).OnComplete(()=>{ AnimationComponent.PlayFade(AnimationComponent.IdleAnimation); });
                 LookAtTweener = transform.GetChild(0).DOLookAt(point, 0.2f);
-//                AnimancerComponent.Play(RunAnimation, 0.25f);
+                //AnimancerComponent.Play(RunAnimation, 0.25f);
                 AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
             }
         }

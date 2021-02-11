@@ -13,7 +13,7 @@ namespace EGamePlay.Combat
     {
         public int SkillID { get; set; }
         public SkillAbility SkillAbility { get; set; }
-        public SkillAbilityExecution SkillAbilityExecution { get; set; }
+        public SkillExecution SkillAbilityExecution { get; set; }
 
 
         //前置处理
@@ -31,6 +31,15 @@ namespace EGamePlay.Combat
             }
             else
             {
+                Hero.Instance.StopMove();
+
+                if (SkillAbilityExecution.InputCombatEntity != null)
+                    Hero.Instance.transform.GetChild(0).LookAt(SkillAbilityExecution.InputCombatEntity.Position);
+                else if (SkillAbilityExecution.InputPoint != null)
+                    Hero.Instance.transform.GetChild(0).LookAt(SkillAbilityExecution.InputPoint);
+                else
+                    Hero.Instance.transform.GetChild(0).localEulerAngles = new Vector3(0, SkillAbilityExecution.InputDirection, 0);
+
                 SkillAbilityExecution.BeginExecute();
             }
             PostProcess();

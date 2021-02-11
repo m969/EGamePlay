@@ -18,6 +18,7 @@ namespace ET
 		public int Id { get; set; }
 		public string Name;
 		public string Type;
+		public string TargetSelect;
 		public float Cooldown;
 		public string Description;
 		public string Effect1;

@@ -6,11 +6,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-// Shared File Last Modified: 2020-09-11.
+// Shared File Last Modified: 2020-11-07.
 namespace Animancer.Editor
 // namespace InspectorGadgets.Editor
 // namespace UltEvents.Editor
@@ -69,8 +70,13 @@ namespace Animancer.Editor
             {
                 case SerializedPropertyType.Boolean: return property.boolValue;
                 case SerializedPropertyType.Float: return property.floatValue;
-                case SerializedPropertyType.Integer: return property.intValue;
                 case SerializedPropertyType.String: return property.stringValue;
+
+                case SerializedPropertyType.Integer:
+                case SerializedPropertyType.Character:
+                case SerializedPropertyType.LayerMask:
+                case SerializedPropertyType.ArraySize:
+                    return property.intValue;
 
                 case SerializedPropertyType.Vector2: return property.vector2Value;
                 case SerializedPropertyType.Vector3: return property.vector3Value;
@@ -91,20 +97,14 @@ namespace Animancer.Editor
                 case SerializedPropertyType.ObjectReference: return property.objectReferenceValue;
                 case SerializedPropertyType.ExposedReference: return property.exposedReferenceValue;
 
-                case SerializedPropertyType.ArraySize: return property.intValue;
                 case SerializedPropertyType.FixedBufferSize: return property.fixedBufferSize;
 
+                case SerializedPropertyType.Gradient: return property.GetGradientValue();
+
+                case SerializedPropertyType.Enum:// Would be complex because enumValueIndex can't be cast directly.
                 case SerializedPropertyType.Generic:
-                case SerializedPropertyType.Enum:
-                case SerializedPropertyType.LayerMask:
-                case SerializedPropertyType.Gradient:
-                case SerializedPropertyType.Character:
                 default:
-                    var accessor = GetAccessor(property);
-                    if (accessor != null)
-                        return accessor.GetValue(targetObject);
-                    else
-                        return null;
+                    return GetAccessor(property)?.GetValue(targetObject);
             }
         }
 
@@ -142,6 +142,69 @@ namespace Animancer.Editor
         }
 
         /************************************************************************************************************************/
+
+        /// <summary>Is the value of the `property` the same as the default serialized value for its type?</summary>
+        public static bool IsDefaultValueByType(SerializedProperty property)
+        {
+            if (property.hasMultipleDifferentValues)
+                return false;
+
+            switch (property.propertyType)
+            {
+                case SerializedPropertyType.Boolean: return property.boolValue == default;
+                case SerializedPropertyType.Float: return property.floatValue == default;
+                case SerializedPropertyType.String: return property.stringValue == "";
+
+                case SerializedPropertyType.Integer:
+                case SerializedPropertyType.Character:
+                case SerializedPropertyType.LayerMask:
+                case SerializedPropertyType.ArraySize:
+                    return property.intValue == default;
+
+                case SerializedPropertyType.Vector2: return property.vector2Value == default;
+                case SerializedPropertyType.Vector3: return property.vector3Value == default;
+                case SerializedPropertyType.Vector4: return property.vector4Value == default;
+
+                case SerializedPropertyType.Quaternion: return property.quaternionValue == default;
+                case SerializedPropertyType.Color: return property.colorValue == default;
+                case SerializedPropertyType.AnimationCurve: return property.animationCurveValue == default;
+
+                case SerializedPropertyType.Rect: return property.rectValue == default;
+                case SerializedPropertyType.Bounds: return property.boundsValue == default;
+
+                case SerializedPropertyType.Vector2Int: return property.vector2IntValue == default;
+                case SerializedPropertyType.Vector3Int: return property.vector3IntValue == default;
+                case SerializedPropertyType.RectInt: return property.rectIntValue.Equals(default);
+                case SerializedPropertyType.BoundsInt: return property.boundsIntValue == default;
+
+                case SerializedPropertyType.ObjectReference: return property.objectReferenceValue == default;
+                case SerializedPropertyType.ExposedReference: return property.exposedReferenceValue == default;
+
+                case SerializedPropertyType.FixedBufferSize: return property.fixedBufferSize == default;
+
+                case SerializedPropertyType.Enum: return property.enumValueIndex == default;
+
+                case SerializedPropertyType.Gradient:
+                case SerializedPropertyType.Generic:
+                default:
+                    if (property.isArray)
+                        return property.arraySize == default;
+
+                    var depth = property.depth;
+                    property = property.Copy();
+                    var enterChildren = true;
+                    while (property.Next(enterChildren) && property.depth > depth)
+                    {
+                        enterChildren = false;
+                        if (!IsDefaultValueByType(property))
+                            return false;
+                    }
+
+                    return true;
+            }
+        }
+
+        /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
         #region Set Value
@@ -154,8 +217,13 @@ namespace Animancer.Editor
             {
                 case SerializedPropertyType.Boolean: property.boolValue = (bool)value; break;
                 case SerializedPropertyType.Float: property.floatValue = (float)value; break;
-                case SerializedPropertyType.Integer: property.intValue = (int)value; break;
                 case SerializedPropertyType.String: property.stringValue = (string)value; break;
+
+                case SerializedPropertyType.Integer:
+                case SerializedPropertyType.Character:
+                case SerializedPropertyType.LayerMask:
+                case SerializedPropertyType.ArraySize:
+                    property.intValue = (int)value; break;
 
                 case SerializedPropertyType.Vector2: property.vector2Value = (Vector2)value; break;
                 case SerializedPropertyType.Vector3: property.vector3Value = (Vector3)value; break;
@@ -176,17 +244,14 @@ namespace Animancer.Editor
                 case SerializedPropertyType.ObjectReference: property.objectReferenceValue = (Object)value; break;
                 case SerializedPropertyType.ExposedReference: property.exposedReferenceValue = (Object)value; break;
 
-                case SerializedPropertyType.ArraySize: property.intValue = (int)value; break;
-
                 case SerializedPropertyType.FixedBufferSize:
                     throw new InvalidOperationException($"{nameof(SetValue)} failed:" +
                         $" {nameof(SerializedProperty)}.{nameof(SerializedProperty.fixedBufferSize)} is read-only.");
 
+                case SerializedPropertyType.Gradient: property.SetGradientValue((Gradient)value); break;
+
+                case SerializedPropertyType.Enum:// Would be complex because enumValueIndex can't be cast directly.
                 case SerializedPropertyType.Generic:
-                case SerializedPropertyType.Enum:
-                case SerializedPropertyType.LayerMask:
-                case SerializedPropertyType.Gradient:
-                case SerializedPropertyType.Character:
                 default:
                     var accessor = GetAccessor(property);
                     if (accessor != null)
@@ -250,6 +315,215 @@ namespace Animancer.Editor
                     break;
             }
         }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Resets the value of the <see cref="SerializedProperty"/> to the default value of its type.</summary>
+        /// <remarks>
+        /// This method sets the target value to <c>null</c> then makes Unity deserialize it to run its default
+        /// constructor and field initialisers.
+        /// </remarks>
+        public static void ResetValue(SerializedProperty property, string undoName = "Inspector")
+        {
+            switch (property.propertyType)
+            {
+                case SerializedPropertyType.Boolean: property.boolValue = default; break;
+                case SerializedPropertyType.Float: property.floatValue = default; break;
+                case SerializedPropertyType.String: property.stringValue = ""; break;
+
+                case SerializedPropertyType.Integer:
+                case SerializedPropertyType.Character:
+                case SerializedPropertyType.LayerMask:
+                case SerializedPropertyType.ArraySize:
+                    property.intValue = default;
+                    break;
+
+                case SerializedPropertyType.Vector2: property.vector2Value = default; break;
+                case SerializedPropertyType.Vector3: property.vector3Value = default; break;
+                case SerializedPropertyType.Vector4: property.vector4Value = default; break;
+
+                case SerializedPropertyType.Quaternion: property.quaternionValue = default; break;
+                case SerializedPropertyType.Color: property.colorValue = default; break;
+                case SerializedPropertyType.AnimationCurve: property.animationCurveValue = default; break;
+
+                case SerializedPropertyType.Rect: property.rectValue = default; break;
+                case SerializedPropertyType.Bounds: property.boundsValue = default; break;
+
+                case SerializedPropertyType.Vector2Int: property.vector2IntValue = default; break;
+                case SerializedPropertyType.Vector3Int: property.vector3IntValue = default; break;
+                case SerializedPropertyType.RectInt: property.rectIntValue = default; break;
+                case SerializedPropertyType.BoundsInt: property.boundsIntValue = default; break;
+
+                case SerializedPropertyType.ObjectReference: property.objectReferenceValue = default; break;
+                case SerializedPropertyType.ExposedReference: property.exposedReferenceValue = default; break;
+
+                case SerializedPropertyType.Enum: property.enumValueIndex = default; break;
+
+                case SerializedPropertyType.Gradient:
+                case SerializedPropertyType.FixedBufferSize:
+                case SerializedPropertyType.Generic:
+                default:
+                    if (property.isArray)
+                    {
+                        property.arraySize = default;
+                        break;
+                    }
+
+                    var depth = property.depth;
+                    property = property.Copy();
+                    var enterChildren = true;
+                    while (property.Next(enterChildren) && property.depth > depth)
+                    {
+                        enterChildren = false;
+                        ResetValue(property);
+                    }
+                    break;
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>Copies the value of `from` into `to` (including all nested properties).</summary>
+        public static float CopyValueFrom(this SerializedProperty to, SerializedProperty from)
+        {
+            from = from.Copy();
+            var fromPath = from.propertyPath;
+            var pathPrefixLength = fromPath.Length + 1;
+            var depth = from.depth;
+
+            var copyCount = 0;
+            var totalCount = 0;
+            StringBuilder issues = null;
+
+            do
+            {
+                while (from.propertyType == SerializedPropertyType.Generic)
+                    if (!from.Next(true))
+                        goto LogResults;
+
+                SerializedProperty toRelative;
+
+                var relativePath = from.propertyPath;
+                if (relativePath.Length <= pathPrefixLength)
+                {
+                    toRelative = to;
+                }
+                else
+                {
+                    relativePath = relativePath.Substring(pathPrefixLength, relativePath.Length - pathPrefixLength);
+
+                    toRelative = to.FindPropertyRelative(relativePath);
+                }
+
+                if (!from.hasMultipleDifferentValues &&
+                    toRelative != null &&
+                    toRelative.propertyType == from.propertyType &&
+                    toRelative.type == from.type)
+                {
+                    //Debug.Log($"Copying from '{from.propertyPath}' to '{toRelative.propertyPath}'");
+
+                    // GetValue and SetValue currently access the underlying field for enums, but we need the stored value.
+                    if (toRelative.propertyType == SerializedPropertyType.Enum)
+                        toRelative.enumValueIndex = from.enumValueIndex;
+                    else
+                        toRelative.SetValue(from.GetValue());
+
+                    copyCount++;
+                }
+                else
+                {
+                    if (issues == null)
+                        issues = new StringBuilder();
+
+                    issues.AppendLine()
+                        .Append(" - ");
+
+                    if (from.hasMultipleDifferentValues)
+                    {
+                        issues
+                            .Append("The selected objects have different values for '")
+                            .Append(relativePath)
+                            .Append("'.");
+                    }
+                    else if (toRelative == null)
+                    {
+                        issues
+                            .Append("No property '")
+                            .Append(relativePath)
+                            .Append("' exists relative to '")
+                            .Append(to.propertyPath)
+                            .Append("'.");
+                    }
+                    else if (toRelative.propertyType != from.propertyType)
+                    {
+                        issues
+                            .Append("The type of '")
+                            .Append(toRelative.propertyPath)
+                            .Append("' was '")
+                            .Append(toRelative.propertyType)
+                            .Append("' but should be '")
+                            .Append(from.propertyType)
+                            .Append("'.");
+                    }
+                    else if (toRelative.type != from.type)
+                    {
+                        issues
+                            .Append("The type of '")
+                            .Append(toRelative.propertyPath)
+                            .Append("' was '")
+                            .Append(toRelative.type)
+                            .Append("' but should be '")
+                            .Append(from.type)
+                            .Append("'.");
+                    }
+                    else// This should never happen.
+                    {
+                        issues
+                            .Append(" - Unknown issue with '")
+                            .Append(relativePath)
+                            .Append("'.");
+                    }
+                }
+
+                totalCount++;
+            }
+            while (from.Next(false) && from.depth > depth);
+
+            LogResults:
+            if (copyCount < totalCount)
+                Debug.Log($"Copied {copyCount} / {totalCount} values from '{fromPath}' to '{to.propertyPath}': {issues}");
+
+            return (float)copyCount / totalCount;
+        }
+
+        /************************************************************************************************************************/
+        #endregion
+        /************************************************************************************************************************/
+        #region Gradients
+        /************************************************************************************************************************/
+
+        private static PropertyInfo _GradientValue;
+
+        /// <summary><c>SerializedProperty.gradientValue</c> is internal.</summary>
+        private static PropertyInfo GradientValue
+        {
+            get
+            {
+                if (_GradientValue == null)
+                {
+                    _GradientValue = typeof(SerializedProperty).GetProperty("gradientValue",
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                }
+
+                return _GradientValue;
+            }
+        }
+
+        /// <summary>Gets the <see cref="Gradient"/> value from a <see cref="SerializedPropertyType.Gradient"/>.</summary>
+        public static Gradient GetGradientValue(this SerializedProperty property) => (Gradient)GradientValue.GetValue(property, null);
+
+        /// <summary>Sets the <see cref="Gradient"/> value on a <see cref="SerializedPropertyType.Gradient"/>.</summary>
+        public static void SetGradientValue(this SerializedProperty property, Gradient value) => GradientValue.SetValue(property, value, null);
 
         /************************************************************************************************************************/
         #endregion
@@ -323,15 +597,11 @@ namespace Animancer.Editor
         /// <summary>
         /// Adds a menu item to execute the specified `function` for each of the `property`s target objects.
         /// </summary>
-        public static void AddPropertyModifierFunction(GenericMenu menu, SerializedProperty property, string label,
-            MenuFunctionState state, Action<SerializedProperty> function)
+        public static void AddFunction(this GenericMenu menu, string label, MenuFunctionState state, GenericMenu.MenuFunction function)
         {
             if (state != MenuFunctionState.Disabled)
             {
-                menu.AddItem(new GUIContent(label), state == MenuFunctionState.Selected, () =>
-                {
-                    ForEachTarget(property, function);
-                });
+                menu.AddItem(new GUIContent(label), state == MenuFunctionState.Selected, function);
             }
             else
             {
@@ -342,21 +612,40 @@ namespace Animancer.Editor
         /// <summary>
         /// Adds a menu item to execute the specified `function` for each of the `property`s target objects.
         /// </summary>
-        public static void AddPropertyModifierFunction(GenericMenu menu, SerializedProperty property, string label,
-            bool enabled, Action<SerializedProperty> function)
+        public static void AddFunction(this GenericMenu menu, string label, bool enabled, GenericMenu.MenuFunction function)
+            => AddFunction(menu, label, enabled ? MenuFunctionState.Normal : MenuFunctionState.Disabled, function);
+
+        /************************************************************************************************************************/
+
+        /// <summary>Adds a menu item to execute the specified `function` for each of the `property`s target objects.</summary>
+        public static void AddPropertyModifierFunction(this GenericMenu menu, SerializedProperty property, string label,
+            MenuFunctionState state, Action<SerializedProperty> function)
         {
-            var state = enabled ? MenuFunctionState.Normal : MenuFunctionState.Disabled;
-            AddPropertyModifierFunction(menu, property, label, state, function);
+            if (state != MenuFunctionState.Disabled && GUI.enabled)
+            {
+                menu.AddItem(new GUIContent(label), state == MenuFunctionState.Selected, () =>
+                {
+                    ForEachTarget(property, function);
+                    GUIUtility.keyboardControl = 0;
+                    GUIUtility.hotControl = 0;
+                    EditorGUIUtility.editingTextField = false;
+                });
+            }
+            else
+            {
+                menu.AddDisabledItem(new GUIContent(label));
+            }
         }
 
-        /// <summary>
-        /// Adds a menu item to execute the specified `function` for each of the `property`s target objects.
-        /// </summary>
-        public static void AddPropertyModifierFunction(GenericMenu menu, SerializedProperty property, string label,
+        /// <summary>Adds a menu item to execute the specified `function` for each of the `property`s target objects.</summary>
+        public static void AddPropertyModifierFunction(this GenericMenu menu, SerializedProperty property, string label, bool enabled,
             Action<SerializedProperty> function)
-        {
-            AddPropertyModifierFunction(menu, property, label, MenuFunctionState.Normal, function);
-        }
+            => AddPropertyModifierFunction(menu, property, label, enabled ? MenuFunctionState.Normal : MenuFunctionState.Disabled, function);
+
+        /// <summary>Adds a menu item to execute the specified `function` for each of the `property`s target objects.</summary>
+        public static void AddPropertyModifierFunction(this GenericMenu menu, SerializedProperty property, string label,
+            Action<SerializedProperty> function)
+            => AddPropertyModifierFunction(menu, property, label, MenuFunctionState.Normal, function);
 
         /************************************************************************************************************************/
 
@@ -555,7 +844,7 @@ namespace Animancer.Editor
                     }
 
                     if (field != null)
-                        accessor = new ArrayPropertyAccessor(parent, field, index);
+                        accessor = new CollectionPropertyAccessor(parent, field, index);
                     else
                         accessor = null;
                 }
@@ -591,14 +880,12 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Returns a field with the specified `name` in the `declaringType` or any of its base types.
-        /// </summary>
+        /// <summary>Returns a field with the specified `name` in the `declaringType` or any of its base types.</summary>
         private static FieldInfo GetField(Type declaringType, string name)
         {
             while (true)
             {
-                var field = declaringType.GetField(name, AnimancerEditorUtilities.InstanceBindings);
+                var field = declaringType.GetField(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 if (field != null)
                     return field;
 
@@ -715,6 +1002,21 @@ namespace Animancer.Editor
 
             /************************************************************************************************************************/
 
+            /// <summary>Resets the value of the <see cref="SerializedProperty"/> to the default value of its type.</summary>
+            /// <remarks>
+            /// This method sets the target value to <c>null</c> then makes Unity deserialize it to run its default
+            /// constructor and field initialisers.
+            /// </remarks>
+            public void ResetValue(SerializedProperty property, string undoName = "Inspector")
+            {
+                property.RecordUndo(undoName);
+                property.serializedObject.ApplyModifiedProperties();
+                SetValue(property, null);
+                property.serializedObject.Update();
+            }
+
+            /************************************************************************************************************************/
+
             /// <summary>Returns a description of this accessor's path.</summary>
             public override string ToString()
             {
@@ -741,11 +1043,11 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
-        #region ArrayPropertyAccessor
+        #region CollectionPropertyAccessor
         /************************************************************************************************************************/
 
-        /// <summary>[Editor-Only] A <see cref="PropertyAccessor"/> for a particular element in an array.</summary>
-        public class ArrayPropertyAccessor : PropertyAccessor
+        /// <summary>[Editor-Only] A <see cref="PropertyAccessor"/> for a specific element index in a collection.</summary>
+        public class CollectionPropertyAccessor : PropertyAccessor
         {
             /************************************************************************************************************************/
 
@@ -754,8 +1056,8 @@ namespace Animancer.Editor
 
             /************************************************************************************************************************/
 
-            /// <summary>[Internal] Creates a new <see cref="ArrayPropertyAccessor"/>.</summary>
-            internal ArrayPropertyAccessor(PropertyAccessor parent, FieldInfo field, int elementIndex)
+            /// <summary>[Internal] Creates a new <see cref="CollectionPropertyAccessor"/>.</summary>
+            internal CollectionPropertyAccessor(PropertyAccessor parent, FieldInfo field, int elementIndex)
                 : base(parent, field, GetElementType(field.FieldType))
             {
                 ElementIndex = elementIndex;
@@ -776,13 +1078,16 @@ namespace Animancer.Editor
                 }
                 else
                 {
-                    Debug.LogWarning($"{nameof(Serialization)}.{nameof(ArrayPropertyAccessor)}:" +
+                    Debug.LogWarning($"{nameof(Serialization)}.{nameof(CollectionPropertyAccessor)}:" +
                         $" unable to determine element type for {fieldType}");
                     return fieldType;
                 }
             }
 
             /************************************************************************************************************************/
+
+            /// <summary>Returns the collection object targeted by this accessor.</summary>
+            public object GetCollection(object obj) => base.GetValue(obj);
 
             /// <inheritdoc/>
             public override object GetValue(object obj)
@@ -813,6 +1118,9 @@ namespace Animancer.Editor
 
             /************************************************************************************************************************/
 
+            /// <summary>Sets the collection object targeted by this accessor.</summary>
+            public void SetCollection(object obj, object value) => base.SetValue(obj, value);
+
             /// <inheritdoc/>
             public override void SetValue(object obj, object value)
             {
@@ -839,7 +1147,10 @@ namespace Animancer.Editor
 
             /************************************************************************************************************************/
 
-            /// <summary>Returns a this accessor's <see cref="SerializedProperty.propertyPath"/>.</summary>
+            /// <summary>Returns the <see cref="SerializedProperty.propertyPath"/> of the array containing the target.</summary>
+            public string GetCollectionPath() => base.GetPath();
+
+            /// <summary>Returns this accessor's <see cref="SerializedProperty.propertyPath"/>.</summary>
             public override string GetPath() => $"{base.GetPath()}{ArrayDataPrefix}{ElementIndex}{ArrayDataSuffix}";
 
             /************************************************************************************************************************/

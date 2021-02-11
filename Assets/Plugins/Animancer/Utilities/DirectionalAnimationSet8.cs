@@ -154,7 +154,7 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>Up, Down, Left Right, or their diagonals.</summary>
+        /// <summary>Up, Right, Down, Left, or their diagonals.</summary>
         /// <remarks>
         /// Documentation: <see href="https://kybernetik.com.au/animancer/docs/manual/playing/directional-sets">Directional Animation Sets</see>
         /// </remarks>
@@ -162,16 +162,29 @@ namespace Animancer
         /// 
         public new enum Direction
         {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member.
+            /// <summary><see cref="Vector2.up"/>.</summary>
             Up,
+
+            /// <summary><see cref="Vector2.right"/>.</summary>
             Right,
+
+            /// <summary><see cref="Vector2.down"/>.</summary>
             Down,
+
+            /// <summary><see cref="Vector2.left"/>.</summary>
             Left,
+
+            /// <summary><see cref="Vector2"/>(0.707..., 0.707...).</summary>
             UpRight,
+
+            /// <summary><see cref="Vector2"/>(0.707..., -0.707...).</summary>
             DownRight,
+
+            /// <summary><see cref="Vector2"/>(-0.707..., -0.707...).</summary>
             DownLeft,
+
+            /// <summary><see cref="Vector2"/>(-0.707..., 0.707...).</summary>
             UpLeft,
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member.
         }
 
         /************************************************************************************************************************/
@@ -193,7 +206,7 @@ namespace Animancer
                 case Direction.DownRight: return _DownRight;
                 case Direction.DownLeft: return _DownLeft;
                 case Direction.UpLeft: return _UpLeft;
-                default: throw new ArgumentException("Unhandled direction: " + direction);
+                default: throw new ArgumentException($"Unsupported {nameof(Direction)}: {direction}");
             }
         }
 
@@ -214,7 +227,7 @@ namespace Animancer
                 case Direction.DownRight: _DownRight = clip; break;
                 case Direction.DownLeft: _DownLeft = clip; break;
                 case Direction.UpLeft: _UpLeft = clip; break;
-                default: throw new ArgumentException("Unhandled direction: " + direction);
+                default: throw new ArgumentException($"Unsupported {nameof(Direction)}: {direction}");
             }
 
             AnimancerUtilities.SetDirty(this);
@@ -237,7 +250,7 @@ namespace Animancer
                 case Direction.DownRight: return Diagonals.DownRight;
                 case Direction.DownLeft: return Diagonals.DownLeft;
                 case Direction.UpLeft: return Diagonals.UpLeft;
-                default: throw new ArgumentException("Unhandled direction: " + direction);
+                default: throw new ArgumentException($"Unsupported {nameof(Direction)}: {direction}");
             }
         }
 

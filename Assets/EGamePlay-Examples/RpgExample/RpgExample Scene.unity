@@ -2056,6 +2056,8 @@ MonoBehaviour:
   AttackAnimation: {fileID: 7400000, guid: 7b5b17e2d42e0424f9c36012595dc9b6, type: 3}
   SkillAnimation: {fileID: 7400000, guid: e2538d48c03da46a8b0c3b59d39a4cab, type: 3}
   StunAnimation: {fileID: 0}
+  AnimationClips:
+  - {fileID: 7400000, guid: ce17781955d25c647922801319f24e9e, type: 3}
 --- !u!1 &1130065338
 GameObject:
   m_ObjectHideFlags: 0
@@ -3757,71 +3759,14 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 4900000, guid: 79f1713de1c57e646a74288a5fe0f14f, type: 3}
-    - {fileID: 4900000, guid: 23634d520f9e666409d18131e3c6bbc5, type: 3}
-    - {fileID: 4900000, guid: 2bc72c3b6ec844f459adcb42fc92e30e, type: 3}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: TypeConfigTexts
-      Entry: 7
-      Data: 0|UnityEngine.Rendering.SerializedDictionary`2[[System.String, mscorlib],[UnityEngine.TextAsset,
-        UnityEngine.CoreModule]], Unity.RenderPipelines.Core.Runtime
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: UnitConfig
-    - Name: $v
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: SkillConfig
-    - Name: $v
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: StatusConfig
-    - Name: $v
-      Entry: 10
-      Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
+  ConfigsCollector: {fileID: 8957007620084665262, guid: 65ef3756840fd9c4bafab58c8af09086,
+    type: 3}
 --- !u!1 &2048705141
 GameObject:
   m_ObjectHideFlags: 0

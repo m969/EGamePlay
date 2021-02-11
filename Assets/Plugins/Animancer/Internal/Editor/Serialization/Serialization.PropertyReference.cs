@@ -75,7 +75,7 @@ namespace Animancer.Editor
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="PropertyReference"/> which wraps the specified `property`.
+            /// Creates a new <see cref="PropertyReference"/> which wraps the specified `property`.
             /// </summary>
             public PropertyReference(SerializedProperty property)
             {
@@ -90,7 +90,7 @@ namespace Animancer.Editor
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="PropertyReference"/> which wraps the specified `property`.
+            /// Creates a new <see cref="PropertyReference"/> which wraps the specified `property`.
             /// </summary>
             public static implicit operator PropertyReference(SerializedProperty property) => new PropertyReference(property);
 

@@ -119,12 +119,17 @@ namespace Animancer
         /// 
         public enum Direction
         {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member.
+            /// <summary><see cref="Vector2.up"/>.</summary>
             Up,
+
+            /// <summary><see cref="Vector2.right"/>.</summary>
             Right,
+
+            /// <summary><see cref="Vector2.down"/>.</summary>
             Down,
+
+            /// <summary><see cref="Vector2.left"/>.</summary>
             Left,
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member.
         }
 
         /************************************************************************************************************************/
@@ -143,7 +148,7 @@ namespace Animancer
                 case Direction.Right: return _Right;
                 case Direction.Down: return _Down;
                 case Direction.Left: return _Left;
-                default: throw new ArgumentException("Unhandled direction: " + direction);
+                default: throw new ArgumentException($"Unsupported {nameof(Direction)}: {direction}");
             }
         }
 
@@ -161,7 +166,7 @@ namespace Animancer
                 case Direction.Right: _Right = clip; break;
                 case Direction.Down: _Down = clip; break;
                 case Direction.Left: _Left = clip; break;
-                default: throw new ArgumentException("Unhandled direction: " + direction);
+                default: throw new ArgumentException($"Unsupported {nameof(Direction)}: {direction}");
             }
 
             AnimancerUtilities.SetDirty(this);
@@ -183,7 +188,7 @@ namespace Animancer
                 case Direction.Right: return Vector2.right;
                 case Direction.Down: return Vector2.down;
                 case Direction.Left: return Vector2.left;
-                default: throw new ArgumentException("Unhandled direction: " + direction);
+                default: throw new ArgumentException($"Unsupported {nameof(Direction)}: {direction}");
             }
         }
 
@@ -404,21 +409,17 @@ namespace Animancer
                     continue;
 
                 var isLooping = !clip.isLooping;
-                Debug.Log($"Set {clip.name} to be {(isLooping ? "Looping" : "Not Looping")}." +
-                    " Note that you may need to restart Unity for this change to take effect.", clip);
-
                 for (i = 0; i < count; i++)
                 {
                     clip = set.GetClip(i);
                     if (clip == null)
                         continue;
 
-                    Animancer.Editor.AnimancerEditorUtilities.SetLooping(clip, !clip.isLooping);
+                    Animancer.Editor.AnimancerEditorUtilities.SetLooping(clip, isLooping);
                 }
 
                 break;
             }
-
         }
 
         /************************************************************************************************************************/

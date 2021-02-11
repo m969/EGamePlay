@@ -18,7 +18,7 @@ namespace ET
 		public int Id { get; set; }
 		public string Name;
 		public string Target;
-		public float Probability;
+		public string Probability;
 		public string Type;
 		public string ValueFormula;
 	}

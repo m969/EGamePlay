@@ -97,6 +97,11 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>IK cannot be dynamically enabled on a <see cref="ControllerState"/>.</summary>
+        public override void CopyIKFlags(AnimancerNode node) { }
+
+        /************************************************************************************************************************/
+
+        /// <summary>IK cannot be dynamically enabled on a <see cref="ControllerState"/>.</summary>
         public override bool ApplyAnimatorIK
         {
             get => false;
@@ -111,12 +116,28 @@ namespace Animancer
         }
 
         /************************************************************************************************************************/
+
+        /// <summary>IK cannot be dynamically enabled on a <see cref="ControllerState"/>.</summary>
+        public override bool ApplyFootIK
+        {
+            get => false;
+            set
+            {
+#if UNITY_ASSERTIONS
+                if (value)
+                    OptionalWarning.UnsupportedIK.Log($"IK cannot be dynamically enabled on a {nameof(ControllerState)}." +
+                        " You must instead enable it on the desired state inside the Animator Controller.", _Controller);
+#endif
+            }
+        }
+
+        /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
         #region Public API
         /************************************************************************************************************************/
 
-        /// <summary>Constructs a new <see cref="ControllerState"/> to play the `controller`.</summary>
+        /// <summary>Creates a new <see cref="ControllerState"/> to play the `controller`.</summary>
         public ControllerState(RuntimeAnimatorController controller, bool keepStateOnStop = false)
         {
             if (controller == null)
@@ -288,89 +309,68 @@ namespace Animancer
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
-        #region Parameters
+        #region Parameter IDs
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// A wrapper for the name and hash of an <see cref="AnimatorControllerParameter"/> to allow easy access.
-        /// </summary>
-        public struct Parameter
+        /// <summary>A wrapper for the name and hash of an <see cref="AnimatorControllerParameter"/>.</summary>
+        public readonly struct ParameterID
         {
             /************************************************************************************************************************/
 
-            private string _Name;
-            private int _Hash;
+            /// <summary>The name of this parameter.</summary>
+            public readonly string Name;
+
+            /// <summary>The name hash of this parameter.</summary>
+            public readonly int Hash;
 
             /************************************************************************************************************************/
 
             /// <summary>
-            /// The name of the wrapped parameter. This will be null if the <see cref="Hash"/> was assigned directly.
-            /// </summary>
-            public string Name
-            {
-                get => _Name;
-                set
-                {
-                    _Name = value;
-                    _Hash = Animator.StringToHash(value);
-                }
-            }
-
-            /************************************************************************************************************************/
-
-            /// <summary>
-            /// The name hash of the wrapped parameter.
-            /// </summary>
-            public int Hash
-            {
-                get => _Hash;
-                set
-                {
-                    _Name = null;
-                    _Hash = value;
-                }
-            }
-
-            /************************************************************************************************************************/
-
-            /// <summary>
-            /// Constructs a new <see cref="Parameter"/> with the specified <see cref="Name"/> and uses
+            /// Creates a new <see cref="ParameterID"/> with the specified <see cref="Name"/> and uses
             /// <see cref="Animator.StringToHash"/> to calculate the <see cref="Hash"/>.
             /// </summary>
-            public Parameter(string name)
+            public ParameterID(string name)
             {
-                _Name = name;
-                _Hash = Animator.StringToHash(name);
+                Name = name;
+                Hash = Animator.StringToHash(name);
             }
 
             /// <summary>
-            /// Constructs a new <see cref="Parameter"/> with the specified <see cref="Hash"/> and leaves the
+            /// Creates a new <see cref="ParameterID"/> with the specified <see cref="Hash"/> and leaves the
             /// <see cref="Name"/> null.
             /// </summary>
-            public Parameter(int hash)
+            public ParameterID(int hash)
             {
-                _Name = null;
-                _Hash = hash;
+                Name = null;
+                Hash = hash;
+            }
+
+            /// <summary>Creates a new <see cref="ParameterID"/> with the specified <see cref="Name"/> and <see cref="Hash"/>.</summary>
+            /// <remarks>This constructor does not verify that the `hash` actually corresponds to the `name`.</remarks>
+            public ParameterID(string name, int hash)
+            {
+                Name = name;
+                Hash = hash;
             }
 
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Constructs a new <see cref="Parameter"/> with the specified <see cref="Name"/> and uses
+            /// Creates a new <see cref="ParameterID"/> with the specified <see cref="Name"/> and uses
             /// <see cref="Animator.StringToHash"/> to calculate the <see cref="Hash"/>.
             /// </summary>
-            public static implicit operator Parameter(string name) => new Parameter(name);
+            public static implicit operator ParameterID(string name) => new ParameterID(name);
 
             /// <summary>
-            /// Constructs a new <see cref="Parameter"/> with the specified <see cref="Hash"/> and leaves the
+            /// Creates a new <see cref="ParameterID"/> with the specified <see cref="Hash"/> and leaves the
             /// <see cref="Name"/> null.
             /// </summary>
-            public static implicit operator Parameter(int hash) => new Parameter(hash);
+            public static implicit operator ParameterID(int hash) => new ParameterID(hash);
 
             /************************************************************************************************************************/
 
             /// <summary>Returns the <see cref="Hash"/>.</summary>
-            public static implicit operator int(Parameter parameter) => parameter._Hash;
+            public static implicit operator int(ParameterID parameter) => parameter.Hash;
 
             /************************************************************************************************************************/
 
@@ -395,8 +395,7 @@ namespace Animancer
                 {
                     parameterDetails = new Dictionary<int, AnimatorControllerParameterType>();
 
-                    var animatorController = controller as AnimatorController;
-                    var parameters = animatorController.parameters;
+                    var parameters = ((AnimatorController)controller).parameters;
                     var count = parameters.Length;
                     for (int i = 0; i < count; i++)
                     {
@@ -409,14 +408,14 @@ namespace Animancer
 
                 // Check that there is a parameter with the correct hash and type.
 
-                if (!parameterDetails.TryGetValue(_Hash, out var parameterType))
+                if (!parameterDetails.TryGetValue(Hash, out var parameterType))
                 {
-                    throw new ArgumentException(controller + " has no " + type + " parameter matching " + this);
+                    throw new ArgumentException($"{controller} has no {type} parameter matching {this}");
                 }
 
                 if (type != parameterType)
                 {
-                    throw new ArgumentException(controller + " has a parameter matching " + this + ", but it is not a " + type);
+                    throw new ArgumentException($"{controller} has a parameter matching {this}, but it is not a {type}");
                 }
 #endif
             }
@@ -426,9 +425,9 @@ namespace Animancer
             /// <summary>Returns a string containing the <see cref="Name"/> and <see cref="Hash"/>.</summary>
             public override string ToString()
             {
-                return $"{nameof(ControllerState)}.{nameof(Parameter)}" +
-                    $"({nameof(Name)}: '{_Name}'" +
-                    $", {nameof(Hash)}: {_Hash})";
+                return $"{nameof(ControllerState)}.{nameof(ParameterID)}" +
+                    $"({nameof(Name)}: '{Name}'" +
+                    $", {nameof(Hash)}: {Hash})";
             }
 
             /************************************************************************************************************************/
@@ -467,7 +466,7 @@ namespace Animancer
         {
             /************************************************************************************************************************/
 
-            /// <summary>Constructs a new <see cref="Drawer"/> to manage the Inspector GUI for the `state`.</summary>
+            /// <summary>Creates a new <see cref="Drawer"/> to manage the Inspector GUI for the `state`.</summary>
             public Drawer(ControllerState state) : base(state) { }
 
             /************************************************************************************************************************/
@@ -651,10 +650,7 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>
-            /// Called by <see cref="AnimancerPlayable.Play(ITransition)"/> to apply the
-            /// <see cref="NormalizedStartTime"/>.
-            /// </summary>
+            /// <inheritdoc/>
             public override void Apply(AnimancerState state)
             {
                 base.Apply(state);
@@ -728,15 +724,15 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>Constructs a new <see cref="Transition"/>.</summary>
+            /// <summary>Creates a new <see cref="Transition"/>.</summary>
             public Transition() { }
 
-            /// <summary>Constructs a new <see cref="Transition"/> with the specified Animator Controller.</summary>
+            /// <summary>Creates a new <see cref="Transition"/> with the specified Animator Controller.</summary>
             public Transition(RuntimeAnimatorController controller) => Controller = controller;
 
             /************************************************************************************************************************/
 
-            /// <summary>Constructs a new <see cref="Transition"/> with the specified Animator Controller.</summary>
+            /// <summary>Creates a new <see cref="Transition"/> with the specified Animator Controller.</summary>
             public static implicit operator Transition(RuntimeAnimatorController controller) => new Transition(controller);
 
             /************************************************************************************************************************/
@@ -766,10 +762,10 @@ namespace Animancer
 
                 /************************************************************************************************************************/
 
-                /// <summary>Constructs a new <see cref="Drawer"/> without any parameters.</summary>
+                /// <summary>Creates a new <see cref="Drawer"/> without any parameters.</summary>
                 public Drawer() : this(null) { }
 
-                /// <summary>Constructs a new <see cref="Drawer"/> and sets the <see cref="Parameters"/>.</summary>
+                /// <summary>Creates a new <see cref="Drawer"/> and sets the <see cref="Parameters"/>.</summary>
                 public Drawer(params string[] parameters) : base(nameof(_Controller))
                 {
                     Parameters = parameters;
@@ -871,13 +867,11 @@ namespace Animancer
                         for (int i = 0; i < parameters.Length; i++)
                         {
                             var parameter = parameters[i];
-                            Editor.AnimancerEditorUtilities.AddMenuItem(menu, parameter.name,
-                                parameter.type == AnimatorControllerParameterType.Float, () =>
+                            Editor.Serialization.AddPropertyModifierFunction(menu, property, parameter.name,
+                                parameter.type == AnimatorControllerParameterType.Float,
+                                (targetProperty) =>
                                 {
-                                    Editor.Serialization.ForEachTarget(property, (targetProperty) =>
-                                    {
-                                        targetProperty.stringValue = parameter.name;
-                                    });
+                                    targetProperty.stringValue = parameter.name;
                                 });
                         }
 

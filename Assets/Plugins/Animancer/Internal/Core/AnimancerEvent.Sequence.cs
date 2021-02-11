@@ -27,7 +27,6 @@ namespace Animancer
             /************************************************************************************************************************/
 
             internal const string
-                NoCallbackError = nameof(AnimancerEvent) + " has no callback",
                 IndexOutOfRangeError = "index must be within the range of 0 <= index < " + nameof(Count);
 
             /************************************************************************************************************************/
@@ -249,12 +248,17 @@ namespace Animancer
             /// <seealso cref="GetName"/>
             /// <seealso cref="SetName"/>
             /// <seealso cref="IndexOfRequired"/>
-            public int IndexOf(string name)
+            public int IndexOf(string name, int startIndex = 0)
             {
                 if (_Names == null)
                     return -1;
-                else
-                    return Array.IndexOf(_Names, name);
+
+                var count = Mathf.Min(Count, _Names.Length);
+                for (; startIndex < count; startIndex++)
+                    if (_Names[startIndex] == name)
+                        return startIndex;
+
+                return -1;
             }
 
             /// <summary>[Pro-Only]
@@ -263,13 +267,18 @@ namespace Animancer
             /// </summary>
             /// <exception cref="ArgumentException"/>
             /// <seealso cref="IndexOf"/>
-            public int IndexOfRequired(string name)
+            public int IndexOfRequired(string name, int startIndex = 0)
             {
                 if (_Names != null)
                 {
-                    var index = Array.IndexOf(_Names, name);
-                    if (index >= 0)
-                        return index;
+                    var count = Mathf.Min(Count, _Names.Length);
+                    for (; startIndex < count; startIndex++)
+                    {
+                        if (_Names[startIndex] == name)
+                        {
+                            return startIndex;
+                        }
+                    }
                 }
 
                 throw new ArgumentException($"No event exists with the name '{name}'.");
@@ -560,9 +569,14 @@ namespace Animancer
             /// <see cref="normalizedTime"/> to keep the sequence sorted in ascending order. If there are already any
             /// events with the same <see cref="normalizedTime"/>, the new event is added immediately after them.
             /// </remarks>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public int Add(AnimancerEvent animancerEvent)
             {
-                Debug.Assert(animancerEvent.callback != null, NoCallbackError);
+#if UNITY_ASSERTIONS
+                if (animancerEvent.callback == null)
+                    throw new ArgumentNullException($"{nameof(AnimancerEvent)}.{nameof(callback)}");
+
+#endif
                 var index = Insert(animancerEvent.normalizedTime);
                 AssertEventUniqueness(index, animancerEvent);
                 _Events[index] = animancerEvent;
@@ -578,6 +592,7 @@ namespace Animancer
             /// <see cref="normalizedTime"/> to keep the sequence sorted in ascending order. If there are already any
             /// events with the same <see cref="normalizedTime"/>, the new event is added immediately after them.
             /// </remarks>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public int Add(float normalizedTime, Action callback)
                 => Add(new AnimancerEvent(normalizedTime, callback));
 
@@ -590,9 +605,14 @@ namespace Animancer
             /// <see cref="normalizedTime"/> to keep the sequence sorted in ascending order. If there are already any
             /// events with the same <see cref="normalizedTime"/>, the new event is added immediately after them.
             /// </remarks>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public int Add(int indexHint, AnimancerEvent animancerEvent)
             {
-                Debug.Assert(animancerEvent.callback != null, NoCallbackError);
+#if UNITY_ASSERTIONS
+                if (animancerEvent.callback == null)
+                    throw new ArgumentNullException($"{nameof(AnimancerEvent)}.{nameof(callback)}");
+
+#endif
                 indexHint = Insert(indexHint, animancerEvent.normalizedTime);
                 AssertEventUniqueness(indexHint, animancerEvent);
                 _Events[indexHint] = animancerEvent;
@@ -608,6 +628,7 @@ namespace Animancer
             /// <see cref="normalizedTime"/> to keep the sequence sorted in ascending order. If there are already any
             /// events with the same <see cref="normalizedTime"/>, the new event is added immediately after them.
             /// </remarks>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public int Add(int indexHint, float normalizedTime, Action callback)
                 => Add(indexHint, new AnimancerEvent(normalizedTime, callback));
 
@@ -617,6 +638,7 @@ namespace Animancer
             /// Adds every event in the `enumerable` to this sequence. The <see cref="Count"/> is increased by one and if
             /// required, the <see cref="Capacity"/> is doubled to fit the new event.
             /// </summary>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public void AddRange(IEnumerable<AnimancerEvent> enumerable)
             {
                 foreach (var item in enumerable)
@@ -625,40 +647,68 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>[Pro-Only]
-            /// Adds the specified `callback` to the <see cref="callback"/> of the event at the specified `index`.
-            /// </summary>
+            /// <summary>[Pro-Only] Adds the specified `callback` to the event at the specified `index`.</summary>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public void AddCallback(int index, Action callback)
             {
-                var animancerEvent = _Events[index];
-                AssertEventUniqueness(animancerEvent.callback, callback);
+                ref var animancerEvent = ref _Events[index];
+                AssertCallbackUniqueness(animancerEvent.callback, callback, $"{nameof(callback)} being added");
                 animancerEvent.callback += callback;
-                _Events[index] = animancerEvent;
                 Version++;
             }
 
-            /// <summary>[Pro-Only]
-            /// Adds the specified `callback` to the <see cref="callback"/> of the event with the specified `name`.
-            /// </summary>
+            /// <summary>[Pro-Only] Adds the specified `callback` to the event with the specified `name`.</summary>
             /// <exception cref="ArgumentException">There is no event with the specified `name`.</exception>
             /// <seealso cref="IndexOfRequired"/>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public void AddCallback(string name, Action callback) => AddCallback(IndexOfRequired(name), callback);
 
             /************************************************************************************************************************/
 
+            /// <summary>[Pro-Only] Removes the specified `callback` from the event at the specified `index`.</summary>
+            /// <remarks>
+            /// If the <see cref="callback"/> would become null, it is instead set to the <see cref="DummyCallback"/>
+            /// since they are not allowed to be null.
+            /// </remarks>
+            public void RemoveCallback(int index, Action callback)
+            {
+                ref var animancerEvent = ref _Events[index];
+                animancerEvent.callback -= callback;
+                if (animancerEvent.callback == null)
+                    animancerEvent.callback = DummyCallback;
+                Version++;
+            }
+
+            /// <summary>[Pro-Only] Removes the specified `callback` from the event with the specified `name`.</summary>
+            /// <remarks>
+            /// If the <see cref="callback"/> would become null, it is instead set to the <see cref="DummyCallback"/>
+            /// since they are not allowed to be null.
+            /// </remarks>
+            /// <exception cref="ArgumentException">There is no event with the specified `name`.</exception>
+            /// <seealso cref="IndexOfRequired"/>
+            public void RemoveCallback(string name, Action callback) => RemoveCallback(IndexOfRequired(name), callback);
+
+            /************************************************************************************************************************/
+
             /// <summary>[Pro-Only] Replaces the <see cref="callback"/> of the event at the specified `index`.</summary>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public void SetCallback(int index, Action callback)
             {
-                Debug.Assert(callback != null, NoCallbackError);
-                var animancerEvent = _Events[index];
+#if UNITY_ASSERTIONS
+                if (callback == null)
+                    throw new ArgumentNullException(nameof(callback));
+
+#endif
+                ref var animancerEvent = ref _Events[index];
+                AssertCallbackUniqueness(animancerEvent.callback, callback, $"{nameof(callback)} being assigned");
                 animancerEvent.callback = callback;
-                _Events[index] = animancerEvent;
                 Version++;
             }
 
             /// <summary>[Pro-Only] Replaces the <see cref="callback"/> of the event with the specified `name`.</summary>
             /// <exception cref="ArgumentException">There is no event with the specified `name`.</exception>
             /// <seealso cref="IndexOfRequired"/>
+            /// <seealso cref="OptionalWarning.DuplicateEvent"/>
             public void SetCallback(string name, Action callback) => SetCallback(IndexOfRequired(name), callback);
 
             /************************************************************************************************************************/
@@ -668,7 +718,7 @@ namespace Animancer
             /// `newCallback` or just has the same <see cref="Delegate.Method"/>.
             /// </summary>
             [System.Diagnostics.Conditional(Strings.Assertions)]
-            private static void AssertEventUniqueness(Action oldCallback, Action newCallback)
+            private static void AssertCallbackUniqueness(Action oldCallback, Action newCallback, string target)
             {
 #if UNITY_ASSERTIONS
                 if (OptionalWarning.DuplicateEvent.IsDisabled())
@@ -676,13 +726,13 @@ namespace Animancer
 
                 if (oldCallback == newCallback)
                 {
-                    OptionalWarning.DuplicateEvent.Log($"The {nameof(AnimancerEvent)} being added" +
+                    OptionalWarning.DuplicateEvent.Log($"The {target}" +
                         " is identical to an existing event in the sequence" +
                         " which may mean that it is being unintentionally added multiple times.");
                 }
                 else if (oldCallback?.Method == newCallback?.Method)
                 {
-                    OptionalWarning.DuplicateEvent.Log($"The {nameof(AnimancerEvent)} being added" +
+                    OptionalWarning.DuplicateEvent.Log($"The {target}" +
                         " is identical to an existing event in the sequence except for the target object." +
                         " This often happens when a Transition is shared by multiple objects," +
                         " in which case it can be avoided by giving each object its own" +
@@ -693,7 +743,8 @@ namespace Animancer
             }
 
             /// <summary>[Assert-Conditional]
-            /// Logs a warning if the event at the specified `index` is identical to the `newEvent`.
+            /// Logs <see cref="OptionalWarning.DuplicateEvent"/> if the event at the specified `index` is identical to
+            /// the `newEvent`.
             /// </summary>
             [System.Diagnostics.Conditional(Strings.Assertions)]
             private void AssertEventUniqueness(int index, AnimancerEvent newEvent)
@@ -706,7 +757,7 @@ namespace Animancer
                 if (previousEvent.normalizedTime != newEvent.normalizedTime)
                     return;
 
-                AssertEventUniqueness(previousEvent.callback, newEvent.callback);
+                AssertCallbackUniqueness(previousEvent.callback, newEvent.callback, $"{nameof(AnimancerEvent)} being added");
 #endif
             }
 
@@ -807,8 +858,8 @@ namespace Animancer
             {
                 Debug.Assert((uint)index < (uint)Count, IndexOutOfRangeError);
                 Count--;
-                if (index < Count)
-                    Array.Copy(_Events, index + 1, _Events, index, Count - index);
+                if (index + 1 < Count)
+                    Array.Copy(_Events, index + 1, _Events, index, Count - index - 1);
                 _Events[Count] = default;
                 Version++;
             }
@@ -835,13 +886,17 @@ namespace Animancer
             /// </summary>
             public bool Remove(AnimancerEvent animancerEvent)
             {
-                var index = Array.IndexOf(_Events, animancerEvent);
-                if (index >= 0)
+                var count = Count;
+                for (int i = 0; i < count; i++)
                 {
-                    Remove(index);
-                    return true;
+                    if (_Events[i] == animancerEvent)
+                    {
+                        Remove(i);
+                        return true;
+                    }
                 }
-                else return false;
+
+                return false;
             }
 
             /************************************************************************************************************************/

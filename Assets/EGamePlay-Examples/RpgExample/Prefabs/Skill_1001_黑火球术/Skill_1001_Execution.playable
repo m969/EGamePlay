@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1816226285728436462
+--- !u!114 &-3306209471885877815
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030f85c3f73729f4f976f66ffb23b875, type: 3}
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 7400000, guid: e2538d48c03da46a8b0c3b59d39a4cab, type: 3}
+  m_Clip: {fileID: 7400000, guid: ce17781955d25c647922801319f24e9e, type: 3}
   m_Position: {x: 0, y: 0, z: 0}
   m_EulerAngles: {x: 0, y: 0, z: 0}
   m_UseTrackMatchFields: 1
@@ -36,12 +36,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 0
   m_Tracks:
-  - {fileID: 9139510270093723179}
+  - {fileID: 6422521448481581683}
+  - {fileID: 1363687636042589093}
   m_FixedDuration: 0
   m_EditorSettings:
-    m_Framerate: 30
+    m_Framerate: 60
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 4828324310282108766}
+--- !u!114 &1363687636042589093
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21bf7f712d84d26478ebe6a299f21738, type: 3}
+  m_Name: Activation Track
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips: []
+  m_Markers:
+    m_Objects: []
+  m_PostPlaybackState: 3
 --- !u!114 &3104048393300136761
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -94,16 +119,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147c6770eb845c942b32ae3ec43cc41d, type: 3}
   m_Name: Collider Spawn Emitter
   m_EditorClassIdentifier: 
-  m_Time: 1.5333333015441895
+  m_Time: 0.3499999940395355
   m_Retroactive: 1
   m_EmitOnce: 1
   m_Asset: {fileID: 11400000, guid: 20e77136f0b57364ebd2b564e9a053d5, type: 2}
   ColliderName: "\u9ED1\u706B\u7403\u78B0\u649E\u4F53"
-  ColliderType: 1
-  ColliderShape: 1
+  ColliderType: 2
   ExistTime: 0
   EffectApplyType: 0
---- !u!114 &9139510270093723179
+--- !u!114 &6422521448481581683
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,7 +137,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d21dcc2386d650c4597f3633c75a1f98, type: 3}
-  m_Name: Animation Track
+  m_Name: Animation Track (1)
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -127,10 +151,10 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: -1816226285728436462}
-    m_Duration: 1.9333333333333333
+    m_Asset: {fileID: -3306209471885877815}
+    m_Duration: 0.8
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 9139510270093723179}
+    m_ParentTrack: {fileID: 6422521448481581683}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
@@ -192,7 +216,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 1
     m_PostExtrapolationTime: Infinity
     m_PreExtrapolationTime: 0
-    m_DisplayName: WIN00
+    m_DisplayName: Unarmed-Attack-R1
   m_Markers:
     m_Objects: []
   m_InfiniteClipPreExtrapolation: 0

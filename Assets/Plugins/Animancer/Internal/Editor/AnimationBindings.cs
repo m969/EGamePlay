@@ -150,7 +150,7 @@ namespace Animancer.Editor
 
         /// <summary>Returns a cached <see cref="BindingData"/> representing the specified `gameObject`.</summary>
         /// <remarks>Note that the cache is cleared by <see cref="EditorApplication.hierarchyChanged"/>.</remarks>
-        public static BindingData GetBindings(GameObject gameObject)
+        public static BindingData GetBindings(GameObject gameObject, bool forceGather = true)
         {
             if (AnimancerEditorUtilities.InitialiseCleanDictionary(ref _ObjectToBindings))
             {
@@ -159,7 +159,7 @@ namespace Animancer.Editor
 
             if (!_ObjectToBindings.TryGetValue(gameObject, out var bindings))
             {
-                if (!CanGatherBindings())
+                if (!forceGather && !CanGatherBindings())
                     return null;
 
                 bindings = new BindingData(gameObject);
@@ -256,10 +256,8 @@ namespace Animancer.Editor
             {
                 get
                 {
-                    if (_ObjectBindings == null)
+                    if (AnimancerUtilities.NewIfNull(ref _ObjectBindings))
                     {
-                        _ObjectBindings = new HashSet<EditorCurveBinding>();
-
                         var transforms = GameObject.GetComponentsInChildren<Transform>();
                         for (int i = 0; i < transforms.Length; i++)
                         {
@@ -284,9 +282,8 @@ namespace Animancer.Editor
             {
                 get
                 {
-                    if (_ObjectTransformBindings == null)
+                    if (AnimancerUtilities.NewIfNull(ref _ObjectTransformBindings))
                     {
-                        _ObjectTransformBindings = new HashSet<string>();
                         foreach (var binding in ObjectBindings)
                         {
                             if (binding.type == typeof(Transform))
@@ -307,7 +304,7 @@ namespace Animancer.Editor
             /// <para></para>
             /// Also compiles a `message` explaining the differences if that paraneter is not null.
             /// </summary>
-            public MatchType GetMatchType(Animator animator, AnimancerState state, StringBuilder message)
+            public MatchType GetMatchType(Animator animator, AnimancerState state, StringBuilder message, bool forceGather = true)
             {
                 using (ObjectPool.Disposable.AcquireSet<AnimationClip>(out var clips))
                 {
@@ -329,7 +326,7 @@ namespace Animancer.Editor
 
                     foreach (var clip in clips)
                     {
-                        var clipMatch = GetMatchType(clip, message, bindings, ref existingBindings);
+                        var clipMatch = GetMatchType(clip, message, bindings, ref existingBindings, forceGather);
                         if (match < clipMatch)
                             match = clipMatch;
                     }
@@ -354,7 +351,7 @@ namespace Animancer.Editor
             /// Also compiles a `message` explaining the differences if that paraneter is not null.
             /// </summary>
             public MatchType GetMatchType(AnimationClip clip, StringBuilder message,
-                Dictionary<EditorCurveBinding, bool> bindingsInMessage, ref int existingBindings)
+                Dictionary<EditorCurveBinding, bool> bindingsInMessage, ref int existingBindings, bool forceGather = true)
             {
                 AnimancerEditorUtilities.InitialiseCleanDictionary(ref _BindingMatches);
 
@@ -363,7 +360,7 @@ namespace Animancer.Editor
                     if (bindingsInMessage == null)
                         return match;
                 }
-                else if (!CanGatherBindings())
+                else if (!forceGather && !CanGatherBindings())
                 {
                     return MatchType.Unknown;
                 }
@@ -941,11 +938,11 @@ namespace Animancer.Editor
                 goto Hide;
 
             var animator = state.Root.Component.Animator;
-            var bindings = GetBindings(animator.gameObject);
+            var bindings = GetBindings(animator.gameObject, false);
             if (bindings == null)
                 goto Hide;
 
-            var match = bindings.GetMatchType(animator, state, null);
+            var match = bindings.GetMatchType(animator, state, null, false);
             var icon = GetIcon(match);
             if (icon == null)
                 goto Hide;

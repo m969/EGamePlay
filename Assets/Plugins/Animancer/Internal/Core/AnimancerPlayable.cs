@@ -28,7 +28,7 @@ namespace Animancer
     /// https://kybernetik.com.au/animancer/api/Animancer/AnimancerPlayable
     /// 
     public sealed partial class AnimancerPlayable : PlayableBehaviour,
-        IEnumerable<AnimancerState>, IEnumerator, IPlayableWrapper, IAnimationClipCollection, IHasIK
+        IEnumerable<AnimancerState>, IEnumerator, IPlayableWrapper, IAnimationClipCollection
     {
         /************************************************************************************************************************/
         #region Fields and Properties
@@ -103,7 +103,7 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// The number of times the <see cref="StateDictionary.Current"/> has changed. By storing this
+        /// The number of times the <see cref="AnimancerLayer.CurrentState"/> has changed on layer 0. By storing this
         /// value and later comparing the stored value to the current value, you can determine whether the state has
         /// been changed since then, even it has changed back to the same state.
         /// </summary>
@@ -132,8 +132,7 @@ namespace Animancer
         /// <em>Animancer Lite does not allow this value to be changed in runtime builds.</em>
         /// </remarks>
         ///
-        /// <example>
-        /// <code>
+        /// <example><code>
         /// void SetSpeed(AnimancerComponent animancer)
         /// {
         ///     animancer.Playable.Speed = 1;// Normal speed.
@@ -141,16 +140,13 @@ namespace Animancer
         ///     animancer.Playable.Speed = 0.5f;// Half speed.
         ///     animancer.Playable.Speed = -1;// Normal speed playing backwards.
         /// }
-        /// </code>
-        /// </example>
+        /// </code></example>
         public float Speed
         {
             get => (float)_LayerMixer.GetSpeed();
             set => _LayerMixer.SetSpeed(value);
         }
 
-        /************************************************************************************************************************/
-        #region Keep Children Connected
         /************************************************************************************************************************/
 
         private bool _KeepChildrenConnected;
@@ -193,7 +189,33 @@ namespace Animancer
         }
 
         /************************************************************************************************************************/
-        #endregion
+
+        private bool _SkipFirstFade;
+
+        /// <summary>
+        /// Normally the first animation on the Base Layer should not fade in because there is nothing fading out. But
+        /// sometimes that is undesirable, such as if the <see cref="Animator.runtimeAnimatorController"/> is assigned
+        /// since Animancer can blend with that.
+        /// </summary>
+        /// <remarks>
+        /// Setting this value to false ensures that the <see cref="AnimationLayerMixerPlayable"/> has at least two
+        /// inputs because it ignores the <see cref="AnimancerNode.Weight"/> of the layer when there is only one.
+        /// </remarks>
+        public bool SkipFirstFade
+        {
+            get => _SkipFirstFade;
+            set
+            {
+                _SkipFirstFade = value;
+
+                if (!value && Layers.Count < 2)
+                {
+                    Layers.Count = 1;
+                    _LayerMixer.SetInputCount(2);
+                }
+            }
+        }
+
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
@@ -288,13 +310,12 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Plays this playable on the <see cref="IAnimancerComponent.Animator"/>.
+        /// Plays this playable on the <see cref="IAnimancerComponent.Animator"/> and sets the
+        /// <see cref="Component"/>.
         /// </summary>
         public void SetOutput(IAnimancerComponent animancer) => SetOutput(animancer.Animator, animancer);
 
-        /// <summary>
-        /// Plays this playable on the specified `animator`.
-        /// </summary>
+        /// <summary>Plays this playable on the specified `animator` and sets the <see cref="Component"/>.</summary>
         public void SetOutput(Animator animator, IAnimancerComponent animancer)
         {
 #if UNITY_EDITOR
@@ -323,14 +344,16 @@ namespace Animancer
 
             if (animator != null)
             {
-                KeepChildrenConnected = !animator.isHuman;
+                var isHumanoid = animator.isHuman;
+
+                // Generic Rigs get better performance by keeping children connected but Humanoids don't.
+                KeepChildrenConnected = !isHumanoid;
+
+                // Generic Rigs can blend with an underlying Animator Controller but Humanoids can't.
+                SkipFirstFade = isHumanoid || animator.runtimeAnimatorController == null;
+
                 AnimationPlayableUtilities.Play(animator, _RootPlayable, _Graph);
                 _IsGraphPlaying = true;
-
-#if UNITY_2019_1_OR_NEWER
-                if (_KeepChildrenConnected)// Not Humanoid (because blending with earlier graphs doesn't work for them).
-                    ((AnimationPlayableOutput)_Graph.GetOutput(0)).SetAnimationStreamSource(AnimationStreamSource.PreviousInputs);
-#endif
             }
         }
 
@@ -454,37 +477,15 @@ namespace Animancer
         #region Inverse Kinematics
         /************************************************************************************************************************/
 
-        AnimancerPlayable IHasIK.Root => this;
+        private bool _ApplyAnimatorIK;
 
-        /************************************************************************************************************************/
-
-        /// <summary>
-        /// Determines the default value of <see cref="AnimancerNode.ApplyAnimatorIK"/> for all new states created in
-        /// this layer. Default false.
-        /// </summary>
-        public bool DefaultApplyAnimatorIK { get; set; }
-
-        /// <summary>[<see cref="IHasIK"/>]
-        /// Determines whether <c>OnAnimatorIK(int layerIndex)</c> will be called on the animated object for any
-        /// <see cref="States"/>. The initial value is determined by <see cref="DefaultApplyAnimatorIK"/> when a new
-        /// state is created and setting this value will also set the default.
-        /// <para></para>
-        /// This is equivalent to the "IK Pass" toggle in Animator Controller layers, except that due to limitations in
-        /// the Playables API the <c>layerIndex</c> will always be zero.
-        /// </summary>
+        /// <inheritdoc/>
         public bool ApplyAnimatorIK
         {
-            get
-            {
-                for (int i = Layers.Count - 1; i >= 0; i--)
-                    if (Layers._Layers[i].ApplyAnimatorIK)
-                        return true;
-
-                return false;
-            }
+            get => _ApplyAnimatorIK;
             set
             {
-                DefaultApplyAnimatorIK = value;
+                _ApplyAnimatorIK = value;
 
                 for (int i = Layers.Count - 1; i >= 0; i--)
                     Layers._Layers[i].ApplyAnimatorIK = value;
@@ -493,31 +494,15 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Determines the default value of <see cref="AnimancerNode.ApplyFootIK"/> for all new states created in this
-        /// layer. Default false.
-        /// </summary>
-        public bool DefaultApplyFootIK { get; set; }
+        private bool _ApplyFootIK;
 
-        /// <summary>[<see cref="IHasIK"/>]
-        /// Determines whether any of the <see cref="States"/> in this layer are applying IK to the character's feet.
-        /// The initial value is determined by <see cref="DefaultApplyFootIK"/> when a new state is created.
-        /// <para></para>
-        /// This is equivalent to the "Foot IK" toggle in Animator Controller states (applied to the whole layer).
-        /// </summary>
+        /// <inheritdoc/>
         public bool ApplyFootIK
         {
-            get
-            {
-                for (int i = Layers.Count - 1; i >= 0; i--)
-                    if (Layers._Layers[i].ApplyFootIK)
-                        return true;
-
-                return false;
-            }
+            get => _ApplyFootIK;
             set
             {
-                DefaultApplyFootIK = value;
+                _ApplyFootIK = value;
 
                 for (int i = Layers.Count - 1; i >= 0; i--)
                     Layers._Layers[i].ApplyFootIK = value;
@@ -539,20 +524,19 @@ namespace Animancer
         // Play Immediately.
         /************************************************************************************************************************/
 
-        /// <summary>
-        /// Stops all other animations on the same layer, plays the `clip`, and returns its state.
-        /// <para></para>
+        /// <summary>Stops all other animations on the same layer, plays the `clip`, and returns its state.</summary>
+        /// <remarks>
         /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
         /// To restart it from the beginning you can use <c>...Play(clip, layerIndex).Time = 0;</c>.
-        /// </summary>
-        public AnimancerState Play(AnimationClip clip) => Play(States.GetOrCreate(clip));
+        /// </remarks>
+        public AnimancerState Play(AnimationClip clip)
+            => Play(States.GetOrCreate(clip));
 
-        /// <summary>
-        /// Stops all other animations on the same laye, plays the `state`, and returns it.
-        /// <para></para>
+        /// <summary>Stops all other animations on the same laye, plays the `state`, and returns it.</summary>
+        /// <remarks>
         /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
         /// If you wish to force it back to the start, you can simply set the `state`s time to 0.
-        /// </summary>
+        /// </remarks>
         public AnimancerState Play(AnimancerState state)
         {
             var layer = state.Layer ?? Layers[0];
@@ -566,7 +550,8 @@ namespace Animancer
         /// <summary>
         /// Starts fading in the `clip` while fading out all other states in the same layer over the course of the
         /// `fadeDuration`. Returns its state.
-        /// <para></para>
+        /// </summary>
+        /// <remarks>
         /// If the `state` was already playing and fading in with less time remaining than the `fadeDuration`, this
         /// method will allow it to complete the existing fade rather than starting a slower one.
         /// <para></para>
@@ -574,14 +559,15 @@ namespace Animancer
         /// and simply <see cref="AnimancerState.Play"/> the `state`.
         /// <para></para>
         /// <em>Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in runtime builds.</em>
-        /// </summary>
+        /// </remarks>
         public AnimancerState Play(AnimationClip clip, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
             => Play(States.GetOrCreate(clip), fadeDuration, mode);
 
         /// <summary>
         /// Starts fading in the `state` while fading out all others in the same layer over the course of the
         /// `fadeDuration`. Returns the `state`.
-        /// <para></para>
+        /// </summary>
+        /// <remarks>
         /// If the `state` was already playing and fading in with less time remaining than the `fadeDuration`, this
         /// method will allow it to complete the existing fade rather than starting a slower one.
         /// <para></para>
@@ -589,7 +575,7 @@ namespace Animancer
         /// and simply <see cref="AnimancerState.Play"/> the `state`.
         /// <para></para>
         /// <em>Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in runtime builds.</em>
-        /// </summary>
+        /// </remarks>
         public AnimancerState Play(AnimancerState state, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
         {
             var layer = state.Layer ?? Layers[0];
@@ -605,7 +591,8 @@ namespace Animancer
         /// <see cref="Play(AnimancerState)"/> or <see cref="Play(AnimancerState, float, FadeMode)"/>
         /// depending on the <see cref="ITransition.FadeDuration"/>.
         /// </summary>
-        public AnimancerState Play(ITransition transition) => Play(transition, transition.FadeDuration, transition.FadeMode);
+        public AnimancerState Play(ITransition transition)
+            => Play(transition, transition.FadeDuration, transition.FadeMode);
 
         /// <summary>
         /// Creates a state for the `transition` if it didn't already exist, then calls
@@ -626,20 +613,22 @@ namespace Animancer
 
         /// <summary>
         /// Stops all other animations on the same layer, plays the animation registered with the `key`, and returns
-        /// that state.
-        /// <para></para>
+        /// that state. Or if no state is registered with that `key`, this method does nothing and returns null.
+        /// </summary>
+        /// <remarks>
         /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
         /// If you wish to force it back to the start, you can simply set the returned state's time to 0.
-        /// on the returned state.
-        /// </summary>
+        /// </remarks>
         /// <exception cref="ArgumentNullException">The `key` is null.</exception>
-        /// <exception cref="KeyNotFoundException">No state is registered with the `key`.</exception>
-        public AnimancerState TryPlay(object key) => Play(States[key]);
+        public AnimancerState TryPlay(object key)
+            => States.TryGet(key, out var state) ? Play(state) : null;
 
         /// <summary>
         /// Starts fading in the animation registered with the `key` while fading out all others in the same layer
-        /// over the course of the `fadeDuration`.
-        /// <para></para>
+        /// over the course of the `fadeDuration`. Or if no state is registered with that `key`, this method does
+        /// nothing and returns null.
+        /// </summary>
+        /// <remarks>
         /// If the `state` was already playing and fading in with less time remaining than the `fadeDuration`, this
         /// method will allow it to complete the existing fade rather than starting a slower one.
         /// <para></para>
@@ -647,11 +636,10 @@ namespace Animancer
         /// and simply <see cref="AnimancerState.Play"/> the `state`.
         /// <para></para>
         /// <em>Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in runtime builds.</em>
-        /// </summary>
+        /// </remarks>
         /// <exception cref="ArgumentNullException">The `key` is null.</exception>
-        /// <exception cref="KeyNotFoundException">No state is registered with the `key`.</exception>
         public AnimancerState TryPlay(object key, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
-            => Play(States[key], fadeDuration, mode);
+            => States.TryGet(key, out var state) ? Play(state, fadeDuration, mode) : null;
 
         /************************************************************************************************************************/
 
@@ -907,10 +895,12 @@ namespace Animancer
                 .Append(") Layer Count: ")
                 .Append(Layers.Count);
 
+            const string Delimiter = "\n    ";
+            AnimancerNode.AppendIKDetails(text, Delimiter, this);
+
             var count = Layers.Count;
             for (int i = 0; i < count; i++)
             {
-                const string Delimiter = "\n    ";
                 text.Append(Delimiter);
                 Layers[i].AppendDescription(text, maxChildDepth, Delimiter);
             }
@@ -1061,10 +1051,12 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>[Internal]
-        /// Called by the <see cref="PlayableGraph"/> before the rest of the <see cref="Playable"/>s are evaluated.
         /// Calls <see cref="IUpdatable.EarlyUpdate"/> and <see cref="AnimancerNode.Update"/> on everything
         /// that needs it.
         /// </summary>
+        /// <remarks>
+        /// Called by the <see cref="PlayableGraph"/> before the rest of the <see cref="Playable"/>s are evaluated.
+        /// </remarks>
         public override void PrepareFrame(Playable playable, FrameData info)
         {
 #if UNITY_ASSERTIONS
@@ -1072,17 +1064,13 @@ namespace Animancer
             {
                 var animator = Component.Animator;
                 if (animator != null &&
-                    animator.speed != 1)
+                    animator.speed != 1 &&
+                    animator.runtimeAnimatorController == null)
                 {
-#if UNITY_2019_1_OR_NEWER
-                    if (!animator.isHuman && animator.runtimeAnimatorController != null)
-#endif
-                    {
-                        animator.speed = 1;
-                        OptionalWarning.AnimatorSpeed.Log(
-                            $"{nameof(Animator)}.{nameof(Animator.speed)} does not affect {nameof(Animancer)}." +
-                            $" Use {nameof(AnimancerPlayable)}.{nameof(Speed)} instead.", animator);
-                    }
+                    animator.speed = 1;
+                    OptionalWarning.AnimatorSpeed.Log(
+                        $"{nameof(Animator)}.{nameof(Animator.speed)} does not affect {nameof(Animancer)}." +
+                        $" Use {nameof(AnimancerPlayable)}.{nameof(Speed)} instead.", animator);
                 }
             }
 #endif
@@ -1219,10 +1207,10 @@ namespace Animancer
 
             /************************************************************************************************************************/
 
-            /// <summary>
+            /// <summary>Calls <see cref="IUpdatable.LateUpdate"/> on everything that needs it.</summary>
+            /// <remarks>
             /// Called by the <see cref="PlayableGraph"/> after the rest of the <see cref="Playable"/>s are evaluated.
-            /// Calls <see cref="IUpdatable.LateUpdate"/> on everything that needs it.
-            /// </summary>
+            /// </remarks>
             public override void PrepareFrame(Playable playable, FrameData info)
             {
                 _CurrentLateUpdate = Current = _Root;
@@ -1278,10 +1266,8 @@ namespace Animancer
             if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
                 return;
 
-            if (_AllInstances == null)
+            if (AnimancerUtilities.NewIfNull(ref _AllInstances))
             {
-                _AllInstances = new List<AnimancerPlayable>();
-
                 UnityEditor.AssemblyReloadEvents.beforeAssemblyReload += () =>
                 {
                     for (int i = _AllInstances.Count - 1; i >= 0; i--)
