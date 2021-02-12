@@ -1,6 +1,6 @@
 {
-"1001":{"Id":1001,"Name":"黑火球术","Type":"主动","TargetSelect":"手动指定","Cooldown":0,"Effect1":"Damage=1001","Effect2":"AddStatus=Weak","Effect3":"净化"},
-"1002":{"Id":1002,"Name":"炎爆","Type":"主动","TargetSelect":"固定区域场检测","Cooldown":0,"Effect1":"Damage=1002","Effect2":"AddStatus=Vertigo","Effect3":"净化"},
-"1003":{"Id":1003,"Name":"治愈","Type":"主动","TargetSelect":"手动指定","Cooldown":0,"Effect1":"Cure=1003"},
-"1004":{"Id":1004,"Name":"血红激光炮","Type":"主动","TargetSelect":"固定区域场检测","Cooldown":0,"Effect1":"Damage=1004"}
+"1001":{"Id":1001,"Name":"黑火球术","Type":"主动","TargetSelect":"手动指定","Cooldown":0,"Effect1":"Damage=1001","Effect2":"AddStatus=1001"},
+"1002":{"Id":1002,"Name":"炎爆","Type":"主动","TargetSelect":"固定区域场检测","Cooldown":0,"Effect1":"Damage=1002","Effect2":"AddStatus=1002"},
+"1003":{"Id":1003,"Name":"治愈","Type":"主动","TargetSelect":"手动指定","Cooldown":0,"Effect1":"Cure=1003","Effect2":"净化"},
+"1004":{"Id":1004,"Name":"血红激光炮","Type":"主动","TargetSelect":"固定区域场检测","Cooldown":0,"Effect1":"Damage=1004","Effect2":"AddStatus=1004"}
 }

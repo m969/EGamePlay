@@ -19,5 +19,6 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("Enabled"), LabelText("治疗参数")]
         public string CureValueFormula;
+        public string CureValueProperty { get; set; }
     }
 }

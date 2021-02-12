@@ -9,7 +9,7 @@ namespace EGamePlay.Combat
 {
     public static class ConfigHelper
     {
-        public static T Get<T>(int id) where T : ET.IConfig
+        public static T Get<T>(int id) where T : class, ET.IConfig
         {
             return ConfigManageComponent.Instance.Get<T>(id);
         }
@@ -39,7 +39,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        public T Get<T>(int id) where T : ET.IConfig
+        public T Get<T>(int id) where T : class, ET.IConfig
         {
             var category = TypeConfigCategarys[typeof(T)] as ACategory<T>;
             return category.Get(id);

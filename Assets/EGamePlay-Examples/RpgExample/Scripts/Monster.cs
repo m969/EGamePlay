@@ -35,7 +35,7 @@ public sealed class Monster : MonoBehaviour
             CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus).AsCoroutine();
         }
 
-        var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity_坚韧");
+        var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
         var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
         Status.Caster = CombatEntity;
         Status.TryActivateAbility();

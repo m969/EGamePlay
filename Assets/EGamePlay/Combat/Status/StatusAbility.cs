@@ -8,7 +8,7 @@ namespace EGamePlay.Combat.Status
     {
         //投放者、施术者
         public CombatEntity Caster { get; set; }
-        public StatusConfig StatusConfig { get; set; }
+        //public StatusConfig StatusConfig { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
         public FloatModifier NumericModifier { get; set; }
         public bool IsChildStatus { get; set; }
@@ -45,13 +45,6 @@ namespace EGamePlay.Combat.Status
             if (StatusConfigObject.EnabledStateModify)
             {
                 OwnerEntity.ActionControlType |= StatusConfigObject.ActionControlType;
-//                OwnerEntity.ActionControlType |= CheckActionControlType(ActionControlType.MoveForbid);
-//                OwnerEntity.ActionControlType |= CheckActionControlType(ActionControlType.AttackForbid);
-//                OwnerEntity.ActionControlType |= CheckActionControlType(ActionControlType.SkillForbid);
-//                ActionControlType CheckActionControlType(ActionControlType ActionControlType)
-//                {
-//                    return StatusConfigObject.ActionControlType.HasFlag(ActionControlType) ? ActionControlType : ~ActionControlType;
-//                }
             }
             //属性修饰
             if (StatusConfigObject.EnabledAttributeModify)
@@ -156,7 +149,19 @@ namespace EGamePlay.Combat.Status
         //应用能力效果
         public override void ApplyAbilityEffectsTo(CombatEntity targetEntity)
         {
-            base.ApplyAbilityEffectsTo(targetEntity);
+            List<Effect> Effects = null;
+            if (StatusConfigObject.EnabledLogicTrigger)
+            {
+                Effects = StatusConfigObject.Effects;
+            }
+            if (Effects == null)
+            {
+                return;
+            }
+            foreach (var effectItem in Effects)
+            {
+                ApplyEffectTo(targetEntity, effectItem);
+            }
         }
     }
 }

@@ -24,9 +24,10 @@ namespace ET
 	/// 管理该所有的配置
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class ACategory<T> : ACategory where T : IConfig
+	public abstract class ACategory<T> : ACategory where T : class, IConfig
 	{
 		protected Dictionary<int, T> dict = new Dictionary<int, T>();
+		protected Dictionary<string, T> nameDict;
 
 
 		public override void BeginInit()
@@ -39,10 +40,19 @@ namespace ET
 			{
                 var dit = JsonHelper.FromJson<Dictionary<string, T>>(configStr);
 				dict.Clear();
-                foreach (var item in dit)
+				foreach (var item in dit)
                 {
 					dict.Add(int.Parse(item.Key), item.Value);
 				}
+				//if (typeName == nameof(StatusConfig))
+				//{
+				//	nameDict = new Dictionary<string, T>();
+				//	foreach (var item in dit)
+				//	{
+				//		var statusConfig = item.Value as StatusConfig;
+				//		nameDict.Add(statusConfig.StatusID, statusConfig as T);
+				//	}
+				//}
 			}
 			catch (Exception e)
 			{
@@ -69,6 +79,16 @@ namespace ET
 			if (!this.dict.TryGetValue(id, out t))
 			{
 				throw new Exception($"not found config: {typeof(T)} id: {id}");
+			}
+			return t;
+		}
+
+		public T GetByName(string name)
+		{
+			T t;
+			if (!this.nameDict.TryGetValue(name, out t))
+			{
+				throw new Exception($"not found config: {typeof(T)} name: {name}");
 			}
 			return t;
 		}

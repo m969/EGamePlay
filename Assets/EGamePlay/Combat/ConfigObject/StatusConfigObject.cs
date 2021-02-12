@@ -55,6 +55,7 @@ namespace EGamePlay.Combat
         public AttributeType AttributeType;
         [ToggleGroup("EnabledAttributeModify"), LabelText("数值参数")]
         public string NumericValue;
+        public string NumericValueProperty { get; set; }
         [ToggleGroup("EnabledAttributeModify")]
         public ModifyType ModifyType;
         //[ToggleGroup("EnabledAttributeModify"), LabelText("属性修饰")]
@@ -222,9 +223,9 @@ namespace EGamePlay.Combat
                 {
                     return;
                 }
-                var fileName = Path.GetFileName(assetPath);
-                var newName = $"Status_{this.ID}_{this.Name}";
-                if (!fileName.StartsWith(newName))
+                var fileName = Path.GetFileNameWithoutExtension(assetPath);
+                var newName = $"Status_{this.ID}";
+                if (fileName != newName)
                 {
                     //Debug.Log(assetPath);
                     UnityEditor.AssetDatabase.RenameAsset(assetPath, newName);

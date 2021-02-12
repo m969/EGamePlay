@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_AttackPowerPctModify_\u653B\u51FB\u529B\u767E\u5206\u6BD4\u4FEE\u9970"
+  m_Name: Status_MoveSpeedPctModify
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,9 +21,12 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: true
     - Name: ChildrenStatuses
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -36,7 +39,7 @@ MonoBehaviour:
       Data: 
     - Name: Effects
       Entry: 7
-      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -47,8 +50,8 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: AttackPowerPctModify
-  Name: "\u653B\u51FB\u529B\u767E\u5206\u6BD4\u4FEE\u9970"
+  ID: MoveSpeedPctModify
+  Name: "\u79FB\u52A8\u901F\u5EA6\u767E\u5206\u6BD4\u4FEE\u9970"
   StatusType: 2
   Duration: 3000
   ShowInStatusSlots: 1
@@ -58,7 +61,7 @@ MonoBehaviour:
   EnabledStateModify: 0
   ActionControlType: 0
   EnabledAttributeModify: 1
-  AttributeType: 1001
+  AttributeType: 2002
   NumericValue: "\u53D8\u52A8\u6570\u503C"
   ModifyType: 1
   EnabledLogicTrigger: 0

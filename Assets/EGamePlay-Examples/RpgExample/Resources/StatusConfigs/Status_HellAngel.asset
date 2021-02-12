@@ -10,20 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_HealthRecovery_\u751F\u547D\u56DE\u590D"
+  m_Name: Status_HellAngel
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: babc008db9b9ec14ca9bd31a1f62f624, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: true
     - Name: ChildrenStatuses
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -36,14 +40,14 @@ MonoBehaviour:
       Data: 
     - Name: Effects
       Entry: 7
-      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 2|EGamePlay.Combat.CureEffect, EGamePlay
+      Data: 2|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: false
@@ -55,7 +59,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 3
+      Data: 0
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -63,17 +67,40 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 1
-      Data: "\u95F4\u9694\u65F6\u95F4"
+      Entry: 6
+      Data: 
     - Name: ConditionParam
-      Entry: 1
-      Data: 2
+      Entry: 6
+      Data: 
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
-    - Name: CureValueFormula
-      Entry: 1
-      Data: "\u56DE\u590D\u91CF"
+    - Name: AddStatus
+      Entry: 10
+      Data: 0
+    - Name: Duration
+      Entry: 3
+      Data: 2000
+    - Name: Params
+      Entry: 7
+      Data: 3|UnityEngine.Rendering.SerializedDictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], Unity.RenderPipelines.Core.Runtime
+    - Name: comparer
+      Entry: 7
+      Data: 4|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -83,11 +110,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: HealthRecovery
-  Name: "\u751F\u547D\u56DE\u590D"
+  ID: HellAngel
+  Name: "\u5730\u72F1\u4F7F\u8005"
   StatusType: 0
   Duration: 0
-  ShowInStatusIconList: 0
+  ShowInStatusSlots: 0
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 0
@@ -96,8 +123,9 @@ MonoBehaviour:
   EnabledAttributeModify: 0
   AttributeType: 0
   NumericValue: 
+  ModifyType: 0
   EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
-  StatusDescription: 
+  StatusDescription: "\u5730\u72F1\u4F7F\u8005\uFF1A\u6BCF\u96943\u79D2\u4F1A\u65BD\u52A0\u4E00\u4E2A\u6301\u7EED2\u79D2\u7684\u6050\u60E7\u72B6\u6001\u3002"

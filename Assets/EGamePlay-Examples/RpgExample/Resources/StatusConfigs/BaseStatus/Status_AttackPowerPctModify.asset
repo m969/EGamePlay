@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Shield_\u62A4\u76FE"
+  m_Name: Status_AttackPowerPctModify
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,9 +21,12 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: Effects
+    - Name: AutoRename
+      Entry: 5
+      Data: true
+    - Name: ChildrenStatuses
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -34,19 +37,33 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Shield
-  Name: "\u62A4\u76FE"
-  StatusType: 0
-  Duration: 0
-  ShowInStatusIconList: 0
+    - Name: Effects
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  ID: AttackPowerPctModify
+  Name: "\u653B\u51FB\u529B\u767E\u5206\u6BD4\u4FEE\u9970"
+  StatusType: 2
+  Duration: 3000
+  ShowInStatusSlots: 1
   CanStack: 0
-  MaxStack: 0
-  ChildrenStatuses: []
+  MaxStack: 1
+  EnableChildrenStatuses: 0
   EnabledStateModify: 0
   ActionControlType: 0
   EnabledAttributeModify: 1
-  AttributeType: 3001
-  NumericValue: "\u62A4\u76FE\u503C"
+  AttributeType: 1001
+  NumericValue: "\u53D8\u52A8\u6570\u503C"
+  ModifyType: 1
   EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}

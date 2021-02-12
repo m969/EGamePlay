@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_MoveSpeedPctModify_\u79FB\u52A8\u901F\u5EA6\u767E\u5206\u6BD4\u4FEE\u9970"
+  m_Name: Status_Scare
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,9 +21,12 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: true
     - Name: ChildrenStatuses
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -36,7 +39,7 @@ MonoBehaviour:
       Data: 
     - Name: Effects
       Entry: 7
-      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -47,22 +50,22 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: MoveSpeedPctModify
-  Name: "\u79FB\u52A8\u901F\u5EA6\u767E\u5206\u6BD4\u4FEE\u9970"
-  StatusType: 2
-  Duration: 3000
+  ID: Scare
+  Name: "\u6050\u60E7"
+  StatusType: 1
+  Duration: 0
   ShowInStatusSlots: 1
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 0
-  EnabledStateModify: 0
-  ActionControlType: 0
-  EnabledAttributeModify: 1
-  AttributeType: 2002
-  NumericValue: "\u53D8\u52A8\u6570\u503C"
-  ModifyType: 1
+  EnabledStateModify: 1
+  ActionControlType: 28
+  EnabledAttributeModify: 0
+  AttributeType: 0
+  NumericValue: 
+  ModifyType: 0
   EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
-  StatusDescription: 
+  StatusDescription: "\u6050\u60E7\uFF1A\u4F7F\u82F1\u96C4\u5931\u53BB\u63A7\u5236\uFF0C\u65E0\u76EE\u7684\u7684\u8D70\u52A8\u3002"

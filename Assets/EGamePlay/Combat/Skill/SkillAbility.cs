@@ -3,6 +3,7 @@ using System;
 using GameUtils;
 using ET;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EGamePlay.Combat.Skill
 {
@@ -83,6 +84,7 @@ namespace EGamePlay.Combat.Skill
                 {
                     var damageEffectConfig = ConfigHelper.Get<SkillDamageEffectConfig>(int.Parse(effectId));
                     var damageEffect = new DamageEffect();
+                    effect = damageEffect;
                     damageEffect.DamageValueFormula = damageEffectConfig.ValueFormula;
                     damageEffect.TriggerProbability = damageEffectConfig.Probability;
                     if (damageEffectConfig.Target == "自身") damageEffect.AddSkillEffectTargetType = AddSkillEffetTargetType.Self;
@@ -90,7 +92,28 @@ namespace EGamePlay.Combat.Skill
                     if (damageEffectConfig.Type == "魔法伤害") damageEffect.DamageType = DamageType.Magic;
                     if (damageEffectConfig.Type == "物理伤害") damageEffect.DamageType = DamageType.Physic;
                     if (damageEffectConfig.Type == "真实伤害") damageEffect.DamageType = DamageType.Real;
-                    effect = damageEffect;
+                }
+                if (effectType == "AddStatus")
+                {
+                    var addStatusEffectConfig = ConfigHelper.Get<SkillAddStatusEffectConfig>(int.Parse(effectId));
+                    var addStatusEffect = new AddStatusEffect();
+                    effect = addStatusEffect;
+                    addStatusEffect.AddStatus = Resources.Load<StatusConfigObject>($"StatusConfigs/Status_{addStatusEffectConfig.StatusID}");
+                    if (addStatusEffect.AddStatus == null)
+                    {
+                        addStatusEffect.AddStatus = Resources.Load<StatusConfigObject>($"StatusConfigs/BaseStatus/Status_{addStatusEffectConfig.StatusID}");
+                    }
+                    addStatusEffect.Duration = (uint)(float.Parse(addStatusEffectConfig.Duration) * 1000);
+                    ParseParam(addStatusEffectConfig.Param1);
+                    ParseParam(addStatusEffectConfig.Param2);
+                    void ParseParam(string paramStr)
+                    {
+                        if (!string.IsNullOrEmpty(paramStr))
+                        {
+                            arr = paramStr.Split('=');
+                            addStatusEffect.Params.Add(arr[0], arr[1]);
+                        }
+                    }
                 }
             }
             else

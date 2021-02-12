@@ -46,110 +46,104 @@ namespace EGamePlay.Combat.Ability
         
         public void ApplyEffectTo(CombatEntity targetEntity, Effect effectItem)
         {
-            if (effectItem is DamageEffect damageEffect)
+            try
             {
-                var action = this.OwnerEntity.CreateCombatAction<DamageAction>();
-                action.Target = targetEntity;
-                action.DamageSource = DamageSource.Skill;
-                action.DamageEffect = damageEffect;
-                action.ApplyDamage();
-            }
-            else if (effectItem is CureEffect cureEffect)
-            {
-                var action = this.OwnerEntity.CreateCombatAction<CureAction>();
-                action.Target = targetEntity;
-                action.CureEffect = cureEffect;
-                action.ApplyCure();
-            }
-            else
-            {
-                var action = this.OwnerEntity.CreateCombatAction<AssignEffectAction>();
-                action.Target = targetEntity;
-                action.SourceAbility = this;
-                action.Effect = effectItem;
-                if (effectItem is AddStatusEffect addStatusEffect)
+                if (effectItem is DamageEffect damageEffect)
                 {
-                    var statusConfig = addStatusEffect.AddStatus;
-                    statusConfig.Duration = addStatusEffect.Duration;
-                    if (addStatusEffect.Params != null && statusConfig.Effects != null)
+                    var action = this.OwnerEntity.CreateCombatAction<DamageAction>();
+                    action.Target = targetEntity;
+                    action.DamageSource = DamageSource.Skill;
+                    action.DamageEffect = damageEffect;
+                    damageEffect.DamageValueProperty = damageEffect.DamageValueFormula;
+                    action.ApplyDamage();
+                }
+                else if (effectItem is CureEffect cureEffect)
+                {
+                    var action = this.OwnerEntity.CreateCombatAction<CureAction>();
+                    action.Target = targetEntity;
+                    action.CureEffect = cureEffect;
+                    cureEffect.CureValueProperty = cureEffect.CureValueFormula;
+                    action.ApplyCure();
+                }
+                else
+                {
+                    var action = this.OwnerEntity.CreateCombatAction<AssignEffectAction>();
+                    action.Target = targetEntity;
+                    action.SourceAbility = this;
+                    action.Effect = effectItem;
+                    if (effectItem is AddStatusEffect addStatusEffect)
                     {
-                        if (statusConfig.EnabledAttributeModify)
+                        var statusConfig = addStatusEffect.AddStatus;
+                        statusConfig.Duration = addStatusEffect.Duration;
+                        if (addStatusEffect.Params != null && statusConfig.Effects != null)
                         {
-                            foreach (var item3 in addStatusEffect.Params)
+                            if (statusConfig.EnabledAttributeModify)
                             {
-                                if (!string.IsNullOrEmpty(statusConfig.NumericValue))
-                                {
-                                    statusConfig.NumericValue = statusConfig.NumericValue.Replace(item3.Key, item3.Value);
-                                }
-                            }
-                        }
-                        if (statusConfig.EnabledLogicTrigger)
-                        {
-                            foreach (var item6 in statusConfig.Effects)
-                            {
+                                statusConfig.NumericValueProperty = statusConfig.NumericValue;
                                 foreach (var item3 in addStatusEffect.Params)
                                 {
-                                    if (!string.IsNullOrEmpty(item6.Interval))
+                                    if (!string.IsNullOrEmpty(statusConfig.NumericValueProperty))
                                     {
-                                        item6.Interval = item6.Interval.Replace(item3.Key, item3.Value);
-                                    }
-                                    if (!string.IsNullOrEmpty(item6.ConditionParam))
-                                    {
-                                        item6.ConditionParam = item6.ConditionParam.Replace(item3.Key, item3.Value);
+                                        statusConfig.NumericValueProperty = statusConfig.NumericValueProperty.Replace(item3.Key, item3.Value);
                                     }
                                 }
-                                if (item6 is DamageEffect damage)
+                            }
+                            if (statusConfig.EnabledLogicTrigger)
+                            {
+                                foreach (var item6 in statusConfig.Effects)
                                 {
-                                    foreach (var item4 in addStatusEffect.Params)
+                                    item6.IntervalValue = item6.Interval;
+                                    item6.ConditionParamValue = item6.ConditionParam;
+                                    foreach (var item3 in addStatusEffect.Params)
                                     {
-                                        if (!string.IsNullOrEmpty(damage.DamageValueFormula))
+                                        if (!string.IsNullOrEmpty(item6.IntervalValue))
                                         {
-                                            damage.DamageValueFormula = damage.DamageValueFormula.Replace(item4.Key, item4.Value);
+                                            item6.IntervalValue = item6.IntervalValue.Replace(item3.Key, item3.Value);
+                                        }
+                                        if (!string.IsNullOrEmpty(item6.ConditionParamValue))
+                                        {
+                                            item6.ConditionParamValue = item6.ConditionParamValue.Replace(item3.Key, item3.Value);
                                         }
                                     }
-                                }
-                                else if (item6 is CureEffect cure)
-                                {
-                                    foreach (var item5 in addStatusEffect.Params)
+                                    if (item6 is DamageEffect damage)
                                     {
-                                        if (!string.IsNullOrEmpty(cure.CureValueFormula))
+                                        damage.DamageValueProperty = damage.DamageValueFormula;
+                                        foreach (var item4 in addStatusEffect.Params)
                                         {
-                                            cure.CureValueFormula = cure.CureValueFormula.Replace(item5.Key, item5.Value);
+                                            if (!string.IsNullOrEmpty(damage.DamageValueProperty))
+                                            {
+                                                damage.DamageValueProperty = damage.DamageValueProperty.Replace(item4.Key, item4.Value);
+                                            }
+                                        }
+                                    }
+                                    else if (item6 is CureEffect cure)
+                                    {
+                                        cure.CureValueProperty = cure.CureValueFormula;
+                                        foreach (var item5 in addStatusEffect.Params)
+                                        {
+                                            if (!string.IsNullOrEmpty(cure.CureValueProperty))
+                                            {
+                                                cure.CureValueProperty = cure.CureValueProperty.Replace(item5.Key, item5.Value);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-
+                    action.ApplyAssignEffect();
                 }
-                action.ApplyAssignEffect();
+            }
+            catch (System.Exception e)
+            {
+                Log.Error(e);
             }
         }
 
         //应用能力效果
         public virtual void ApplyAbilityEffectsTo(CombatEntity targetEntity)
         {
-            List<Effect> Effects = null;
-            if (ConfigObject is SkillConfigObject skillConfigObject)
-            {
-                Effects = skillConfigObject.Effects;
-            }
-            if (ConfigObject is StatusConfigObject statusConfigObject)
-            {
-                if (statusConfigObject.EnabledLogicTrigger)
-                {
-                    Effects = statusConfigObject.Effects;
-                }
-            }
-            if (Effects == null)
-            {
-                return;
-            }
-            foreach (var effectItem in Effects)
-            {
-                ApplyEffectTo(targetEntity, effectItem);
-            }
+
         }
     }
 }

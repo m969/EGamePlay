@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
 
         private int ParseDamage()
         {
-            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(DamageEffect.DamageValueFormula);
+            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(DamageEffect.DamageValueProperty);
             if (expression.Parameters.ContainsKey("自身攻击力"))
             {
                 expression.Parameters["自身攻击力"].Value = Creator.GetComponent<AttributeComponent>().AttackPower.Value;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Status1_\u72B6\u60012"
+  m_Name: Status_Burn
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,10 +23,10 @@ MonoBehaviour:
     SerializationNodes:
     - Name: AutoRename
       Entry: 5
-      Data: false
+      Data: true
     - Name: ChildrenStatuses
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -39,24 +39,66 @@ MonoBehaviour:
       Data: 
     - Name: Effects
       Entry: 7
-      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.DamageEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: false
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
       Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 3
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 1
+      Data: "\u95F4\u9694\u65F6\u95F4"
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: DamageType
+      Entry: 3
+      Data: 0
+    - Name: DamageValueFormula
+      Entry: 1
+      Data: "\u4F24\u5BB3\u53D6\u503C"
+    - Name: CanCrit
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
-  ID: Status1
-  Name: "\u72B6\u60012"
-  StatusType: 0
-  Duration: 0
-  ShowInStatusSlots: 0
+  ID: Burn
+  Name: "\u666E\u901A\u707C\u70E7"
+  StatusType: 1
+  Duration: 4000
+  ShowInStatusSlots: 1
   CanStack: 0
-  MaxStack: 0
+  MaxStack: 99
   EnableChildrenStatuses: 0
   EnabledStateModify: 0
   ActionControlType: 0
@@ -64,7 +106,7 @@ MonoBehaviour:
   AttributeType: 0
   NumericValue: 
   ModifyType: 0
-  EnabledLogicTrigger: 0
+  EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

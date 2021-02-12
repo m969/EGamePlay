@@ -12,6 +12,7 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("Enabled"), LabelText("伤害取值")]
         public string DamageValueFormula;
+        public string DamageValueProperty { get; set; }
 
         [ToggleGroup("Enabled"), LabelText("能否暴击")]
         public bool CanCrit;

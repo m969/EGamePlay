@@ -16,8 +16,12 @@ namespace ET
 	{
 		[BsonId]
 		public int Id { get; set; }
-		public string Type;
-		public float Cooldown;
-		public string Effects;
+		public string Name;
+		public string Target;
+		public string Probability;
+		public string StatusID;
+		public string Duration;
+		public string Param1;
+		public string Param2;
 	}
 }

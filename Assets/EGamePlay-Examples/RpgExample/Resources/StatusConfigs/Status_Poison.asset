@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Vertigo_\u7729\u6655"
+  m_Name: Status_Poison
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -66,8 +66,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 6
-      Data: 
+      Entry: 1
+      Data: 400
     - Name: ConditionParam
       Entry: 6
       Data: 
@@ -76,10 +76,10 @@ MonoBehaviour:
       Data: 100%
     - Name: DamageType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: DamageValueFormula
-      Entry: 6
-      Data: 
+      Entry: 1
+      Data: 280
     - Name: CanCrit
       Entry: 5
       Data: false
@@ -92,23 +92,22 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Vertigo
-  Name: "\u7729\u6655"
+  ID: Poison
+  Name: "\u666E\u901A\u4E2D\u6BD2"
   StatusType: 1
-  Duration: 5000
+  Duration: 4000
   ShowInStatusSlots: 1
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 0
-  EnabledStateModify: 1
-  ActionControlType: 14
+  EnabledStateModify: 0
+  ActionControlType: 0
   EnabledAttributeModify: 0
-  AttributeType: 1004
+  AttributeType: 0
   NumericValue: 
   ModifyType: 0
-  EnabledLogicTrigger: 0
+  EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 1846532664448058, guid: 20980e90dd2e73b419275714d5c124c4,
-    type: 3}
+  ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
   StatusDescription: 

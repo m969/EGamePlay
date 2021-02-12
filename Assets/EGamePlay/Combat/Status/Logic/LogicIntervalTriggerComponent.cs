@@ -18,13 +18,22 @@ namespace EGamePlay.Combat.Status
         public override void Setup()
         {
             //Log.Debug(GetEntity<LogicEntity>().Effect.Interval);
-            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(GetEntity<LogicEntity>().Effect.Interval);
+            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(GetEntity<LogicEntity>().Effect.IntervalValue);
             if (expression.Parameters.ContainsKey("技能等级"))
             {
                 expression.Parameters["技能等级"].Value = GetEntity<LogicEntity>().GetParent<StatusAbility>().Level;
             }
+#if EGAMEPLAY_EXCEL
+            var interval = (float)expression.Value;
+            if (expression.Value > 10)
+            {
+                interval = (int)expression.Value / 1000f;
+            }
+            IntervalTimer = new GameTimer(interval);
+#else
             var interval = (int)expression.Value / 1000f;
             IntervalTimer = new GameTimer(interval);
+#endif
         }
 
         public override void Update()

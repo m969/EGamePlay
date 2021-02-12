@@ -123,31 +123,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: "\u4F24\u5BB3\u503C"
-    - Name: $v
-      Entry: 1
-      Data: "100+\u81EA\u8EAB\u6CD5\u672F\u5F3A\u5EA6*0.2"
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: "\u95F4\u9694\u65F6\u95F4"
-    - Name: $v
-      Entry: 1
-      Data: "400-\u6280\u80FD\u7B49\u7EA7*50"
-    - Name: 
-      Entry: 8
-      Data: 
+      Data: 0
     - Name: 
       Entry: 13
       Data: 

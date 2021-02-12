@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: "Status_Burn_\u666E\u901A\u707C\u70E7"
+  m_Name: Status_Vertigo
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -26,7 +26,7 @@ MonoBehaviour:
       Data: true
     - Name: ChildrenStatuses
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, EGamePlay]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -39,14 +39,14 @@ MonoBehaviour:
       Data: 
     - Name: Effects
       Entry: 7
-      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, EGamePlay]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 2|EGamePlay.Combat.DamageEffect, EGamePlay
+      Data: 2|EGamePlay.Combat.DamageEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: false
@@ -66,8 +66,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 1
-      Data: 300
+      Entry: 6
+      Data: 
     - Name: ConditionParam
       Entry: 6
       Data: 
@@ -78,8 +78,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: DamageValueFormula
-      Entry: 1
-      Data: 150
+      Entry: 6
+      Data: 
     - Name: CanCrit
       Entry: 5
       Data: false
@@ -92,22 +92,23 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: Burn
-  Name: "\u666E\u901A\u707C\u70E7"
+  ID: Vertigo
+  Name: "\u7729\u6655"
   StatusType: 1
   Duration: 5000
   ShowInStatusSlots: 1
   CanStack: 0
-  MaxStack: 99
+  MaxStack: 1
   EnableChildrenStatuses: 0
-  EnabledStateModify: 0
-  ActionControlType: 0
+  EnabledStateModify: 1
+  ActionControlType: 14
   EnabledAttributeModify: 0
-  AttributeType: 0
+  AttributeType: 1004
   NumericValue: 
   ModifyType: 0
-  EnabledLogicTrigger: 1
+  EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 0}
+  ParticleEffect: {fileID: 1846532664448058, guid: 20980e90dd2e73b419275714d5c124c4,
+    type: 3}
   Audio: {fileID: 0}
   StatusDescription: 

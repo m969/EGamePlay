@@ -1,3 +1,0 @@
-{
-"101":{"Id":101,"TriggerType":"间隔触发|0.3","Probability":100,"Type":"魔法伤害","ValueFormula":"300+自身法术强度*0.4"}
-}
