@@ -1,6 +1,6 @@
-# EGamePlay
+# ***EGamePlay***
 
-<img src="EGamePaly_logo.png" width="50%">
+<img src="EGamePaly_logo.png" width="60%">
 
 ---
 [![Unity Version: 2019.4.2f](https://img.shields.io/badge/Unity-2019.4.2f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
@@ -20,11 +20,7 @@
 - [9、如何实现一个灵活、通用的战斗（技能）系统——Entity-Component模式](https://zhuanlan.zhihu.com/p/343624199)
 ---
 
-<img src="https://pic4.zhimg.com/v2-3e8543f56f4f9e6d678e1286409e20bb_b.webp" width="50%">
-
-<img src="https://pic1.zhimg.com/v2-17d463886042dae07e684a5d03442dee_1440w.gif?source=172ae18b" width="50%">
-
-<img src="https://pic4.zhimg.com/v2-6f56270edd1bb2fdda7cc02c8ad410a3_b.webp" width="50%">
+<img src="EGamePlay.gif" width="60%">
 
 ***
 
@@ -88,6 +84,8 @@ EffectConfigToJson
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具
 
 ![SkillConfigImage.png](ConfigImage.png)
+
+![SkillConfigImage.png](Snipaste_2021-02-13_15-48-57.png)
 
 ---
 ### 该项目使用了以下收费插件：
