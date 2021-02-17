@@ -21,7 +21,6 @@ public class EGamePlayInit : SerializedMonoBehaviour
         Entity.Create<TimerComponent>();
         Entity.Create<CombatContext>();
         MasterEntity.Instance.AddComponent<ConfigManageComponent>(ConfigsCollector);
-        var skill = ConfigHelper.Get<SkillConfig>(1001).Name;
     }
 
     private void Start()

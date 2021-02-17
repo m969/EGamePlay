@@ -52,3 +52,5 @@ MonoBehaviour:
     gameObject: {fileID: 4900000, guid: 84eaa9ec26922294f84067377e7d314b, type: 3}
   - key: UnitConfig
     gameObject: {fileID: 4900000, guid: 79f1713de1c57e646a74288a5fe0f14f, type: 3}
+  - key: EquipmentConfig
+    gameObject: {fileID: 4900000, guid: 2fe1f7d325cf4744b9a6b0882ed76076, type: 3}

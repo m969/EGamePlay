@@ -1,0 +1,7 @@
+{
+"1001":{"Id":1001,"Name":"长剑","Attribute":"AttackPower","Value":100},
+"1002":{"Id":1002,"Name":"长弓","Attribute":"AttackPower","Value":200},
+"1003":{"Id":1003,"Name":"圆盾","Attribute":"AttackDefense","Value":100},
+"1004":{"Id":1004,"Name":"巨斧","Attribute":"AttackPower","Value":400},
+"1005":{"Id":1005,"Name":"盔甲","Attribute":"AttackDefense","Value":200}
+}

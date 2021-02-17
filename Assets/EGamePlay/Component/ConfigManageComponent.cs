@@ -13,6 +13,11 @@ namespace EGamePlay.Combat
         {
             return ConfigManageComponent.Instance.Get<T>(id);
         }
+
+        public static Dictionary<int, T> GetAll<T>() where T : class, ET.IConfig
+        {
+            return ConfigManageComponent.Instance.GetAll<T>();
+        }
     }
 
     public class ConfigManageComponent : Component
@@ -43,6 +48,12 @@ namespace EGamePlay.Combat
         {
             var category = TypeConfigCategarys[typeof(T)] as ACategory<T>;
             return category.Get(id);
+        }
+
+        public Dictionary<int, T> GetAll<T>() where T : class, ET.IConfig
+        {
+            var category = TypeConfigCategarys[typeof(T)] as ACategory<T>;
+            return category.GetAll();
         }
     }
 }

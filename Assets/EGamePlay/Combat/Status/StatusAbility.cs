@@ -8,7 +8,6 @@ namespace EGamePlay.Combat.Status
     {
         //投放者、施术者
         public CombatEntity Caster { get; set; }
-        //public StatusConfig StatusConfig { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
         public FloatModifier NumericModifier { get; set; }
         public bool IsChildStatus { get; set; }

@@ -21,6 +21,10 @@ public sealed class Hero : MonoBehaviour
     public GameObject AttackPrefab;
     public GameObject SkillEffectPrefab;
     public GameObject HitEffectPrefab;
+    public Transform InventoryPanelTrm;
+    public Transform EquipmentPanelTrm;
+    public GameObject ItemPrefab;
+
     private Tweener MoveTweener { get; set; }
     private Tweener LookAtTweener { get; set; }
 
@@ -63,6 +67,47 @@ public sealed class Hero : MonoBehaviour
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.E);
 #endif
+        for (int i = InventoryPanelTrm.childCount; i > 0; i--)
+        {
+            GameObject.Destroy(InventoryPanelTrm.GetChild(i - 1).gameObject);
+        }
+        var allItemConfigs = ConfigHelper.GetAll<EquipmentConfig>();
+        foreach (var item in allItemConfigs)
+        {
+            var itemObj = GameObject.Instantiate(ItemPrefab);
+            itemObj.transform.parent = InventoryPanelTrm;
+            itemObj.transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>($"Icons/{item.Value.Name}");
+            var text = itemObj.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
+            text.text = $"+{item.Value.Value}";
+            if (item.Value.Attribute == "AttackPower")
+            {
+                text.color = Color.red;
+            }
+            itemObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
+                if (EquipmentPanelTrm.childCount >= 4)
+                {
+                    return;
+                }
+                var equipObj = GameObject.Instantiate(ItemPrefab);
+                equipObj.transform.parent = EquipmentPanelTrm;
+                equipObj.transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>($"Icons/{item.Value.Name}");
+                var equipText = equipObj.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
+                equipText.text = $"+{item.Value.Value}";
+                if (item.Value.Attribute == "AttackPower")
+                {
+                    equipText.color = Color.red;
+                }
+                var itemData = Entity.CreateWithParent<ItemData>(CombatEntity);
+                equipObj.name = $"{itemData.Id}";
+                itemData.ConfigId = item.Value.Id;
+                CombatEntity.AddItemData(itemData);
+                equipObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
+                    var id = long.Parse(equipObj.name);
+                    CombatEntity.RemoveItemData(id);
+                    GameObject.Destroy(equipObj);
+                });
+            });
+        }
 
         AnimTimer.MaxTime = AnimTime;
     }
@@ -72,23 +117,6 @@ public sealed class Hero : MonoBehaviour
     {
         CombatEntity.Position = transform.position;
         CombatEntity.Direction = transform.GetChild(0).localEulerAngles.y;
-
-        //AnimTimer.UpdateAsFinish(Time.deltaTime);
-        //if (!AnimTimer.IsFinished)
-        //{
-        //    return;
-        //}
-
-        //var h = Input.GetAxis("Horizontal");
-        //var v = Input.GetAxis("Vertical");
-        //if (h != 0f || v != 0f)
-        //{
-        //    MoveTweener?.Kill();
-        //    h *= MoveSpeed * 0.02f;
-        //    v *= MoveSpeed * 0.02f;
-        //    var p = transform.position;
-        //    transform.position = new Vector3(p.x + h, 0, p.z + v);
-        //}
 
         if (CombatEntity.CurrentSkillExecution != null)
             return;
