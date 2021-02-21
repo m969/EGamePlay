@@ -21,6 +21,10 @@ namespace GameUtils
 
         public GameTimer(float maxTime)
         {
+            if (maxTime <= 0)
+            {
+                throw new Exception($"_maxTime can not be 0 or negative");
+            }
             _maxTime = maxTime;
             _time = 0f;
         }
@@ -49,6 +53,10 @@ namespace GameUtils
 
         public void UpdateAsRepeat(float delta, Action onRepeat = null)
         {
+            if (delta > _maxTime)
+            {
+                throw new Exception($"_maxTime too small, delta:{delta} > _maxTime:{_maxTime}");
+            }
             _time += delta;
             if (onRepeat != _onFinish)
             {

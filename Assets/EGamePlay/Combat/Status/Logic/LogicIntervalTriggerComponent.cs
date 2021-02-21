@@ -38,7 +38,10 @@ namespace EGamePlay.Combat.Status
 
         public override void Update()
         {
-            IntervalTimer.UpdateAsRepeat(Time.deltaTime, GetEntity<LogicEntity>().ApplyEffect);
+            if (IntervalTimer != null)
+            {
+                IntervalTimer.UpdateAsRepeat(Time.deltaTime, GetEntity<LogicEntity>().ApplyEffect);
+            }
         }
     }
 }

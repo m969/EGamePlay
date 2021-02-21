@@ -16,7 +16,7 @@ public class EGamePlayInit : SerializedMonoBehaviour
     private void Awake()
     {
         Instance = this;
-
+        SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
         MasterEntity.Create();
         Entity.Create<TimerComponent>();
         Entity.Create<CombatContext>();
@@ -29,6 +29,7 @@ public class EGamePlayInit : SerializedMonoBehaviour
 
     private void Update()
     {
+        ThreadSynchronizationContext.Instance.Update();
         MasterEntity.Instance.Update();
         TimerComponent.Instance.Update();
     }
