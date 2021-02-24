@@ -140,13 +140,22 @@ namespace EGamePlay.Combat.Skill
         {
             if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly)
             {
-                var taskData = new CastProjectileTaskData();
+                var taskData = new CastTargetFlyProjectileTaskData();
                 taskData.FlyTime = 0.3f;
                 taskData.TargetEntity = InputCombatEntity;
                 var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
                 taskData.ProjectilePrefab = prefab.gameObject;
-                var task = Entity.CreateWithParent<CastProjectileTask>(OwnerEntity, taskData);
+                var task = Entity.CreateWithParent<CastTargetFlyProjectileTask>(OwnerEntity, taskData);
                 task.OnEnterCallback = () => { AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity); };
+                task.ExecuteTaskAsync().Coroutine();
+            }
+            if (colliderSpawnEmitter.ColliderType == ColliderType.ForwardFly)
+            {
+                var taskData = new CastDirectFlyProjectileTaskData();
+                var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
+                taskData.ProjectilePrefab = prefab.gameObject;
+                var task = Entity.CreateWithParent<CastDirectFlyProjectileTask>(OwnerEntity, taskData);
+                task.OnCollisionCallback = () => { AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity); };
                 task.ExecuteTaskAsync().Coroutine();
             }
             if (colliderSpawnEmitter.ColliderType == ColliderType.FixedPosition)

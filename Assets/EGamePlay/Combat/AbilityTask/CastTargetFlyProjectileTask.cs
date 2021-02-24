@@ -9,22 +9,22 @@ using EGamePlay.Combat.Skill;
 
 namespace EGamePlay.Combat.Ability
 {
-    public class CastProjectileTaskData
+    public class CastTargetFlyProjectileTaskData
     {
         public CombatEntity TargetEntity;
         public GameObject ProjectilePrefab;
         public float FlyTime;
     }
 
-    public class CastProjectileTask : AbilityTask
+    public class CastTargetFlyProjectileTask : AbilityTask
     {
-        public CastProjectileTaskData CastProjectileData { get; set; }
+        public CastTargetFlyProjectileTaskData CastProjectileData { get; set; }
         public Action OnEnterCallback { get; set; }
 
 
         public override void Awake(object initData)
         {
-            CastProjectileData = (CastProjectileTaskData)initData;
+            CastProjectileData = (CastTargetFlyProjectileTaskData)initData;
             OnEnterCallback = null;
         }
 
