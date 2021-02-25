@@ -153,9 +153,12 @@ namespace EGamePlay.Combat.Skill
             {
                 var taskData = new CastDirectFlyProjectileTaskData();
                 var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
+                //var prefab = GetChildByName(SkillExecutionAsset.transform, colliderSpawnEmitter.ColliderName);
                 taskData.ProjectilePrefab = prefab.gameObject;
+                taskData.DirectAngle = InputDirection;
                 var task = Entity.CreateWithParent<CastDirectFlyProjectileTask>(OwnerEntity, taskData);
-                task.OnCollisionCallback = () => { AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity); };
+                task.OnCollisionCallback = () => { Log.Debug($"CastDirectFlyProjectileTask OnCollisionCallback"); };
+                task.AddComponent<UpdateComponent>();
                 task.ExecuteTaskAsync().Coroutine();
             }
             if (colliderSpawnEmitter.ColliderType == ColliderType.FixedPosition)

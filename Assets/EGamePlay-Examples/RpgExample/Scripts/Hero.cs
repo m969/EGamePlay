@@ -66,6 +66,10 @@ public sealed class Hero : MonoBehaviour
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.E);
+
+        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1005_火弹");
+        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.R);
 #endif
         for (int i = InventoryPanelTrm.childCount; i > 0; i--)
         {

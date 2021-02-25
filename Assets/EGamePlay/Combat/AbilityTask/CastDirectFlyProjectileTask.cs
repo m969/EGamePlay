@@ -33,6 +33,7 @@ namespace EGamePlay.Combat.Ability
             Projectile = GameObject.Instantiate(CastProjectileData.ProjectilePrefab);
             Projectile.SetActive(true);
             Projectile.transform.position = GetParent<CombatEntity>().Position + Vector3.up;
+            Direction = new Vector3(0, CastProjectileData.DirectAngle, 0);
             FlyTimer.Reset();
             TaskState = AbilityTaskState.Ready;
         }
@@ -41,7 +42,8 @@ namespace EGamePlay.Combat.Ability
         {
             if (TaskState == AbilityTaskState.Executing)
             {
-                Projectile.transform.Translate(Direction * 0.01f, Space.World);
+                Projectile.transform.eulerAngles = Direction;
+                Projectile.transform.Translate(Projectile.transform.forward * 0.1f, Space.World);
                 FlyTimer.UpdateAsFinish(Time.deltaTime, OnFlyFinish);
             }
         }

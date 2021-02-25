@@ -42,6 +42,12 @@ public class SkillPreviewComponent : EGamePlay.Component
             PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.E];
             EnterPreview();
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            UnityEngine.Cursor.visible = false;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.R];
+            EnterPreview();
+        }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
         {
             CancelPreview();
@@ -77,10 +83,10 @@ public class SkillPreviewComponent : EGamePlay.Component
                 DirectRectSelectManager.Instance.Show(OnInputDirect);
             }
         }
-        //if (targetSelectType == SkillTargetSelectType.AreaSelect)
-        //{
-        //    DirectRectSelectManager.Instance.Show(OnInputDirect);
-        //}
+        if (targetSelectType == SkillTargetSelectType.BodyCollideSelect)
+        {
+            DirectRectSelectManager.Instance.Show(OnInputDirect);
+        }
     }
 
     public void CancelPreview()
