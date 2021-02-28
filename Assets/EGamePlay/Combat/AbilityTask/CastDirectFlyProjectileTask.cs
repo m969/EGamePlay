@@ -20,7 +20,7 @@ namespace EGamePlay.Combat.Ability
     public class CastDirectFlyProjectileTask : AbilityTask
     {
         public CastDirectFlyProjectileTaskData CastProjectileData { get; set; }
-        public Action OnCollisionCallback { get; set; }
+        public Action<Collider> OnCollisionCallback { get; set; }
         public GameObject Projectile { get; set; }
         public Vector3 Direction { get; set; }
         public GameTimer FlyTimer { get; set; } = new GameTimer(3f);
@@ -30,9 +30,6 @@ namespace EGamePlay.Combat.Ability
         {
             CastProjectileData = (CastDirectFlyProjectileTaskData)initData;
             OnCollisionCallback = null;
-            Projectile = GameObject.Instantiate(CastProjectileData.ProjectilePrefab);
-            Projectile.SetActive(true);
-            Projectile.transform.position = GetParent<CombatEntity>().Position + Vector3.up;
             Direction = new Vector3(0, CastProjectileData.DirectAngle, 0);
             FlyTimer.Reset();
             TaskState = AbilityTaskState.Ready;
@@ -57,6 +54,13 @@ namespace EGamePlay.Combat.Ability
 
         public override async ETTask ExecuteTaskAsync()
         {
+            Projectile = GameObject.Instantiate(CastProjectileData.ProjectilePrefab);
+            Projectile.GetComponent<Collider>().enabled = false;
+            Projectile.transform.position = GetParent<CombatEntity>().Position + Vector3.up;
+            Projectile.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => { OnCollisionCallback?.Invoke(other); };
+            Projectile.GetComponent<Collider>().enabled = true;
+            Projectile.SetActive(true);
+
             TaskState = AbilityTaskState.Executing;
         }
     }

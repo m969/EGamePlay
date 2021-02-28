@@ -157,7 +157,11 @@ namespace EGamePlay.Combat.Skill
                 taskData.ProjectilePrefab = prefab.gameObject;
                 taskData.DirectAngle = InputDirection;
                 var task = Entity.CreateWithParent<CastDirectFlyProjectileTask>(OwnerEntity, taskData);
-                task.OnCollisionCallback = () => { Log.Debug($"CastDirectFlyProjectileTask OnCollisionCallback"); };
+                task.OnCollisionCallback = (other) => {
+                    AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity); 
+                    GameObject.Destroy(task.Projectile);
+                    Entity.Destroy(task);
+                };
                 task.AddComponent<UpdateComponent>();
                 task.ExecuteTaskAsync().Coroutine();
             }
@@ -168,7 +172,9 @@ namespace EGamePlay.Combat.Skill
                 var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
                 taskData.ColliderPrefab = prefab.gameObject;
                 taskData.LifeTime = (int)(colliderSpawnEmitter.ExistTime * 1000);
-                taskData.OnTriggerEnterCallback = (other) => { AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity); };
+                taskData.OnTriggerEnterCallback = (other) => { 
+                    AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity); 
+                };
                 var task = Entity.CreateWithParent<CreateColliderTask>(this, taskData);
                 task.ExecuteTaskAsync().Coroutine();
             }
