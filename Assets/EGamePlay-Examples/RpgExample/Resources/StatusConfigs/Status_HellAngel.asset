@@ -59,7 +59,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 0
+      Data: 3
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -67,8 +67,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: Interval
-      Entry: 6
-      Data: 
+      Entry: 1
+      Data: 3000
     - Name: ConditionParam
       Entry: 6
       Data: 
