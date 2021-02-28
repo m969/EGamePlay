@@ -169,15 +169,14 @@ public sealed class Hero : MonoBehaviour
         //PlayThenIdleAsync(AnimationComponent.AttackAnimation).Coroutine();
 
         var monster = GameObject.Find("Monster");
-
         SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
         SpawnHitEffect(transform.position, monster.transform.position);
 
-        var action = CombatEntity.CreateCombatAction<DamageAction>();
-        action.Target = monster.GetComponent<Monster>().CombatEntity;
-        action.DamageSource = DamageSource.Attack;
         CombatEntity.GetComponent<AttributeComponent>().AttackPower.SetBase(ET.RandomHelper.RandomNumber(600, 999));
-        action.ApplyDamage();
+
+        var action = CombatEntity.CreateAction<AttackAction>();
+        action.Target = monster.GetComponent<Monster>().CombatEntity;
+        action.ApplyAttack();
     }
 
     private ETCancellationToken token;

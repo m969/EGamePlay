@@ -58,7 +58,7 @@ public class StatusTenacity : StatusAbility
     //生命回复
     private void ReplyHealth()
     {
-        var action = OwnerEntity.CreateCombatAction<CureAction>();
+        var action = OwnerEntity.CreateAction<CureAction>();
         action.Target = OwnerEntity;
         action.CureValue = OwnerEntity.CurrentHealth.PercentHealth(2);
         action.ApplyCure();

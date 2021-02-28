@@ -187,18 +187,6 @@ namespace EGamePlay.Combat.Skill
             }
         }
 
-        private Transform GetChildByName(Transform transform, string childName)
-        {
-            foreach (Transform item in transform)
-            {
-                if (item.name == childName)
-                {
-                    return item;
-                }
-            }
-            return null;
-        }
-
         public override void BeginExecute()
         {
             GetParent<CombatEntity>().CurrentSkillExecution = this;

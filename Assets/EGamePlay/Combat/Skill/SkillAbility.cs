@@ -42,7 +42,7 @@ namespace EGamePlay.Combat.Skill
 #endif
         }
 
-        public override AbilityExecution CreateAbilityExecution()
+        public override AbilityExecution CreateExecution()
         {
             var execution = Entity.CreateWithParent<SkillExecution>(OwnerEntity, this);
             execution.AddComponent<UpdateComponent>();
@@ -72,6 +72,7 @@ namespace EGamePlay.Combat.Skill
             }
         }
 
+#if EGAMEPLAY_EXCEL
         public Effect ParseEffect(string effectConfig)
         {
             Effect effect = null;
@@ -122,5 +123,8 @@ namespace EGamePlay.Combat.Skill
             }
             return effect;
         }
+#else
+
+#endif
     }
 }

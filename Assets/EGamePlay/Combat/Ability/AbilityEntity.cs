@@ -39,7 +39,7 @@ namespace EGamePlay.Combat.Ability
         }
 
         //创建能力执行体
-        public virtual AbilityExecution CreateAbilityExecution()
+        public virtual AbilityExecution CreateExecution()
         {
             return null;
         }
@@ -50,7 +50,7 @@ namespace EGamePlay.Combat.Ability
             {
                 if (effectItem is DamageEffect damageEffect)
                 {
-                    var action = this.OwnerEntity.CreateCombatAction<DamageAction>();
+                    var action = this.OwnerEntity.CreateAction<DamageAction>();
                     action.Target = targetEntity;
                     action.DamageSource = DamageSource.Skill;
                     action.DamageEffect = damageEffect;
@@ -59,7 +59,7 @@ namespace EGamePlay.Combat.Ability
                 }
                 else if (effectItem is CureEffect cureEffect)
                 {
-                    var action = this.OwnerEntity.CreateCombatAction<CureAction>();
+                    var action = this.OwnerEntity.CreateAction<CureAction>();
                     action.Target = targetEntity;
                     action.CureEffect = cureEffect;
                     cureEffect.CureValueProperty = cureEffect.CureValueFormula;
@@ -67,7 +67,7 @@ namespace EGamePlay.Combat.Ability
                 }
                 else
                 {
-                    var action = this.OwnerEntity.CreateCombatAction<AssignEffectAction>();
+                    var action = this.OwnerEntity.CreateAction<AssignEffectAction>();
                     action.Target = targetEntity;
                     action.SourceAbility = this;
                     action.Effect = effectItem;

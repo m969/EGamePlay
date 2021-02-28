@@ -19,7 +19,7 @@ namespace EGamePlay.Combat.Status
             //Log.Debug("LogicEntity ApplyEffect");
             if (Effect is DamageEffect damageEffect)
             {
-                var damageAction = GetParent<StatusAbility>().Caster.CreateCombatAction<DamageAction>();
+                var damageAction = GetParent<StatusAbility>().Caster.CreateAction<DamageAction>();
                 damageAction.DamageEffect = damageEffect;
                 damageAction.Target = GetParent<StatusAbility>().GetParent<CombatEntity>();
                 damageAction.DamageSource = DamageSource.Buff;

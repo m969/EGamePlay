@@ -19,5 +19,8 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("Enabled"), LabelText("自定义效果")]
         public string CustomEffectType;
+
+        [ToggleGroup("Enabled"), LabelText("参数列表")]
+        public Dictionary<string, string> Params = new Dictionary<string, string>();
     }
 }

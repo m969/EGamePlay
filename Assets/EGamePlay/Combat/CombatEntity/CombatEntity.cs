@@ -14,6 +14,7 @@ namespace EGamePlay.Combat
     public sealed class CombatEntity : Entity
     {
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
+        public AttackAbility AttackAbility { get; set; }
         public SkillExecution CurrentSkillExecution { get; set; }
         public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
         public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
@@ -34,9 +35,13 @@ namespace EGamePlay.Combat
             //AddComponent<MotionComponent>();
             CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
             CurrentHealth.Reset();
+            AttackAbility = Entity.CreateWithParent<AttackAbility>(this);
         }
 
-        public T CreateCombatAction<T>() where T : CombatAction, new()
+        /// <summary>
+        /// 创建行动
+        /// </summary>
+        public T CreateAction<T>() where T : CombatAction, new()
         {
             var action = GetParent<CombatContext>().GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
             return action;

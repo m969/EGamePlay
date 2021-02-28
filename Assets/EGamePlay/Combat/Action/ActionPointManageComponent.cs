@@ -14,33 +14,41 @@ namespace EGamePlay.Combat
         public List<Action<CombatAction>> Listeners { get; set; } = new List<Action<CombatAction>>();
     }
 
-    //[LabelText("行动点类型")]
+    [Flags]
     public enum ActionPointType
     {
+        [LabelText("（空）")]
+        None = 0,
+
         [LabelText("造成伤害前")]
-        PreCauseDamage,
+        PreCauseDamage = 1 << 1,
         [LabelText("承受伤害前")]
-        PreReceiveDamage,
+        PreReceiveDamage = 1 << 2,
 
         [LabelText("造成伤害后")]
-        PostCauseDamage,
+        PostCauseDamage = 1 << 3,
         [LabelText("承受伤害后")]
-        PostReceiveDamage,
+        PostReceiveDamage = 1 << 4,
 
         [LabelText("给予治疗后")]
-        PostGiveCure,
+        PostGiveCure = 1 << 5,
         [LabelText("接受治疗后")]
-        PostReceiveCure,
+        PostReceiveCure = 1 << 6,
 
         [LabelText("赋给效果")]
-        AssignEffect,
+        AssignEffect = 1 << 7,
         [LabelText("接受效果")]
-        ReceiveEffect,
+        ReceiveEffect = 1 << 8,
 
         [LabelText("赋加状态后")]
-        PostGiveStatus,
+        PostGiveStatus = 1 << 9,
         [LabelText("承受状态后")]
-        PostReceiveStatus,
+        PostReceiveStatus = 1 << 10,
+
+        [LabelText("给予普攻后")]
+        PostGiveAttack = 1 << 11,
+        [LabelText("遭受普攻后")]
+        PostReceiveAttack = 1 << 12,
 
         Max,
     }

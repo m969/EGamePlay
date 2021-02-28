@@ -14,6 +14,9 @@ namespace EGamePlay.Combat
         public int SkillID { get; set; }
         public SkillAbility SkillAbility { get; set; }
         public SkillExecution SkillAbilityExecution { get; set; }
+        public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
+        public Vector3 InputPoint { get; set; }
+        public float InputDirection { get; set; }
 
 
         //前置处理
