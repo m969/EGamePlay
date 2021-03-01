@@ -110,10 +110,10 @@ public class SkillPreviewComponent : EGamePlay.Component
             return;
 
         //Log.Debug($"OnInputTarget {combatEntity}");
-        var action = GetEntity<CombatEntity>().CreateAction<SpellSkillAction>();
+        var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
         action.SkillAbility = PreviewingSkill;
-        action.SkillAbilityExecution = PreviewingSkill.CreateExecution() as SkillExecution;
-        action.SkillAbilityExecution.InputCombatEntity = combatEntity;
+        action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
+        action.SkillExecution.InputCombatEntity = combatEntity;
         action.SpellSkill();
     }
 
@@ -123,10 +123,10 @@ public class SkillPreviewComponent : EGamePlay.Component
             return;
 
         //Log.Debug($"OnInputPoint {point}");
-        var action = GetEntity<CombatEntity>().CreateAction<SpellSkillAction>();
+        var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
         action.SkillAbility = PreviewingSkill;
-        action.SkillAbilityExecution = PreviewingSkill.CreateExecution() as SkillExecution;
-        action.SkillAbilityExecution.InputPoint = point;
+        action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
+        action.SkillExecution.InputPoint = point;
         action.SpellSkill();
     }
 
@@ -136,11 +136,11 @@ public class SkillPreviewComponent : EGamePlay.Component
             return;
 
         //Log.Debug($"OnInputDirect {direction}");
-        var action = GetEntity<CombatEntity>().CreateAction<SpellSkillAction>();
+        var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
         action.SkillAbility = PreviewingSkill;
-        action.SkillAbilityExecution = PreviewingSkill.CreateExecution() as SkillExecution;
-        action.SkillAbilityExecution.InputPoint = point;
-        action.SkillAbilityExecution.InputDirection = direction;
+        action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
+        action.SkillExecution.InputPoint = point;
+        action.SkillExecution.InputDirection = direction;
         action.SpellSkill();
     }
 }

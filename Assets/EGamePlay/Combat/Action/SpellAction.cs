@@ -7,13 +7,12 @@ using EGamePlay.Combat.Skill;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 施放技能行动
+    /// 施法行动
     /// </summary>
-    public class SpellSkillAction : CombatAction
+    public class SpellAction : CombatAction
     {
-        public int SkillID { get; set; }
         public SkillAbility SkillAbility { get; set; }
-        public SkillExecution SkillAbilityExecution { get; set; }
+        public SkillExecution SkillExecution { get; set; }
         public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
@@ -28,7 +27,7 @@ namespace EGamePlay.Combat
         public void SpellSkill()
         {
             PreProcess();
-            if (SkillAbilityExecution == null)
+            if (SkillExecution == null)
             {
                 SkillAbility.ApplyAbilityEffectsTo(Target);
             }
@@ -36,14 +35,14 @@ namespace EGamePlay.Combat
             {
                 Hero.Instance.StopMove();
 
-                if (SkillAbilityExecution.InputCombatEntity != null)
-                    Hero.Instance.transform.GetChild(0).LookAt(SkillAbilityExecution.InputCombatEntity.Position);
-                else if (SkillAbilityExecution.InputPoint != null)
-                    Hero.Instance.transform.GetChild(0).LookAt(SkillAbilityExecution.InputPoint);
+                if (SkillExecution.InputCombatEntity != null)
+                    Hero.Instance.transform.GetChild(0).LookAt(SkillExecution.InputCombatEntity.Position);
+                else if (SkillExecution.InputPoint != null)
+                    Hero.Instance.transform.GetChild(0).LookAt(SkillExecution.InputPoint);
                 else
-                    Hero.Instance.transform.GetChild(0).localEulerAngles = new Vector3(0, SkillAbilityExecution.InputDirection, 0);
+                    Hero.Instance.transform.GetChild(0).localEulerAngles = new Vector3(0, SkillExecution.InputDirection, 0);
 
-                SkillAbilityExecution.BeginExecute();
+                SkillExecution.BeginExecute();
             }
             PostProcess();
         }

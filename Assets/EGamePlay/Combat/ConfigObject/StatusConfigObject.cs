@@ -275,6 +275,8 @@ namespace EGamePlay.Combat
         Action = 2,
         [LabelText("间隔触发")]
         Interval = 3,
+        [LabelText("在行动点且满足条件")]
+        ActionCondition = 4,
     }
 
     public enum ConditionType
