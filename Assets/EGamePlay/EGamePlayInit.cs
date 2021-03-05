@@ -2,14 +2,15 @@
 using EGamePlay.Combat;
 using ET;
 using System.Threading;
-using UnityEngine;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 
+
+public enum ExampleType { Rpg, TurnBase, SLG, Card }
 
 public class EGamePlayInit : SerializedMonoBehaviour
 {
     public static EGamePlayInit Instance { get; private set; }
+    public ExampleType ExampleType;
     public ReferenceCollector ConfigsCollector;
 
 
@@ -19,8 +20,15 @@ public class EGamePlayInit : SerializedMonoBehaviour
         SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
         MasterEntity.Create();
         Entity.Create<TimerComponent>();
-        Entity.Create<CombatContext>();
         MasterEntity.Instance.AddComponent<ConfigManageComponent>(ConfigsCollector);
+        if (ExampleType == ExampleType.Rpg)
+        {
+            Entity.Create<CombatContext>();
+        }
+        if (ExampleType == ExampleType.TurnBase)
+        {
+            Entity.Create<TurnBaseCombatContext>();
+        }
     }
 
     private void Start()

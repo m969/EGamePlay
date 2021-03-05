@@ -251,6 +251,11 @@ namespace EGamePlay
 #endif
         }
 
+        public T AddChild<T>() where T : Entity, new()
+        {
+            return CreateWithParent<T>(this);
+        }
+
         public Entity[] GetChildren()
         {
             return Children.ToArray();

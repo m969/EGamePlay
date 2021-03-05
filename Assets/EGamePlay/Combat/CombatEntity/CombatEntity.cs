@@ -43,7 +43,7 @@ namespace EGamePlay.Combat
         /// </summary>
         public T CreateAction<T>() where T : CombatAction, new()
         {
-            var action = GetParent<CombatContext>().GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
+            var action = Parent.GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
             return action;
         }
 

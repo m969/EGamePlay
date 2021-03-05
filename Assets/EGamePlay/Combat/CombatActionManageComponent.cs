@@ -14,10 +14,19 @@ namespace EGamePlay.Combat
 
         public T CreateAction<T>(CombatEntity combatEntity) where T : CombatAction, new()
         {
-            var action = Entity.CreateWithParent<T>(GetEntity<CombatContext>());
+            var action = Entity.CreateWithParent<T>(Entity);
             action.Creator = combatEntity;
             CombatActions.Add(action);
             return action;
+        }
+
+        public void ClearAllActions()
+        {
+            foreach (var item in CombatActions)
+            {
+                Entity.Destroy(item);
+            }
+            CombatActions.Clear();
         }
     }
 }
