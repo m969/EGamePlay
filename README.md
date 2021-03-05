@@ -93,10 +93,7 @@ EffectConfigToJson
 - [Animancer Pro](https://assetstore.unity.com/packages/tools/animation/animancer-pro-116514) （基于Playable的简单强大的动画解决方案）
 
 ---
-### 该项目的ETTask、TimerComponent及部分代码来自ET框架: [https://github.com/egametang/ET](https://github.com/egametang/ET)
-
----
-GamePlay战斗框架技术讨论交流qq群：763696367
+EGamePlay战斗框架技术讨论交流qq群：763696367
 ===
 对战斗感兴趣的同学可以进群一起探讨更合适、高效的战斗框架实现
 
@@ -111,3 +108,7 @@ GamePlay战斗框架技术讨论交流qq群：763696367
 - https://github.com/sjai013/UnityGameplayAbilitySystem (The approach for this is taken from that used by Unreal's Gameplay Ability System, but implemented in Unity using the Data-Oriented Technology Stack (DOTS) where possible.)
 - https://github.com/dx50075/SkillSystem (skill system for unity ， 思路 http://blog.csdn.net/qq18052887/article/details/50358463
 技能描述文件如下 skill(1000) //技能1 { FaceToTarget(0) PlayAnimation(1,Skill_1) Bullet(1.3,Bullet,7) PlayEffect(0,Explode8,3) })
+
+---
+## 友情链接
+- https://github.com/egametang/ET
