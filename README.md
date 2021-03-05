@@ -93,10 +93,7 @@ EffectConfigToJson
 - [Animancer Pro](https://assetstore.unity.com/packages/tools/animation/animancer-pro-116514) （基于Playable的简单强大的动画解决方案）
 
 ---
-### 该项目的ETTask、TimerComponent及部分代码来自ET框架: [https://github.com/egametang/ET](https://github.com/egametang/ET)
-
----
-GamePlay战斗框架技术讨论交流qq群：763696367
+EGamePlay战斗框架技术讨论交流qq群：763696367
 ===
 对战斗感兴趣的同学可以进群一起探讨更合适、高效的战斗框架实现
 
