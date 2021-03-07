@@ -30,16 +30,18 @@ public class EGamePlayInit : SerializedMonoBehaviour
         if (ExampleType == ExampleType.TurnBase)
         {
             Entity.Create<CombatContext>();
-            for (int i = 0; i < 5; i++)
+            var heroRoot = GameObject.Find("CombatRoot/HeroRoot").transform;
+            for (int i = 0; i < heroRoot.childCount; i++)
             {
-                var hero = GameObject.Find("CombatRoot/HeroRoot").transform.GetChild(i);
+                var hero = heroRoot.GetChild(i);
                 var turnHero = hero.gameObject.AddComponent<TurnHero>();
                 turnHero.Setup(i);
                 turnHero.CombatEntity.JumpToTime = JumpToTime;
             }
-            for (int i = 0; i < 5; i++)
+            var monsterRoot = GameObject.Find("CombatRoot/MonsterRoot").transform;
+            for (int i = 0; i < monsterRoot.childCount; i++)
             {
-                var hero = GameObject.Find("CombatRoot/MonsterRoot").transform.GetChild(i);
+                var hero = monsterRoot.GetChild(i);
                 var turnMonster = hero.gameObject.AddComponent<TurnMonster>();
                 turnMonster.Setup(i);
                 turnMonster.CombatEntity.JumpToTime = JumpToTime;
