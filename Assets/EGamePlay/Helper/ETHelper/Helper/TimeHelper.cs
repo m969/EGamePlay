@@ -23,5 +23,10 @@ namespace ET
 		{
 			return ClientNow();
 		}
+
+		public static async ETTask WaitAsync(int time)
+        {
+			await TimerComponent.Instance.WaitAsync(time);
+        }
     }
 }

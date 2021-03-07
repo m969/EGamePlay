@@ -3,18 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using EGamePlay.Combat;
 
-public class TurnHero : MonoBehaviour
+public class TurnHero : TurnCombatObject
 {
-    public CombatEntity CombatEntity { get; set; }
-
-
-    private void Start()
+    public void Setup(int seat)
     {
-        CombatEntity = TurnBaseCombatContext.Instance.AddHeroEntity();
-    }
-
-    public void OnTurnAction()
-    {
-
+        CombatEntity = CombatContext.Instance.AddHeroEntity(seat);
+        base.Setup();
     }
 }

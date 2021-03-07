@@ -13,6 +13,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public sealed class CombatEntity : Entity
     {
+        public GameObject gameObject { get; set; }
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
         public AttackAbility AttackAbility { get; set; }
         public SkillExecution CurrentSkillExecution { get; set; }
@@ -166,6 +167,37 @@ namespace EGamePlay.Combat
             GetComponent<AttributeComponent>().GetNumeric(equipmentConfig.Attribute).RemoveAddModifier(modifier);
             ItemDatas.Remove(Id);
         }
+
+        #region 回合制战斗
+        public int SeatNumber { get; set; }
+        public int JumpToTime { get; set; }
+        public bool IsHero { get; set; }
+        public bool IsMonster => IsHero == false;
+
+        public CombatEntity GetEnemy(int seat)
+        {
+            if (IsHero)
+            {
+                return GetParent<CombatContext>().GetMonster(seat);
+            }
+            else
+            {
+                return GetParent<CombatContext>().GetHero(seat);
+            }
+        }
+
+        public CombatEntity GetTeammate(int seat)
+        {
+            if (IsHero)
+            {
+                return GetParent<CombatContext>().GetHero(seat);
+            }
+            else
+            {
+                return GetParent<CombatContext>().GetMonster(seat);
+            }
+        }
+        #endregion
     }
 
     public class RemoveStatusEvent

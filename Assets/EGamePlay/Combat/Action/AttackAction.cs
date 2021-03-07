@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat.Skill;
+using ET;
 
 namespace EGamePlay.Combat
 {
@@ -14,17 +15,21 @@ namespace EGamePlay.Combat
         //前置处理
         private void PreProcess()
         {
-
+            Creator.TriggerActionPoint(ActionPointType.PreGiveAttack, this);
+            Target.TriggerActionPoint(ActionPointType.PreReceiveAttack, this);
         }
 
-        public void ApplyAttack()
+        public async ETTask ApplyAttack()
         {
             PreProcess();
-            //Hero.Instance.StopMove();
+            
+            await TimeHelper.WaitAsync(1000);
 
             var attackExecution = Creator.AttackAbility.CreateExecution() as AttackExecution;
             attackExecution.AttackAction = this;
             attackExecution.BeginExecute();
+
+            await TimeHelper.WaitAsync(300);
 
             PostProcess();
         }

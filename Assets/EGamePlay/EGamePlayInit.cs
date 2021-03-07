@@ -3,6 +3,7 @@ using EGamePlay.Combat;
 using ET;
 using System.Threading;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 
 public enum ExampleType { Rpg, TurnBase, SLG, Card }
@@ -10,8 +11,9 @@ public enum ExampleType { Rpg, TurnBase, SLG, Card }
 public class EGamePlayInit : SerializedMonoBehaviour
 {
     public static EGamePlayInit Instance { get; private set; }
-    public ExampleType ExampleType;
     public ReferenceCollector ConfigsCollector;
+    public ExampleType ExampleType;
+    public int JumpToTime;
 
 
     private void Awake()
@@ -27,7 +29,21 @@ public class EGamePlayInit : SerializedMonoBehaviour
         }
         if (ExampleType == ExampleType.TurnBase)
         {
-            Entity.Create<TurnBaseCombatContext>();
+            Entity.Create<CombatContext>();
+            for (int i = 0; i < 5; i++)
+            {
+                var hero = GameObject.Find("CombatRoot/HeroRoot").transform.GetChild(i);
+                var turnHero = hero.gameObject.AddComponent<TurnHero>();
+                turnHero.Setup(i);
+                turnHero.CombatEntity.JumpToTime = JumpToTime;
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                var hero = GameObject.Find("CombatRoot/MonsterRoot").transform.GetChild(i);
+                var turnMonster = hero.gameObject.AddComponent<TurnMonster>();
+                turnMonster.Setup(i);
+                turnMonster.CombatEntity.JumpToTime = JumpToTime;
+            }
         }
     }
 

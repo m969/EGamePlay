@@ -13,6 +13,7 @@ public class AnimationComponent : MonoBehaviour
     public AnimationClip AttackAnimation;
     public AnimationClip SkillAnimation;
     public AnimationClip StunAnimation;
+    public AnimationClip DamageAnimation;
     public AnimationClip[] AnimationClips;
     public float Speed { get; set; } = 1f;
     

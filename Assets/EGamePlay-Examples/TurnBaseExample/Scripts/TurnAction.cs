@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
+using ET;
 
 /// <summary>
 /// 回合行动
@@ -18,13 +19,13 @@ public class TurnAction : CombatAction
 
     }
 
-    public void ApplyTurnAction()
+    public async ETTask ApplyTurn()
     {
         PreProcess();
 
-        var attackAction = Creator.CreateAction<AttackAction>();
-        attackAction.Target = Creator;
-        attackAction.ApplyAttack();
+        var jumpToAction = Creator.CreateAction<JumpToAction>();
+        jumpToAction.Target = Creator.GetEnemy(Creator.SeatNumber);
+        await jumpToAction.ApplyJumpTo();
 
         PostProcess();
     }

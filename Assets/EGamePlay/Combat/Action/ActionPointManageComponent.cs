@@ -45,10 +45,20 @@ namespace EGamePlay.Combat
         [LabelText("承受状态后")]
         PostReceiveStatus = 1 << 10,
 
+        [LabelText("给予普攻前")]
+        PreGiveAttack = 1 << 11,
         [LabelText("给予普攻后")]
-        PostGiveAttack = 1 << 11,
+        PostGiveAttack = 1 << 12,
+
+        [LabelText("遭受普攻前")]
+        PreReceiveAttack = 1 << 13,
         [LabelText("遭受普攻后")]
-        PostReceiveAttack = 1 << 12,
+        PostReceiveAttack = 1 << 14,
+
+        [LabelText("起跳前")]
+        PreJumpTo= 1 << 15,
+        [LabelText("起跳后")]
+        PostJumpTo = 1 << 16,
 
         Max,
     }

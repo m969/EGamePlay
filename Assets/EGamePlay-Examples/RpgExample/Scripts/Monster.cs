@@ -30,10 +30,8 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.AddComponent<MotionComponent>();
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
-        {
-            CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
-            CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus).AsCoroutine();
-        }
+        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
+        CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus).AsCoroutine();
 
         var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
         var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
