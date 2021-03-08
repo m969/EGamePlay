@@ -26,6 +26,7 @@ public class TurnAction : CombatAction
         var jumpToAction = Creator.CreateAction<JumpToAction>();
         jumpToAction.Target = Creator.GetEnemy(Creator.SeatNumber);
         await jumpToAction.ApplyJumpTo();
+        Entity.Destroy(jumpToAction);
 
         PostProcess();
     }

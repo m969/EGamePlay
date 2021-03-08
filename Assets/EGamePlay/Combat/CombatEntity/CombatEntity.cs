@@ -13,7 +13,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public sealed class CombatEntity : Entity
     {
-        public GameObject gameObject { get; set; }
+        public GameObject ModelObject { get; set; }
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
         public AttackAbility AttackAbility { get; set; }
         public SkillExecution CurrentSkillExecution { get; set; }

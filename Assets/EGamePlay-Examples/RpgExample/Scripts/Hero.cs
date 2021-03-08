@@ -177,6 +177,7 @@ public sealed class Hero : MonoBehaviour
         var action = CombatEntity.CreateAction<AttackAction>();
         action.Target = monster.GetComponent<Monster>().CombatEntity;
         action.ApplyAttack();
+        Entity.Destroy(action);
     }
 
     private ETCancellationToken token;

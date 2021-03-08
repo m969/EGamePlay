@@ -19,19 +19,24 @@ namespace EGamePlay.Combat
             Target.TriggerActionPoint(ActionPointType.PreReceiveAttack, this);
         }
 
-        public async ETTask ApplyAttack()
+        public async ETTask ApplyAttackAsync()
         {
             PreProcess();
             
             await TimeHelper.WaitAsync(1000);
 
-            var attackExecution = Creator.AttackAbility.CreateExecution() as AttackExecution;
-            attackExecution.AttackAction = this;
-            attackExecution.BeginExecute();
+            ApplyAttack();
 
             await TimeHelper.WaitAsync(300);
 
             PostProcess();
+        }
+
+        public void ApplyAttack()
+        {
+            var attackExecution = Creator.AttackAbility.CreateExecution() as AttackExecution;
+            attackExecution.AttackAction = this;
+            attackExecution.BeginExecute();
         }
 
         //后置处理

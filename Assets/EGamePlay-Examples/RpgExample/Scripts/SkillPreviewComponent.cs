@@ -115,6 +115,7 @@ public class SkillPreviewComponent : EGamePlay.Component
         action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
         action.SkillExecution.InputCombatEntity = combatEntity;
         action.SpellSkill();
+        Entity.Destroy(action);
     }
 
     private void OnInputPoint(Vector3 point)
@@ -128,6 +129,7 @@ public class SkillPreviewComponent : EGamePlay.Component
         action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
         action.SkillExecution.InputPoint = point;
         action.SpellSkill();
+        Entity.Destroy(action);
     }
 
     private void OnInputDirect(float direction, Vector3 point)
@@ -142,5 +144,6 @@ public class SkillPreviewComponent : EGamePlay.Component
         action.SkillExecution.InputPoint = point;
         action.SkillExecution.InputDirection = direction;
         action.SpellSkill();
+        Entity.Destroy(action);
     }
 }

@@ -24,6 +24,7 @@ namespace EGamePlay.Combat.Status
                 damageAction.Target = GetParent<StatusAbility>().GetParent<CombatEntity>();
                 damageAction.DamageSource = DamageSource.Buff;
                 damageAction.ApplyDamage();
+                Entity.Destroy(damageAction);
             }
             else
             {

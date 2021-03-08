@@ -28,7 +28,6 @@ namespace EGamePlay.Combat
         public Dictionary<int, CombatEntity> HeroEntities { get; set; } = new Dictionary<int, CombatEntity>();
         public Dictionary<int, CombatEntity> MonsterEntities { get; set; } = new Dictionary<int, CombatEntity>();
         public List<TurnAction> TurnActions { get; set; } = new List<TurnAction>();
-        public int CurrentActionIndex { get; set; } = 0;
 
 
         public override void Update()
@@ -76,21 +75,6 @@ namespace EGamePlay.Combat
             }
             await TimerComponent.Instance.WaitAsync(1000);
             StartCombat();
-        }
-
-        public async ET.ETTask OnTurnAction()
-        {
-            if (CurrentActionIndex < TurnActions.Count)
-            {
-                var turnAction = TurnActions[CurrentActionIndex];
-                turnAction.ApplyTurn();
-                CurrentActionIndex++;
-            }
-            else
-            {
-                RefreshActions();
-                CurrentActionIndex = 0;
-            }
         }
 
         public void RefreshActions()

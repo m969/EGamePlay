@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using EGamePlay;
 using EGamePlay.Combat;
 using DG.Tweening;
 using ET;
@@ -18,8 +19,7 @@ public class TurnCombatObject : MonoBehaviour
     {
         MonsterObjectData = GetComponent<MonsterObjectData>();
         SeatPoint = transform.position;
-        CombatEntity.gameObject = gameObject;
-        CombatEntity.ListenActionPoint(ActionPointType.PreJumpTo, OnPreJumpTo);
+        CombatEntity.ModelObject = gameObject;
         CombatEntity.ListenActionPoint(ActionPointType.PreGiveAttack, OnPreAttack);
         CombatEntity.ListenActionPoint(ActionPointType.PostGiveAttack, OnPostAttack);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
@@ -27,28 +27,15 @@ public class TurnCombatObject : MonoBehaviour
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
         CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus).AsCoroutine();
 
-        var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
-        var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
-        Status.Caster = CombatEntity;
-        Status.TryActivateAbility();
+        //var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
+        //var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
+        //Status.Caster = CombatEntity;
+        //Status.TryActivateAbility();
     }
 
     private void Update()
     {
         CombatEntity.Position = transform.position;
-    }
-
-    public void OnTurnAction()
-    {
-
-    }
-
-    public void OnPreJumpTo(CombatAction action)
-    {
-        var targetPoint = action.Target.gameObject.transform.position + action.Target.gameObject.transform.forward * 2;
-        transform.DOMove(targetPoint, CombatEntity.JumpToTime / 1000f).SetEase(Ease.Linear);
-        AnimationComponent.Speed = 2f;
-        AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
     }
 
     public void OnPreAttack(CombatAction action)

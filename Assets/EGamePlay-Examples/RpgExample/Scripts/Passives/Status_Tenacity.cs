@@ -7,6 +7,7 @@ using EGamePlay.Combat.Ability;
 using EGamePlay.Combat;
 using EGamePlay;
 using GameUtils;
+using ET;
 
 public class StatusTenacity : StatusAbility
 {
@@ -32,7 +33,7 @@ public class StatusTenacity : StatusAbility
             {
                 break;
             }
-            await ET.TimerComponent.Instance.WaitAsync(100);
+            await TimeHelper.WaitAsync(100);
             if (CanReplyHealth)
             {
                 if (OwnerEntity.CurrentHealth.Percent() < 1f)
@@ -62,5 +63,6 @@ public class StatusTenacity : StatusAbility
         action.Target = OwnerEntity;
         action.CureValue = OwnerEntity.CurrentHealth.PercentHealth(2);
         action.ApplyCure();
+        Entity.Destroy(action);
     }
 }

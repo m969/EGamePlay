@@ -9,7 +9,7 @@ namespace EGamePlay
     public abstract partial class Entity
     {
         public static MasterEntity Master => MasterEntity.Instance;
-        public static bool DebugLog { get; set; } = false;
+        public static bool EnableLog { get; set; } = false;
 
         private static T New<T>() where T : Entity, new()
         {
@@ -29,7 +29,7 @@ namespace EGamePlay
             entity.Id = entity.InstanceId;
             Master.AddChild(entity);
             entity.Awake();
-            if (DebugLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}");
+            if (EnableLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -39,7 +39,7 @@ namespace EGamePlay
             entity.Id = entity.InstanceId;
             Master.AddChild(entity);
             entity.Awake(initData);
-            if (DebugLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}, {initData}");
+            if (EnableLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}, {initData}");
             return entity;
         }
 
@@ -49,7 +49,7 @@ namespace EGamePlay
             entity.Id = entity.InstanceId;
             parent.AddChild(entity);
             entity.Awake();
-            if (DebugLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
+            if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -59,7 +59,7 @@ namespace EGamePlay
             entity.Id = entity.InstanceId;
             parent.AddChild(entity);
             entity.Awake(initData);
-            if (DebugLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
+            if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -128,7 +128,7 @@ namespace EGamePlay
 
         public void Dispose()
         {
-            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
+            if (Entity.EnableLog) Log.Debug($"{GetType().Name}->Dispose");
             if (Children.Count > 0)
             {
                 for (int i = Children.Count - 1; i >= 0; i--)
@@ -174,7 +174,7 @@ namespace EGamePlay
             component.Enable = true;
             this.Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
-            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
+            if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             component.Setup();
 #if !SERVER
             var view = GameObject.AddComponent<ET.ComponentView>();
@@ -192,7 +192,7 @@ namespace EGamePlay
             component.Enable = true;
             this.Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
-            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
+            if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
             component.Setup(initData);
 #if !SERVER
             var view = GameObject.AddComponent<ET.ComponentView>();

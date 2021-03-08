@@ -37,7 +37,7 @@ namespace EGamePlay
 
         public void Dispose()
         {
-            if (Entity.DebugLog) Log.Debug($"{GetType().Name}->Dispose");
+            if (Entity.EnableLog) Log.Debug($"{GetType().Name}->Dispose");
             IsDisposed = true;
         }
 

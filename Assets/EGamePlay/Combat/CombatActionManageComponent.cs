@@ -16,7 +16,7 @@ namespace EGamePlay.Combat
         {
             var action = Entity.CreateWithParent<T>(Entity);
             action.Creator = combatEntity;
-            CombatActions.Add(action);
+            //CombatActions.Add(action);
             return action;
         }
 
