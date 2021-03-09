@@ -44,11 +44,17 @@ public class TurnCombatObject : MonoBehaviour
         AnimationComponent.PlayFade(AnimationComponent.AttackAnimation);
     }
 
-    public void OnPostAttack(CombatAction action)
+    public async void OnPostAttack(CombatAction action)
     {
         transform.DOMove(SeatPoint, CombatEntity.JumpToTime / 1000f).SetEase(Ease.Linear);
+        var modelTrm = transform.GetChild(0);
+        modelTrm.forward = -modelTrm.forward;
+        AnimationComponent.Speed = 2f;
+        AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
+        await TimeHelper.WaitAsync(CombatEntity.JumpToTime);
         AnimationComponent.Speed = 1f;
         AnimationComponent.PlayFade(AnimationComponent.IdleAnimation);
+        modelTrm.forward = -modelTrm.forward;
     }
 
     private void OnReceiveDamage(CombatAction combatAction)

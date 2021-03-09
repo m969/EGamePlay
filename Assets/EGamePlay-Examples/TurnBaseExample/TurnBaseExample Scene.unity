@@ -2773,7 +2773,7 @@ MonoBehaviour:
   ConfigsCollector: {fileID: 8957007620084665262, guid: 65ef3756840fd9c4bafab58c8af09086,
     type: 3}
   ExampleType: 1
-  JumpToTime: 800
+  JumpToTime: 600
 --- !u!1 &2137476047
 GameObject:
   m_ObjectHideFlags: 0
