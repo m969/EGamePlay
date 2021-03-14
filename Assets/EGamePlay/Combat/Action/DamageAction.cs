@@ -73,6 +73,8 @@ namespace EGamePlay.Combat
             //Log.Debug("DamageAction ApplyDamage");
             Target.ReceiveDamage(this);
             PostProcess();
+
+            ApplyAction();
         }
 
         //后置处理

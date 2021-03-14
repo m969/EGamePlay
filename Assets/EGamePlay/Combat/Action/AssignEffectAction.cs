@@ -53,6 +53,8 @@ namespace EGamePlay.Combat
                 Status.TryActivateAbility();
             }
             PostProcess();
+
+            ApplyAction();
         }
 
         //∫Û÷√¥¶¿Ì

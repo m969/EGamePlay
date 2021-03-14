@@ -196,7 +196,12 @@ PrefabInstance:
     - target: {fileID: 7402701643467124463, guid: 05f4fb3e37c0e0944addfdbd803cd7e3,
         type: 3}
       propertyPath: m_Name
-      value: Skill_1005_Execution
+      value: SkillExecution_1005
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402701643467124463, guid: 05f4fb3e37c0e0944addfdbd803cd7e3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f4fb3e37c0e0944addfdbd803cd7e3, type: 3}
@@ -3205,6 +3210,7 @@ MonoBehaviour:
   AttackAnimation: {fileID: 7400000, guid: 7b5b17e2d42e0424f9c36012595dc9b6, type: 3}
   SkillAnimation: {fileID: 7400000, guid: e2538d48c03da46a8b0c3b59d39a4cab, type: 3}
   StunAnimation: {fileID: 0}
+  DamageAnimation: {fileID: 0}
   AnimationClips: []
 --- !u!136 &1791869323
 CapsuleCollider:
@@ -3437,7 +3443,7 @@ PrefabInstance:
     - target: {fileID: 2060818933365669134, guid: a42697d393a95e742a4b5a989ce9dc32,
         type: 3}
       propertyPath: m_Name
-      value: Skill_1002_Execution
+      value: SkillExecution_1002
       objectReference: {fileID: 0}
     - target: {fileID: 2060818933365669134, guid: a42697d393a95e742a4b5a989ce9dc32,
         type: 3}
@@ -3553,7 +3559,7 @@ PrefabInstance:
     - target: {fileID: 6525200920727234715, guid: e91ff95ebfb4f5b4ca96861b6fbb1d10,
         type: 3}
       propertyPath: m_Name
-      value: Skill_1004_Execution
+      value: SkillExecution_1004
       objectReference: {fileID: 0}
     - target: {fileID: 6525200920727234715, guid: e91ff95ebfb4f5b4ca96861b6fbb1d10,
         type: 3}
@@ -3562,6 +3568,85 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e91ff95ebfb4f5b4ca96861b6fbb1d10, type: 3}
+--- !u!1001 &6646795055868038794
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2464292207296912740, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_Name
+      value: SkillExecution_1006
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912741, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_SceneBindings.Array.data[5].value
+      value: 
+      objectReference: {fileID: 1236323488}
+    - target: {fileID: 2464292207296912741, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_SceneBindings.Array.data[6].value
+      value: 
+      objectReference: {fileID: 1236323488}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464292207296912742, guid: 167268e700e34ca4d90c8390872e6d93,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 167268e700e34ca4d90c8390872e6d93, type: 3}
 --- !u!1001 &7402701641942419175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3648,7 +3733,7 @@ PrefabInstance:
     - target: {fileID: 7402701643467124463, guid: f22d3af00c2c6594181152008cd0b3c8,
         type: 3}
       propertyPath: m_Name
-      value: Skill_1001_Execution
+      value: SkillExecution_1001
       objectReference: {fileID: 0}
     - target: {fileID: 7402701643467124463, guid: f22d3af00c2c6594181152008cd0b3c8,
         type: 3}

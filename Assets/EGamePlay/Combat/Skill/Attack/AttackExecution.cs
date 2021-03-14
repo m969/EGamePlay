@@ -29,7 +29,6 @@ namespace EGamePlay.Combat
             action.Target = AttackAction.Target;
             action.DamageSource = DamageSource.Attack;
             action.ApplyDamage();
-            Entity.Destroy(action);
 
             this.EndExecute();
         }

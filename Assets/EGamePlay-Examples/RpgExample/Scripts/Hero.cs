@@ -70,6 +70,10 @@ public sealed class Hero : MonoBehaviour
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1005_火弹");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.R);
+
+        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1006_灵魂镣铐");
+        ability = CombatEntity.AttachSkill<SkillAbility_1006>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.T);
 #endif
         for (int i = InventoryPanelTrm.childCount; i > 0; i--)
         {

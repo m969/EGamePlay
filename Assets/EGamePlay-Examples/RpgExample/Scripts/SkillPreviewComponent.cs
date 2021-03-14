@@ -48,6 +48,12 @@ public class SkillPreviewComponent : EGamePlay.Component
             PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.R];
             EnterPreview();
         }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            UnityEngine.Cursor.visible = false;
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.T];
+            EnterPreview();
+        }
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
         {
             CancelPreview();
@@ -87,6 +93,10 @@ public class SkillPreviewComponent : EGamePlay.Component
         {
             DirectRectSelectManager.Instance.Show(OnInputDirect);
         }
+        if (targetSelectType == SkillTargetSelectType.ConditionSelect)
+        {
+            SelectTargetsWithDistance(5);
+        }
     }
 
     public void CancelPreview()
@@ -104,7 +114,7 @@ public class SkillPreviewComponent : EGamePlay.Component
         OnInputTarget(combatEntity);
     }
 
-    private void OnInputTarget(CombatEntity combatEntity)
+    private void OnInputTarget(CombatEntity targetEntity)
     {
         if (GetEntity<CombatEntity>().CurrentSkillExecution != null)
             return;
@@ -113,9 +123,9 @@ public class SkillPreviewComponent : EGamePlay.Component
         var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
         action.SkillAbility = PreviewingSkill;
         action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
-        action.SkillExecution.InputCombatEntity = combatEntity;
+        action.SkillTargets.Add(targetEntity);
+        action.SkillExecution.InputTarget = targetEntity;
         action.SpellSkill();
-        Entity.Destroy(action);
     }
 
     private void OnInputPoint(Vector3 point)
@@ -129,7 +139,6 @@ public class SkillPreviewComponent : EGamePlay.Component
         action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
         action.SkillExecution.InputPoint = point;
         action.SpellSkill();
-        Entity.Destroy(action);
     }
 
     private void OnInputDirect(float direction, Vector3 point)
@@ -144,6 +153,26 @@ public class SkillPreviewComponent : EGamePlay.Component
         action.SkillExecution.InputPoint = point;
         action.SkillExecution.InputDirection = direction;
         action.SpellSkill();
-        Entity.Destroy(action);
+    }
+
+    private void SelectTargetsWithDistance(float distance)
+    {
+        var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
+        var enemiesRoot = GameObject.Find("Enemies");
+        foreach (Transform item in enemiesRoot.transform)
+        {
+            if (Vector3.Distance(item.position, Hero.Instance.transform.position) < distance)
+            {
+                action.SkillTargets.Add(item.GetComponent<Monster>().CombatEntity);
+            }
+        }
+        if (action.SkillTargets.Count == 0)
+        {
+            action.ApplyAction();
+            return;
+        }
+        action.SkillAbility = PreviewingSkill;
+        action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
+        action.SpellSkill();
     }
 }

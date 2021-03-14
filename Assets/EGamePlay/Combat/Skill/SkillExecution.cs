@@ -32,7 +32,8 @@ namespace EGamePlay.Combat.Skill
     public class SkillExecution : AbilityExecution
     {
         public SkillAbility SkillAbility { get { return AbilityEntity as SkillAbility; } }
-        public CombatEntity InputCombatEntity { get; set; }
+        public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
+        public CombatEntity InputTarget { get; set; }
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
         public GameObject SkillExecutionAsset { get; set; }
@@ -45,7 +46,7 @@ namespace EGamePlay.Combat.Skill
         {
             base.Awake(initData);
 
-            SkillExecutionAsset = Resources.Load<GameObject>($"Skill_{this.SkillAbility.SkillConfig.Id}_Execution");
+            SkillExecutionAsset = Resources.Load<GameObject>($"SkillExecution_{this.SkillAbility.SkillConfig.Id}");
 
             if (SkillExecutionAsset == null)
                 return;
@@ -142,11 +143,11 @@ namespace EGamePlay.Combat.Skill
             {
                 var taskData = new CastTargetFlyProjectileTaskData();
                 taskData.FlyTime = 0.3f;
-                taskData.TargetEntity = InputCombatEntity;
+                taskData.TargetEntity = InputTarget;
                 var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
                 taskData.ProjectilePrefab = prefab.gameObject;
                 var task = Entity.CreateWithParent<CastTargetFlyProjectileTask>(OwnerEntity, taskData);
-                task.OnEnterCallback = () => { AbilityEntity.ApplyAbilityEffectsTo(InputCombatEntity); };
+                task.OnEnterCallback = () => { AbilityEntity.ApplyAbilityEffectsTo(InputTarget); };
                 task.ExecuteTaskAsync().Coroutine();
             }
             if (colliderSpawnEmitter.ColliderType == ColliderType.ForwardFly)
@@ -212,6 +213,7 @@ namespace EGamePlay.Combat.Skill
         {
             GetParent<CombatEntity>().CurrentSkillExecution = null;
             SkillAbility.Spelling = false;
+            SkillTargets.Clear();
             Hero.Instance.AnimationComponent.PlayFade(Hero.Instance.AnimationComponent.IdleAnimation);
             base.EndExecute();
         }

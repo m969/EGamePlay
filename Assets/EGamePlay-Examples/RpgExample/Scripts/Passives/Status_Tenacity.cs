@@ -63,6 +63,5 @@ public class StatusTenacity : StatusAbility
         action.Target = OwnerEntity;
         action.CureValue = OwnerEntity.CurrentHealth.PercentHealth(2);
         action.ApplyCure();
-        Entity.Destroy(action);
     }
 }

@@ -35,16 +35,25 @@ namespace EGamePlay.Combat
             {
                 Hero.Instance.StopMove();
 
-                if (SkillExecution.InputCombatEntity != null)
-                    Hero.Instance.transform.GetChild(0).LookAt(SkillExecution.InputCombatEntity.Position);
-                else if (SkillExecution.InputPoint != null)
-                    Hero.Instance.transform.GetChild(0).LookAt(SkillExecution.InputPoint);
+                if (SkillTargets.Count == 0)
+                {
+                    if (SkillExecution.InputTarget != null)
+                        Hero.Instance.transform.GetChild(0).LookAt(SkillExecution.InputTarget.Position);
+                    else if (SkillExecution.InputPoint != null)
+                        Hero.Instance.transform.GetChild(0).LookAt(SkillExecution.InputPoint);
+                    else
+                        Hero.Instance.transform.GetChild(0).localEulerAngles = new Vector3(0, SkillExecution.InputDirection, 0);
+                }
                 else
-                    Hero.Instance.transform.GetChild(0).localEulerAngles = new Vector3(0, SkillExecution.InputDirection, 0);
+                {
+                    SkillExecution.SkillTargets.AddRange(SkillTargets);
+                }
 
                 SkillExecution.BeginExecute();
             }
             PostProcess();
+
+            ApplyAction();
         }
 
         //后置处理

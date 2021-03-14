@@ -30,6 +30,8 @@ namespace EGamePlay.Combat
             await TimeHelper.WaitAsync(300);
 
             PostProcess();
+
+            ApplyAction();
         }
 
         public void ApplyAttack()

@@ -56,7 +56,6 @@ namespace EGamePlay.Combat.Ability
                     action.DamageEffect = damageEffect;
                     damageEffect.DamageValueProperty = damageEffect.DamageValueFormula;
                     action.ApplyDamage();
-                    Entity.Destroy(action);
                 }
                 else if (effectItem is CureEffect cureEffect)
                 {
@@ -65,7 +64,6 @@ namespace EGamePlay.Combat.Ability
                     action.CureEffect = cureEffect;
                     cureEffect.CureValueProperty = cureEffect.CureValueFormula;
                     action.ApplyCure();
-                    Entity.Destroy(action);
                 }
                 else
                 {
@@ -134,7 +132,6 @@ namespace EGamePlay.Combat.Ability
                         }
                     }
                     action.ApplyAssignEffect();
-                    Entity.Destroy(action);
                 }
             }
             catch (System.Exception e)

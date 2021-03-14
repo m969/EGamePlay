@@ -1,0 +1,223 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
+  m_Name: "Skill_1006_\u7075\u9B42\u9563\u94D0"
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 9383d0f7e8876b645a24428c72a85108, type: 2}
+    - {fileID: 11400000, guid: d5298db8f38dc4b47b0d708b7b8d8218, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: AutoRename
+      Entry: 5
+      Data: true
+    - Name: Effects
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 1|EGamePlay.Combat.DamageEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 6
+      Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: DamageType
+      Entry: 3
+      Data: 1
+    - Name: DamageValueFormula
+      Entry: 1
+      Data: 600
+    - Name: CanCrit
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 6
+      Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: AddStatus
+      Entry: 10
+      Data: 0
+    - Name: Duration
+      Entry: 3
+      Data: 1500
+    - Name: Params
+      Entry: 7
+      Data: 3|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 4|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 6
+      Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: AddStatus
+      Entry: 10
+      Data: 1
+    - Name: Duration
+      Entry: 3
+      Data: 2000
+    - Name: Params
+      Entry: 7
+      Data: 6|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 4
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u53D8\u52A8\u6570\u503C"
+    - Name: $v
+      Entry: 1
+      Data: -60%
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  Id: 1006
+  Name: "\u7075\u9B42\u9563\u94D0"
+  SkillSpellType: 0
+  TargetSelectType: 4
+  AffectAreaType: 0
+  CircleAreaRadius: 0
+  AreaCollider: {fileID: 0}
+  AffectTargetType: 2
+  ColdTime: 3000
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
+  SkillExecutionAsset: {fileID: 7402701643467124463, guid: 05f4fb3e37c0e0944addfdbd803cd7e3,
+    type: 3}
+  SkillAudio: {fileID: 0}
+  SkillDescription: 

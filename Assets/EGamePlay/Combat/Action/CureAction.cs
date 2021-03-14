@@ -29,6 +29,8 @@ namespace EGamePlay.Combat
             PreProcess();
             Target.ReceiveCure(this);
             PostProcess();
+
+            ApplyAction();
         }
 
         //后置处理

@@ -31,7 +31,8 @@ public class JumpToAction : CombatAction
         var attackAction = Creator.CreateAction<AttackAction>();
         attackAction.Target = Target;
         await attackAction.ApplyAttackAsync();
-        Entity.Destroy(attackAction);
+
+        ApplyAction();
     }
 
     //后置处理

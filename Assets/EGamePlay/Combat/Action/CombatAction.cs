@@ -33,7 +33,7 @@ namespace EGamePlay.Combat
 
         public virtual void ApplyAction()
         {
-
+            Entity.Destroy(this);
         }
     }
 }
