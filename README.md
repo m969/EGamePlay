@@ -1,6 +1,6 @@
 # ***EGamePlay***
 
-<img src="EGamePaly_logo.png" width="60%">
+<img src="Readme/EGamePaly_logo.png" width="60%">
 
 ---
 [![Unity Version: 2019.4.2f](https://img.shields.io/badge/Unity-2019.4.2f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
@@ -20,7 +20,20 @@
 - [9、如何实现一个灵活、通用的战斗（技能）系统——Entity-Component模式](https://zhuanlan.zhihu.com/p/343624199)
 ---
 
-<img src="EGamePlay.gif" width="60%">
+## 该项目使用了以下收费插件：
+- [DOTween Pro](https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416) （简单易用强大的动画插件）
+- [Odin Inspector](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041) （编辑器扩展、工作流改善）
+- [Animancer Pro](https://assetstore.unity.com/packages/tools/animation/animancer-pro-116514) （基于Playable的简单强大的Animation解决方案）
+---
+
+## 如何将EGamePlay移植到别的Unity工程
+如果要将EGamePlay移植到自己的Unity工程里，首先要确保以上插件已经在工程中，然后再将以下目录拖过去即可：
+- Assets/Editor
+- Assets/EGamePlay
+
+---
+
+<img src="Readme/EGamePlay.gif" width="60%">
 
 ***
 
@@ -83,14 +96,9 @@ EffectConfigToJson
 ---
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具
 
-![SkillConfigImage.png](ConfigImage.png)
+![SkillConfigImage.png](Readme/ConfigImage.png)
 
-![SkillConfigImage.png](Snipaste_2021-02-13_15-48-57.png)
-
----
-### 该项目使用了以下收费插件：
-- [Odin Inspector](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041) （编辑器扩展、工作流改善）
-- [Animancer Pro](https://assetstore.unity.com/packages/tools/animation/animancer-pro-116514) （基于Playable的简单强大的动画解决方案）
+![SkillConfigImage.png](Readme/Snipaste_2021-02-13_15-48-57.png)
 
 ---
 EGamePlay战斗框架技术讨论交流qq群：763696367
