@@ -525,18 +525,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 128457698}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &128457700 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8438147694525762636, guid: 4e15ca67827440e48bb1b47ae177a2d8,
-    type: 3}
-  m_PrefabInstance: {fileID: 128457698}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c75c0dcb6d50eb64abd727a90406ca2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &165437262
 GameObject:
   m_ObjectHideFlags: 0
@@ -2640,7 +2628,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1127498799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dd8853ef9a548e429180bc370842555, type: 3}
+  m_Script: {fileID: 11500000, guid: 86967feb5140137458d7b6e7a44fb44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AnimationComponent: {fileID: 1127498803}
@@ -2679,10 +2667,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1127498799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfacb20eb5da48c2964f4f446d6700ba, type: 3}
+  m_Script: {fileID: 11500000, guid: d7d5a122ac2081b458ca87d79a1b61a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimancerComponent: {fileID: 128457700}
+  AnimancerComponent: {fileID: 1611236490}
   IdleAnimation: {fileID: 7400000, guid: 0147e212f97e3d449a4b9e4f5d057180, type: 3}
   RunAnimation: {fileID: 7400000, guid: e52be2fa48716194ea1d9d76686005f8, type: 3}
   JumpAnimation: {fileID: 7400002, guid: afd3b10eb71eaf54bb564f6cc703f2cc, type: 3}
@@ -3943,6 +3931,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1577225058}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1611236490 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8438147694525762636, guid: 4e15ca67827440e48bb1b47ae177a2d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 128457698}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c75c0dcb6d50eb64abd727a90406ca2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1622979676
 GameObject:
   m_ObjectHideFlags: 0
@@ -5001,8 +5001,6 @@ MonoBehaviour:
     SerializationNodes: []
   ConfigsCollector: {fileID: 8957007620084665262, guid: 65ef3756840fd9c4bafab58c8af09086,
     type: 3}
-  ExampleType: 0
-  JumpToTime: 0
 --- !u!1 &2048705141
 GameObject:
   m_ObjectHideFlags: 0
@@ -5560,6 +5558,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusSlotsTrm
+      value: 
+      objectReference: {fileID: 444583033}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm

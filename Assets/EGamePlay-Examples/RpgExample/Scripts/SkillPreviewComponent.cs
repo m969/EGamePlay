@@ -5,7 +5,6 @@ using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
 using EGamePlay.Combat.Skill;
-using EGamePlay.Combat.Ability;
 
 /// <summary>
 /// 主动技能的预览组件，预览功能不是所有游戏都会有，moba类游戏一般会有技能预览的功能，部分mmorpg游戏也可能有，回合制、卡牌、arpg动作游戏一般没有

@@ -29,7 +29,9 @@ namespace EGamePlay.Combat.Ability
             ColliderObj.SetActive(true);
             ColliderObj.GetComponent<Collider>().enabled = false;
             ColliderObj.transform.eulerAngles = new Vector3(0, taskData.Direction, 0);
-            ColliderObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => { taskData.OnTriggerEnterCallback?.Invoke(other); };
+            ColliderObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => {
+                taskData.OnTriggerEnterCallback?.Invoke(other);
+            };
             ColliderObj.GetComponent<Collider>().enabled = true;
             await TimerComponent.Instance.WaitAsync(taskData.LifeTime);
             GameObject.Destroy(ColliderObj);

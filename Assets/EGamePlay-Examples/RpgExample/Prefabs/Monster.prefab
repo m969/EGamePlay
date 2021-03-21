@@ -45,20 +45,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 7080712150425627359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34ce91c9156933640bbc4113c42eda28, type: 3}
+  m_Script: {fileID: 11500000, guid: d7d5a122ac2081b458ca87d79a1b61a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimationComponent: {fileID: 7080712150425627330}
-  MoveSpeed: 0.2
-  DamageText: {fileID: 2775314110139268195, guid: fef2d5154c0a41f408062c8936aad86a,
-    type: 3}
-  CureText: {fileID: 2775314110139268195, guid: 225c7ccd75271454fa9d6d87aedd0a78,
-    type: 3}
-  HealthBarImage: {fileID: 7080712152324068131}
-  CanvasTrm: {fileID: 7080712151771937619}
-  StatusSlotsTrm: {fileID: 0}
-  StatusIconPrefab: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
-    type: 3}
+  AnimancerComponent: {fileID: 7080712150620894646}
+  IdleAnimation: {fileID: 7400000, guid: a5ea117a2b123564a83a2dbd1c9ea4cf, type: 3}
+  RunAnimation: {fileID: 7400000, guid: f57ee821486cd7b488adf1063a8dd207, type: 3}
+  JumpAnimation: {fileID: 0}
+  AttackAnimation: {fileID: 7400000, guid: dfc15c633f0d98141920018f79a042a6, type: 3}
+  SkillAnimation: {fileID: 7400000, guid: dfc15c633f0d98141920018f79a042a6, type: 3}
+  StunAnimation: {fileID: 7400000, guid: 6f61bc53c41ba664fa527d3386ecfd1e, type: 3}
+  DamageAnimation: {fileID: 0}
+  AnimationClips: []
 --- !u!136 &7080712150425627328
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -98,16 +96,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 7080712150425627359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfacb20eb5da48c2964f4f446d6700ba, type: 3}
+  m_Script: {fileID: 11500000, guid: c38346b3da6ba5c4988e0649bdc7972b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimancerComponent: {fileID: 7080712150620894646}
-  IdleAnimation: {fileID: 7400000, guid: a5ea117a2b123564a83a2dbd1c9ea4cf, type: 3}
-  RunAnimation: {fileID: 7400000, guid: f57ee821486cd7b488adf1063a8dd207, type: 3}
-  JumpAnimation: {fileID: 0}
-  AttackAnimation: {fileID: 7400000, guid: dfc15c633f0d98141920018f79a042a6, type: 3}
-  SkillAnimation: {fileID: 7400000, guid: dfc15c633f0d98141920018f79a042a6, type: 3}
-  StunAnimation: {fileID: 7400000, guid: 6f61bc53c41ba664fa527d3386ecfd1e, type: 3}
+  AnimationComponent: {fileID: 7080712150425627358}
+  MoveSpeed: 0.2
+  DamageText: {fileID: 2775314110139268195, guid: fef2d5154c0a41f408062c8936aad86a,
+    type: 3}
+  CureText: {fileID: 2775314110139268195, guid: 225c7ccd75271454fa9d6d87aedd0a78,
+    type: 3}
+  HealthBarImage: {fileID: 7080712152324068131}
+  CanvasTrm: {fileID: 7080712151771937619}
+  StatusSlotsTrm: {fileID: 0}
+  StatusIconPrefab: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+    type: 3}
 --- !u!1 &7080712151771937616
 GameObject:
   m_ObjectHideFlags: 0

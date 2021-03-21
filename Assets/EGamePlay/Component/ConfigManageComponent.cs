@@ -9,12 +9,12 @@ namespace EGamePlay.Combat
 {
     public static class ConfigHelper
     {
-        public static T Get<T>(int id) where T : class, ET.IConfig
+        public static T Get<T>(int id) where T : class, IConfig
         {
             return ConfigManageComponent.Instance.Get<T>(id);
         }
 
-        public static Dictionary<int, T> GetAll<T>() where T : class, ET.IConfig
+        public static Dictionary<int, T> GetAll<T>() where T : class, IConfig
         {
             return ConfigManageComponent.Instance.GetAll<T>();
         }
@@ -29,7 +29,7 @@ namespace EGamePlay.Combat
         public override void Setup(object initData)
         {
             Instance = this;
-            var assembly = Assembly.GetAssembly(typeof(ET.TimerComponent));
+            var assembly = Assembly.GetAssembly(typeof(TimerComponent));
             var configsCollector = initData as ReferenceCollector;
             foreach (var item in configsCollector.data)
             {
@@ -44,13 +44,13 @@ namespace EGamePlay.Combat
             }
         }
 
-        public T Get<T>(int id) where T : class, ET.IConfig
+        public T Get<T>(int id) where T : class, IConfig
         {
             var category = TypeConfigCategarys[typeof(T)] as ACategory<T>;
             return category.Get(id);
         }
 
-        public Dictionary<int, T> GetAll<T>() where T : class, ET.IConfig
+        public Dictionary<int, T> GetAll<T>() where T : class, IConfig
         {
             var category = TypeConfigCategarys[typeof(T)] as ACategory<T>;
             return category.GetAll();

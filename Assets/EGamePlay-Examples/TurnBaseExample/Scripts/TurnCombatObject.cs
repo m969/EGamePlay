@@ -11,15 +11,19 @@ public class TurnCombatObject : MonoBehaviour
 {
     public CombatEntity CombatEntity { get; set; } 
     public Vector3 SeatPoint { get; set; }
-    public MonsterObjectData MonsterObjectData { get; set; }
-    public AnimationComponent AnimationComponent => MonsterObjectData.AnimationComponent;
+    public CombatObjectData CombatObjectData { get; set; }
+    public AnimationComponent AnimationComponent => CombatObjectData.AnimationComponent;
 
 
-    public virtual void Setup()
+    public void Setup(int seat)
     {
-        MonsterObjectData = GetComponent<MonsterObjectData>();
+        if (transform.parent.name.Contains("Hero")) CombatEntity = CombatContext.Instance.AddHeroEntity(seat);
+        if (transform.parent.name.Contains("Monster")) CombatEntity = CombatContext.Instance.AddMonsterEntity(seat);
+
+        CombatObjectData = GetComponent<CombatObjectData>();
         SeatPoint = transform.position;
         CombatEntity.ModelObject = gameObject;
+        CombatEntity.ListenActionPoint(ActionPointType.PreJumpTo, OnPreJumpTo);
         CombatEntity.ListenActionPoint(ActionPointType.PreGiveAttack, OnPreAttack);
         CombatEntity.ListenActionPoint(ActionPointType.PostGiveAttack, OnPostAttack);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
@@ -36,6 +40,16 @@ public class TurnCombatObject : MonoBehaviour
     private void Update()
     {
         CombatEntity.Position = transform.position;
+    }
+
+    public void OnPreJumpTo(CombatAction action)
+    {
+        var jumpToAction = action as JumpToAction;
+        var targetPoint = jumpToAction.Target.ModelObject.transform.position + jumpToAction.Target.ModelObject.transform.forward * 2;
+        jumpToAction.Creator.ModelObject.transform.DOMove(targetPoint, jumpToAction.Creator.JumpToTime / 1000f).SetEase(Ease.Linear);
+        var AnimationComponent = jumpToAction.Creator.ModelObject.GetComponent<CombatObjectData>().AnimationComponent;
+        AnimationComponent.Speed = 2f;
+        AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
     }
 
     public void OnPreAttack(CombatAction action)
@@ -63,9 +77,9 @@ public class TurnCombatObject : MonoBehaviour
         PlayThenIdleAsync(AnimationComponent.DamageAnimation).Coroutine();
 
         var damageAction = combatAction as DamageAction;
-        MonsterObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
-        var damageText = GameObject.Instantiate(MonsterObjectData.DamageText);
-        damageText.transform.SetParent(MonsterObjectData.CanvasTrm);
+        CombatObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        var damageText = GameObject.Instantiate(CombatObjectData.DamageText);
+        damageText.transform.SetParent(CombatObjectData.CanvasTrm);
         damageText.transform.localPosition = Vector3.up * 120;
         damageText.transform.localScale = Vector3.one;
         damageText.transform.localEulerAngles = Vector3.zero;
@@ -77,10 +91,10 @@ public class TurnCombatObject : MonoBehaviour
     private void OnReceiveCure(CombatAction combatAction)
     {
         var action = combatAction as CureAction;
-        MonsterObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        CombatObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
 
-        var cureText = GameObject.Instantiate(MonsterObjectData.CureText);
-        cureText.transform.SetParent(MonsterObjectData.CanvasTrm);
+        var cureText = GameObject.Instantiate(CombatObjectData.CureText);
+        cureText.transform.SetParent(CombatObjectData.CanvasTrm);
         cureText.transform.localPosition = Vector3.up * 120;
         cureText.transform.localScale = Vector3.one;
         cureText.transform.localEulerAngles = Vector3.zero;
@@ -97,8 +111,8 @@ public class TurnCombatObject : MonoBehaviour
             var statusConfig = addStatusEffect.AddStatus;
             if (name == "Monster")
             {
-                var obj = GameObject.Instantiate(MonsterObjectData.StatusIconPrefab);
-                obj.transform.SetParent(MonsterObjectData.StatusSlotsTrm);
+                var obj = GameObject.Instantiate(CombatObjectData.StatusIconPrefab);
+                obj.transform.SetParent(CombatObjectData.StatusSlotsTrm);
                 obj.GetComponentInChildren<Text>().text = statusConfig.Name;
                 obj.name = action.Status.Id.ToString();
             }
@@ -106,8 +120,8 @@ public class TurnCombatObject : MonoBehaviour
             if (statusConfig.ID == "Vertigo")
             {
                 CombatEntity.GetComponent<MotionComponent>().Enable = false;
-                MonsterObjectData.AnimationComponent.AnimancerComponent.Play(MonsterObjectData.AnimationComponent.StunAnimation);
-                var vertigoParticle = MonsterObjectData.vertigoParticle;
+                CombatObjectData.AnimationComponent.AnimancerComponent.Play(CombatObjectData.AnimationComponent.StunAnimation);
+                var vertigoParticle = CombatObjectData.vertigoParticle;
                 if (vertigoParticle == null)
                 {
                     vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
@@ -117,7 +131,7 @@ public class TurnCombatObject : MonoBehaviour
             }
             if (statusConfig.ID == "Weak")
             {
-                var weakParticle = MonsterObjectData.weakParticle;
+                var weakParticle = CombatObjectData.weakParticle;
                 if (weakParticle == null)
                 {
                     weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
@@ -132,7 +146,7 @@ public class TurnCombatObject : MonoBehaviour
     {
         if (name == "Monster")
         {
-            var trm = MonsterObjectData.StatusSlotsTrm.Find(eventData.StatusId.ToString());
+            var trm = CombatObjectData.StatusSlotsTrm.Find(eventData.StatusId.ToString());
             if (trm != null)
             {
                 GameObject.Destroy(trm.gameObject);
@@ -143,17 +157,17 @@ public class TurnCombatObject : MonoBehaviour
         if (statusConfig.ID == "Vertigo")
         {
             CombatEntity.GetComponent<MotionComponent>().Enable = true;
-            MonsterObjectData.AnimationComponent.AnimancerComponent.Play(MonsterObjectData.AnimationComponent.IdleAnimation);
-            if (MonsterObjectData.vertigoParticle != null)
+            CombatObjectData.AnimationComponent.AnimancerComponent.Play(CombatObjectData.AnimationComponent.IdleAnimation);
+            if (CombatObjectData.vertigoParticle != null)
             {
-                GameObject.Destroy(MonsterObjectData.vertigoParticle);
+                GameObject.Destroy(CombatObjectData.vertigoParticle);
             }
         }
         if (statusConfig.ID == "Weak")
         {
-            if (MonsterObjectData.weakParticle != null)
+            if (CombatObjectData.weakParticle != null)
             {
-                GameObject.Destroy(MonsterObjectData.weakParticle);
+                GameObject.Destroy(CombatObjectData.weakParticle);
             }
         }
     }

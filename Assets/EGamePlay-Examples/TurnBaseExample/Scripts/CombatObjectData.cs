@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using EGamePlay.Combat;
 
-public class MonsterObjectData : MonoBehaviour
+public class CombatObjectData : MonoBehaviour
 {
     public AnimationComponent AnimationComponent;
     public Text DamageText;

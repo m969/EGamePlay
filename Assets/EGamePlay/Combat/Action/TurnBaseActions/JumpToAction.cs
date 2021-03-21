@@ -18,12 +18,6 @@ public class JumpToAction : CombatAction
     {
         PreProcess();
 
-        var targetPoint = Target.ModelObject.transform.position + Target.ModelObject.transform.forward * 2;
-        Creator.ModelObject.transform.DOMove(targetPoint, Creator.JumpToTime / 1000f).SetEase(Ease.Linear);
-        var AnimationComponent = Creator.ModelObject.GetComponent<MonsterObjectData>().AnimationComponent;
-        AnimationComponent.Speed = 2f;
-        AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
-
         await TimeHelper.WaitAsync(Creator.JumpToTime);
 
         PostProcess();

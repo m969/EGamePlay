@@ -21,8 +21,6 @@ namespace EGamePlay.Combat
         public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
         public Dictionary<string, List<StatusAbility>> TypeIdStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
         public Dictionary<Type, List<StatusAbility>> TypeStatuses { get; set; } = new Dictionary<Type, List<StatusAbility>>();
-        public Dictionary<long, ItemData> ItemDatas { get; set; } = new Dictionary<long, ItemData>();
-        public Dictionary<long, FloatModifier> EquipmentNumerics { get; set; } = new Dictionary<long, FloatModifier>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public ActionControlType ActionControlType { get; set; }
@@ -147,25 +145,6 @@ namespace EGamePlay.Combat
         public StatusAbility GetStatus(string statusTypeId)
         {
             return TypeIdStatuses[statusTypeId][0];
-        }
-
-        public void AddItemData(ItemData itemData)
-        {
-            ItemDatas.Add(itemData.Id, itemData);
-            var equipmentConfig = ConfigHelper.Get<ET.EquipmentConfig>(itemData.ConfigId);
-            var modifier = new FloatModifier();
-            modifier.Value = equipmentConfig.Value;
-            GetComponent<AttributeComponent>().GetNumeric(equipmentConfig.Attribute).AddAddModifier(modifier);
-            EquipmentNumerics.Add(itemData.Id, modifier);
-        }
-
-        public void RemoveItemData(long Id)
-        {
-            var itemData = ItemDatas[Id];
-            var equipmentConfig = ConfigHelper.Get<ET.EquipmentConfig>(itemData.ConfigId);
-            var modifier = EquipmentNumerics[itemData.Id];
-            GetComponent<AttributeComponent>().GetNumeric(equipmentConfig.Attribute).RemoveAddModifier(modifier);
-            ItemDatas.Remove(Id);
         }
 
         #region 回合制战斗

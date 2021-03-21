@@ -41,6 +41,9 @@ public sealed class Hero : MonoBehaviour
         CombatEntity = Entity.CreateWithParent<CombatEntity>(CombatContext.Instance);
         CombatEntity.AddComponent<SkillPreviewComponent>();
         //CombatEntity.GetComponent<MotionComponent>().Enable = false;
+        CombatEntity.ListenActionPoint(ActionPointType.PreSpell, OnPreSpell);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSpell, OnPostSpell);
+        CombatEntity.Subscribe<AnimationClip>(OnPlayAnimation);
 
 #if EGAMEPLAY_EXCEL
         var config = ConfigHelper.Get<SkillConfig>(1001);
@@ -108,10 +111,10 @@ public sealed class Hero : MonoBehaviour
                 var itemData = Entity.CreateWithParent<ItemData>(CombatEntity);
                 equipObj.name = $"{itemData.Id}";
                 itemData.ConfigId = item.Value.Id;
-                CombatEntity.AddItemData(itemData);
+                CombatEntity.GetComponent<EquipmentComponent>().AddItemData(itemData);
                 equipObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
                     var id = long.Parse(equipObj.name);
-                    CombatEntity.RemoveItemData(id);
+                    CombatEntity.GetComponent<EquipmentComponent>().RemoveItemData(id);
                     GameObject.Destroy(equipObj);
                 });
             });
@@ -137,10 +140,47 @@ public sealed class Hero : MonoBehaviour
                 StopMove();
                 MoveTweener = transform.DOMove(point, time).SetEase(Ease.Linear).OnComplete(()=>{ AnimationComponent.PlayFade(AnimationComponent.IdleAnimation); });
                 LookAtTweener = transform.GetChild(0).DOLookAt(point, 0.2f);
-                //AnimancerComponent.Play(RunAnimation, 0.25f);
                 AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
             }
         }
+    }
+
+    private void OnPreSpell(CombatAction combatAction)
+    {
+        var spellAction = combatAction as SpellAction;
+        if (spellAction.SkillExecution != null)
+        {
+            StopMove();
+
+            if (spellAction.SkillAbility is SkillAbility_1006)
+            {
+                return;
+            }
+
+            if (spellAction.SkillExecution.InputTarget != null)
+                transform.GetChild(0).LookAt(spellAction.SkillExecution.InputTarget.Position);
+            else if (spellAction.SkillExecution.InputPoint != null)
+                transform.GetChild(0).LookAt(spellAction.SkillExecution.InputPoint);
+            else
+                transform.GetChild(0).localEulerAngles = new Vector3(0, spellAction.SkillExecution.InputDirection, 0);
+
+            CombatEntity.Position = transform.position;
+            CombatEntity.Direction = transform.GetChild(0).localEulerAngles.y;
+        }
+    }
+
+    private void OnPostSpell(CombatAction combatAction)
+    {
+        var spellAction = combatAction as SpellAction;
+        if (spellAction.SkillExecution != null)
+        {
+            AnimationComponent.PlayFade(AnimationComponent.IdleAnimation);
+        }
+    }
+
+    private void OnPlayAnimation(AnimationClip animationClip)
+    {
+        AnimationComponent.PlayFade(animationClip);
     }
 
     public void StopMove()

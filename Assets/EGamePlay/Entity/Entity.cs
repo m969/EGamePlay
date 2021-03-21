@@ -282,6 +282,17 @@ namespace EGamePlay
             return TEvent;
         }
 
+        public TEvent Publish<TEvent, TParam>(TEvent evnt, TParam param) where TEvent : class
+        {
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent == null)
+            {
+                return evnt;
+            }
+            eventComponent.Publish(evnt);
+            return evnt;
+        }
+
         public EventSubscribe<T> Subscribe<T>(Action<T> action) where T : class
         {
             var eventComponent = GetComponent<EventComponent>();
@@ -299,6 +310,11 @@ namespace EGamePlay
             {
                 eventComponent.UnSubscribe(action);
             }
+        }
+
+        public void Fire(string signal)
+        {
+
         }
     }
 }

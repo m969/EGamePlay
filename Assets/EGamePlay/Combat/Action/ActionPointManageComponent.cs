@@ -60,6 +60,11 @@ namespace EGamePlay.Combat
         [LabelText("起跳后")]
         PostJumpTo = 1 << 16,
 
+        [LabelText("施法前")]
+        PreSpell = 1 << 17,
+        [LabelText("施法后")]
+        PostSpell = 1 << 18,
+
         Max,
     }
 

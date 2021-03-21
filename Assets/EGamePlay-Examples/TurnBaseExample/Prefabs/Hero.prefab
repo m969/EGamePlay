@@ -75,7 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7080712150425627359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfacb20eb5da48c2964f4f446d6700ba, type: 3}
+  m_Script: {fileID: 11500000, guid: d7d5a122ac2081b458ca87d79a1b61a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AnimancerComponent: {fileID: 7080712150620894646}

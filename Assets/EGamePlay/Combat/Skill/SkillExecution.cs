@@ -116,7 +116,7 @@ namespace EGamePlay.Combat.Skill
                     if (nowSeconds >= item.StartTime)
                     {
                         item.HasStart = true;
-                        Hero.Instance.AnimationComponent.PlayFade(item.AnimationClip);
+                        OwnerEntity.Publish(item.AnimationClip);
                     }
                 }
                 else
@@ -159,7 +159,8 @@ namespace EGamePlay.Combat.Skill
                 taskData.DirectAngle = InputDirection;
                 var task = Entity.CreateWithParent<CastDirectFlyProjectileTask>(OwnerEntity, taskData);
                 task.OnCollisionCallback = (other) => {
-                    AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity); 
+                    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
+                    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
                     GameObject.Destroy(task.Projectile);
                     Entity.Destroy(task);
                 };
@@ -173,8 +174,9 @@ namespace EGamePlay.Combat.Skill
                 var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
                 taskData.ColliderPrefab = prefab.gameObject;
                 taskData.LifeTime = (int)(colliderSpawnEmitter.ExistTime * 1000);
-                taskData.OnTriggerEnterCallback = (other) => { 
-                    AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity); 
+                taskData.OnTriggerEnterCallback = (other) => {
+                    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
+                    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
                 };
                 var task = Entity.CreateWithParent<CreateColliderTask>(this, taskData);
                 task.ExecuteTaskAsync().Coroutine();
@@ -185,10 +187,12 @@ namespace EGamePlay.Combat.Skill
                 taskData.Position = OwnerEntity.Position;
                 taskData.Direction = OwnerEntity.Direction;
                 var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
-                //var prefab = GetChildByName(SkillExecutionAsset.transform, colliderSpawnEmitter.ColliderName);
                 taskData.ColliderPrefab = prefab.gameObject;
                 taskData.LifeTime = (int)(colliderSpawnEmitter.ExistTime * 1000);
-                taskData.OnTriggerEnterCallback = (other) => { AbilityEntity.ApplyAbilityEffectsTo(other.GetComponent<Monster>().CombatEntity); };
+                taskData.OnTriggerEnterCallback = (other) => {
+                    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
+                    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
+                };
                 var task = Entity.CreateWithParent<CreateColliderTask>(this, taskData);
                 task.ExecuteTaskAsync().Coroutine();
             }
@@ -204,7 +208,7 @@ namespace EGamePlay.Combat.Skill
             var timelineAsset = SkillExecutionAsset.GetComponent<PlayableDirector>().playableAsset as TimelineAsset;
             if (timelineAsset == null)
                 return;
-            var skillExecutionObj = GameObject.Instantiate(SkillExecutionAsset, Hero.Instance.transform.position, Hero.Instance.transform.GetChild(0).rotation);
+            var skillExecutionObj = GameObject.Instantiate(SkillExecutionAsset, OwnerEntity.Position, Quaternion.Euler(0, OwnerEntity.Direction, 0));
             GameObject.Destroy(skillExecutionObj, (float)timelineAsset.duration);
             base.BeginExecute();
         }
@@ -214,7 +218,6 @@ namespace EGamePlay.Combat.Skill
             GetParent<CombatEntity>().CurrentSkillExecution = null;
             SkillAbility.Spelling = false;
             SkillTargets.Clear();
-            Hero.Instance.AnimationComponent.PlayFade(Hero.Instance.AnimationComponent.IdleAnimation);
             base.EndExecute();
         }
     }
