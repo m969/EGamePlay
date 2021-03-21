@@ -98,7 +98,10 @@ EffectConfigToJson
 
 ![SkillConfigImage.png](Readme/ConfigImage.png)
 
-![SkillConfigImage.png](Readme/Snipaste_2021-02-13_15-48-57.png)
+---
+## 技能ScriptableObject配置和Excel配置流程切换
+![SkillConfigImage.png](Readme/Tools_Excel.png)
+![SkillConfigImage.png](Readme/Excel.png)
 
 ---
 EGamePlay战斗框架技术讨论交流qq群：763696367
