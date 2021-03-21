@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using DG.Tweening;
 using ET;
 
 namespace EGamePlay.Combat.Ability
