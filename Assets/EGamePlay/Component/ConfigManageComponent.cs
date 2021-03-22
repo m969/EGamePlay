@@ -31,6 +31,10 @@ namespace EGamePlay.Combat
             Instance = this;
             var assembly = Assembly.GetAssembly(typeof(TimerComponent));
             var configsCollector = initData as ReferenceCollector;
+            if (configsCollector == null)
+            {
+                return;
+            }
             foreach (var item in configsCollector.data)
             {
                 var configTypeName = $"ET.{item.gameObject.name}";

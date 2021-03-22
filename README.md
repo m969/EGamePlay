@@ -27,9 +27,11 @@
 ---
 
 ## 如何将EGamePlay移植到别的Unity工程
-如果要将EGamePlay移植到自己的Unity工程里，首先要确保以上插件已经在工程中，然后再将以下目录拖过去即可：
-- Assets/Editor
-- Assets/EGamePlay
+如果要将EGamePlay移植到自己的Unity工程里，首先要确保Odin Inspector插件已经在工程中，然后再将以下目录拖过去即可：
+- EGamePlay/Assets/Editor
+- EGamePlay/Assets/EGamePlay
+
+如果要使用Excel配置流程的话，还需要将 EGamePlay/Excel 目录复制过去，再生成配置
 
 ---
 
@@ -99,7 +101,7 @@ EffectConfigToJson
 ![SkillConfigImage.png](Readme/ConfigImage.png)
 
 ---
-## 技能ScriptableObject配置和Excel配置流程切换
+## 技能ScriptableObject配置和Excel配置流程切换命令
 ![SkillConfigImage.png](Readme/Tools_Excel.png)
 ![SkillConfigImage.png](Readme/Excel.png)
 

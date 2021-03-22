@@ -58,7 +58,7 @@ namespace ET
         {
             try
             {
-                const string clientPath = "./Assets/Bundles/Config";
+                const string clientPath = "./Assets/EGamePlay/Config/Texts";
 
                 if (GUILayout.Button("导出客户端配置"))
                 {
@@ -66,7 +66,7 @@ namespace ET
                     Log.Debug($"{ExcelPath}");
                     ExportAll(clientPath);
 
-                    ExportAllClass(@"./Assets/Model/Config", "namespace ET\n{\n");//using MongoDB.Bson.Serialization.Attributes;\n\n
+                    ExportAllClass(@"./Assets/EGamePlay/Config/Scripts", "namespace ET\n{\n");//using MongoDB.Bson.Serialization.Attributes;\n\n
 
                     Log.Info($"导出客户端配置完成!");
                 }
