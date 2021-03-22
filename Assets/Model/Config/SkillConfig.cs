@@ -1,5 +1,3 @@
-using MongoDB.Bson.Serialization.Attributes;
-
 namespace ET
 {
 	[Config]
@@ -14,7 +12,6 @@ namespace ET
 
 	public partial class SkillConfig: IConfig
 	{
-		[BsonId]
 		public int Id { get; set; }
 		public string Name;
 		public string Type;

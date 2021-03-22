@@ -66,7 +66,7 @@ namespace ET
                     Log.Debug($"{ExcelPath}");
                     ExportAll(clientPath);
 
-                    ExportAllClass(@"./Assets/Model/Config", "using MongoDB.Bson.Serialization.Attributes;\n\nnamespace ET\n{\n");
+                    ExportAllClass(@"./Assets/Model/Config", "namespace ET\n{\n");//using MongoDB.Bson.Serialization.Attributes;\n\n
 
                     Log.Info($"导出客户端配置完成!");
                 }
@@ -139,7 +139,7 @@ namespace ET
 
                 sb.Append($"\tpublic partial class {protoName}: IConfig\n");
                 sb.Append("\t{\n");
-                sb.Append("\t\t[BsonId]\n");
+                //sb.Append("\t\t[BsonId]\n");
                 sb.Append("\t\tpublic int Id { get; set; }\n");
 
                 int cellCount = sheet.GetRow(3).LastCellNum;
