@@ -25,7 +25,7 @@ public sealed class Monster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CombatEntity = CombatContext.Instance.AddChild<CombatEntity>();
+        CombatEntity = CombatContext.Instance.CreateChild<CombatEntity>();
         CombatContext.Instance.GameObject2Entitys.Add(gameObject, CombatEntity);
         CombatEntity.Position = transform.position;
         CombatEntity.AddComponent<MotionComponent>();

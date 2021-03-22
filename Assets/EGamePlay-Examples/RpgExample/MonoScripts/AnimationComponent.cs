@@ -14,6 +14,7 @@ public class AnimationComponent : MonoBehaviour
     public AnimationClip SkillAnimation;
     public AnimationClip StunAnimation;
     public AnimationClip DamageAnimation;
+    public AnimationClip DeadAnimation;
     public AnimationClip[] AnimationClips;
     public float Speed { get; set; } = 1f;
     

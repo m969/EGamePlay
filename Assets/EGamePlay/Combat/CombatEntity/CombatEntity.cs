@@ -40,7 +40,7 @@ namespace EGamePlay.Combat
         /// <summary>
         /// 创建行动
         /// </summary>
-        public T CreateAction<T>() where T : CombatAction, new()
+        public T CreateAction<T>() where T : CombatAction
         {
             var action = Parent.GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
             return action;
@@ -87,25 +87,30 @@ namespace EGamePlay.Combat
             CurrentHealth.Add(cureAction.CureValue);
         }
 
+        public bool CheckDead()
+        {
+            return CurrentHealth.Value <= 0;
+        }
+
         /// <summary>
         /// 挂载能力，技能、被动、buff都通过这个接口挂载
         /// </summary>
         /// <param name="configObject"></param>
-        private T AttachAbility<T>(object configObject) where T : AbilityEntity, new()
+        private T AttachAbility<T>(object configObject) where T : AbilityEntity
         {
             var ability = Entity.CreateWithParent<T>(this, configObject);
             ability.OnSetParent(this);
             return ability;
         }
 
-        public T AttachSkill<T>(object configObject) where T : SkillAbility, new()
+        public T AttachSkill<T>(object configObject) where T : SkillAbility
         {
             var skill = AttachAbility<T>(configObject);
             NameSkills.Add(skill.SkillConfig.Name, skill);
             return skill;
         }
 
-        public T AttachStatus<T>(object configObject) where T : StatusAbility, new()
+        public T AttachStatus<T>(object configObject) where T : StatusAbility
         {
             var status = AttachAbility<T>(configObject);
             if (!TypeIdStatuses.ContainsKey(status.StatusConfigObject.ID))

@@ -86,6 +86,7 @@ MonoBehaviour:
   SkillAnimation: {fileID: 7400000, guid: dfc15c633f0d98141920018f79a042a6, type: 3}
   StunAnimation: {fileID: 7400000, guid: 6f61bc53c41ba664fa527d3386ecfd1e, type: 3}
   DamageAnimation: {fileID: 7400000, guid: 81d4af5a5190e3d4d88c97161d881bf3, type: 3}
+  DeadAnimation: {fileID: 7400000, guid: a749f4485b342b7469956010abf2ab25, type: 3}
   AnimationClips: []
 --- !u!114 &1167542726
 MonoBehaviour:

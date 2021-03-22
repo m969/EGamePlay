@@ -41,6 +41,7 @@ public class SkillPreviewComponent : EGamePlay.Component
             PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.E];
             EnterPreview();
         }
+#if !EGAMEPLAY_EXCEL
         if (Input.GetKeyDown(KeyCode.R))
         {
             UnityEngine.Cursor.visible = false;
@@ -53,6 +54,7 @@ public class SkillPreviewComponent : EGamePlay.Component
             PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.T];
             EnterPreview();
         }
+#endif
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
         {
             CancelPreview();

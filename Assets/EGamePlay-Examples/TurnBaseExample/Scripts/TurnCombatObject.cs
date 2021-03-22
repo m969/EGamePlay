@@ -19,6 +19,8 @@ public class TurnCombatObject : MonoBehaviour
     {
         if (transform.parent.name.Contains("Hero")) CombatEntity = CombatContext.Instance.AddHeroEntity(seat);
         if (transform.parent.name.Contains("Monster")) CombatEntity = CombatContext.Instance.AddMonsterEntity(seat);
+        CombatEntity.CurrentHealth.SetMaxValue(999);
+        CombatEntity.CurrentHealth.Reset();
 
         CombatObjectData = GetComponent<CombatObjectData>();
         SeatPoint = transform.position;
@@ -29,7 +31,8 @@ public class TurnCombatObject : MonoBehaviour
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
-        CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus).AsCoroutine();
+        CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
+        CombatEntity.Subscribe<DeadEvent>(OnDead);
 
         //var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
         //var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
@@ -74,7 +77,10 @@ public class TurnCombatObject : MonoBehaviour
     private void OnReceiveDamage(CombatAction combatAction)
     {
         AnimationComponent.Speed = 1f;
-        PlayThenIdleAsync(AnimationComponent.DamageAnimation).Coroutine();
+        if (CombatEntity.CheckDead() == false)
+        {
+            PlayThenIdleAsync(AnimationComponent.DamageAnimation).Coroutine();
+        }
 
         var damageAction = combatAction as DamageAction;
         CombatObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -86,6 +92,13 @@ public class TurnCombatObject : MonoBehaviour
         damageText.text = $"-{damageAction.DamageValue.ToString()}";
         damageText.GetComponent<DOTweenAnimation>().DORestart();
         GameObject.Destroy(damageText.gameObject, 0.5f);
+    }
+
+    private async void OnDead(DeadEvent deadEvent)
+    {
+        AnimationComponent.PlayFade(AnimationComponent.DeadAnimation);
+        await TimeHelper.WaitAsync(2000);
+        GameObject.Destroy(gameObject);
     }
 
     private void OnReceiveCure(CombatAction combatAction)

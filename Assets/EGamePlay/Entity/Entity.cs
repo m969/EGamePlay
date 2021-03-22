@@ -11,21 +11,34 @@ namespace EGamePlay
         public static MasterEntity Master => MasterEntity.Instance;
         public static bool EnableLog { get; set; } = false;
 
-        private static T New<T>() where T : Entity, new()
+        //private static T New<T>() where T : Entity
+        //{
+        //    var entityType = typeof(T);
+        //    var entity = Activator.CreateInstance<T>();
+        //    entity.InstanceId = IdFactory.NewInstanceId();
+        //    if (!Master.Entities.ContainsKey(entityType))
+        //    {
+        //        Master.Entities.Add(entityType, new List<Entity>());
+        //    }
+        //    Master.Entities[entityType].Add(entity);
+        //    return entity;
+        //}
+
+        private static Entity NewEntity(Type entityType)
         {
-            var entity = new T();
+            var entity = Activator.CreateInstance(entityType) as Entity;
             entity.InstanceId = IdFactory.NewInstanceId();
-            if (!Master.Entities.ContainsKey(typeof(T)))
+            if (!Master.Entities.ContainsKey(entityType))
             {
-                Master.Entities.Add(typeof(T), new List<Entity>());
+                Master.Entities.Add(entityType, new List<Entity>());
             }
-            Master.Entities[typeof(T)].Add(entity);
+            Master.Entities[entityType].Add(entity);
             return entity;
         }
 
-        public static T Create<T>() where T : Entity, new()
+        public static T Create<T>() where T : Entity
         {
-            var entity = New<T>();
+            var entity = NewEntity(typeof(T)) as T;
             entity.Id = entity.InstanceId;
             Master.AddChild(entity);
             entity.Awake();
@@ -33,9 +46,9 @@ namespace EGamePlay
             return entity;
         }
 
-        public static T Create<T>(object initData) where T : Entity, new()
+        public static T Create<T>(object initData) where T : Entity
         {
-            var entity = New<T>();
+            var entity = NewEntity(typeof(T)) as T;
             entity.Id = entity.InstanceId;
             Master.AddChild(entity);
             entity.Awake(initData);
@@ -43,9 +56,9 @@ namespace EGamePlay
             return entity;
         }
 
-        public static T CreateWithParent<T>(Entity parent) where T : Entity, new()
+        public static T CreateWithParent<T>(Entity parent) where T : Entity
         {
-            var entity = New<T>();
+            var entity = NewEntity(typeof(T)) as T;
             entity.Id = entity.InstanceId;
             parent.AddChild(entity);
             entity.Awake();
@@ -53,13 +66,53 @@ namespace EGamePlay
             return entity;
         }
 
-        public static T CreateWithParent<T>(Entity parent, object initData) where T : Entity, new()
+        public static T CreateWithParent<T>(Entity parent, object initData) where T : Entity
         {
-            var entity = New<T>();
+            var entity = NewEntity(typeof(T)) as T;
             entity.Id = entity.InstanceId;
             parent.AddChild(entity);
             entity.Awake(initData);
             if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
+            return entity;
+        }
+
+        public static Entity Create(Type entityType)
+        {
+            var entity = NewEntity(entityType);
+            entity.Id = entity.InstanceId;
+            Master.AddChild(entity);
+            entity.Awake();
+            if (EnableLog) Log.Debug($"EntityFactory->Create, {entityType.Name}={entity.InstanceId}");
+            return entity;
+        }
+
+        public static Entity Create(Type entityType, object initData)
+        {
+            var entity = NewEntity(entityType);
+            entity.Id = entity.InstanceId;
+            Master.AddChild(entity);
+            entity.Awake(initData);
+            if (EnableLog) Log.Debug($"EntityFactory->Create, {entityType.Name}={entity.InstanceId}, {initData}");
+            return entity;
+        }
+
+        public static Entity CreateWithParent(Type entityType, Entity parent)
+        {
+            var entity = NewEntity(entityType);
+            entity.Id = entity.InstanceId;
+            parent.AddChild(entity);
+            entity.Awake();
+            if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.InstanceId}");
+            return entity;
+        }
+
+        public static Entity CreateWithParent(Type entityType, Entity parent, object initData)
+        {
+            var entity = NewEntity(entityType);
+            entity.Id = entity.InstanceId;
+            parent.AddChild(entity);
+            entity.Awake(initData);
+            if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -69,6 +122,7 @@ namespace EGamePlay
             entity.Dispose();
         }
     }
+
     public abstract partial class Entity : IDisposable
     {
 #if !SERVER
@@ -166,9 +220,9 @@ namespace EGamePlay
             return parent as T;
         }
 
-        public T AddComponent<T>() where T : Component, new()
+        public T AddComponent<T>() where T : Component
         {
-            var component = new T();
+            var component = Activator.CreateInstance<T>();
             component.Entity = this;
             component.IsDisposed = false;
             component.Enable = true;
@@ -184,9 +238,9 @@ namespace EGamePlay
             return component;
         }
 
-        public T AddComponent<T>(object initData) where T : Component, new()
+        public T AddComponent<T>(object initData) where T : Component
         {
-            var component = new T();
+            var component = Activator.CreateInstance<T>();
             component.Entity = this;
             component.IsDisposed = false;
             component.Enable = true;
@@ -251,12 +305,17 @@ namespace EGamePlay
 #endif
         }
 
-        public T AddChild<T>() where T : Entity, new()
+        public Entity CreateChild(Type entityType)
+        {
+            return CreateWithParent(entityType, this);
+        }
+
+        public T CreateChild<T>() where T : Entity
         {
             return CreateWithParent<T>(this);
         }
 
-        public T AddChild<T>(object initData) where T : Entity, new()
+        public T CreateChild<T>(object initData) where T : Entity
         {
             return CreateWithParent<T>(this, initData);
         }

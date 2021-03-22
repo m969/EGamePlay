@@ -16,7 +16,7 @@ public class SkillAbility_1006 : SkillAbility
 {
     public override AbilityExecution CreateExecution()
     {
-        var abilityExecution = Parent.AddChild<SkillExecution_1006>(this);
+        var abilityExecution = Parent.CreateChild<SkillExecution_1006>(this);
         abilityExecution.AddComponent<UpdateComponent>();
         return abilityExecution;
     }
@@ -40,7 +40,9 @@ public class SkillExecution_1006 : SkillExecution
         }
         foreach (var item in EntityChannels)
         {
+#if !EGAMEPLAY_EXCEL
             SkillAbility.ApplyEffectTo(item.Key, SkillAbility.SkillConfig.Effects[2]);
+#endif
         }
     }
 
@@ -69,11 +71,13 @@ public class SkillExecution_1006 : SkillExecution
 
     public void OnLock()
     {
+#if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
             SkillAbility.ApplyEffectTo(item.Key, SkillAbility.SkillConfig.Effects[0]);
             SkillAbility.ApplyEffectTo(item.Key, SkillAbility.SkillConfig.Effects[1]);
         }
+#endif
         EndExecute();
     }
 

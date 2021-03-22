@@ -191,7 +191,7 @@ namespace ET
             }
             else
             {
-                this.md5Info = MongoHelper.FromJson<ExcelMD5Info>(File.ReadAllText(md5File));
+                this.md5Info = JsonHelper.FromJson<ExcelMD5Info>(File.ReadAllText(md5File));
             }
 
             foreach (string filePath in Directory.GetFiles(ExcelPath))
@@ -218,7 +218,7 @@ namespace ET
                 Export(filePath, exportDir);
             }
 
-            File.WriteAllText(md5File, MongoHelper.ToJson(this.md5Info));
+            File.WriteAllText(md5File, JsonHelper.ToJson(this.md5Info));
 
             Log.Info("所有表导表完成");
             AssetDatabase.Refresh();

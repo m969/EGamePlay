@@ -70,9 +70,16 @@ namespace EGamePlay.Combat
         public void ApplyDamage()
         {
             PreProcess();
-            //Log.Debug("DamageAction ApplyDamage");
+
             Target.ReceiveDamage(this);
+
             PostProcess();
+
+            if (Target.CheckDead())
+            {
+                Target.Publish(new DeadEvent());
+                CombatContext.Instance.OnCombatEntityDead(Target);
+            }
 
             ApplyAction();
         }
@@ -85,6 +92,11 @@ namespace EGamePlay.Combat
             //触发 承受伤害后 行动点
             Target.TriggerActionPoint(ActionPointType.PostReceiveDamage, this);
         }
+    }
+
+    public class DeadEvent
+    {
+
     }
 
     public enum DamageSource

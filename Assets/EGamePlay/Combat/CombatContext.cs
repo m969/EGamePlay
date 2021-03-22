@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameUtils;
 using ET;
+using System.Linq;
 
 namespace EGamePlay.Combat
 {
@@ -25,7 +26,7 @@ namespace EGamePlay.Combat
         }
 
         #region 回合制战斗
-        public GameTimer TurnRoundTimer { get; set; } = new GameTimer(2f);
+        //public GameTimer TurnRoundTimer { get; set; } = new GameTimer(2f);
         public Dictionary<int, CombatEntity> HeroEntities { get; set; } = new Dictionary<int, CombatEntity>();
         public Dictionary<int, CombatEntity> MonsterEntities { get; set; } = new Dictionary<int, CombatEntity>();
         public List<TurnAction> TurnActions { get; set; } = new List<TurnAction>();
@@ -33,15 +34,15 @@ namespace EGamePlay.Combat
 
         public override void Update()
         {
-            if (TurnRoundTimer.IsRunning)
-            {
-                TurnRoundTimer.UpdateAsFinish(Time.deltaTime, StartCombat);
-            }
+            //if (TurnRoundTimer.IsRunning)
+            //{
+            //    TurnRoundTimer.UpdateAsFinish(Time.deltaTime, StartCombat);
+            //}
         }
 
         public CombatEntity AddHeroEntity(int seat)
         {
-            var entity = AddChild<CombatEntity>();
+            var entity = CreateChild<CombatEntity>();
             entity.IsHero = true;
             HeroEntities.Add(seat, entity);
             entity.SeatNumber = seat;
@@ -50,7 +51,7 @@ namespace EGamePlay.Combat
 
         public CombatEntity AddMonsterEntity(int seat)
         {
-            var entity = AddChild<CombatEntity>();
+            var entity = CreateChild<CombatEntity>();
             entity.IsHero = false;
             MonsterEntities.Add(seat, entity);
             entity.SeatNumber = seat;
@@ -67,14 +68,32 @@ namespace EGamePlay.Combat
             return MonsterEntities[seat];
         }
 
+        public void OnCombatEntityDead(CombatEntity combatEntity)
+        {
+            if (combatEntity.IsHero) HeroEntities.Remove(combatEntity.SeatNumber);
+            else MonsterEntities.Remove(combatEntity.SeatNumber);
+        }
+
         public async void StartCombat()
         {
             RefreshActions();
             foreach (var item in TurnActions)
             {
+                if (item.Creator.CheckDead() || item.Target.CheckDead())
+                {
+                    continue;
+                }
                 await item.ApplyTurn();
             }
             await TimerComponent.Instance.WaitAsync(1000);
+            if (HeroEntities.Count == 0 || MonsterEntities.Count == 0)
+            {
+                HeroEntities.Clear();
+                MonsterEntities.Clear();
+                await TimerComponent.Instance.WaitAsync(2000);
+                this.Publish(new CombatEndEvent());
+                return;
+            }
             StartCombat();
         }
 
@@ -89,16 +108,35 @@ namespace EGamePlay.Combat
             foreach (var item in HeroEntities)
             {
                 var turnAction = item.Value.CreateAction<TurnAction>();
-                turnAction.Target = MonsterEntities[item.Key];
+                if (MonsterEntities.ContainsKey(item.Key))
+                {
+                    turnAction.Target = MonsterEntities[item.Key];
+                }
+                else
+                {
+                    turnAction.Target = MonsterEntities.Values.ToArray().First();
+                }
                 TurnActions.Add(turnAction);
             }
             foreach (var item in MonsterEntities)
             {
                 var turnAction = item.Value.CreateAction<TurnAction>();
-                turnAction.Target = HeroEntities[item.Key];
+                if (HeroEntities.ContainsKey(item.Key))
+                {
+                    turnAction.Target = HeroEntities[item.Key];
+                }
+                else
+                {
+                    turnAction.Target = HeroEntities.Values.ToArray().First();
+                }
                 TurnActions.Add(turnAction);
             }
         }
         #endregion
+    }
+
+    public class CombatEndEvent
+    {
+
     }
 }

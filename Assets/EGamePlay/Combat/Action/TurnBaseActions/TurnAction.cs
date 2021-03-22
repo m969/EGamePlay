@@ -24,7 +24,7 @@ public class TurnAction : CombatAction
         PreProcess();
 
         var jumpToAction = Creator.CreateAction<JumpToAction>();
-        jumpToAction.Target = Creator.GetEnemy(Creator.SeatNumber);
+        jumpToAction.Target = Target;
         await jumpToAction.ApplyJumpTo();
 
         PostProcess();
