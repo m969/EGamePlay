@@ -352,14 +352,24 @@ namespace EGamePlay
             return evnt;
         }
 
-        public EventSubscribe<T> Subscribe<T>(Action<T> action) where T : class
+        //public EventSubscribe<T> Subscribe<T>(Action<T> action) where T : class
+        //{
+        //    var eventComponent = GetComponent<EventComponent>();
+        //    if (eventComponent == null)
+        //    {
+        //        eventComponent = AddComponent<EventComponent>();
+        //    }
+        //    return eventComponent.Subscribe(action);
+        //}
+
+        public void Subscribe<T>(Action<T> action) where T : class
         {
             var eventComponent = GetComponent<EventComponent>();
             if (eventComponent == null)
             {
                 eventComponent = AddComponent<EventComponent>();
             }
-            return eventComponent.Subscribe(action);
+            eventComponent.Subscribe(action);
         }
 
         public void UnSubscribe<T>(Action<T> action) where T : class

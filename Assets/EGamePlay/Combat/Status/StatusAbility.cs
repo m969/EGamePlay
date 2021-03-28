@@ -43,7 +43,12 @@ namespace EGamePlay.Combat.Status
             //行为禁制
             if (StatusConfigObject.EnabledStateModify)
             {
-                OwnerEntity.ActionControlType |= StatusConfigObject.ActionControlType;
+                OwnerEntity.ActionControlType = OwnerEntity.ActionControlType | StatusConfigObject.ActionControlType;
+                //Log.Debug($"{OwnerEntity.ActionControlType}");
+                if (OwnerEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid))
+                {
+                    OwnerEntity.GetComponent<MotionComponent>().Enable = false;
+                }
             }
             //属性修饰
             if (StatusConfigObject.EnabledAttributeModify)
@@ -66,11 +71,11 @@ namespace EGamePlay.Combat.Status
                     var attributeType = StatusConfigObject.AttributeType.ToString();
                     if (StatusConfigObject.ModifyType == ModifyType.Add)
                     {
-                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalAddModifier(NumericModifier);
+                        OwnerEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalAddModifier(NumericModifier);
                     }
                     if (StatusConfigObject.ModifyType == ModifyType.PercentAdd)
                     {
-                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalPctAddModifier(NumericModifier);
+                        OwnerEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalPctAddModifier(NumericModifier);
                     }
                 }
             }
@@ -116,7 +121,12 @@ namespace EGamePlay.Combat.Status
             //行为禁制
             if (StatusConfigObject.EnabledStateModify)
             {
-                OwnerEntity.ActionControlType |= ~StatusConfigObject.ActionControlType;
+                OwnerEntity.ActionControlType = OwnerEntity.ActionControlType & (~StatusConfigObject.ActionControlType);
+                //Log.Debug($"{OwnerEntity.ActionControlType}");
+                if (OwnerEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid) == false)
+                {
+                    OwnerEntity.GetComponent<MotionComponent>().Enable = true;
+                }
             }
             //属性修饰
             if (StatusConfigObject.EnabledAttributeModify)
@@ -126,11 +136,11 @@ namespace EGamePlay.Combat.Status
                     var attributeType = StatusConfigObject.AttributeType.ToString();
                     if (StatusConfigObject.ModifyType == ModifyType.Add)
                     {
-                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalAddModifier(NumericModifier);
+                        OwnerEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalAddModifier(NumericModifier);
                     }
                     if (StatusConfigObject.ModifyType == ModifyType.PercentAdd)
                     {
-                        GetParent<CombatEntity>().GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalPctAddModifier(NumericModifier);
+                        OwnerEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalPctAddModifier(NumericModifier);
                     }
                 }
             }
@@ -141,7 +151,7 @@ namespace EGamePlay.Combat.Status
             }
 
             NumericModifier = null;
-            GetParent<CombatEntity>().OnStatusRemove(this);
+            OwnerEntity.OnStatusRemove(this);
             base.EndAbility();
         }
 

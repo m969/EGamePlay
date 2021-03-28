@@ -32,7 +32,7 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
-        CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus).AsCoroutine();
+        CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
 
         var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
         var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
@@ -106,7 +106,6 @@ public sealed class Monster : MonoBehaviour
 
             if (statusConfig.ID == "Vertigo")
             {
-                CombatEntity.GetComponent<MotionComponent>().Enable = false;
                 AnimationComponent.AnimancerComponent.Play(AnimationComponent.StunAnimation);
                 if (vertigoParticle == null)
                 {
@@ -141,7 +140,6 @@ public sealed class Monster : MonoBehaviour
         var statusConfig = eventData.Status.StatusConfigObject;
         if (statusConfig.ID == "Vertigo")
         {
-            CombatEntity.GetComponent<MotionComponent>().Enable = true;
             AnimationComponent.AnimancerComponent.Play(AnimationComponent.IdleAnimation);
             if (vertigoParticle != null)
             {
