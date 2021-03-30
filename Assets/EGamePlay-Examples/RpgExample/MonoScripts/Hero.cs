@@ -40,6 +40,7 @@ public sealed class Hero : MonoBehaviour
         Instance = this;
         CombatEntity = Entity.CreateWithParent<CombatEntity>(CombatContext.Instance);
         CombatEntity.AddComponent<SkillPreviewComponent>();
+        CombatEntity.AddComponent<EquipmentComponent>();
         //CombatEntity.GetComponent<MotionComponent>().Enable = false;
         CombatEntity.ListenActionPoint(ActionPointType.PreSpell, OnPreSpell);
         CombatEntity.ListenActionPoint(ActionPointType.PostSpell, OnPostSpell);
