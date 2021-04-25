@@ -14,7 +14,9 @@ namespace EGamePlay.Combat
     public class CombatContext : Entity
     {
         public static CombatContext Instance { get; private set; }
+#if !SERVER
         public Dictionary<GameObject, CombatEntity> GameObject2Entitys { get; set; } = new Dictionary<GameObject, CombatEntity>();
+#endif
 
 
         public override void Awake()

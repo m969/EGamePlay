@@ -18,7 +18,8 @@ namespace EGamePlay.Combat.Status
         public override void Setup()
         {
             //Log.Debug(GetEntity<LogicEntity>().Effect.Interval);
-            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(GetEntity<LogicEntity>().Effect.IntervalValue);
+            var intervalExpression = GetEntity<LogicEntity>().Effect.IntervalValue;
+            var expression = ExpressionHelper.TryEvaluate(intervalExpression);
             if (expression.Parameters.ContainsKey("技能等级"))
             {
                 expression.Parameters["技能等级"].Value = GetEntity<LogicEntity>().GetParent<StatusAbility>().Level;

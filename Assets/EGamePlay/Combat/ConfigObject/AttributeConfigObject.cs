@@ -1,29 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
-using System.IO;
-using Sirenix.Utilities.Editor;
-using System.Linq;
 
 namespace EGamePlay.Combat
 {
-//#if UNITY_EDITOR
-//	[UnityEditor.InitializeOnLoad]
-//	public static class UnityInitial
-//    {
-//		static UnityInitial()
-//        {
-//			StatusConfigObject.AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
-//		}
-//	}
-//#endif
-
 	[CreateAssetMenu(fileName = "战斗属性配置", menuName = "技能|状态/战斗属性配置")]
     //[LabelText("战斗属性配置")]
-    public class AttributeConfigObject : SerializedScriptableObject
+    public class AttributeConfigObject
+#if !SERVER
+	    : SerializedScriptableObject
+#endif
     {
 		[LabelText("属性配置")]
 		public List<AttributeConfig> AttributeConfigs;

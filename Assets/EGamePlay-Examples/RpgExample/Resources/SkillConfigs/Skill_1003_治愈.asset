@@ -15,7 +15,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 97749e4f656aecc49a164555ee9394ba, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -23,17 +24,83 @@ MonoBehaviour:
     SerializationNodes:
     - Name: AutoRename
       Entry: 5
-      Data: false
-    - Name: Effects
+      Data: true
+    - Name: ChildrenStatuses
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.CureEffect, Assembly-CSharp
+      Data: 1|EGamePlay.Combat.ChildStatus, Assembly-CSharp
+    - Name: StatusConfigObject
+      Entry: 10
+      Data: 0
+    - Name: Params
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u95F4\u9694\u65F6\u95F4"
+    - Name: $v
+      Entry: 1
+      Data: 2000
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u56DE\u590D\u91CF"
+    - Name: $v
+      Entry: 1
+      Data: 100
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Effects
+      Entry: 7
+      Data: 4|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|EGamePlay.Combat.CureEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -82,6 +149,7 @@ MonoBehaviour:
   AreaCollider: {fileID: 0}
   AffectTargetType: 0
   ColdTime: 3000
+  EnableChildrenStatuses: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   SkillExecutionAsset: {fileID: 0}
   SkillAudio: {fileID: 0}

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
+using Sirenix.OdinInspector;
 
 namespace EGamePlay.Combat
 {
@@ -134,6 +132,7 @@ namespace EGamePlay.Combat
             //SkillHelper.AddEffect(Effects, EffectType);
         }
 
+#if !SERVER
         [LabelText("状态特效")]
         [OnInspectorGUI("BeginBox", append:false)]
         public GameObject ParticleEffect;
@@ -144,7 +143,8 @@ namespace EGamePlay.Combat
 
         [TextArea, LabelText("状态描述")]
         public string StatusDescription;
-
+#endif
+        
 #if UNITY_EDITOR
         [SerializeField, LabelText("自动重命名")]
         public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }

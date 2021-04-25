@@ -11,19 +11,6 @@ namespace EGamePlay
         public static MasterEntity Master => MasterEntity.Instance;
         public static bool EnableLog { get; set; } = false;
 
-        //private static T New<T>() where T : Entity
-        //{
-        //    var entityType = typeof(T);
-        //    var entity = Activator.CreateInstance<T>();
-        //    entity.InstanceId = IdFactory.NewInstanceId();
-        //    if (!Master.Entities.ContainsKey(entityType))
-        //    {
-        //        Master.Entities.Add(entityType, new List<Entity>());
-        //    }
-        //    Master.Entities[entityType].Add(entity);
-        //    return entity;
-        //}
-
         private static Entity NewEntity(Type entityType)
         {
             var entity = Activator.CreateInstance(entityType) as Entity;
@@ -40,9 +27,9 @@ namespace EGamePlay
         {
             var entity = NewEntity(typeof(T)) as T;
             entity.Id = entity.InstanceId;
+            if (EnableLog) Log.Debug($"Entity->Create, {typeof(T).Name}={entity.InstanceId}");
             Master.AddChild(entity);
             entity.Awake();
-            if (EnableLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -50,9 +37,9 @@ namespace EGamePlay
         {
             var entity = NewEntity(typeof(T)) as T;
             entity.Id = entity.InstanceId;
+            if (EnableLog) Log.Debug($"Entity->Create, {typeof(T).Name}={entity.InstanceId}, {initData}");
             Master.AddChild(entity);
             entity.Awake(initData);
-            if (EnableLog) Log.Debug($"EntityFactory->Create, {typeof(T).Name}={entity.InstanceId}, {initData}");
             return entity;
         }
 
@@ -60,9 +47,9 @@ namespace EGamePlay
         {
             var entity = NewEntity(typeof(T)) as T;
             entity.Id = entity.InstanceId;
+            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
             parent.AddChild(entity);
             entity.Awake();
-            if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -70,9 +57,9 @@ namespace EGamePlay
         {
             var entity = NewEntity(typeof(T)) as T;
             entity.Id = entity.InstanceId;
+            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
             parent.AddChild(entity);
             entity.Awake(initData);
-            if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -80,9 +67,9 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = entity.InstanceId;
+            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.InstanceId}");
             Master.AddChild(entity);
             entity.Awake();
-            if (EnableLog) Log.Debug($"EntityFactory->Create, {entityType.Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -90,9 +77,9 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = entity.InstanceId;
+            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.InstanceId}, {initData}");
             Master.AddChild(entity);
             entity.Awake(initData);
-            if (EnableLog) Log.Debug($"EntityFactory->Create, {entityType.Name}={entity.InstanceId}, {initData}");
             return entity;
         }
 
@@ -100,9 +87,9 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = entity.InstanceId;
+            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.InstanceId}");
             parent.AddChild(entity);
             entity.Awake();
-            if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -110,9 +97,9 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = entity.InstanceId;
+            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.InstanceId}");
             parent.AddChild(entity);
             entity.Awake(initData);
-            if (EnableLog) Log.Debug($"EntityFactory->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.InstanceId}");
             return entity;
         }
 
@@ -154,8 +141,8 @@ namespace EGamePlay
         {
 #if !SERVER
             GameObject = new UnityEngine.GameObject(GetType().Name);
-            var view = GameObject.AddComponent<ET.ComponentView>();
-            view.Type = GameObject.name;
+            var view = GameObject.AddComponent<ComponentView>();
+            //view.Type = GameObject.name;
             view.Component = this;
 #endif
         }
@@ -231,8 +218,8 @@ namespace EGamePlay
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             component.Setup();
 #if !SERVER
-            var view = GameObject.AddComponent<ET.ComponentView>();
-            view.Type = typeof(T).Name;
+            var view = GameObject.AddComponent<ComponentView>();
+            //view.Type = typeof(T).Name;
             view.Component = component;
 #endif
             return component;
@@ -249,8 +236,8 @@ namespace EGamePlay
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
             component.Setup(initData);
 #if !SERVER
-            var view = GameObject.AddComponent<ET.ComponentView>();
-            view.Type = typeof(T).Name;
+            var view = GameObject.AddComponent<ComponentView>();
+            //view.Type = typeof(T).Name;
             view.Component = component;
 #endif
             return component;
@@ -351,16 +338,6 @@ namespace EGamePlay
             eventComponent.Publish(evnt);
             return evnt;
         }
-
-        //public EventSubscribe<T> Subscribe<T>(Action<T> action) where T : class
-        //{
-        //    var eventComponent = GetComponent<EventComponent>();
-        //    if (eventComponent == null)
-        //    {
-        //        eventComponent = AddComponent<EventComponent>();
-        //    }
-        //    return eventComponent.Subscribe(action);
-        //}
 
         public void Subscribe<T>(Action<T> action) where T : class
         {

@@ -54,6 +54,12 @@ public class SkillPreviewComponent : EGamePlay.Component
             PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.T];
             EnterPreview();
         }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            PreviewingSkill = GetEntity<CombatEntity>().InputSkills[KeyCode.Y];
+            OnInputTarget(PreviewingSkill.OwnerEntity);
+            //EnterPreview();
+        }
 #endif
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
         {

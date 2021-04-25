@@ -1,4 +1,5 @@
 ﻿using EGamePlay.Combat.Ability;
+using EGamePlay.Combat.Status;
 using System;
 using GameUtils;
 using ET;
@@ -16,6 +17,7 @@ namespace EGamePlay.Combat.Skill
 #endif
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
+        private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
 
 
         public override void Awake(object initData)
@@ -40,6 +42,40 @@ namespace EGamePlay.Combat.Skill
                 TryActivateAbility();
             }
 #endif
+        }
+
+        public override void ActivateAbility()
+        {
+            base.ActivateAbility();
+
+            //子状态效果
+            if (SkillConfig.EnableChildrenStatuses)
+            {
+                foreach (var item in SkillConfig.ChildrenStatuses)
+                {
+                    var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
+                    status.Caster = OwnerEntity;
+                    status.IsChildStatus = true;
+                    status.ChildStatusData = item;
+                    status.TryActivateAbility();
+                    ChildrenStatuses.Add(status);
+                }
+            }
+        }
+
+        public override void EndAbility()
+        {
+            base.EndAbility();
+
+            //子状态效果
+            if (SkillConfig.EnableChildrenStatuses)
+            {
+                foreach (var item in ChildrenStatuses)
+                {
+                    item.EndAbility();
+                }
+                ChildrenStatuses.Clear();
+            }
         }
 
         public override AbilityExecution CreateExecution()

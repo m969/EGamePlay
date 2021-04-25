@@ -38,5 +38,10 @@ namespace EGamePlay.Combat
         {
             return (int)(MaxValue * (pct / 100f));
         }
+
+        public bool IsFull()
+        {
+            return Value == MaxValue;
+        }
     }
 }

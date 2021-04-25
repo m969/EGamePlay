@@ -1,12 +1,9 @@
-﻿using System.Reflection;
-using UnityEngine.Timeline;
-using Sirenix.OdinInspector;
-using UnityEngine;
-
-#if UNITY_EDITOR
+﻿#if !SERVER
 using Sirenix.OdinInspector.Editor;
+using Sirenix.OdinInspector;
 using Sirenix.Utilities.Editor;
 using UnityEditor;
+using UnityEngine.Timeline;
 #endif
 
 [LabelText("碰撞体形状")]
@@ -48,7 +45,7 @@ public enum EffectApplyType
     [LabelText("其他")]
     Other = 100,
 }
-
+#if !SERVER
 public class ColliderSpawnEmitter : SignalEmitter
 {
     [LabelText("碰撞体名称")]
@@ -120,4 +117,5 @@ public class ColliderSpawnEmitterInspector : OdinEditor
         }
     }
 }
+#endif
 #endif

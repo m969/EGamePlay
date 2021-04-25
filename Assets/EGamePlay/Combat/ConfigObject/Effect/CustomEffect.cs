@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
-using System.IO;
-using Sirenix.Utilities.Editor;
-using System.Linq;
-using UnityEditor;
-using System.Reflection;
 
 namespace EGamePlay.Combat
 {

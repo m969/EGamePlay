@@ -61,6 +61,8 @@ namespace EGamePlay.Combat.Ability
             Projectile.SetActive(true);
 
             TaskState = AbilityTaskState.Executing;
+            
+            await ETTask.CompletedTask;
         }
     }
 }

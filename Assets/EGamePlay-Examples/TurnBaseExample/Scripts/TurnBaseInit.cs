@@ -17,6 +17,7 @@ public class TurnBaseInit : SerializedMonoBehaviour
         Instance = this;
 
         var combatFlow = MasterEntity.Instance.CreateChild<CombatFlow>();
+        combatFlow.ToEnd();
         combatFlow.JumpToTime = JumpToTime;
         combatFlow.Startup();
     }

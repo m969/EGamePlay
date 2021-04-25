@@ -20,14 +20,20 @@ namespace EGamePlay.Combat
         {
             if (CureEffect != null)
             {
-                CureValue = int.Parse(CureEffect.CureValueFormula);
+                var expression = ExpressionHelper.TryEvaluate(CureEffect.CureValueProperty);
+                CureValue = (int)expression.Value;
             }
         }
 
         public void ApplyCure()
         {
             PreProcess();
-            Target.ReceiveCure(this);
+
+            if (Target.CurrentHealth.IsFull() == false)
+            {
+                Target.ReceiveCure(this);
+            }
+
             PostProcess();
 
             ApplyAction();

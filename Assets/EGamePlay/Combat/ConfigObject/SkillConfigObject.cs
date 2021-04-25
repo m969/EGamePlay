@@ -1,16 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
+﻿using System.Collections.Generic;
 using System;
 using System.IO;
-using UnityEngine.PlayerLoop;
-using Sirenix.Utilities.Editor;
-using UnityEngine.Serialization;
 using System.Linq;
 using System.Reflection;
-using UnityEngine.Timeline;
+using UnityEngine;
+using Sirenix.OdinInspector;
+#if !SERVER
+using Sirenix.Utilities.Editor;
+#endif
 
 namespace EGamePlay.Combat
 {
@@ -30,23 +27,26 @@ namespace EGamePlay.Combat
         public SkillTargetSelectType TargetSelectType;
         [LabelText("区域场类型"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         public SkillAffectAreaType AffectAreaType;
-
         [LabelText("圆形区域场半径"), ShowIf("ShowCircleAreaRadius")]
         public float CircleAreaRadius;
         public bool ShowCircleAreaRadius { get { return AffectAreaType == SkillAffectAreaType.Circle && TargetSelectType == SkillTargetSelectType.AreaSelect; } }
-
-        //[LabelText("区域场引导配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
-        //public GameObject AreaGuideObj;
         [LabelText("区域场配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         public GameObject AreaCollider;
-
         [LabelText("技能作用对象"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillAffectTargetType AffectTargetType;
-
-        //[ToggleGroup("Cold", "技能冷却")]
-        //public bool Cold = false;
-        [/*ToggleGroup("Cold"), */LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
+        [LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public uint ColdTime;
+
+        [LabelText("附加状态效果")]
+        public bool EnableChildrenStatuses;
+        [OnInspectorGUI("DrawSpace", append: true)]
+        [HideReferenceObjectPicker]
+        [LabelText("附加状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false, CustomAddFunction = "AddChildStatus")]
+        public List<ChildStatus> ChildrenStatuses = new List<ChildStatus>();
+        private void AddChildStatus()
+        {
+            ChildrenStatuses.Add(new ChildStatus());
+        }
 
         [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(Expanded = true, DraggableItems = true, ShowItemCount = false, HideAddButton = true)]
@@ -93,17 +93,17 @@ namespace EGamePlay.Combat
             //SkillHelper.AddEffect(Effects, EffectType);
         }
 
+#if !SERVER
         [OnInspectorGUI("BeginBox", append: false)]
         [LabelText("技能执行")]
         public GameObject SkillExecutionAsset;
-        //[LabelText("技能特效")]
-        //public GameObject SkillEffectObject;
         [LabelText("技能音效")]
         [OnInspectorGUI("EndBox", append: true)]
         public AudioClip SkillAudio;
 
         [TextArea, LabelText("技能描述")]
         public string SkillDescription;
+#endif
 
 #if UNITY_EDITOR
         [SerializeField, LabelText("自动重命名")]
@@ -117,6 +117,11 @@ namespace EGamePlay.Combat
         private void OnDisable()
         {
             UnityEditor.EditorPrefs.SetBool("AutoRename", StatusConfigObject.AutoRenameStatic);
+        }
+
+        private void DrawSpace()
+        {
+            GUILayout.Space(20);
         }
 
         private void BeginBox()

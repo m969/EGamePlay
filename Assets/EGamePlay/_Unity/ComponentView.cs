@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ET
+namespace EGamePlay
 {
     public class ComponentView: MonoBehaviour
     {

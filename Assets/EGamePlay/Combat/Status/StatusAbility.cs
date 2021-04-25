@@ -33,7 +33,7 @@ namespace EGamePlay.Combat.Status
                 foreach (var item in StatusConfigObject.ChildrenStatuses)
                 {
                     var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
-                    status.Caster = OwnerEntity;
+                    status.Caster = Caster;
                     status.IsChildStatus = true;
                     status.ChildStatusData = item;
                     status.TryActivateAbility();
@@ -58,9 +58,9 @@ namespace EGamePlay.Combat.Status
                     var numericValue = StatusConfigObject.NumericValue;
                     if (IsChildStatus)
                     {
-                        foreach (var item in ChildStatusData.Params)
+                        foreach (var paramItem in ChildStatusData.Params)
                         {
-                            numericValue = numericValue.Replace(item.Key, item.Value);
+                            numericValue = numericValue.Replace(paramItem.Key, paramItem.Value);
                         }
                     }
                     numericValue = numericValue.Replace("%", "");
@@ -82,23 +82,58 @@ namespace EGamePlay.Combat.Status
             //逻辑触发
             if (StatusConfigObject.EnabledLogicTrigger)
             {
-                foreach (var item in StatusConfigObject.Effects)
+                foreach (var effectItem in StatusConfigObject.Effects)
                 {
-                    var logicEntity = Entity.CreateWithParent<LogicEntity>(this, item);
-                    if (item.EffectTriggerType == EffectTriggerType.Instant)
+                    if (IsChildStatus)
+                    {
+                        if (effectItem is DamageEffect damageEffect)
+                        {
+                            damageEffect.DamageValueProperty = damageEffect.DamageValueFormula;
+                            foreach (var paramItem in ChildStatusData.Params)
+                            {
+                                damageEffect.DamageValueProperty = damageEffect.DamageValueProperty.Replace(paramItem.Key, paramItem.Value);
+                            }
+                        }
+                        else if (effectItem is CureEffect cureEffect)
+                        {
+                            cureEffect.CureValueProperty = cureEffect.CureValueFormula;
+                            foreach (var paramItem in ChildStatusData.Params)
+                            {
+                                cureEffect.CureValueProperty = cureEffect.CureValueProperty.Replace(paramItem.Key, paramItem.Value);
+                            }
+                        }
+                    }
+                    var logicEntity = Entity.CreateWithParent<LogicEntity>(this, effectItem);
+                    if (effectItem.EffectTriggerType == EffectTriggerType.Instant)
                     {
                         logicEntity.ApplyEffect();
                         Destroy(logicEntity);
                     }
-                    if (item.EffectTriggerType == EffectTriggerType.Interval)
+                    else if (effectItem.EffectTriggerType == EffectTriggerType.Interval)
                     {
+                        if (IsChildStatus)
+                        {
+                            effectItem.IntervalValue = effectItem.Interval;
+                            foreach (var paramItem in ChildStatusData.Params)
+                            {
+                                effectItem.IntervalValue = effectItem.IntervalValue.Replace(paramItem.Key, paramItem.Value);
+                            }
+                        }
                         logicEntity.AddComponent<LogicIntervalTriggerComponent>();
                     }
-                    if (item.EffectTriggerType == EffectTriggerType.Condition)
+                    else if (effectItem.EffectTriggerType == EffectTriggerType.Condition)
                     {
+                        if (IsChildStatus)
+                        {
+                            effectItem.ConditionParamValue = effectItem.ConditionParam;
+                            foreach (var paramItem in ChildStatusData.Params)
+                            {
+                                effectItem.ConditionParamValue = effectItem.ConditionParamValue.Replace(paramItem.Key, paramItem.Value);
+                            }
+                        }
                         logicEntity.AddComponent<LogicConditionTriggerComponent>();
                     }
-                    if (item.EffectTriggerType == EffectTriggerType.Action)
+                    else if (effectItem.EffectTriggerType == EffectTriggerType.Action)
                     {
                         logicEntity.AddComponent<LogicActionTriggerComponent>();
                     }

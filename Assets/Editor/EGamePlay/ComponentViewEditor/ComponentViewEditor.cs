@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
+using ET;
 using UnityEditor;
 using UnityEngine;
 
-namespace ET
+namespace EGamePlay
 {
     [CustomEditor(typeof (ComponentView))]
     public class ComponentViewEditor: Editor

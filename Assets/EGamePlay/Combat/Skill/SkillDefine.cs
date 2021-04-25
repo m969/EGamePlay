@@ -13,24 +13,6 @@
         Passive,
     }
 
-    //[LabelText("技能类型")]
-    //public enum SkillType
-    //{
-    //    [LabelText("指定目标类技能")]
-    //    Targeting,
-    //    [LabelText("非指向性技能")]
-    //    Untoward,
-    //}
-
-    //[LabelText("技能效果触发类型")]
-    //public enum SkillEffectTriggerType
-    //{
-    //    [LabelText("指定目标类技能")]
-    //    Targeting,
-    //    [LabelText("非指向性技能")]
-    //    Untoward,
-    //}
-
     [LabelText("技能目标检测方式")]
     public enum SkillTargetSelectType
     {
@@ -180,43 +162,4 @@
         Add = 0,
         PercentAdd = 1,
     }
-
-    //[LabelText("整形数值")]
-    //public enum IntNumericType
-    //{
-    //    [LabelText("物理攻击")]
-    //    PhysicAttack = 1001,
-    //    [LabelText("物理护甲")]
-    //    Defense = 1002,
-    //    [LabelText("法术强度")]
-    //    SpellPower = 1003,
-    //    [LabelText("魔法抗性")]
-    //    MagicDefense = 1004,
-    //}
-
-    //[LabelText("浮点型形数值")]
-    //public enum FloatNumericType
-    //{
-    //    [LabelText("暴击概率")]
-    //    CriticalProbability = 2001,
-    //}
-
-    //[Flags]
-    //[LabelText("伤害类型")]
-    //public enum DamageType
-    //{
-    //    [LabelText("(空)")]
-    //    None = 0,
-    //    [HideLabel]
-    //    [LabelText("物理伤害")]
-    //    Physic = 1,//2-0
-    //    [LabelText("魔法伤害")]
-    //    Magic = 1 << 1,//2-10
-    //    [LabelText("真实伤害")]
-    //    Real = 1 << 2,//2-100
-    //    [LabelText("暴击伤害")]
-    //    Critical = 1 << 3,//2-1000
-    //    [LabelText("物理暴击伤害")]
-    //    PhysicCritical = Physic | Critical,
-    //} 
 }

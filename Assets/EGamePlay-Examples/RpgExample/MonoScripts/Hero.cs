@@ -1,7 +1,7 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using EGamePlay;
 using EGamePlay.Combat;
 using UnityEngine.UIElements;
@@ -24,6 +24,10 @@ public sealed class Hero : MonoBehaviour
     public Transform InventoryPanelTrm;
     public Transform EquipmentPanelTrm;
     public GameObject ItemPrefab;
+    public Text DamageText;
+    public Text CureText;
+    public UnityEngine.UI.Image HealthBarImage;
+    public Transform CanvasTrm;
 
     private Tweener MoveTweener { get; set; }
     private Tweener LookAtTweener { get; set; }
@@ -78,6 +82,10 @@ public sealed class Hero : MonoBehaviour
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1006_灵魂镣铐");
         ability = CombatEntity.AttachSkill<SkillAbility_1006>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.T);
+
+        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1003_治愈");
+        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        CombatEntity.BindSkillInput(ability, KeyCode.Y);
 #endif
         for (int i = InventoryPanelTrm.childCount; i > 0; i--)
         {

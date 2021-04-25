@@ -50,19 +50,19 @@ namespace EGamePlay.Combat.Ability
             {
                 if (effectItem is DamageEffect damageEffect)
                 {
+                    if (string.IsNullOrEmpty(damageEffect.DamageValueProperty)) damageEffect.DamageValueProperty = damageEffect.DamageValueFormula;
                     var action = this.OwnerEntity.CreateAction<DamageAction>();
                     action.Target = targetEntity;
                     action.DamageSource = DamageSource.Skill;
                     action.DamageEffect = damageEffect;
-                    damageEffect.DamageValueProperty = damageEffect.DamageValueFormula;
                     action.ApplyDamage();
                 }
                 else if (effectItem is CureEffect cureEffect)
                 {
+                    if (string.IsNullOrEmpty(cureEffect.CureValueProperty)) cureEffect.CureValueProperty = cureEffect.CureValueFormula;
                     var action = this.OwnerEntity.CreateAction<CureAction>();
                     action.Target = targetEntity;
                     action.CureEffect = cureEffect;
-                    cureEffect.CureValueProperty = cureEffect.CureValueFormula;
                     action.ApplyCure();
                 }
                 else

@@ -58,7 +58,7 @@ namespace EGamePlay.Combat
                 vec2 = -(Position - originPos);
             }
             vec2.Normalize();
-            var right = Vector2.right;
+            var right = new Vector2(1, 0);
             Direction = VectorAngle(right, vec2);
 
             MoveVector = new Vector3(vec2.x, 0, vec2.y) / 100f;
