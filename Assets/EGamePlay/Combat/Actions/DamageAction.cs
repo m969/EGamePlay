@@ -8,10 +8,15 @@ using GameUtils;
 
 namespace EGamePlay.Combat
 {
+    public class DamageActionAbility : ActionAbility<DamageAction>
+    {
+
+    }
+
     /// <summary>
     /// 伤害行动
     /// </summary>
-    public class DamageAction : CombatAction
+    public class DamageAction : ActionExecution<DamageActionAbility>
     {
         public DamageEffect DamageEffect { get; set; }
         //伤害来源

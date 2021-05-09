@@ -4,23 +4,17 @@ using System.Collections.Generic;
 
 namespace EGamePlay
 {
-    [System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    sealed class EnableUpdateAttribute : Attribute
-    {
-        public EnableUpdateAttribute()
-        {
-        }
-    }
-
     public sealed class MasterEntity : Entity
     {
         public Dictionary<Type, List<Entity>> Entities { get; private set; } = new Dictionary<Type, List<Entity>>();
         public List<Component> AllComponents { get; private set; } = new List<Component>();
+        public List<UpdateComponent> UpdateComponents { get; private set; } = new List<UpdateComponent>();
         public static MasterEntity Instance { get; private set; }
 
 
-        private MasterEntity() : base()
+        private MasterEntity()
         {
+            
         }
 
         public static MasterEntity Create()
@@ -28,6 +22,9 @@ namespace EGamePlay
             if (Instance == null)
             {
                 Instance = new MasterEntity();
+#if !SERVER
+                Instance.AddComponent<GameObjectComponent>();
+#endif
             }
             return Instance;
         }

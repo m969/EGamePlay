@@ -11,6 +11,7 @@ namespace EGamePlay.Combat.Skill
     /// <summary>
     /// 技能执行体
     /// </summary>
+    [EnableUpdate]
     public partial class SkillExecution : AbilityExecution
     {
         public SkillAbility SkillAbility { get { return AbilityEntity as SkillAbility; } }

@@ -61,7 +61,7 @@ public sealed class Monster : MonoBehaviour
         }
     }
 
-    private void OnReceiveDamage(CombatAction combatAction)
+    private void OnReceiveDamage(ActionExecution combatAction)
     {
         var damageAction = combatAction as DamageAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -75,7 +75,7 @@ public sealed class Monster : MonoBehaviour
         GameObject.Destroy(damageText.gameObject, 0.5f);
     }
 
-    private void OnReceiveCure(CombatAction combatAction)
+    private void OnReceiveCure(ActionExecution combatAction)
     {
         var action = combatAction as CureAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -90,7 +90,7 @@ public sealed class Monster : MonoBehaviour
         GameObject.Destroy(cureText.gameObject, 0.5f);
     }
 
-    private void OnReceiveStatus(CombatAction combatAction)
+    private void OnReceiveStatus(ActionExecution combatAction)
     {
         var action = combatAction as AssignEffectAction;
         if (action.Effect is AddStatusEffect addStatusEffect)

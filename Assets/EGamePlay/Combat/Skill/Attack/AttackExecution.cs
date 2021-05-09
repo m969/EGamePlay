@@ -17,10 +17,12 @@ namespace EGamePlay.Combat
 
         public override void BeginExecute()
         {
-            var action = OwnerEntity.CreateAction<DamageAction>();
-            action.Target = AttackAction.Target;
-            action.DamageSource = DamageSource.Attack;
-            action.ApplyDamage();
+            if (OwnerEntity.DamageActionAbility.TryCreateAction(out var action))
+            {
+                action.Target = AttackAction.Target;
+                action.DamageSource = DamageSource.Attack;
+                action.ApplyDamage();
+            }
 
             this.EndExecute();
         }

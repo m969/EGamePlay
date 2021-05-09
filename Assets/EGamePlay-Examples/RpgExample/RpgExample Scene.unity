@@ -5609,6 +5609,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5860105633808227979, guid: c6613397838fabc43b029d1e060d3967,
         type: 3}
+      propertyPath: SkillSlotsTrm
+      value: 
+      objectReference: {fileID: 2137476048}
+    - target: {fileID: 5860105633808227979, guid: c6613397838fabc43b029d1e060d3967,
+        type: 3}
       propertyPath: EquipmentPanelTrm
       value: 
       objectReference: {fileID: 646496542}

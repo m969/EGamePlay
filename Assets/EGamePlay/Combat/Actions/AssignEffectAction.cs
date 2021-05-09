@@ -8,10 +8,15 @@ using EGamePlay.Combat.Skill;
 
 namespace EGamePlay.Combat
 {
+    public class AssignEffectActionAbility : ActionAbility<AssignEffectAction>
+    {
+
+    }
+
     /// <summary>
     /// 赋给效果行动
     /// </summary>
-    public class AssignEffectAction : CombatAction
+    public class AssignEffectAction : ActionExecution<AssignEffectActionAbility>
     {
         //创建这个赋给效果行动的源能力
         public AbilityEntity SourceAbility { get; set; }

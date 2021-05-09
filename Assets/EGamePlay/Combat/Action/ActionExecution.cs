@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EGamePlay;
+using EGamePlay.Combat.Ability;
 using Sirenix.OdinInspector;
 
 namespace EGamePlay.Combat
@@ -25,15 +25,21 @@ namespace EGamePlay.Combat
     /// <remarks>
     /// 战斗行动由战斗实体主动发起，包含本次行动所需要用到的所有数据，并且会触发一系列行动点事件 <see cref="ActionPoint"/>
     /// </remarks>
-    public abstract class CombatAction : Entity
+    public abstract class ActionExecution : AbilityExecution
     {
         public ActionType ActionType { get; set; }
         public CombatEntity Creator { get; set; }
         public CombatEntity Target { get; set; }
 
+
         public virtual void ApplyAction()
         {
-            Entity.Destroy(this);
+            EndExecute();
         }
+    }
+
+    public abstract class ActionExecution<T> : ActionExecution where T : AbilityEntity
+    {
+        public T ActionAbility { get; set; }
     }
 }

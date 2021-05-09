@@ -6,6 +6,14 @@ using GameUtils;
 
 namespace EGamePlay
 {
+    [System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    sealed class EnableUpdateAttribute : Attribute
+    {
+        public EnableUpdateAttribute()
+        {
+        }
+    }
+
     public abstract partial class Entity
     {
         public static MasterEntity Master => MasterEntity.Instance;
@@ -112,9 +120,6 @@ namespace EGamePlay
 
     public abstract partial class Entity : IDisposable
     {
-#if !SERVER
-        public UnityEngine.GameObject GameObject { get; set; }
-#endif
         public long Id { get; set; }
         private string name;
         public string Name
@@ -122,10 +127,8 @@ namespace EGamePlay
             get => name;
             set
             {
-#if !SERVER
-                GameObject.name = $"{GetType().Name}: {value}";
-#endif
                 name = value;
+                OnNameChangedAction?.Invoke((name));
             }
         }
         public long InstanceId { get; set; }
@@ -133,17 +136,18 @@ namespace EGamePlay
         public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
         public bool IsDisposed { get { return InstanceId == 0; } }
         public Dictionary<Type, Component> Components { get; set; } = new Dictionary<Type, Component>();
-        private List<Entity> Children { get; set; } = new List<Entity>();
-        private Dictionary<Type, List<Entity>> Type2Children { get; set; } = new Dictionary<Type, List<Entity>>();
-
+        public Action<string> OnNameChangedAction { get; set; }
+        public Action<Component> OnAddComponentAction { get; set; }
+        public Action<Component> OnRemoveComponentAction { get; set; }
+        public Action<Entity> OnAddChildAction { get; set; }
+        public Action<Entity> OnRemoveChildAction { get; set; }
+        
 
         public Entity()
         {
 #if !SERVER
-            GameObject = new UnityEngine.GameObject(GetType().Name);
-            var view = GameObject.AddComponent<ComponentView>();
-            //view.Type = GameObject.name;
-            view.Component = this;
+            if (this is MasterEntity) {}
+            else AddComponent<GameObjectComponent>();
 #endif
         }
 
@@ -170,31 +174,34 @@ namespace EGamePlay
         public void Dispose()
         {
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->Dispose");
-            if (Children.Count > 0)
+            var childrenComponent = GetComponent<ChildrenComponent>();
+            if (childrenComponent != null)
             {
-                for (int i = Children.Count - 1; i >= 0; i--)
+                var Children = childrenComponent.Children;
+                var Type2Children = childrenComponent.Type2Children;
+                if (Children.Count > 0)
                 {
-                    Entity.Destroy(Children[i]);
+                    for (int i = Children.Count - 1; i >= 0; i--)
+                    {
+                        Entity.Destroy(Children[i]);
+                    }
+                    Children.Clear();
+                    Type2Children.Clear();
                 }
-                Children.Clear();
-                Type2Children.Clear();
             }
 
+            Parent?.RemoveChild(this);
             foreach (Component component in this.Components.Values)
             {
                 component.OnDestroy();
                 component.Dispose();
             }
             this.Components.Clear();
-            Parent?.RemoveChild(this);
             InstanceId = 0;
             if (Master.Entities.ContainsKey(GetType()))
             {
                 Master.Entities[GetType()].Remove(this);
             }
-#if !SERVER
-            UnityEngine.GameObject.Destroy(GameObject);
-#endif
         }
 
         public virtual void OnSetParent(Entity parent)
@@ -217,11 +224,7 @@ namespace EGamePlay
             Master.AllComponents.Add(component);
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             component.Setup();
-#if !SERVER
-            var view = GameObject.AddComponent<ComponentView>();
-            //view.Type = typeof(T).Name;
-            view.Component = component;
-#endif
+            OnAddComponentAction?.Invoke((component));
             return component;
         }
 
@@ -235,19 +238,17 @@ namespace EGamePlay
             Master.AllComponents.Add(component);
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
             component.Setup(initData);
-#if !SERVER
-            var view = GameObject.AddComponent<ComponentView>();
-            //view.Type = typeof(T).Name;
-            view.Component = component;
-#endif
+            OnAddComponentAction?.Invoke((component));
             return component;
         }
 
         public void RemoveComponent<T>() where T : Component
         {
-            this.Components[typeof(T)].OnDestroy();
-            this.Components[typeof(T)].Dispose();
+            var component = this.Components[typeof(T)];
+            component.OnDestroy();
+            component.Dispose();
             this.Components.Remove(typeof(T));
+            OnRemoveComponentAction?.Invoke((component));
         }
 
         public T GetComponent<T>() where T : Component
@@ -267,6 +268,14 @@ namespace EGamePlay
 
         public void AddChild(Entity child)
         {
+            var childrenComponent = GetComponent<ChildrenComponent>();
+            if (childrenComponent == null)
+            {
+                childrenComponent = AddComponent<ChildrenComponent>();
+            }
+
+            var Children = childrenComponent.Children;
+            var Type2Children = childrenComponent.Type2Children;
             Children.Add(child);
             if (!Type2Children.ContainsKey(child.GetType()))
             {
@@ -274,22 +283,21 @@ namespace EGamePlay
             }
             Type2Children[child.GetType()].Add(child);
             child.Parent = this;
-#if !SERVER
-            child.GameObject.transform.SetParent(GameObject.transform);
-#endif
+            OnAddChildAction?.Invoke(child);
         }
 
         public void RemoveChild(Entity child)
         {
+            var childrenComponent = GetComponent<ChildrenComponent>();
+            var Children = childrenComponent.Children;
+            var Type2Children = childrenComponent.Type2Children;
             Children.Remove(child);
             if (Type2Children.ContainsKey(child.GetType()))
             {
                 Type2Children[child.GetType()].Remove(child);
             }
-            child.Parent = null;
-#if !SERVER
-            child.GameObject.transform.SetParent(null);
-#endif
+            child.Parent = Master;
+            OnRemoveChildAction?.Invoke(child);
         }
 
         public Entity CreateChild(Type entityType)
@@ -309,12 +317,22 @@ namespace EGamePlay
 
         public Entity[] GetChildren()
         {
-            return Children.ToArray();
+            var childrenComponent = GetComponent<ChildrenComponent>();
+            if (childrenComponent == null)
+            {
+                return new Entity[0];
+            }
+            return childrenComponent.GetChildren();
         }
 
         public Entity[] GetTypeChildren<T>() where T : Entity
         {
-            return Type2Children[typeof(T)].ToArray();
+            var childrenComponent = GetComponent<ChildrenComponent>();
+            if (childrenComponent == null)
+            {
+                return new Entity[0];
+            }
+            return childrenComponent.GetTypeChildren<T>();
         }
 
         public T Publish<T>(T TEvent) where T : class

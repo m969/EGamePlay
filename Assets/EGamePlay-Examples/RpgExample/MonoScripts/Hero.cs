@@ -23,6 +23,7 @@ public sealed class Hero : MonoBehaviour
     public GameObject HitEffectPrefab;
     public Transform InventoryPanelTrm;
     public Transform EquipmentPanelTrm;
+    public Transform SkillSlotsTrm;
     public GameObject ItemPrefab;
     public Text DamageText;
     public Text CureText;
@@ -62,6 +63,9 @@ public sealed class Hero : MonoBehaviour
         config = ConfigHelper.Get<SkillConfig>(1004);
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.E);
+
+        SkillSlotsTrm.Find("SkillButtonD").gameObject.SetActive(false);
+        SkillSlotsTrm.Find("SkillButtonE").gameObject.SetActive(false);
 #else
         SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
         SkillAbility ability = CombatEntity.AttachSkill<SkillAbility>(config);
@@ -154,7 +158,7 @@ public sealed class Hero : MonoBehaviour
         }
     }
 
-    private void OnPreSpell(CombatAction combatAction)
+    private void OnPreSpell(ActionExecution combatAction)
     {
         var spellAction = combatAction as SpellAction;
         if (spellAction.SkillExecution != null)
@@ -178,7 +182,7 @@ public sealed class Hero : MonoBehaviour
         }
     }
 
-    private void OnPostSpell(CombatAction combatAction)
+    private void OnPostSpell(ActionExecution combatAction)
     {
         var spellAction = combatAction as SpellAction;
         if (spellAction.SkillExecution != null)
@@ -221,16 +225,18 @@ public sealed class Hero : MonoBehaviour
     {
         //PlayThenIdleAsync(AnimationComponent.AttackAnimation).Coroutine();
 
-        var monster = GameObject.Find("Monster");
-        SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
-        SpawnHitEffect(transform.position, monster.transform.position);
+        if (CombatEntity.AttackActionAbility.TryCreateAction(out var action))
+        {
+            var monster = GameObject.Find("Monster");
+            SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
+            SpawnHitEffect(transform.position, monster.transform.position);
 
-        CombatEntity.GetComponent<AttributeComponent>().AttackPower.SetBase(ET.RandomHelper.RandomNumber(600, 999));
+            CombatEntity.GetComponent<AttributeComponent>().AttackPower.SetBase(ET.RandomHelper.RandomNumber(600, 999));
 
-        var action = CombatEntity.CreateAction<AttackAction>();
-        action.Target = monster.GetComponent<Monster>().CombatEntity;
-        action.ApplyAttack();
-        Entity.Destroy(action);
+            action.Target = monster.GetComponent<Monster>().CombatEntity;
+            action.ApplyAttack();
+            Entity.Destroy(action);
+        }
     }
 
     private ETCancellationToken token;

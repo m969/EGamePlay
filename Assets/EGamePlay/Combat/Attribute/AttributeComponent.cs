@@ -5,7 +5,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 战斗属性数值组件，在这里管理所有角色战斗属性数值的存储、变更、刷新等
     /// </summary>
-    public class AttributeComponent : EntityComponent<CombatEntity>
+    public class AttributeComponent : Component
 	{
         private readonly Dictionary<string, FloatNumeric> attributeNameNumerics = new Dictionary<string, FloatNumeric>();
         private readonly Dictionary<AttributeType, FloatNumeric> attributeTypeNumerics = new Dictionary<AttributeType, FloatNumeric>();

@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public class AttackAbility : AbilityEntity
+    public class AttackAbility : AbilityEntity<AttackExecution>
     {
-        public override AbilityExecution CreateExecution()
+        public override AttackExecution CreateExecution()
         {
             var execution = Entity.CreateWithParent<AttackExecution>(OwnerEntity, this);
             execution.AddComponent<UpdateComponent>();

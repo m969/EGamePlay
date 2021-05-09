@@ -5,10 +5,15 @@ using EGamePlay;
 
 namespace EGamePlay.Combat
 {
+    public class CureActionAbility : ActionAbility<CureAction>
+    {
+
+    }
+
     /// <summary>
     /// 治疗行动
     /// </summary>
-    public class CureAction : CombatAction
+    public class CureAction : ActionExecution<CureActionAbility>
     {
         public CureEffect CureEffect { get; set; }
         //治疗数值

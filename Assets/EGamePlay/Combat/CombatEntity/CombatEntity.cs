@@ -15,6 +15,17 @@ namespace EGamePlay.Combat
     {
         public GameObject ModelObject { get; set; }
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
+
+        public Dictionary<Type, ActionAbility> TypeActions { get; set; } = new Dictionary<Type, ActionAbility>();
+        public SpellActionAbility SpellActionAbility { get; private set; }
+        public MotionActionAbility MotionActionAbility { get; private set; }
+        public DamageActionAbility DamageActionAbility { get; private set; }
+        public CureActionAbility CureActionAbility { get; private set; }
+        public AttackActionAbility AttackActionAbility { get; private set; }
+        public AssignEffectActionAbility AssignEffectActionAbility { get; private set; }
+        public TurnActionAbility TurnActionAbility { get; private set; }
+        public JumpToActionAbility JumpToActionAbility { get; private set; }
+
         public AttackAbility AttackAbility { get; set; }
         public SkillExecution CurrentSkillExecution { get; set; }
         public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
@@ -34,30 +45,38 @@ namespace EGamePlay.Combat
             //AddComponent<MotionComponent>();
             CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
             CurrentHealth.Reset();
-            AttackAbility = Entity.CreateWithParent<AttackAbility>(this);
+            SpellActionAbility = AttachActionAbility<SpellActionAbility>();
+            MotionActionAbility = AttachActionAbility<MotionActionAbility>();
+            DamageActionAbility = AttachActionAbility<DamageActionAbility>();
+            CureActionAbility = AttachActionAbility<CureActionAbility>();
+            AttackActionAbility = AttachActionAbility<AttackActionAbility>();
+            AssignEffectActionAbility = AttachActionAbility<AssignEffectActionAbility>();
+            TurnActionAbility = AttachActionAbility<TurnActionAbility>();
+            JumpToActionAbility = AttachActionAbility<JumpToActionAbility>();
+            AttackAbility = CreateChild<AttackAbility>();
         }
 
         /// <summary>
         /// 创建行动
         /// </summary>
-        public T CreateAction<T>() where T : CombatAction
+        public T CreateAction<T>() where T : ActionExecution
         {
             var action = Parent.GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
             return action;
         }
 
         #region 行动点事件
-        public void ListenActionPoint(ActionPointType actionPointType, Action<CombatAction> action)
+        public void ListenActionPoint(ActionPointType actionPointType, Action<ActionExecution> action)
         {
             GetComponent<ActionPointManageComponent>().AddListener(actionPointType, action);
         }
 
-        public void UnListenActionPoint(ActionPointType actionPointType, Action<CombatAction> action)
+        public void UnListenActionPoint(ActionPointType actionPointType, Action<ActionExecution> action)
         {
             GetComponent<ActionPointManageComponent>().RemoveListener(actionPointType, action);
         }
 
-        public void TriggerActionPoint(ActionPointType actionPointType, CombatAction action)
+        public void TriggerActionPoint(ActionPointType actionPointType, ActionExecution action)
         {
             GetComponent<ActionPointManageComponent>().TriggerActionPoint(actionPointType, action);
         }
@@ -75,13 +94,13 @@ namespace EGamePlay.Combat
         }
         #endregion
 
-        public void ReceiveDamage(CombatAction combatAction)
+        public void ReceiveDamage(ActionExecution combatAction)
         {
             var damageAction = combatAction as DamageAction;
             CurrentHealth.Minus(damageAction.DamageValue);
         }
 
-        public void ReceiveCure(CombatAction combatAction)
+        public void ReceiveCure(ActionExecution combatAction)
         {
             var cureAction = combatAction as CureAction;
             CurrentHealth.Add(cureAction.CureValue);
@@ -99,8 +118,14 @@ namespace EGamePlay.Combat
         private T AttachAbility<T>(object configObject) where T : AbilityEntity
         {
             var ability = Entity.CreateWithParent<T>(this, configObject);
-            ability.OnSetParent(this);
             return ability;
+        }
+
+        public T AttachActionAbility<T>() where T : ActionAbility
+        {
+            var action = AttachAbility<T>(null);
+            TypeActions.Add(typeof(T), action);
+            return action;
         }
 
         public T AttachSkill<T>(object configObject) where T : SkillAbility

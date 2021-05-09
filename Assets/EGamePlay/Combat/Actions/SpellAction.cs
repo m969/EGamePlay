@@ -7,10 +7,15 @@ using ET;
 
 namespace EGamePlay.Combat
 {
+    public class SpellActionAbility : ActionAbility<SpellAction>
+    {
+
+    }
+
     /// <summary>
     /// 施法行动
     /// </summary>
-    public class SpellAction : CombatAction
+    public class SpellAction : ActionExecution<SpellActionAbility>
     {
         public SkillAbility SkillAbility { get; set; }
         public SkillExecution SkillExecution { get; set; }

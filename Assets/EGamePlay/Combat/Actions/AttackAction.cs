@@ -7,10 +7,15 @@ using ET;
 
 namespace EGamePlay.Combat
 {
+    public class AttackActionAbility : ActionAbility<AttackAction>
+    {
+
+    }
+
     /// <summary>
     /// 普攻行动
     /// </summary>
-    public class AttackAction : CombatAction
+    public class AttackAction : ActionExecution<AttackActionAbility>
     {
         //前置处理
         private void PreProcess()
@@ -19,7 +24,7 @@ namespace EGamePlay.Combat
             Target.TriggerActionPoint(ActionPointType.PreReceiveAttack, this);
         }
 
-        public async ETTask ApplyAttackAsync()
+        public async ETTask ApplyAttackAwait()
         {
             PreProcess();
             
@@ -36,7 +41,7 @@ namespace EGamePlay.Combat
 
         public void ApplyAttack()
         {
-            var attackExecution = Creator.AttackAbility.CreateExecution() as AttackExecution;
+            var attackExecution = Creator.AttackAbility.CreateExecution();
             attackExecution.AttackAction = this;
             attackExecution.BeginExecute();
         }

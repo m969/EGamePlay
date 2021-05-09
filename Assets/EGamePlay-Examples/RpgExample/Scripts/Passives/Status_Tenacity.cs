@@ -45,7 +45,7 @@ public class StatusTenacity : StatusAbility
     }
 
     //结束生命回复
-    private void EndReplyHealth(CombatAction combatAction)
+    private void EndReplyHealth(ActionExecution combatAction)
     {
         CanReplyHealth = false;
     }
@@ -59,9 +59,11 @@ public class StatusTenacity : StatusAbility
     //生命回复
     private void ReplyHealth()
     {
-        var action = OwnerEntity.CreateAction<CureAction>();
-        action.Target = OwnerEntity;
-        action.CureValue = OwnerEntity.CurrentHealth.PercentHealth(2);
-        action.ApplyCure();
+        if (OwnerEntity.CureActionAbility.TryCreateAction(out var action))
+        {
+            action.Target = OwnerEntity;
+            action.CureValue = OwnerEntity.CurrentHealth.PercentHealth(2);
+            action.ApplyCure();
+        }
     }
 }

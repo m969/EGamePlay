@@ -109,29 +109,33 @@ namespace EGamePlay.Combat
 
             foreach (var item in HeroEntities)
             {
-                var turnAction = item.Value.CreateAction<TurnAction>();
-                if (MonsterEntities.ContainsKey(item.Key))
+                if (item.Value.TurnActionAbility.TryCreateAction(out var turnAction))
                 {
-                    turnAction.Target = MonsterEntities[item.Key];
+                    if (MonsterEntities.ContainsKey(item.Key))
+                    {
+                        turnAction.Target = MonsterEntities[item.Key];
+                    }
+                    else
+                    {
+                        turnAction.Target = MonsterEntities.Values.ToArray().First();
+                    }
+                    TurnActions.Add(turnAction);
                 }
-                else
-                {
-                    turnAction.Target = MonsterEntities.Values.ToArray().First();
-                }
-                TurnActions.Add(turnAction);
             }
             foreach (var item in MonsterEntities)
             {
-                var turnAction = item.Value.CreateAction<TurnAction>();
-                if (HeroEntities.ContainsKey(item.Key))
+                if (item.Value.TurnActionAbility.TryCreateAction(out var turnAction))
                 {
-                    turnAction.Target = HeroEntities[item.Key];
+                    if (HeroEntities.ContainsKey(item.Key))
+                    {
+                        turnAction.Target = HeroEntities[item.Key];
+                    }
+                    else
+                    {
+                        turnAction.Target = HeroEntities.Values.ToArray().First();
+                    }
+                    TurnActions.Add(turnAction);
                 }
-                else
-                {
-                    turnAction.Target = HeroEntities.Values.ToArray().First();
-                }
-                TurnActions.Add(turnAction);
             }
         }
         #endregion

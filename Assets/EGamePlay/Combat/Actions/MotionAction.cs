@@ -5,10 +5,15 @@ using EGamePlay;
 
 namespace EGamePlay.Combat
 {
+    public class MotionActionAbility : ActionAbility<MotionAction>
+    {
+
+    }
+
     /// <summary>
     /// 动作行动
     /// </summary>
-    public class MotionAction : CombatAction
+    public class MotionAction : ActionExecution<MotionActionAbility>
     {
         public int MotionType { get; set; }
 

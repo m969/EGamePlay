@@ -11,6 +11,7 @@ using EGamePlay.Combat.Skill;
 /// </summary>
 public class SkillPreviewComponent : EGamePlay.Component
 {
+    private CombatEntity CombatEntity => GetEntity<CombatEntity>();
     public override bool Enable { get; set; } = true;
     private bool Previewing { get; set; }
     private SkillAbility PreviewingSkill { get; set; }
@@ -123,16 +124,18 @@ public class SkillPreviewComponent : EGamePlay.Component
 
     private void OnInputTarget(CombatEntity targetEntity)
     {
-        if (GetEntity<CombatEntity>().CurrentSkillExecution != null)
+        if (CombatEntity.CurrentSkillExecution != null)
             return;
 
         //Log.Debug($"OnInputTarget {combatEntity}");
-        var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
-        action.SkillAbility = PreviewingSkill;
-        action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
-        action.SkillTargets.Add(targetEntity);
-        action.SkillExecution.InputTarget = targetEntity;
-        action.SpellSkill();
+        if (CombatEntity.SpellActionAbility.TryCreateAction(out var action))
+        {
+            action.SkillAbility = PreviewingSkill;
+            action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
+            action.SkillTargets.Add(targetEntity);
+            action.SkillExecution.InputTarget = targetEntity;
+            action.SpellSkill();
+        }
     }
 
     private void OnInputPoint(Vector3 point)
@@ -141,11 +144,13 @@ public class SkillPreviewComponent : EGamePlay.Component
             return;
 
         //Log.Debug($"OnInputPoint {point}");
-        var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
-        action.SkillAbility = PreviewingSkill;
-        action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
-        action.SkillExecution.InputPoint = point;
-        action.SpellSkill();
+        if (CombatEntity.SpellActionAbility.TryCreateAction(out var action))
+        {
+            action.SkillAbility = PreviewingSkill;
+            action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
+            action.SkillExecution.InputPoint = point;
+            action.SpellSkill();
+        }
     }
 
     private void OnInputDirect(float direction, Vector3 point)
@@ -154,32 +159,36 @@ public class SkillPreviewComponent : EGamePlay.Component
             return;
 
         //Log.Debug($"OnInputDirect {direction}");
-        var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
-        action.SkillAbility = PreviewingSkill;
-        action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
-        action.SkillExecution.InputPoint = point;
-        action.SkillExecution.InputDirection = direction;
-        action.SpellSkill();
+        if (CombatEntity.SpellActionAbility.TryCreateAction(out var action))
+        {
+            action.SkillAbility = PreviewingSkill;
+            action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
+            action.SkillExecution.InputPoint = point;
+            action.SkillExecution.InputDirection = direction;
+            action.SpellSkill();
+        }
     }
 
     private void SelectTargetsWithDistance(float distance)
     {
-        var action = GetEntity<CombatEntity>().CreateAction<SpellAction>();
-        var enemiesRoot = GameObject.Find("Enemies");
-        foreach (Transform item in enemiesRoot.transform)
+        if (CombatEntity.SpellActionAbility.TryCreateAction(out var action))
         {
-            if (Vector3.Distance(item.position, Hero.Instance.transform.position) < distance)
+            var enemiesRoot = GameObject.Find("Enemies");
+            foreach (Transform item in enemiesRoot.transform)
             {
-                action.SkillTargets.Add(item.GetComponent<Monster>().CombatEntity);
+                if (Vector3.Distance(item.position, Hero.Instance.transform.position) < distance)
+                {
+                    action.SkillTargets.Add(item.GetComponent<Monster>().CombatEntity);
+                }
             }
+            if (action.SkillTargets.Count == 0)
+            {
+                action.ApplyAction();
+                return;
+            }
+            action.SkillAbility = PreviewingSkill;
+            action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
+            action.SpellSkill();
         }
-        if (action.SkillTargets.Count == 0)
-        {
-            action.ApplyAction();
-            return;
-        }
-        action.SkillAbility = PreviewingSkill;
-        action.SkillExecution = PreviewingSkill.CreateExecution() as SkillExecution;
-        action.SpellSkill();
     }
 }

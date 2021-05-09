@@ -48,6 +48,7 @@ namespace EGamePlay.Combat.Skill
         {
             base.ActivateAbility();
 
+#if !EGAMEPLAY_EXCEL
             //子状态效果
             if (SkillConfig.EnableChildrenStatuses)
             {
@@ -61,12 +62,14 @@ namespace EGamePlay.Combat.Skill
                     ChildrenStatuses.Add(status);
                 }
             }
+#endif
         }
 
         public override void EndAbility()
         {
             base.EndAbility();
 
+#if !EGAMEPLAY_EXCEL
             //子状态效果
             if (SkillConfig.EnableChildrenStatuses)
             {
@@ -76,6 +79,7 @@ namespace EGamePlay.Combat.Skill
                 }
                 ChildrenStatuses.Clear();
             }
+#endif
         }
 
         public override AbilityExecution CreateExecution()

@@ -7,11 +7,11 @@ using Sirenix.OdinInspector;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 行动点，一次战斗行动<see cref="CombatAction"/>会触发战斗实体一系列的行动点
+    /// 行动点，一次战斗行动<see cref="ActionExecution"/>会触发战斗实体一系列的行动点
     /// </summary>
     public sealed class ActionPoint
     {
-        public List<Action<CombatAction>> Listeners { get; set; } = new List<Action<CombatAction>>();
+        public List<Action<ActionExecution>> Listeners { get; set; } = new List<Action<ActionExecution>>();
     }
 
     [Flags]
@@ -81,7 +81,7 @@ namespace EGamePlay.Combat
             base.Setup();
         }
 
-        public void AddListener(ActionPointType actionPointType, Action<CombatAction> action)
+        public void AddListener(ActionPointType actionPointType, Action<ActionExecution> action)
         {
             if (!ActionPoints.ContainsKey(actionPointType))
             {
@@ -90,7 +90,7 @@ namespace EGamePlay.Combat
             ActionPoints[actionPointType].Listeners.Add(action);
         }
 
-        public void RemoveListener(ActionPointType actionPointType, Action<CombatAction> action)
+        public void RemoveListener(ActionPointType actionPointType, Action<ActionExecution> action)
         {
             if (ActionPoints.ContainsKey(actionPointType))
             {
@@ -98,7 +98,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        public void TriggerActionPoint(ActionPointType actionPointType, CombatAction action)
+        public void TriggerActionPoint(ActionPointType actionPointType, ActionExecution action)
         {
             if (ActionPoints.ContainsKey(actionPointType) && ActionPoints[actionPointType].Listeners.Count > 0)
             {

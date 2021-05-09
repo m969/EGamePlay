@@ -16,7 +16,7 @@ namespace EGamePlay.Combat.Status
             GetEntity<LogicEntity>().GetParent<StatusAbility>().OwnerEntity.ListenActionPoint(actionPointType, OnActionPointTrigger);
         }
 
-        private void OnActionPointTrigger(CombatAction combatAction)
+        private void OnActionPointTrigger(ActionExecution combatAction)
         {
             GetEntity<LogicEntity>().ApplyEffect();
         }
