@@ -36,6 +36,7 @@
 ---
 
 <img src="Readme/EGamePlay.gif" width="60%">
+<img src="Readme/EGamePlayTurn.gif" width="60%">
 
 ***
 
@@ -102,7 +103,8 @@ EffectConfigToJson
 
 ---
 ## 技能ScriptableObject配置和Excel配置流程切换命令
-![SkillConfigImage.png](Readme/Tools_Excel.png)
+<img src="Readme/Tools_Excel.png" width="60%">
+
 ![SkillConfigImage.png](Readme/Excel.png)
 
 ---
