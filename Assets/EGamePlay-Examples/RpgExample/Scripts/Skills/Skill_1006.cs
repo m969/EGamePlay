@@ -30,6 +30,7 @@ public class SkillExecution_1006 : SkillExecution
     public override void BeginExecute()
     {
         var channelPrefab = SkillExecutionAsset.transform.Find("Channel");
+        channelPrefab.gameObject.SetActive(false);
         for (int i = SkillTargets.Count - 1; i >= 0; i--)
         {
             var item = SkillTargets[i];
@@ -37,6 +38,7 @@ public class SkillExecution_1006 : SkillExecution
             var lineRenderer = channel.GetComponent<LineRenderer>();
             lineRenderer.SetPosition(1, item.Position);
             EntityChannels.Add(item, lineRenderer);
+            channel.gameObject.SetActive(true);
         }
         foreach (var item in EntityChannels)
         {

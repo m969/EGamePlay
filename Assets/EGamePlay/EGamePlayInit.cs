@@ -3,8 +3,6 @@ using EGamePlay.Combat;
 using ET;
 using System.Threading;
 using Sirenix.OdinInspector;
-using UnityEngine;
-
 
 
 public class EGamePlayInit : SerializedMonoBehaviour

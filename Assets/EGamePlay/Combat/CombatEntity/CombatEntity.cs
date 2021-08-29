@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 战斗实体
     /// </summary>
-    public sealed class CombatEntity : Entity
+    public sealed class CombatEntity : Entity, IPosition
     {
         public GameObject ModelObject { get; set; }
         public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();

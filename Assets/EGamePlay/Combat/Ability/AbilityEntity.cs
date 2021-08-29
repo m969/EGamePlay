@@ -41,6 +41,12 @@ namespace EGamePlay.Combat.Ability
             
         }
 
+        //禁用能力
+        public virtual void DeactivateAbility()
+        {
+
+        }
+
         //结束能力
         public virtual void EndAbility()
         {

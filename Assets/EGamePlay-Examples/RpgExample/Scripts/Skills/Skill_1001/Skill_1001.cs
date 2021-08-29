@@ -34,3 +34,8 @@ using UnityEngine.Playables;
 //        base.EndExecute();
 //    }
 //}
+
+public class Skill1001Ability : AbilityItem
+{
+
+}

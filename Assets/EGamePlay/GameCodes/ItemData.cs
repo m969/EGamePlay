@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EGamePlay.Combat
+namespace EGamePlay
 {
     public class ItemData : Entity
     {

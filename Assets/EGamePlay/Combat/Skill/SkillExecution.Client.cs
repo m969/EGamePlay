@@ -95,7 +95,7 @@ namespace EGamePlay.Combat.Skill
                     if (nowSeconds >= item.ColliderSpawnEmitter.time)
                     {
                         item.HasStart = true;
-                        SpawnCollider(item.ColliderSpawnEmitter);
+                        SpawnCollisionItem(item.ColliderSpawnEmitter);
                     }
                 }
             }
@@ -130,67 +130,6 @@ namespace EGamePlay.Combat.Skill
             }
         }
 
-        private void SpawnCollider(ColliderSpawnEmitter colliderSpawnEmitter)
-        {
-            if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly)
-            {
-                var taskData = new CastTargetFlyProjectileTaskData();
-                taskData.FlyTime = 0.3f;
-                taskData.TargetEntity = InputTarget;
-                var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
-                taskData.ProjectilePrefab = prefab.gameObject;
-                var task = Entity.CreateWithParent<CastTargetFlyProjectileTask>(OwnerEntity, taskData);
-                task.OnEnterCallback = () => { AbilityEntity.ApplyAbilityEffectsTo(InputTarget); };
-                task.ExecuteTaskAsync().Coroutine();
-            }
-            if (colliderSpawnEmitter.ColliderType == ColliderType.ForwardFly)
-            {
-                var taskData = new CastDirectFlyProjectileTaskData();
-                var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
-                //var prefab = GetChildByName(SkillExecutionAsset.transform, colliderSpawnEmitter.ColliderName);
-                taskData.ProjectilePrefab = prefab.gameObject;
-                taskData.DirectAngle = InputDirection;
-                var task = Entity.CreateWithParent<CastDirectFlyProjectileTask>(OwnerEntity, taskData);
-                task.OnCollisionCallback = (other) => {
-                    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
-                    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
-                    GameObject.Destroy(task.Projectile);
-                    Entity.Destroy(task);
-                };
-                task.AddComponent<UpdateComponent>();
-                task.ExecuteTaskAsync().Coroutine();
-            }
-            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedPosition)
-            {
-                var taskData = new CreateColliderTaskData();
-                taskData.Position = InputPoint;
-                var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
-                taskData.ColliderPrefab = prefab.gameObject;
-                taskData.LifeTime = (int)(colliderSpawnEmitter.ExistTime * 1000);
-                taskData.OnTriggerEnterCallback = (other) => {
-                    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
-                    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
-                };
-                var task = Entity.CreateWithParent<CreateColliderTask>(this, taskData);
-                task.ExecuteTaskAsync().Coroutine();
-            }
-            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedDirection)
-            {
-                var taskData = new CreateColliderTaskData();
-                taskData.Position = OwnerEntity.Position;
-                taskData.Direction = OwnerEntity.Direction;
-                var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
-                taskData.ColliderPrefab = prefab.gameObject;
-                taskData.LifeTime = (int)(colliderSpawnEmitter.ExistTime * 1000);
-                taskData.OnTriggerEnterCallback = (other) => {
-                    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
-                    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
-                };
-                var task = Entity.CreateWithParent<CreateColliderTask>(this, taskData);
-                task.ExecuteTaskAsync().Coroutine();
-            }
-        }
-
         public override void BeginExecute()
         {
             GetParent<CombatEntity>().CurrentSkillExecution = this;
@@ -213,5 +152,114 @@ namespace EGamePlay.Combat.Skill
             SkillTargets.Clear();
             base.EndExecute();
         }
+
+        private void SpawnCollisionItem(ColliderSpawnEmitter colliderSpawnEmitter)
+        {
+            if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly) TargetFlyProccess(colliderSpawnEmitter);
+            if (colliderSpawnEmitter.ColliderType == ColliderType.ForwardFly) ForwardFlyProccess(colliderSpawnEmitter);
+            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedPosition) FixedPositionProccess(colliderSpawnEmitter);
+            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedDirection) FixedDirectionProccess(colliderSpawnEmitter);
+        }
+
+        private void TargetFlyProccess(ColliderSpawnEmitter colliderSpawnEmitter)
+        {
+            var abilityItem = Entity.Create<AbilityItem>(colliderSpawnEmitter.ColliderName);
+            abilityItem.AbilityEntity = SkillAbility;
+            abilityItem.TargetEntity = InputTarget;
+            abilityItem.Position = OwnerEntity.Position;
+            CreateAbilityItemObj(abilityItem);
+            abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(InputTarget);
+        }
+
+        private void ForwardFlyProccess(ColliderSpawnEmitter colliderSpawnEmitter)
+        {
+            var abilityItem = Entity.Create<AbilityItem>(colliderSpawnEmitter.ColliderName);
+            abilityItem.AbilityEntity = SkillAbility;
+            abilityItem.Position = OwnerEntity.Position;
+            CreateAbilityItemObj(abilityItem);
+            var x = Mathf.Sin(Mathf.Deg2Rad * InputDirection);
+            var z = Mathf.Cos(Mathf.Deg2Rad * InputDirection);
+            var destination = abilityItem.Position + new Vector3(x, 0, z) * 30;
+            abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(destination, 1f).OnMoveFinish(()=> { Entity.Destroy(abilityItem); });
+        }
+
+        private void FixedPositionProccess(ColliderSpawnEmitter colliderSpawnEmitter)
+        {
+            var abilityItem = Entity.Create<AbilityItem>(colliderSpawnEmitter.ColliderName);
+            abilityItem.AbilityEntity = SkillAbility;
+            abilityItem.Position = InputPoint;
+            CreateAbilityItemObj(abilityItem);
+            abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
+        }
+
+        private void FixedDirectionProccess(ColliderSpawnEmitter colliderSpawnEmitter)
+        {
+            var abilityItem = Entity.Create<AbilityItem>(colliderSpawnEmitter.ColliderName);
+            abilityItem.AbilityEntity = SkillAbility;
+            abilityItem.Position = OwnerEntity.Position;
+            abilityItem.Direction = OwnerEntity.Direction;
+            CreateAbilityItemObj(abilityItem);
+            abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
+        }
+
+        public void CreateAbilityItemObj(AbilityItem abilityItem)
+        {
+            var abilityItemObj = Object.Instantiate(Resources.Load<GameObject>($"AbilityItems/{abilityItem.Name}"), abilityItem.Position, Quaternion.Euler(0, abilityItem.Direction, 0));
+            abilityItemObj.GetComponent<AbilityItemUnityProxyObj>().AbilityItem = abilityItem;
+            abilityItemObj.GetComponent<Collider>().enabled = false;
+            abilityItemObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => {
+                var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
+                abilityItem.OnCollision(combatEntity);
+            };
+            abilityItemObj.GetComponent<Collider>().enabled = true;
+        }
     }
 }
+
+//var taskData = new CastTargetFlyProjectileTaskData();
+//taskData.FlyTime = 0.3f;
+//taskData.TargetEntity = InputTarget;
+//var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
+//taskData.ProjectilePrefab = prefab.gameObject;
+//var task = Entity.CreateWithParent<CastTargetFlyProjectileTask>(OwnerEntity, taskData);
+//task.OnEnterCallback = () => { AbilityEntity.ApplyAbilityEffectsTo(InputTarget); };
+//task.ExecuteTaskAsync().Coroutine();
+
+//var taskData = new CastDirectFlyProjectileTaskData();
+//var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
+//taskData.ProjectilePrefab = prefab.gameObject;
+//taskData.DirectAngle = InputDirection;
+//var task = Entity.CreateWithParent<CastDirectFlyProjectileTask>(OwnerEntity, taskData);
+//task.OnCollisionCallback = (other) => {
+//    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
+//    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
+//    GameObject.Destroy(task.Projectile);
+//    Entity.Destroy(task);
+//};
+//task.AddComponent<UpdateComponent>();
+//task.ExecuteTaskAsync().Coroutine();
+
+//var taskData = new CreateColliderTaskData();
+//taskData.Position = InputPoint;
+//var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
+//taskData.ColliderPrefab = prefab.gameObject;
+//taskData.LifeTime = (int)(colliderSpawnEmitter.ExistTime * 1000);
+//taskData.OnTriggerEnterCallback = (other) => {
+//    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
+//    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
+//};
+//var task = Entity.CreateWithParent<CreateColliderTask>(this, taskData);
+//task.ExecuteTaskAsync().Coroutine();
+
+//var taskData = new CreateColliderTaskData();
+//taskData.Position = OwnerEntity.Position;
+//taskData.Direction = OwnerEntity.Direction;
+//var prefab = SkillExecutionAsset.transform.Find(colliderSpawnEmitter.ColliderName);
+//taskData.ColliderPrefab = prefab.gameObject;
+//taskData.LifeTime = (int)(colliderSpawnEmitter.ExistTime * 1000);
+//taskData.OnTriggerEnterCallback = (other) => {
+//    var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
+//    AbilityEntity.ApplyAbilityEffectsTo(combatEntity);
+//};
+//var task = Entity.CreateWithParent<CreateColliderTask>(this, taskData);
+//task.ExecuteTaskAsync().Coroutine();
