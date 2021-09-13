@@ -23,7 +23,7 @@ namespace EGamePlay.Combat
         public CureActionAbility CureActionAbility { get; private set; }
         public AttackActionAbility AttackActionAbility { get; private set; }
         public AssignEffectActionAbility AssignEffectActionAbility { get; private set; }
-        public TurnActionAbility TurnActionAbility { get; private set; }
+        public RoundActionAbility RoundActionAbility { get; private set; }
         public JumpToActionAbility JumpToActionAbility { get; private set; }
 
         public AttackAbility AttackAbility { get; set; }
@@ -45,15 +45,15 @@ namespace EGamePlay.Combat
             //AddComponent<MotionComponent>();
             CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
             CurrentHealth.Reset();
-            SpellActionAbility = AttachActionAbility<SpellActionAbility>();
-            MotionActionAbility = AttachActionAbility<MotionActionAbility>();
-            DamageActionAbility = AttachActionAbility<DamageActionAbility>();
-            CureActionAbility = AttachActionAbility<CureActionAbility>();
-            AttackActionAbility = AttachActionAbility<AttackActionAbility>();
-            AssignEffectActionAbility = AttachActionAbility<AssignEffectActionAbility>();
-            TurnActionAbility = AttachActionAbility<TurnActionAbility>();
-            JumpToActionAbility = AttachActionAbility<JumpToActionAbility>();
-            AttackAbility = CreateChild<AttackAbility>();
+            SpellActionAbility = AttachAction<SpellActionAbility>();
+            MotionActionAbility = AttachAction<MotionActionAbility>();
+            DamageActionAbility = AttachAction<DamageActionAbility>();
+            CureActionAbility = AttachAction<CureActionAbility>();
+            AttackActionAbility = AttachAction<AttackActionAbility>();
+            AssignEffectActionAbility = AttachAction<AssignEffectActionAbility>();
+            RoundActionAbility = AttachAction<RoundActionAbility>();
+            JumpToActionAbility = AttachAction<JumpToActionAbility>();
+            AttackAbility = AddChild<AttackAbility>();
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace EGamePlay.Combat
             return ability;
         }
 
-        public T AttachActionAbility<T>() where T : ActionAbility
+        public T AttachAction<T>() where T : ActionAbility
         {
             var action = AttachAbility<T>(null);
             TypeActions.Add(typeof(T), action);

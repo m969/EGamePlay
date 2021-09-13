@@ -134,13 +134,15 @@
         [LabelText("生命值")]
         HealthPoint = 1000,
         [LabelText("攻击力")]
-        AttackPower = 1001,
+        Attack = 1001,
         [LabelText("护甲值")]
-        AttackDefense = 1002,
+        Defense = 1002,
         [LabelText("法术强度")]
-        SpellPower = 1003,
+        AbilityPower = 1003,
         [LabelText("魔法抗性")]
-        MagicDefense = 1004,
+        SpellResistance = 1004,
+        [LabelText("吸血")]
+        SuckBlood = 1005,
 
         [LabelText("暴击概率")]
         CriticalProbability = 2001,

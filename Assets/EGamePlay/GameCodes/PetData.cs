@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EGamePlay
 {
-    public class PetData : Entity
+    public partial class PetData : Entity
     {
         public long UniqueId { get; set; }
         public int ConfigId { get; set; }

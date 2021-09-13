@@ -204,11 +204,11 @@ namespace EGamePlay.Combat.Skill
 
         public void CreateAbilityItemObj(AbilityItem abilityItem)
         {
-            var abilityItemObj = Object.Instantiate(Resources.Load<GameObject>($"AbilityItems/{abilityItem.Name}"), abilityItem.Position, Quaternion.Euler(0, abilityItem.Direction, 0));
-            abilityItemObj.GetComponent<AbilityItemUnityProxyObj>().AbilityItem = abilityItem;
+            var abilityItemObj = GameObject.Instantiate(Resources.Load<GameObject>($"AbilityItems/{abilityItem.Name}"), abilityItem.Position, Quaternion.Euler(0, abilityItem.Direction, 0));
+            abilityItemObj.GetComponent<AbilityItemProxyObj>().AbilityItem = abilityItem;
             abilityItemObj.GetComponent<Collider>().enabled = false;
             abilityItemObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => {
-                var combatEntity = CombatContext.Instance.GameObject2Entitys[other.gameObject];
+                var combatEntity = CombatContext.Instance.Object2Entities[other.gameObject];
                 abilityItem.OnCollision(combatEntity);
             };
             abilityItemObj.GetComponent<Collider>().enabled = true;

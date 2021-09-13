@@ -6,17 +6,13 @@ using EGamePlay.Combat.Ability;
 using EGamePlay.Combat.Skill;
 using EGamePlay.Combat;
 using EGamePlay;
-using ET;
-using Log = EGamePlay.Log;
-using UnityEngine.Timeline;
-using UnityEngine.Playables;
 
 
 public class SkillAbility_1006 : SkillAbility
 {
     public override AbilityExecution CreateExecution()
     {
-        var abilityExecution = Parent.CreateChild<SkillExecution_1006>(this);
+        var abilityExecution = Parent.AddChild<SkillExecution_1006>(this);
         abilityExecution.AddComponent<UpdateComponent>();
         return abilityExecution;
     }
@@ -55,14 +51,6 @@ public class SkillExecution_1006 : SkillExecution
             EndExecute();
             return;
         }
-        //for (int i = SkillTargets.Count - 1; i >= 0; i--)
-        //{
-        //    var item = SkillTargets[i];
-        //    if (Vector3.Distance(item.Position, GetParent<CombatEntity>().Position) > 5)
-        //    {
-        //        SkillTargets.Remove(item);
-        //    }
-        //}
         foreach (var item in EntityChannels)
         {
             item.Value.SetPosition(0, OwnerEntity.Position);

@@ -2,7 +2,7 @@
 
 namespace GameUtils
 {
-#if SERVER
+#if NOT_UNITY
     public static class Time
     {
         public static long FrameEndTime;

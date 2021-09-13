@@ -23,7 +23,7 @@ public class WorkFlow : Entity
     public WorkFlow ToEnter<T>() where T : WorkFlow
     {
         //Log.Debug($"{GetType().Name}->ToEnter {typeof(T).Name}");
-        var workflow = CreateChild<T>();
+        var workflow = AddChild<T>();
         workflow.FlowSource = FlowSource;
         PostWorkFlow = workflow;
         workflow.PreWorkFlow = this;

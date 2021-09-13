@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Sirenix.OdinInspector;
-#if !SERVER
+#if !NOT_UNITY
 using Sirenix.Utilities.Editor;
 #endif
 
@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
     [CreateAssetMenu(fileName = "技能配置", menuName = "技能|状态/技能配置")]
     [LabelText("技能配置")]
     public class SkillConfigObject
-#if !SERVER
+#if !NOT_UNITY
         : SerializedScriptableObject
 #endif
     {
@@ -93,7 +93,7 @@ namespace EGamePlay.Combat
             //SkillHelper.AddEffect(Effects, EffectType);
         }
 
-#if !SERVER
+#if !NOT_UNITY
         [OnInspectorGUI("BeginBox", append: false)]
         [LabelText("技能执行")]
         public GameObject SkillExecutionAsset;

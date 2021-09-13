@@ -7,7 +7,7 @@ using ET;
 
 namespace EGamePlay.Combat
 {
-    public class TurnActionAbility : ActionAbility<TurnAction>
+    public class RoundActionAbility : ActionAbility<RoundAction>
     {
 
     }
@@ -15,9 +15,9 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 回合行动
     /// </summary>
-    public class TurnAction : ActionExecution<TurnActionAbility>
+    public class RoundAction : ActionExecution<RoundActionAbility>
     {
-        public int TurnActionType { get; set; }
+        public int RoundActionType { get; set; }
 
 
         //前置处理
@@ -26,7 +26,7 @@ namespace EGamePlay.Combat
 
         }
 
-        public async ETTask ApplyTurn()
+        public async ETTask ApplyRound()
         {
             PreProcess();
 

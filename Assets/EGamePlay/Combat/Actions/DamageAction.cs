@@ -32,7 +32,7 @@ namespace EGamePlay.Combat
             var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(DamageEffect.DamageValueProperty);
             if (expression.Parameters.ContainsKey("自身攻击力"))
             {
-                expression.Parameters["自身攻击力"].Value = Creator.GetComponent<AttributeComponent>().AttackPower.Value;
+                expression.Parameters["自身攻击力"].Value = Creator.GetComponent<AttributeComponent>().Attack.Value;
             }
             return (int)expression.Value;
         }
@@ -43,7 +43,7 @@ namespace EGamePlay.Combat
             if (DamageSource == DamageSource.Attack)
             {
                 IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;
-                DamageValue = (int)Mathf.Max(1, Creator.GetComponent<AttributeComponent>().AttackPower.Value - Target.GetComponent<AttributeComponent>().AttackDefense.Value);
+                DamageValue = (int)Mathf.Max(1, Creator.GetComponent<AttributeComponent>().Attack.Value - Target.GetComponent<AttributeComponent>().Defense.Value);
                 if (IsCritical)
                 {
                     DamageValue = (int)(DamageValue * 1.5f);

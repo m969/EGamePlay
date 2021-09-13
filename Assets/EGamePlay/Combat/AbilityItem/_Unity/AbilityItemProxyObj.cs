@@ -9,7 +9,7 @@ namespace EGamePlay.Combat.Ability
     /// <summary>
     /// 能力单元体Unity前端表现代理
     /// </summary>
-    public class AbilityItemUnityProxyObj : MonoBehaviour
+    public class AbilityItemProxyObj : MonoBehaviour
     {
         public AbilityItem AbilityItem { get; set; }
 

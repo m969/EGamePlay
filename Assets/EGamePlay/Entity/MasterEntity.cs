@@ -22,7 +22,7 @@ namespace EGamePlay
             if (Instance == null)
             {
                 Instance = new MasterEntity();
-#if !SERVER
+#if !NOT_UNITY
                 Instance.AddComponent<GameObjectComponent>();
 #endif
             }
@@ -34,7 +34,7 @@ namespace EGamePlay
             Instance = null;
         }
 
-        public void Update()
+        public override void Update()
         {
             if (AllComponents.Count == 0)
             {

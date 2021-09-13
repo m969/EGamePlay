@@ -33,50 +33,50 @@ namespace EGamePlay
 
         public static T Create<T>() where T : Entity
         {
-            var entity = NewEntity(typeof(T)) as T;
-            entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->Create, {typeof(T).Name}={entity.InstanceId}");
-            Master.AddChild(entity);
-            entity.Awake();
-            return entity;
+            return Create(typeof(T)) as T;
         }
 
         public static T Create<T>(object initData) where T : Entity
         {
-            var entity = NewEntity(typeof(T)) as T;
-            entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->Create, {typeof(T).Name}={entity.InstanceId}, {initData}");
-            Master.AddChild(entity);
-            entity.Awake(initData);
-            return entity;
+            return Create(typeof(T), initData) as T;
+        }
+
+        public static T CreateWithId<T>(long id) where T : Entity
+        {
+            return CreateWithId(typeof(T), id) as T;
+        }
+
+        public static T CreateWithId<T>(long id, object initData) where T : Entity
+        {
+            return CreateWithId(typeof(T), id, initData) as T;
         }
 
         public static T CreateWithParent<T>(Entity parent) where T : Entity
         {
-            var entity = NewEntity(typeof(T)) as T;
-            entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
-            parent.AddChild(entity);
-            entity.Awake();
-            return entity;
+            return CreateWithParent(typeof(T), parent) as T;
         }
 
         public static T CreateWithParent<T>(Entity parent, object initData) where T : Entity
         {
-            var entity = NewEntity(typeof(T)) as T;
-            entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {typeof(T).Name}={entity.InstanceId}");
-            parent.AddChild(entity);
-            entity.Awake(initData);
-            return entity;
+            return CreateWithParent(typeof(T), parent, initData) as T;
+        }
+
+        public static T CreateWithParentAndId<T>(Entity parent, long id) where T : Entity
+        {
+            return CreateWithParentAndId(typeof(T), parent, id) as T;
+        }
+
+        public static T CreateWithParentAndId<T>(Entity parent, long id, object initData) where T : Entity
+        {
+            return CreateWithParentAndId(typeof(T), parent, id, initData) as T;
         }
 
         public static Entity Create(Type entityType)
         {
             var entity = NewEntity(entityType);
             entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.InstanceId}");
-            Master.AddChild(entity);
+            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.Id}");
+            Master.SetChild(entity);
             entity.Awake();
             return entity;
         }
@@ -85,8 +85,28 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.InstanceId}, {initData}");
-            Master.AddChild(entity);
+            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.Id}, {initData}");
+            Master.SetChild(entity);
+            entity.Awake(initData);
+            return entity;
+        }
+
+        public static Entity CreateWithId(Type entityType, long id)
+        {
+            var entity = NewEntity(entityType);
+            entity.Id = id;
+            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.Id}");
+            Master.SetChild(entity);
+            entity.Awake();
+            return entity;
+        }
+
+        public static Entity CreateWithId(Type entityType, long id, object initData)
+        {
+            var entity = NewEntity(entityType);
+            entity.Id = id;
+            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.Id}, {initData}");
+            Master.SetChild(entity);
             entity.Awake(initData);
             return entity;
         }
@@ -95,8 +115,18 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.InstanceId}");
-            parent.AddChild(entity);
+            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+            parent.SetChild(entity);
+            entity.Awake();
+            return entity;
+        }
+
+        public static Entity CreateWithParentAndId(Type entityType, Entity parent, long id)
+        {
+            var entity = NewEntity(entityType);
+            entity.Id = id;
+            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+            parent.SetChild(entity);
             entity.Awake();
             return entity;
         }
@@ -105,8 +135,18 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.InstanceId}");
-            parent.AddChild(entity);
+            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+            parent.SetChild(entity);
+            entity.Awake(initData);
+            return entity;
+        }
+
+        public static Entity CreateWithParentAndId(Type entityType, Entity parent, long id, object initData)
+        {
+            var entity = NewEntity(entityType);
+            entity.Id = id;
+            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+            parent.SetChild(entity);
             entity.Awake(initData);
             return entity;
         }
@@ -122,7 +162,7 @@ namespace EGamePlay
     {
         public long Id { get; set; }
         private string name;
-        public string Name
+        public virtual string Name
         {
             get => name;
             set
@@ -141,12 +181,12 @@ namespace EGamePlay
         public Action<Component> OnRemoveComponentAction { get; set; }
         public Action<Entity> OnAddChildAction { get; set; }
         public Action<Entity> OnRemoveChildAction { get; set; }
-        
+
 
         public Entity()
         {
-#if !SERVER
-            if (this is MasterEntity) {}
+#if !NOT_UNITY
+            if (this is MasterEntity) { }
             else AddComponent<GameObjectComponent>();
 #endif
         }
@@ -253,7 +293,7 @@ namespace EGamePlay
 
         public T GetComponent<T>() where T : Component
         {
-            if (this.Components.TryGetValue(typeof(T),  out var component))
+            if (this.Components.TryGetValue(typeof(T), out var component))
             {
                 return component as T;
             }
@@ -263,24 +303,18 @@ namespace EGamePlay
         public void SetParent(Entity parent)
         {
             Parent?.RemoveChild(this);
-            parent?.AddChild(this);
+            parent?.SetChild(this);
         }
 
-        public void AddChild(Entity child)
+        public void SetChild(Entity child)
         {
             var childrenComponent = GetComponent<ChildrenComponent>();
-            if (childrenComponent == null)
-            {
-                childrenComponent = AddComponent<ChildrenComponent>();
-            }
+            if (childrenComponent == null) childrenComponent = AddComponent<ChildrenComponent>();
 
             var Children = childrenComponent.Children;
             var Type2Children = childrenComponent.Type2Children;
             Children.Add(child);
-            if (!Type2Children.ContainsKey(child.GetType()))
-            {
-                Type2Children.Add(child.GetType(), new List<Entity>());
-            }
+            if (!Type2Children.ContainsKey(child.GetType())) Type2Children.Add(child.GetType(), new List<Entity>());
             Type2Children[child.GetType()].Add(child);
             child.Parent = this;
             OnAddChildAction?.Invoke(child);
@@ -292,25 +326,27 @@ namespace EGamePlay
             var Children = childrenComponent.Children;
             var Type2Children = childrenComponent.Type2Children;
             Children.Remove(child);
-            if (Type2Children.ContainsKey(child.GetType()))
-            {
-                Type2Children[child.GetType()].Remove(child);
-            }
+            if (Type2Children.ContainsKey(child.GetType())) Type2Children[child.GetType()].Remove(child);
             child.Parent = Master;
             OnRemoveChildAction?.Invoke(child);
         }
 
-        public Entity CreateChild(Type entityType)
+        public Entity AddChild(Type entityType)
         {
             return CreateWithParent(entityType, this);
         }
 
-        public T CreateChild<T>() where T : Entity
+        public T AddChild<T>() where T : Entity
         {
             return CreateWithParent<T>(this);
         }
 
-        public T CreateChild<T>(object initData) where T : Entity
+        public T AddChildWithId<T>(long id) where T : Entity
+        {
+            return CreateWithParent<T>(this);
+        }
+
+        public T AddChild<T>(object initData) where T : Entity
         {
             return CreateWithParent<T>(this, initData);
         }

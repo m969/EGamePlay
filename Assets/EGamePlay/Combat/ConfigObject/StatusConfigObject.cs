@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
     [CreateAssetMenu(fileName = "状态配置", menuName = "技能|状态/状态配置")]
     //[LabelText("状态配置")]
     public class StatusConfigObject
-#if !SERVER
+#if !NOT_UNITY
         : SerializedScriptableObject
 #endif
     {
@@ -132,7 +132,7 @@ namespace EGamePlay.Combat
             //SkillHelper.AddEffect(Effects, EffectType);
         }
 
-#if !SERVER
+#if !NOT_UNITY
         [LabelText("状态特效")]
         [OnInspectorGUI("BeginBox", append:false)]
         public GameObject ParticleEffect;

@@ -2,7 +2,7 @@
 
 namespace EGamePlay
 {
-#if !SERVER
+#if !NOT_UNITY
     public static class Log
     {
         public static void Debug(string log)

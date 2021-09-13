@@ -13,7 +13,7 @@ public class CombatFlow : WorkFlow
 
     public override void Awake()
     {
-        FlowSource = CreateChild<WorkFlowSource>();
+        FlowSource = AddChild<WorkFlowSource>();
         FlowSource.ToEnter<CombatCreateFlow>().ToEnter<CombatRunFlow>().ToEnter<CombatFinishFlow>().ToRestart();
     }
 

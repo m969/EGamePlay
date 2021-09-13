@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
     {
         public static CombatContext Instance { get; private set; }
 #if !SERVER
-        public Dictionary<GameObject, CombatEntity> GameObject2Entitys { get; set; } = new Dictionary<GameObject, CombatEntity>();
+        public Dictionary<GameObject, CombatEntity> Object2Entities { get; set; } = new Dictionary<GameObject, CombatEntity>();
 #endif
 
 
@@ -30,21 +30,18 @@ namespace EGamePlay.Combat
         #region 回合制战斗
         //public GameTimer TurnRoundTimer { get; set; } = new GameTimer(2f);
         public Dictionary<int, CombatEntity> HeroEntities { get; set; } = new Dictionary<int, CombatEntity>();
-        public Dictionary<int, CombatEntity> MonsterEntities { get; set; } = new Dictionary<int, CombatEntity>();
-        public List<TurnAction> TurnActions { get; set; } = new List<TurnAction>();
+        public Dictionary<int, CombatEntity> EnemyEntities { get; set; } = new Dictionary<int, CombatEntity>();
+        public List<RoundAction> RoundActions { get; set; } = new List<RoundAction>();
 
 
         public override void Update()
         {
-            //if (TurnRoundTimer.IsRunning)
-            //{
-            //    TurnRoundTimer.UpdateAsFinish(Time.deltaTime, StartCombat);
-            //}
+
         }
 
         public CombatEntity AddHeroEntity(int seat)
         {
-            var entity = CreateChild<CombatEntity>();
+            var entity = AddChild<CombatEntity>();
             entity.IsHero = true;
             HeroEntities.Add(seat, entity);
             entity.SeatNumber = seat;
@@ -53,9 +50,9 @@ namespace EGamePlay.Combat
 
         public CombatEntity AddMonsterEntity(int seat)
         {
-            var entity = CreateChild<CombatEntity>();
+            var entity = AddChild<CombatEntity>();
             entity.IsHero = false;
-            MonsterEntities.Add(seat, entity);
+            EnemyEntities.Add(seat, entity);
             entity.SeatNumber = seat;
             return entity;
         }
@@ -67,31 +64,31 @@ namespace EGamePlay.Combat
 
         public CombatEntity GetMonster(int seat)
         {
-            return MonsterEntities[seat];
+            return EnemyEntities[seat];
         }
 
         public void OnCombatEntityDead(CombatEntity combatEntity)
         {
             if (combatEntity.IsHero) HeroEntities.Remove(combatEntity.SeatNumber);
-            else MonsterEntities.Remove(combatEntity.SeatNumber);
+            else EnemyEntities.Remove(combatEntity.SeatNumber);
         }
 
         public async void StartCombat()
         {
-            RefreshActions();
-            foreach (var item in TurnActions)
+            RefreshRoundActions();
+            foreach (var item in RoundActions)
             {
                 if (item.Creator.CheckDead() || item.Target.CheckDead())
                 {
                     continue;
                 }
-                await item.ApplyTurn();
+                await item.ApplyRound();
             }
             await TimerComponent.Instance.WaitAsync(1000);
-            if (HeroEntities.Count == 0 || MonsterEntities.Count == 0)
+            if (HeroEntities.Count == 0 || EnemyEntities.Count == 0)
             {
                 HeroEntities.Clear();
-                MonsterEntities.Clear();
+                EnemyEntities.Clear();
                 await TimerComponent.Instance.WaitAsync(2000);
                 this.Publish(new CombatEndEvent());
                 return;
@@ -99,42 +96,42 @@ namespace EGamePlay.Combat
             StartCombat();
         }
 
-        public void RefreshActions()
+        public void RefreshRoundActions()
         {
-            foreach (var item in TurnActions)
+            foreach (var item in RoundActions)
             {
                 Entity.Destroy(item);
             }
-            TurnActions.Clear();
+            RoundActions.Clear();
 
             foreach (var item in HeroEntities)
             {
-                if (item.Value.TurnActionAbility.TryCreateAction(out var turnAction))
+                if (item.Value.RoundActionAbility.TryCreateAction(out var turnAction))
                 {
-                    if (MonsterEntities.ContainsKey(item.Key))
+                    if (EnemyEntities.ContainsKey(item.Key))
                     {
-                        turnAction.Target = MonsterEntities[item.Key];
+                        turnAction.Target = EnemyEntities[item.Key];
                     }
                     else
                     {
-                        turnAction.Target = MonsterEntities.Values.ToArray().First();
+                        turnAction.Target = EnemyEntities.Values.ToArray().First();
                     }
-                    TurnActions.Add(turnAction);
+                    RoundActions.Add(turnAction);
                 }
             }
-            foreach (var item in MonsterEntities)
+            foreach (var item in EnemyEntities)
             {
-                if (item.Value.TurnActionAbility.TryCreateAction(out var turnAction))
+                if (item.Value.RoundActionAbility.TryCreateAction(out var roundAction))
                 {
                     if (HeroEntities.ContainsKey(item.Key))
                     {
-                        turnAction.Target = HeroEntities[item.Key];
+                        roundAction.Target = HeroEntities[item.Key];
                     }
                     else
                     {
-                        turnAction.Target = HeroEntities.Values.ToArray().First();
+                        roundAction.Target = HeroEntities.Values.ToArray().First();
                     }
-                    TurnActions.Add(turnAction);
+                    RoundActions.Add(roundAction);
                 }
             }
         }

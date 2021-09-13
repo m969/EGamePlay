@@ -5,11 +5,11 @@ using Sirenix.OdinInspector;
 
 namespace EGamePlay.Combat
 {
-	[CreateAssetMenu(fileName = "战斗属性配置", menuName = "技能|状态/战斗属性配置")]
+	//[CreateAssetMenu(fileName = "战斗属性配置", menuName = "技能|状态/战斗属性配置")]
     //[LabelText("战斗属性配置")]
     public class AttributeConfigObject
-#if !SERVER
-	    : SerializedScriptableObject
+#if !NOT_UNITY
+		: SerializedScriptableObject
 #endif
     {
 		[LabelText("属性配置")]

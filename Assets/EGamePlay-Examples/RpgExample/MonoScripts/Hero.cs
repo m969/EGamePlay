@@ -44,7 +44,8 @@ public sealed class Hero : MonoBehaviour
     {
         Instance = this;
         CombatEntity = Entity.CreateWithParent<CombatEntity>(CombatContext.Instance);
-        CombatEntity.AddComponent<SkillPreviewComponent>();
+        CombatEntity.AddComponent<SpellComponent>();
+        CombatEntity.AddComponent<SpellPreviewComponent>();
         CombatEntity.AddComponent<EquipmentComponent>();
         //CombatEntity.GetComponent<MotionComponent>().Enable = false;
         CombatEntity.ListenActionPoint(ActionPointType.PreSpell, OnPreSpell);
@@ -231,7 +232,7 @@ public sealed class Hero : MonoBehaviour
             SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
             SpawnHitEffect(transform.position, monster.transform.position);
 
-            CombatEntity.GetComponent<AttributeComponent>().AttackPower.SetBase(ET.RandomHelper.RandomNumber(600, 999));
+            CombatEntity.GetComponent<AttributeComponent>().Attack.SetBase(ET.RandomHelper.RandomNumber(600, 999));
 
             action.Target = monster.GetComponent<Monster>().CombatEntity;
             action.ApplyAttack();

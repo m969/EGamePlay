@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-#if SERVER
+#if NOT_UNITY
 namespace Sirenix.OdinInspector
 {
     [Conditional("UNITY_EDITOR")]
@@ -10,6 +10,27 @@ namespace Sirenix.OdinInspector
         public LabelTextAttribute(string labelName)
         {
             
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
+    [Conditional("UNITY_EDITOR")]
+    public sealed class SuffixLabelAttribute : Attribute
+    {
+        /// <summary>The label displayed at the end of the property.</summary>
+        public string Label;
+        /// <summary>
+        /// If <c>true</c> the suffix label will be drawn on top of the property, instead of after.
+        /// </summary>
+        public bool Overlay;
+
+        /// <summary>Draws a label at the end of the property.</summary>
+        /// <param name="label">The text of the label.</param>
+        /// <param name="overlay">If <c>true</c> the suffix label will be drawn on top of the property, instead of after.</param>
+        public SuffixLabelAttribute(string label, bool overlay = false)
+        {
+            this.Label = label;
+            this.Overlay = overlay;
         }
     }
 
@@ -769,7 +790,21 @@ namespace UnityEngine
 {
     public class GameObject
     {
+        public bool activeSelf { get; set; }
+    }
 
+    public class Transform
+    {
+
+    }
+
+    public class Animation
+    {
+
+    }
+
+    public sealed class SerializeField : Attribute
+    {
     }
 
     /// <summary>
@@ -858,27 +893,6 @@ namespace UnityEngine
         public SpaceAttribute(float height)
         {
             this.height = height;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
-    [Conditional("UNITY_EDITOR")]
-    public sealed class SuffixLabelAttribute : Attribute
-    {
-        /// <summary>The label displayed at the end of the property.</summary>
-        public string Label;
-        /// <summary>
-        /// If <c>true</c> the suffix label will be drawn on top of the property, instead of after.
-        /// </summary>
-        public bool Overlay;
-
-        /// <summary>Draws a label at the end of the property.</summary>
-        /// <param name="label">The text of the label.</param>
-        /// <param name="overlay">If <c>true</c> the suffix label will be drawn on top of the property, instead of after.</param>
-        public SuffixLabelAttribute(string label, bool overlay = false)
-        {
-            this.Label = label;
-            this.Overlay = overlay;
         }
     }
 
