@@ -1,5 +1,0 @@
-{
-"1001":{"Id":1001,"Name":"黑火球术","Target":"技能目标","Probability":"100","StatusID":"Weak","Duration":"4"},
-"1002":{"Id":1002,"Name":"炎爆","Target":"技能目标","Probability":"100","StatusID":"Vertigo","Duration":"4"},
-"1004":{"Id":1004,"Name":"血红激光炮","Target":"技能目标","Probability":"100","StatusID":"Burn","Duration":"4","Param1":"伤害取值=260","Param2":"间隔时间=0.3"}
-}

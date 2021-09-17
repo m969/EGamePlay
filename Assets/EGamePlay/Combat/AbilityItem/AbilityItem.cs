@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using ET;
 
-namespace EGamePlay.Combat.Ability
+namespace EGamePlay.Combat
 {
     /// <summary>
     /// 能力单元体

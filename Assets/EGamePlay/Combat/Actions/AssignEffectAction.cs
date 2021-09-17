@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using EGamePlay.Combat.Ability;
-using EGamePlay.Combat.Status;
-using EGamePlay.Combat.Skill;
+using EGamePlay.Combat;
 
 namespace EGamePlay.Combat
 {

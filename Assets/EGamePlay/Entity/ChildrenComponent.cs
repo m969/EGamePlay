@@ -8,8 +8,27 @@ namespace EGamePlay
     {
         public List<Entity> Children { get; private set; } = new List<Entity>();
         public Dictionary<Type, List<Entity>> Type2Children { get; private set; } = new Dictionary<Type, List<Entity>>();
-        
-        
+
+
+        public void SetChild(Entity child)
+        {
+            var childrenComponent = this;
+            var Children = childrenComponent.Children;
+            var Type2Children = childrenComponent.Type2Children;
+            Children.Add(child);
+            if (!Type2Children.ContainsKey(child.GetType())) Type2Children.Add(child.GetType(), new List<Entity>());
+            Type2Children[child.GetType()].Add(child);
+        }
+
+        public void RemoveChild(Entity child)
+        {
+            var childrenComponent = this;
+            var Children = childrenComponent.Children;
+            var Type2Children = childrenComponent.Type2Children;
+            Children.Remove(child);
+            if (Type2Children.ContainsKey(child.GetType())) Type2Children[child.GetType()].Remove(child);
+        }
+
         public Entity[] GetChildren()
         {
             return Children.ToArray();

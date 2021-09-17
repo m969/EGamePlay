@@ -1,6 +1,4 @@
-﻿using EGamePlay.Combat.Ability;
-using EGamePlay.Combat.Status;
-using EGamePlay.Combat.Skill;
+﻿using EGamePlay.Combat;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 {
-"1001":{"Id":1001,"Name":"黑火球术","Type":"主动","TargetSelect":"手动指定","Cooldown":0,"Effect1":"Damage=1001","Effect2":"AddStatus=1001"},
-"1002":{"Id":1002,"Name":"炎爆","Type":"主动","TargetSelect":"固定区域场检测","Cooldown":0,"Effect1":"Damage=1002","Effect2":"AddStatus=1002"},
-"1003":{"Id":1003,"Name":"治愈","Type":"主动","TargetSelect":"手动指定","Cooldown":0,"Effect1":"Cure=1003","Effect2":"净化"},
-"1004":{"Id":1004,"Name":"血红激光炮","Type":"主动","TargetSelect":"固定区域场检测","Cooldown":0,"Effect1":"Damage=1004","Effect2":"AddStatus=1004"}
+"1001":{"Id":1001,"Name":"黑火球术","Type":"主动","TargetSelect":"手动指定","Cooldown":0,"Effect1":"AddStatus=Id","DamageTarget":"技能目标","Probability":"10000","DamageType":"魔法伤害","ValueFormula":"300+自身攻击力*0.4"},
+"1002":{"Id":1002,"Name":"炎爆","Type":"主动","TargetSelect":"固定区域场检测","Cooldown":0,"Effect1":"AddStatus=Id","DamageTarget":"技能目标","Probability":"10000","DamageType":"魔法伤害","ValueFormula":"800"},
+"1003":{"Id":1003,"Name":"治愈","Type":"主动","TargetSelect":"手动指定","Cooldown":0,"Effect1":"Cure=Id","Effect2":"净化"},
+"1004":{"Id":1004,"Name":"血红激光炮","Type":"主动","TargetSelect":"固定区域场检测","Cooldown":0,"Effect1":"AddStatus=Id","DamageTarget":"技能目标","Probability":"10000","DamageType":"魔法伤害","ValueFormula":"3333"}
 }

@@ -21,5 +21,9 @@ namespace ET
 		public string Effect1;
 		public string Effect2;
 		public string Effect3;
+		public string DamageTarget;
+		public string Probability;
+		public string DamageType;
+		public string ValueFormula;
 	}
 }

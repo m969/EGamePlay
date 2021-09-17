@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameUtils;
 
-namespace EGamePlay.Combat.Status
+namespace EGamePlay.Combat
 {
     /// <summary>
     /// 状态的生命周期组件

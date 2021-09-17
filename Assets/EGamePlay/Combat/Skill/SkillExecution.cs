@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using EGamePlay.Combat.Ability;
+using EGamePlay.Combat;
 using ET;
 using Log = EGamePlay.Log;
 
-namespace EGamePlay.Combat.Skill
+namespace EGamePlay.Combat
 {
     /// <summary>
     /// 技能执行体

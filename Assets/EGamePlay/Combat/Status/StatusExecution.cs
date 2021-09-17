@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using EGamePlay.Combat.Ability;
+using EGamePlay.Combat;
 
-namespace EGamePlay.Combat.Skill
+namespace EGamePlay.Combat
 {
     /// <summary>
     /// 状态能力执行体

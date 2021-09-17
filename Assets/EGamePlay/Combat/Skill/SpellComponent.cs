@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
-using EGamePlay.Combat.Skill;
 
-namespace EGamePlay.Combat.Skill
+namespace EGamePlay.Combat
 {
     /// <summary>
     /// 技能施法组件

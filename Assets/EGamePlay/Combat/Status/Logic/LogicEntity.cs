@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EGamePlay.Combat.Status
+namespace EGamePlay.Combat
 {
     public partial class LogicEntity : Entity
     {

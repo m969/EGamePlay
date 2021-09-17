@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace EGamePlay.Combat.Status
+namespace EGamePlay.Combat
 {
     /// <summary>
     /// 逻辑行动点触发组件

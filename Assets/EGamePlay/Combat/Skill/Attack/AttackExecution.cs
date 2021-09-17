@@ -1,4 +1,4 @@
-﻿using EGamePlay.Combat.Ability;
+﻿using EGamePlay.Combat;
 
 namespace EGamePlay.Combat
 {

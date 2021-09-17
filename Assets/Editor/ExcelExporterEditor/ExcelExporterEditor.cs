@@ -226,7 +226,7 @@ namespace ET
 
         private void Export(string fileName, string exportDir)
         {
-            Log.Debug($"Export {fileName}");
+            //Log.Debug($"Export {fileName}");
             XSSFWorkbook xssfWorkbook;
             using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {

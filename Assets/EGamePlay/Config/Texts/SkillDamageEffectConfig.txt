@@ -1,5 +1,0 @@
-{
-"1001":{"Id":1001,"Name":"黑火球术","Target":"技能目标","Probability":"100","Type":"魔法伤害","ValueFormula":"300+自身攻击力*0.4"},
-"1002":{"Id":1002,"Name":"炎爆","Target":"技能目标","Probability":"100","Type":"魔法伤害","ValueFormula":"800"},
-"1004":{"Id":1004,"Name":"血红激光炮","Target":"技能目标","Probability":"100","Type":"魔法伤害","ValueFormula":"10000"}
-}

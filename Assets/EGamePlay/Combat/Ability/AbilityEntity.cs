@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EGamePlay.Combat.Ability
+namespace EGamePlay.Combat
 {
     public abstract class AbilityEntity<T> : AbilityEntity where T : AbilityExecution
     {

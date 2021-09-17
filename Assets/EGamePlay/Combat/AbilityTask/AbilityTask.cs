@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using ET;
 
-namespace EGamePlay.Combat.Ability
+namespace EGamePlay.Combat
 {
     public enum AbilityTaskState { Ready, Executing, Ended }
 

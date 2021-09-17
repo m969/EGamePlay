@@ -14,6 +14,9 @@ namespace EGamePlay
         }
     }
 
+    public class SetChildEventAfter { public Entity Entity; }
+    public class RemoveChildEventAfter { public Entity Entity; }
+
     public abstract partial class Entity
     {
         public static MasterEntity Master => MasterEntity.Instance;
@@ -310,25 +313,17 @@ namespace EGamePlay
         {
             var childrenComponent = GetComponent<ChildrenComponent>();
             if (childrenComponent == null) childrenComponent = AddComponent<ChildrenComponent>();
-
-            var Children = childrenComponent.Children;
-            var Type2Children = childrenComponent.Type2Children;
-            Children.Add(child);
-            if (!Type2Children.ContainsKey(child.GetType())) Type2Children.Add(child.GetType(), new List<Entity>());
-            Type2Children[child.GetType()].Add(child);
+            childrenComponent.SetChild(child);
             child.Parent = this;
-            OnAddChildAction?.Invoke(child);
+            Publish(new SetChildEventAfter() { Entity = child });
         }
 
         public void RemoveChild(Entity child)
         {
             var childrenComponent = GetComponent<ChildrenComponent>();
-            var Children = childrenComponent.Children;
-            var Type2Children = childrenComponent.Type2Children;
-            Children.Remove(child);
-            if (Type2Children.ContainsKey(child.GetType())) Type2Children[child.GetType()].Remove(child);
+            childrenComponent.RemoveChild(child);
             child.Parent = Master;
-            OnRemoveChildAction?.Invoke(child);
+            Publish(new RemoveChildEventAfter() { Entity = child });
         }
 
         public Entity AddChild(Type entityType)
@@ -351,6 +346,24 @@ namespace EGamePlay
             return CreateWithParent<T>(this, initData);
         }
 
+        public T GetChild<T>(int index) where T : Entity
+        {
+            var childrenComponent = GetComponent<ChildrenComponent>();
+            if (childrenComponent == null)
+            {
+                return null;
+            }
+            if (childrenComponent.Type2Children.ContainsKey(typeof(T)) == false)
+            {
+                return null;
+            }
+            if (childrenComponent.Type2Children.Count > index)
+            {
+                return null;
+            }
+            return childrenComponent.Type2Children[typeof(T)][index] as T;
+        }
+
         public Entity[] GetChildren()
         {
             var childrenComponent = GetComponent<ChildrenComponent>();
@@ -369,6 +382,17 @@ namespace EGamePlay
                 return new Entity[0];
             }
             return childrenComponent.GetTypeChildren<T>();
+        }
+
+        public T ExecuteEvent<T>(T TEvent) where T : class
+        {
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent == null)
+            {
+                return TEvent;
+            }
+            eventComponent.Publish(TEvent);
+            return TEvent;
         }
 
         public T Publish<T>(T TEvent) where T : class
@@ -412,9 +436,14 @@ namespace EGamePlay
             }
         }
 
-        public void Fire(string signal)
+        public void SendSignal(int signal)
         {
 
+        }
+
+        public EventStream<T> OnEvent<T>() where T : class
+        {
+            return new EventStream<T>();
         }
     }
 }

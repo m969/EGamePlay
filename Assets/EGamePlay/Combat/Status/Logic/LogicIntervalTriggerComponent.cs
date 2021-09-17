@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using GameUtils;
 
-namespace EGamePlay.Combat.Status
+namespace EGamePlay.Combat
 {
     /// <summary>
     /// 逻辑间隔触发组件

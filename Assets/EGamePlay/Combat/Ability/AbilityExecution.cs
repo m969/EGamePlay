@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace EGamePlay.Combat.Ability
+namespace EGamePlay.Combat
 {
     /// <summary>
     /// 能力执行体，能力执行体是实际创建、执行能力表现，触发能力效果应用的地方

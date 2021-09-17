@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using EGamePlay;
-using EGamePlay.Combat.Skill;
+using EGamePlay.Combat;
 using ET;
 
 namespace EGamePlay.Combat
