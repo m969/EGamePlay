@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
 {
     public enum AbilityTaskState { Ready, Executing, Ended }
 
-    public class AbilityTask : Entity
+    public abstract class AbilityTask : Entity
     {
         public object taskInitData { get; set; }
         public AbilityTaskState TaskState { get; set; }

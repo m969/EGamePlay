@@ -31,6 +31,7 @@ namespace EGamePlay
 
         public static void Destroy()
         {
+            Entity.Destroy(Instance);
             Instance = null;
         }
 

@@ -43,49 +43,7 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 2|EGamePlay.Combat.DamageEffect, Assembly-CSharp
-    - Name: IsSkillEffect
-      Entry: 5
-      Data: false
-    - Name: Enabled
-      Entry: 5
-      Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
       Data: 0
-    - Name: EffectTriggerType
-      Entry: 3
-      Data: 3
-    - Name: ConditionType
-      Entry: 3
-      Data: 0
-    - Name: ActionPointType
-      Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
-    - Name: ConditionParam
-      Entry: 6
-      Data: 
-    - Name: TriggerProbability
-      Entry: 1
-      Data: 100%
-    - Name: DamageType
-      Entry: 3
-      Data: 0
-    - Name: DamageValueFormula
-      Entry: 6
-      Data: 
-    - Name: CanCrit
-      Entry: 5
-      Data: false
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 13
       Data: 

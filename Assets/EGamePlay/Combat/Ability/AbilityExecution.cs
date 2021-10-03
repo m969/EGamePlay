@@ -12,7 +12,8 @@ namespace EGamePlay.Combat
     public abstract class AbilityExecution : Entity
     {
         public AbilityEntity AbilityEntity { get; set; }
-        public CombatEntity OwnerEntity { get => GetParent<CombatEntity>(); }
+        public AbilityEffectComponent AbilityEffectComponent => AbilityEntity.GetComponent<AbilityEffectComponent>();
+        public CombatEntity OwnerEntity => GetParent<CombatEntity>();
 
 
         public override void Awake(object initData)

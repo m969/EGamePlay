@@ -34,9 +34,9 @@ namespace EGamePlay.Combat
             return (float)Value / MaxValue;
         }
 
-        public int PercentHealth(int pct)
+        public int PercentHealth(float pct)
         {
-            return (int)(MaxValue * (pct / 100f));
+            return (int)(MaxValue * pct);
         }
 
         public bool IsFull()

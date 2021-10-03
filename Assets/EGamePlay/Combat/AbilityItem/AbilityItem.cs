@@ -12,6 +12,7 @@ namespace EGamePlay.Combat
     public class AbilityItem : Entity, IPosition
     {
         public AbilityEntity AbilityEntity { get; set; }
+        public AbilityEffectComponent AbilityEffectComponent => GetComponent<AbilityEffectComponent>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public CombatEntity TargetEntity { get; set; }
@@ -20,31 +21,37 @@ namespace EGamePlay.Combat
         public override void Awake(object initData)
         {
             Name = (string)initData;
+            var abilityEffectComponent = AddComponent<AbilityEffectComponent>();
         }
 
-        //尝试激活能力单元体
-        public virtual void TryActivateAbilityItem()
-        {
-            //Log.Debug($"{GetType().Name}->TryActivateAbility");
-            ActivateAbilityItem();
-        }
+        ////尝试激活能力单元体
+        //public void TryActivateAbilityItem()
+        //{
+        //    //Log.Debug($"{GetType().Name}->TryActivateAbility");
+        //    ActivateAbilityItem();
+        //}
 
-        //激活能力单元体
-        public virtual void ActivateAbilityItem()
-        {
+        ////激活能力单元体
+        //public void ActivateAbilityItem()
+        //{
 
-        }
+        //}
 
-        //禁用能力单元体
-        public virtual void DeactivateAbilityItem()
-        {
+        ////禁用能力单元体
+        //public void DeactivateAbilityItem()
+        //{
 
-        }
+        //}
 
         //结束能力单元体
-        public virtual void EndAbilityItem()
+        public void EndAbilityItem()
         {
             Destroy(this);
+        }
+
+        public void FillAbilityEffects(AbilityEntity abilityEntity)
+        {
+            AbilityEffectComponent.FillEffects(AbilityEntity.AbilityEffects);
         }
 
         public void OnCollision(CombatEntity otherCombatEntity)
@@ -57,13 +64,13 @@ namespace EGamePlay.Combat
                 }
                 else
                 {
-                    AbilityEntity.ApplyAbilityEffectsTo(otherCombatEntity);
+                    AbilityEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
                     EndAbilityItem();
                 }
             }
             else
             {
-                AbilityEntity.ApplyAbilityEffectsTo(otherCombatEntity);
+                AbilityEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
             }
         }
     }

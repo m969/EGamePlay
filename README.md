@@ -30,6 +30,7 @@
 如果要将EGamePlay移植到自己的Unity工程里，首先要确保Odin Inspector插件已经在工程中，然后再将以下目录拖过去即可：
 - EGamePlay/Assets/Editor
 - EGamePlay/Assets/EGamePlay
+- EGamePlay/Assets/EGamePlay.Unity
 
 如果要使用Excel配置流程的话，还需要将 EGamePlay/Excel 目录复制过去，再生成配置
 

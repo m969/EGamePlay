@@ -190,6 +190,7 @@ namespace EGamePlay
         {
 #if !NOT_UNITY
             if (this is MasterEntity) { }
+            else if (this is ET.OnceWaitTimer) { }
             else AddComponent<GameObjectComponent>();
 #endif
         }
@@ -262,12 +263,13 @@ namespace EGamePlay
             var component = Activator.CreateInstance<T>();
             component.Entity = this;
             component.IsDisposed = false;
-            component.Enable = true;
+            //component.Enable = true;
             this.Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             component.Setup();
             OnAddComponentAction?.Invoke((component));
+            if (component.DefaultEnable) component.Enable = true;
             return component;
         }
 
@@ -276,18 +278,20 @@ namespace EGamePlay
             var component = Activator.CreateInstance<T>();
             component.Entity = this;
             component.IsDisposed = false;
-            component.Enable = true;
+            //component.Enable = true;
             this.Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
             if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
             component.Setup(initData);
             OnAddComponentAction?.Invoke((component));
+            if (component.DefaultEnable) component.Enable = true;
             return component;
         }
 
         public void RemoveComponent<T>() where T : Component
         {
             var component = this.Components[typeof(T)];
+            if (component.Enable) component.Enable = false;
             component.OnDestroy();
             component.Dispose();
             this.Components.Remove(typeof(T));
@@ -346,7 +350,7 @@ namespace EGamePlay
             return CreateWithParent<T>(this, initData);
         }
 
-        public T GetChild<T>(int index) where T : Entity
+        public T GetChild<T>(int index = 0) where T : Entity
         {
             var childrenComponent = GetComponent<ChildrenComponent>();
             if (childrenComponent == null)
@@ -357,7 +361,7 @@ namespace EGamePlay
             {
                 return null;
             }
-            if (childrenComponent.Type2Children.Count > index)
+            if (childrenComponent.Type2Children[typeof(T)].Count <= index)
             {
                 return null;
             }

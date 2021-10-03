@@ -7,6 +7,10 @@ namespace EGamePlay
     {
         public static void Debug(string log)
         {
+            if (log.Contains("OnceWaitTimer")) return;
+            if (log.Contains("GameObjectComponent")) return;
+            if (log.Contains("EventComponent")) return;
+            if (log.Contains("ChildrenComponent")) return;
             UnityEngine.Debug.Log(log);
         }
 

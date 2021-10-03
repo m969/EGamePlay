@@ -26,16 +26,29 @@ MonoBehaviour:
     - Name: AutoRename
       Entry: 5
       Data: true
+    - Name: ChildrenStatuses
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: Effects
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 3
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.DamageEffect, Assembly-CSharp
+      Data: 2|EGamePlay.Combat.DamageEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -77,7 +90,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 2|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
+      Data: 3|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -113,11 +126,11 @@ MonoBehaviour:
       Data: 1500
     - Name: Params
       Entry: 7
-      Data: 3|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 4|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -136,7 +149,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 5|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
+      Data: 6|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -172,11 +185,11 @@ MonoBehaviour:
       Data: 2000
     - Name: Params
       Entry: 7
-      Data: 6|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+      Data: 7|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 9
-      Data: 4
+      Data: 5
     - Name: 
       Entry: 12
       Data: 1
@@ -216,8 +229,9 @@ MonoBehaviour:
   AreaCollider: {fileID: 0}
   AffectTargetType: 2
   ColdTime: 3000
+  EnableChildrenStatuses: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillExecutionAsset: {fileID: 7402701643467124463, guid: 05f4fb3e37c0e0944addfdbd803cd7e3,
+  SkillExecutionAsset: {fileID: 2464292207296912740, guid: 167268e700e34ca4d90c8390872e6d93,
     type: 3}
   SkillAudio: {fileID: 0}
   SkillDescription: 

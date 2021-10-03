@@ -1,5 +1,6 @@
 ﻿using System;
 using GameUtils;
+using UnityEngine;
 
 namespace EGamePlay.Combat
 {
@@ -15,16 +16,17 @@ namespace EGamePlay.Combat
             GetParent<CombatEntity>().ListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
-        public async void StartListen(Action whenNoDamageInTimeCallback)
+        public void StartListen(Action whenNoDamageInTimeCallback)
         {
-            while (true)
+            NoDamageTimer.OnFinish(whenNoDamageInTimeCallback);
+            AddComponent<UpdateComponent>();
+        }
+
+        public override void Update()
+        {
+            if (NoDamageTimer.IsRunning)
             {
-                if (IsDisposed)
-                {
-                    break;
-                }
-                await ET.TimerComponent.Instance.WaitAsync(100);
-                NoDamageTimer.UpdateAsFinish(0.1f, whenNoDamageInTimeCallback);
+                NoDamageTimer.UpdateAsFinish(Time.deltaTime);
             }
         }
 

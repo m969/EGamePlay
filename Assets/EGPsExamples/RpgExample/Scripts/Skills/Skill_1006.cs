@@ -21,6 +21,7 @@ public class SkillExecution_1006 : SkillExecution
     public Dictionary<CombatEntity, LineRenderer> EntityChannels { get; set; } = new Dictionary<CombatEntity, LineRenderer>();
     public GameUtils.GameTimer LockTimer = new GameUtils.GameTimer(2);
 
+
     public override void BeginExecute()
     {
         var channelPrefab = SkillExecutionAsset.transform.Find("Channel");
@@ -37,7 +38,7 @@ public class SkillExecution_1006 : SkillExecution
         foreach (var item in EntityChannels)
         {
 #if !EGAMEPLAY_EXCEL
-            SkillAbility.ApplyEffectTo(item.Key, SkillAbility.SkillConfig.Effects[2]);
+            AbilityEffectComponent.ApplyEffectByIndex(item.Key, 2);
 #endif
         }
     }
@@ -62,8 +63,8 @@ public class SkillExecution_1006 : SkillExecution
 #if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
-            SkillAbility.ApplyEffectTo(item.Key, SkillAbility.SkillConfig.Effects[0]);
-            SkillAbility.ApplyEffectTo(item.Key, SkillAbility.SkillConfig.Effects[1]);
+            AbilityEffectComponent.ApplyEffectByIndex(item.Key, 0);
+            AbilityEffectComponent.ApplyEffectByIndex(item.Key, 1);
         }
 #endif
         EndExecute();

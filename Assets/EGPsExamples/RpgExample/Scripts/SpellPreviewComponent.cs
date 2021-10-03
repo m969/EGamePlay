@@ -12,7 +12,7 @@ public class SpellPreviewComponent : EGamePlay.Component
 {
     private CombatEntity CombatEntity => GetEntity<CombatEntity>();
     private SpellComponent SpellComp => Entity.GetComponent<SpellComponent>();
-    public override bool Enable { get; set; } = true;
+    public override bool DefaultEnable { get; set; } = true;
     private bool Previewing { get; set; }
     private SkillAbility PreviewingSkill { get; set; }
 

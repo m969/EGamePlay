@@ -42,10 +42,8 @@ public sealed class Hero : MonoBehaviour
     {
         Instance = this;
         CombatEntity = Entity.CreateWithParent<CombatEntity>(CombatContext.Instance);
-        CombatEntity.AddComponent<SpellComponent>();
         CombatEntity.AddComponent<SpellPreviewComponent>();
         CombatEntity.AddComponent<EquipmentComponent>();
-        //CombatEntity.GetComponent<MotionComponent>().Enable = false;
         CombatEntity.ListenActionPoint(ActionPointType.PreSpell, OnPreSpell);
         CombatEntity.ListenActionPoint(ActionPointType.PostSpell, OnPostSpell);
         CombatEntity.Subscribe<AnimationClip>(OnPlayAnimation);
@@ -69,26 +67,32 @@ public sealed class Hero : MonoBehaviour
         SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
         SkillAbility ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.Q);
+        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.W);
+        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.E);
+        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1005_火弹");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.R);
+        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1006_灵魂镣铐");
         ability = CombatEntity.AttachSkill<SkillAbility_1006>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.T);
+        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1003_治愈");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.Y);
+        ability.Name = config.Name;
 #endif
         for (int i = InventoryPanelTrm.childCount; i > 0; i--)
         {

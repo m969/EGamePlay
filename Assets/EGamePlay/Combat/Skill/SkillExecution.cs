@@ -19,7 +19,8 @@ namespace EGamePlay.Combat
         public CombatEntity InputTarget { get; set; }
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
-        public GameObject SkillExecutionAsset { get; set; }
+        public GameObject SkillExecutionAsset => SkillAbility.SkillExecutionAsset;
         public long OriginTime { get; set; }
+        public ExecutionEffectComponent ExecutionEffectComponent { get; set; }
     }
 }

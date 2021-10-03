@@ -7,7 +7,7 @@ using UnityEngine;
 #if EGAMEPLAY_EXCEL
 namespace EGamePlay.Combat
 {
-    public class SkillAbility : AbilityEntity
+    public partial class SkillAbility : AbilityEntity
     {
         public SkillConfig SkillConfig { get; set; }
         public bool Spelling { get; set; }
@@ -19,6 +19,17 @@ namespace EGamePlay.Combat
         {
             base.Awake(initData);
             SkillConfig = initData as SkillConfig;
+            var Effects = new List<Effect>();
+            var effect = ParseSkillDamage(SkillConfig);
+            if (effect != null) Effects.Add(effect);
+            effect = ParseEffect(SkillConfig, SkillConfig.Effect1);
+            if (effect != null) Effects.Add(effect);
+            effect = ParseEffect(SkillConfig, SkillConfig.Effect2);
+            if (effect != null) Effects.Add(effect);
+            effect = ParseEffect(SkillConfig, SkillConfig.Effect3);
+            if (effect != null) Effects.Add(effect);
+            AddComponent<AbilityEffectComponent>(Effects);
+            ParseAbilityEffects();
             if (SkillConfig.Type == "被动")
             {
                 TryActivateAbility();
@@ -40,23 +51,6 @@ namespace EGamePlay.Combat
             var execution = Entity.CreateWithParent<SkillExecution>(OwnerEntity, this);
             execution.AddComponent<UpdateComponent>();
             return execution;
-        }
-
-        public override void ApplyAbilityEffectsTo(CombatEntity targetEntity)
-        {
-            var Effects = new List<Effect>();
-            var effect = ParseSkillDamage(SkillConfig);
-            if (effect != null) Effects.Add(effect);
-            effect = ParseEffect(SkillConfig, SkillConfig.Effect1);
-            if (effect != null) Effects.Add(effect);
-            effect = ParseEffect(SkillConfig, SkillConfig.Effect2);
-            if (effect != null) Effects.Add(effect);
-            effect = ParseEffect(SkillConfig, SkillConfig.Effect3);
-            if (effect != null) Effects.Add(effect);
-            foreach (var effectItem in Effects)
-            {
-                ApplyEffectTo(targetEntity, effectItem);
-            }
         }
 
         public Effect ParseSkillDamage(SkillConfig skillConfig)
@@ -121,7 +115,24 @@ namespace EGamePlay.Combat
                     if (Type == "物理伤害") damageEffect.DamageType = DamageType.Physic;
                     if (Type == "真实伤害") damageEffect.DamageType = DamageType.Real;
                 }
-                if (effectType == "AddStatus")
+                if (effectType == "Cure")
+                {
+                    var Type = "";
+                    var CureValueFormula = "";
+                    foreach (var item in KVList)
+                    {
+                        if (string.IsNullOrEmpty(item)) continue;
+                        if (item.Contains("治疗类型=")) Type = item.Replace("治疗类型=", "");
+                        if (item.Contains("治疗取值=")) CureValueFormula = item.Replace("治疗取值=", "");
+                    }
+                    var cureEffect = new CureEffect();
+                    effect = cureEffect;
+                    cureEffect.CureValueFormula = CureValueFormula;
+                    cureEffect.TriggerProbability = skillEffectConfig.Probability;
+                    if (skillEffectConfig.Target == "自身") cureEffect.AddSkillEffectTargetType = AddSkillEffetTargetType.Self;
+                    if (skillEffectConfig.Target == "技能目标") cureEffect.AddSkillEffectTargetType = AddSkillEffetTargetType.SkillTarget;
+                }
+                else if (effectType == "AddStatus")
                 {
                     //var skillEffectConfig = ConfigHelper.Get<SkillEffectsConfig>(int.Parse(effectId));
                     var StatusID = "";
@@ -151,10 +162,10 @@ namespace EGamePlay.Combat
                         }
                     }
                 }
-            }
-            else
-            {
-                effect = new CustomEffect() {  CustomEffectType = effectConfig };
+                else
+                {
+                    effect = new CustomEffect() { CustomEffectType = effectConfig };
+                }
             }
             return effect;
         }

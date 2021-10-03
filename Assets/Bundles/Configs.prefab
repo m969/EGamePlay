@@ -52,3 +52,5 @@ MonoBehaviour:
     gameObject: {fileID: 4900000, guid: 2fe1f7d325cf4744b9a6b0882ed76076, type: 3}
   - key: SkillEffectsConfig
     gameObject: {fileID: 4900000, guid: e816f3402f4d9054480636751f5aa9c9, type: 3}
+  - key: StatusConfig
+    gameObject: {fileID: 4900000, guid: ec4a396fa6fcfef46a92da7c5344d4c2, type: 3}

@@ -7,7 +7,7 @@ using UnityEngine;
 #if !EGAMEPLAY_EXCEL
 namespace EGamePlay.Combat
 {
-    public class SkillAbility : AbilityEntity
+    public partial class SkillAbility : AbilityEntity
     {
         public SkillConfigObject SkillConfig { get; set; }
         public bool Spelling { get; set; }
@@ -19,6 +19,8 @@ namespace EGamePlay.Combat
         {
             base.Awake(initData);
             SkillConfig = initData as SkillConfigObject;
+            AddComponent<AbilityEffectComponent>(SkillConfig.Effects);
+            ParseAbilityEffects();
             if (SkillConfig.SkillSpellType == SkillSpellType.Passive)
             {
                 TryActivateAbility();
@@ -34,9 +36,10 @@ namespace EGamePlay.Combat
                 foreach (var item in SkillConfig.ChildrenStatuses)
                 {
                     var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
-                    status.Caster = OwnerEntity;
+                    status.OwnerEntity = OwnerEntity;
                     status.IsChildStatus = true;
                     status.ChildStatusData = item;
+                    status.ProccessInputKVParams(item.Params);
                     status.TryActivateAbility();
                     ChildrenStatuses.Add(status);
                 }
@@ -59,21 +62,9 @@ namespace EGamePlay.Combat
 
         public override AbilityExecution CreateExecution()
         {
-            var execution = Entity.CreateWithParent<SkillExecution>(OwnerEntity, this);
+            var execution = OwnerEntity.AddChild<SkillExecution>(this);
             execution.AddComponent<UpdateComponent>();
             return execution;
-        }
-
-        public override void ApplyAbilityEffectsTo(CombatEntity targetEntity)
-        {
-            List<Effect> Effects = null;
-            Effects = SkillConfig.Effects;
-            if (Effects == null)
-                return;
-            foreach (var effectItem in Effects)
-            {
-                ApplyEffectTo(targetEntity, effectItem);
-            }
         }
     }
 }

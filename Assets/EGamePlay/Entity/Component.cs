@@ -6,8 +6,23 @@ namespace EGamePlay
     {
         public Entity Entity { get; set; }
         public bool IsDisposed { get; set; }
-        public virtual bool Enable { get; set; } = true;
-        public bool Disable => Enable == false;
+        public virtual bool DefaultEnable { get; set; } = true;
+        private bool enable = false;
+        public bool Enable
+        {
+            set
+            {
+                if (enable == value) return;
+                enable = value;
+                if (enable) OnEnable();
+                else OnDisable();
+            }
+            get
+            {
+                return enable;
+            }
+        }
+        public bool Disable => enable == false;
 
 
         public T GetEntity<T>() where T : Entity
@@ -21,6 +36,16 @@ namespace EGamePlay
         }
 
         public virtual void Setup(object initData)
+        {
+
+        }
+
+        public virtual void OnEnable()
+        {
+
+        }
+
+        public virtual void OnDisable()
         {
 
         }

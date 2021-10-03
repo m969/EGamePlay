@@ -7,7 +7,7 @@ namespace EGamePlay.Combat
     public class StatusAbility : AbilityEntity
     {
         //投放者、施术者
-        public CombatEntity Caster { get; set; }
+        public override CombatEntity OwnerEntity { get; set; }
         public StatusConfigObject StatusConfigObject { get; set; }
         public FloatModifier NumericModifier { get; set; }
         public bool IsChildStatus { get; set; }
@@ -18,8 +18,88 @@ namespace EGamePlay.Combat
         public override void Awake(object initData)
         {
             base.Awake(initData);
-            StatusConfigObject = initData as StatusConfigObject;
+            var statusConfig = StatusConfigObject = initData as StatusConfigObject;
             Name = StatusConfigObject.ID;
+
+            //子状态效果
+            if (StatusConfigObject.EnableChildrenStatuses)
+            {
+
+            }
+            //行为禁制
+            if (StatusConfigObject.EnabledStateModify)
+            {
+
+            }
+            //属性修饰
+            if (StatusConfigObject.EnabledAttributeModify)
+            {
+                AddComponent<StatusAttributeModifyComponent>();
+            }
+            //逻辑触发
+            if (StatusConfigObject.EnabledLogicTrigger)
+            {
+                AddComponent<AbilityEffectComponent>(StatusConfigObject.Effects);
+            }
+        }
+
+        public void ProccessInputKVParams(Dictionary<string, string> Params)
+        {
+            for (int i = 0; i < StatusConfigObject.Effects.Count; i++)
+            {
+                var abilityEffect = AbilityEffectComponent.GetEffect(i);
+                var logicEffect = abilityEffect.EffectConfig;
+
+                if (logicEffect.EffectTriggerType == EffectTriggerType.Interval)
+                {
+                    if (!string.IsNullOrEmpty(logicEffect.Interval))
+                    {
+                        var intervalComponent = abilityEffect.GetComponent<EffectIntervalTriggerComponent>();
+                        intervalComponent.IntervalValue = logicEffect.Interval;
+                        foreach (var aInputKVItem in Params)
+                        {
+                            intervalComponent.IntervalValue = intervalComponent.IntervalValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
+                        }
+                    }
+                }
+                if (logicEffect.EffectTriggerType == EffectTriggerType.Condition)
+                {
+                    if (!string.IsNullOrEmpty(logicEffect.ConditionParam))
+                    {
+                        var conditionComponent = abilityEffect.GetComponent<EffectConditionTriggerComponent>();
+                        conditionComponent.ConditionParamValue = logicEffect.ConditionParam;
+                        foreach (var aInputKVItem in Params)
+                        {
+                            conditionComponent.ConditionParamValue = conditionComponent.ConditionParamValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
+                        }
+                    }
+                }
+
+                if (logicEffect is DamageEffect damage)
+                {
+                    var damageComponent = abilityEffect.GetComponent<EffectDamageComponent>();
+                    damageComponent.DamageValueProperty = damage.DamageValueFormula;
+                    foreach (var aInputKVItem in Params)
+                    {
+                        if (!string.IsNullOrEmpty(damageComponent.DamageValueProperty))
+                        {
+                            damageComponent.DamageValueProperty = damageComponent.DamageValueProperty.Replace(aInputKVItem.Key, aInputKVItem.Value);
+                        }
+                    }
+                }
+                if (logicEffect is CureEffect cure)
+                {
+                    var cureComponent = abilityEffect.GetComponent<EffectCureComponent>();
+                    cureComponent.CureValueProperty = cure.CureValueFormula;
+                    foreach (var aInputKVItem in Params)
+                    {
+                        if (!string.IsNullOrEmpty(cureComponent.CureValueProperty))
+                        {
+                            cureComponent.CureValueProperty = cureComponent.CureValueProperty.Replace(aInputKVItem.Key, aInputKVItem.Value);
+                        }
+                    }
+                }
+            }
         }
 
         //激活
@@ -30,12 +110,13 @@ namespace EGamePlay.Combat
             //子状态效果
             if (StatusConfigObject.EnableChildrenStatuses)
             {
-                foreach (var item in StatusConfigObject.ChildrenStatuses)
+                foreach (var childStatusData in StatusConfigObject.ChildrenStatuses)
                 {
-                    var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
-                    status.Caster = Caster;
+                    var status = ParentEntity.AttachStatus<StatusAbility>(childStatusData.StatusConfigObject);
+                    status.OwnerEntity = OwnerEntity;
                     status.IsChildStatus = true;
-                    status.ChildStatusData = item;
+                    status.ChildStatusData = childStatusData;
+                    status.ProccessInputKVParams(childStatusData.Params);
                     status.TryActivateAbility();
                     ChildrenStatuses.Add(status);
                 }
@@ -43,11 +124,11 @@ namespace EGamePlay.Combat
             //行为禁制
             if (StatusConfigObject.EnabledStateModify)
             {
-                OwnerEntity.ActionControlType = OwnerEntity.ActionControlType | StatusConfigObject.ActionControlType;
+                ParentEntity.ActionControlType = ParentEntity.ActionControlType | StatusConfigObject.ActionControlType;
                 //Log.Debug($"{OwnerEntity.ActionControlType}");
-                if (OwnerEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid))
+                if (ParentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid))
                 {
-                    OwnerEntity.GetComponent<MotionComponent>().Enable = false;
+                    ParentEntity.GetComponent<MotionComponent>().Enable = false;
                 }
             }
             //属性修饰
@@ -71,73 +152,18 @@ namespace EGamePlay.Combat
                     var attributeType = StatusConfigObject.AttributeType.ToString();
                     if (StatusConfigObject.ModifyType == ModifyType.Add)
                     {
-                        OwnerEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalAddModifier(NumericModifier);
+                        ParentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalAddModifier(NumericModifier);
                     }
                     if (StatusConfigObject.ModifyType == ModifyType.PercentAdd)
                     {
-                        OwnerEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalPctAddModifier(NumericModifier);
+                        ParentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalPctAddModifier(NumericModifier);
                     }
                 }
             }
             //逻辑触发
             if (StatusConfigObject.EnabledLogicTrigger)
             {
-                foreach (var effectItem in StatusConfigObject.Effects)
-                {
-                    if (IsChildStatus)
-                    {
-                        if (effectItem is DamageEffect damageEffect)
-                        {
-                            damageEffect.DamageValueProperty = damageEffect.DamageValueFormula;
-                            foreach (var paramItem in ChildStatusData.Params)
-                            {
-                                damageEffect.DamageValueProperty = damageEffect.DamageValueProperty.Replace(paramItem.Key, paramItem.Value);
-                            }
-                        }
-                        else if (effectItem is CureEffect cureEffect)
-                        {
-                            cureEffect.CureValueProperty = cureEffect.CureValueFormula;
-                            foreach (var paramItem in ChildStatusData.Params)
-                            {
-                                cureEffect.CureValueProperty = cureEffect.CureValueProperty.Replace(paramItem.Key, paramItem.Value);
-                            }
-                        }
-                    }
-                    var logicEntity = Entity.CreateWithParent<LogicEntity>(this, effectItem);
-                    if (effectItem.EffectTriggerType == EffectTriggerType.Instant)
-                    {
-                        logicEntity.ApplyEffect();
-                        Destroy(logicEntity);
-                    }
-                    else if (effectItem.EffectTriggerType == EffectTriggerType.Interval)
-                    {
-                        if (IsChildStatus)
-                        {
-                            effectItem.IntervalValue = effectItem.Interval;
-                            foreach (var paramItem in ChildStatusData.Params)
-                            {
-                                effectItem.IntervalValue = effectItem.IntervalValue.Replace(paramItem.Key, paramItem.Value);
-                            }
-                        }
-                        logicEntity.AddComponent<LogicIntervalTriggerComponent>();
-                    }
-                    else if (effectItem.EffectTriggerType == EffectTriggerType.Condition)
-                    {
-                        if (IsChildStatus)
-                        {
-                            effectItem.ConditionParamValue = effectItem.ConditionParam;
-                            foreach (var paramItem in ChildStatusData.Params)
-                            {
-                                effectItem.ConditionParamValue = effectItem.ConditionParamValue.Replace(paramItem.Key, paramItem.Value);
-                            }
-                        }
-                        logicEntity.AddComponent<LogicConditionTriggerComponent>();
-                    }
-                    else if (effectItem.EffectTriggerType == EffectTriggerType.Action)
-                    {
-                        logicEntity.AddComponent<LogicActionTriggerComponent>();
-                    }
-                }
+                AbilityEffectComponent.Enable = true;
             }
         }
 
@@ -156,11 +182,11 @@ namespace EGamePlay.Combat
             //行为禁制
             if (StatusConfigObject.EnabledStateModify)
             {
-                OwnerEntity.ActionControlType = OwnerEntity.ActionControlType & (~StatusConfigObject.ActionControlType);
+                ParentEntity.ActionControlType = ParentEntity.ActionControlType & (~StatusConfigObject.ActionControlType);
                 //Log.Debug($"{OwnerEntity.ActionControlType}");
-                if (OwnerEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid) == false)
+                if (ParentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid) == false)
                 {
-                    OwnerEntity.GetComponent<MotionComponent>().Enable = true;
+                    ParentEntity.GetComponent<MotionComponent>().Enable = true;
                 }
             }
             //属性修饰
@@ -171,11 +197,11 @@ namespace EGamePlay.Combat
                     var attributeType = StatusConfigObject.AttributeType.ToString();
                     if (StatusConfigObject.ModifyType == ModifyType.Add)
                     {
-                        OwnerEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalAddModifier(NumericModifier);
+                        ParentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalAddModifier(NumericModifier);
                     }
                     if (StatusConfigObject.ModifyType == ModifyType.PercentAdd)
                     {
-                        OwnerEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalPctAddModifier(NumericModifier);
+                        ParentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalPctAddModifier(NumericModifier);
                     }
                 }
             }
@@ -186,26 +212,8 @@ namespace EGamePlay.Combat
             }
 
             NumericModifier = null;
-            OwnerEntity.OnStatusRemove(this);
+            ParentEntity.OnStatusRemove(this);
             base.EndAbility();
-        }
-
-        //应用能力效果
-        public override void ApplyAbilityEffectsTo(CombatEntity targetEntity)
-        {
-            List<Effect> Effects = null;
-            if (StatusConfigObject.EnabledLogicTrigger)
-            {
-                Effects = StatusConfigObject.Effects;
-            }
-            if (Effects == null)
-            {
-                return;
-            }
-            foreach (var effectItem in Effects)
-            {
-                ApplyEffectTo(targetEntity, effectItem);
-            }
         }
     }
 }

@@ -6,7 +6,7 @@ namespace EGamePlay
 {
     public sealed class EventComponent : Component
     {
-        public override bool Enable { get; set; } = true;
+        public override bool DefaultEnable { get; set; } = false;
         private Dictionary<Type, List<object>> Event2ActionLists = new Dictionary<Type, List<object>>();
         public static bool DebugLog { get; set; } = false;
 

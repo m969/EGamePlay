@@ -48,12 +48,18 @@ namespace EGamePlay
         
         private void OnAddChild(SetChildEventAfter evnt)
         {
-            evnt.Entity.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(GameObject.transform);
+            if (evnt.Entity.GetComponent<GameObjectComponent>() != null)
+            {
+                evnt.Entity.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(GameObject.transform);
+            }
         }
         
         private void OnRemoveChild(RemoveChildEventAfter evnt)
         {
-            evnt.Entity.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(null);
+            if (evnt.Entity.GetComponent<GameObjectComponent>() != null)
+            {
+                evnt.Entity.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(null);
+            }
         }
     }
 }

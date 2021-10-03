@@ -10,7 +10,7 @@ namespace EGamePlay
     /// </summary>
     public class LifeTimeComponent : Component
     {
-        public override bool Enable { get; set; } = true;
+        public override bool DefaultEnable { get; set; } = true;
         public GameTimer LifeTimer { get; set; }
 
 

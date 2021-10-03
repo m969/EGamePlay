@@ -42,7 +42,7 @@ namespace GameUtils
             _time = 0f;
         }
 
-        public GameTimer UpdateAsFinish(float delta, Action onFinish = null)
+        public GameTimer UpdateAsFinish(float delta, Action onFinish)
         {
             if (!IsFinished)
             {
@@ -51,6 +51,19 @@ namespace GameUtils
                 {
                     _onFinish = onFinish;
                 }
+                if (IsFinished)
+                {
+                    _onFinish?.Invoke();
+                }
+            }
+            return this;
+        }
+
+        public GameTimer UpdateAsFinish(float delta)
+        {
+            if (!IsFinished)
+            {
+                _time += delta;
                 if (IsFinished)
                 {
                     _onFinish?.Invoke();

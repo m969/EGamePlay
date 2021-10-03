@@ -15,6 +15,7 @@ public class EGamePlayInit : SerializedMonoBehaviour
     {
         Instance = this;
         SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
+        Entity.EnableLog = false;
         MasterEntity.Create();
         Entity.Create<TimerComponent>();
         Entity.Create<CombatContext>();
@@ -30,7 +31,6 @@ public class EGamePlayInit : SerializedMonoBehaviour
 
     private void OnApplicationQuit()
     {
-        Entity.Destroy(MasterEntity.Instance);
         MasterEntity.Destroy();
     }
 }

@@ -11,36 +11,57 @@ public class StatusTenacity : StatusAbility
 {
     private GameTimer HealthReplyTimer { get; set; } = new GameTimer(2f);
     private bool CanReplyHealth { get; set; }
+    private AbilityEffect AbilityCureEffect { get; set; }
 
 
     public override void ActivateAbility()
     {
         base.ActivateAbility();
-        CanReplyHealth = true;
+        AbilityCureEffect = GetComponent<AbilityEffectComponent>().GetEffect();
         OwnerEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
         OwnerEntity.ListenerCondition(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
-        Coroutine();
+        AddComponent<UpdateComponent>();
+        //Coroutine();
     }
 
-    //协程
-    private async void Coroutine()
+    public override void Update()
     {
-        while (true)
+        //if (OwnerEntity.CurrentHealth.IsFull())
+        //{
+        //    if (AbilityCureEffect.Enable) AbilityCureEffect.DisableEffect();
+        //}
+        //else
+        //{
+        //    AbilityCureEffect.EnableEffect();
+        //}
+        if (CanReplyHealth)
         {
-            if (IsDisposed)
+            if (HealthReplyTimer.IsRunning)
             {
-                break;
-            }
-            await TimeHelper.WaitAsync(100);
-            if (CanReplyHealth)
-            {
-                if (OwnerEntity.CurrentHealth.Percent() < 1f)
-                {
-                    HealthReplyTimer.UpdateAsRepeat(0.1f, ReplyHealth);
-                }
+                HealthReplyTimer.UpdateAsRepeat(Time.deltaTime, ReplyHealth);
             }
         }
     }
+
+    ////协程
+    //private async void Coroutine()
+    //{
+    //    while (true)
+    //    {
+    //        if (IsDisposed)
+    //        {
+    //            break;
+    //        }
+    //        await TimeHelper.WaitAsync(100);
+    //        if (CanReplyHealth)
+    //        {
+    //            if (OwnerEntity.CurrentHealth.Percent() < 1f)
+    //            {
+    //                HealthReplyTimer.UpdateAsRepeat(0.1f, ReplyHealth);
+    //            }
+    //        }
+    //    }
+    //}
 
     //结束生命回复
     private void EndReplyHealth(ActionExecution combatAction)
@@ -51,7 +72,10 @@ public class StatusTenacity : StatusAbility
     //开始生命回复
     private void StartReplyHealth()
     {
-        CanReplyHealth = true;
+        if (OwnerEntity.CurrentHealth.IsFull() == false)
+        {
+            CanReplyHealth = true;
+        }
     }
 
     //生命回复
@@ -60,7 +84,8 @@ public class StatusTenacity : StatusAbility
         if (OwnerEntity.CureActionAbility.TryCreateAction(out var action))
         {
             action.Target = OwnerEntity;
-            action.CureValue = OwnerEntity.CurrentHealth.PercentHealth(2);
+            action.AbilityEffect = GetComponent<AbilityEffectComponent>().GetEffect();
+            //action.CureValue = OwnerEntity.CurrentHealth.PercentHealth(0.02f);
             action.ApplyCure();
         }
     }

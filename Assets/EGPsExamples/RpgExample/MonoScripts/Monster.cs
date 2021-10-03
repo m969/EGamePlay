@@ -35,7 +35,7 @@ public sealed class Monster : MonoBehaviour
 
         var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
         var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
-        Status.Caster = CombatEntity;
+        Status.OwnerEntity = CombatEntity;
         Status.TryActivateAbility();
     }
 
@@ -91,8 +91,8 @@ public sealed class Monster : MonoBehaviour
 
     private void OnReceiveStatus(ActionExecution combatAction)
     {
-        var action = combatAction as AssignEffectAction;
-        if (action.Effect is AddStatusEffect addStatusEffect)
+        var action = combatAction as EffectAssignAction;
+        if (action.EffectConfig is AddStatusEffect addStatusEffect)
         {
             var statusConfig = addStatusEffect.AddStatus;
             if (name == "Monster")

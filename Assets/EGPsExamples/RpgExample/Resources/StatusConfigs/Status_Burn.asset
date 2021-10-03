@@ -58,7 +58,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 3
+      Data: 4
     - Name: ConditionType
       Entry: 3
       Data: 0

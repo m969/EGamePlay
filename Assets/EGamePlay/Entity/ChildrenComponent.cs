@@ -7,6 +7,7 @@ namespace EGamePlay
     public sealed class ChildrenComponent : Component
     {
         public List<Entity> Children { get; private set; } = new List<Entity>();
+        public Dictionary<long, Entity> Id2Children { get; private set; } = new Dictionary<long, Entity>();
         public Dictionary<Type, List<Entity>> Type2Children { get; private set; } = new Dictionary<Type, List<Entity>>();
 
 

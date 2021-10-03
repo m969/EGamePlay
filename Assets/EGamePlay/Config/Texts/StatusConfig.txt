@@ -1,0 +1,6 @@
+{
+"1":{"Id":1,"ID":"Vertigo","Name":"眩晕","Type":"Debuff","StatusSlot":"是","CanStack":"否","ActionControl":"移动禁止|施法禁止|攻击禁止"},
+"2":{"Id":2,"ID":"AttackPowerModify","Name":"攻击力修饰","Type":"其他","StatusSlot":"是","CanStack":"否","AttributeType":"攻击力","AttributeParams":"Add=变动数值"},
+"3":{"Id":3,"ID":"AttackPowerPctModify","Name":"攻击力百分比修饰","Type":"其他","StatusSlot":"是","CanStack":"否","AttributeType":"攻击力","AttributeParams":"PercentAdd=变动数值"},
+"10":{"Id":10,"ID":"Weak","Name":"虚弱","Type":"Debuff","StatusSlot":"是","CanStack":"否"}
+}
