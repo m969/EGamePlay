@@ -32,7 +32,7 @@ namespace EGamePlay.Combat
             {
                 expression.Parameters["自身攻击力"].Value = GetEntity<AbilityEffect>().OwnerEntity.GetComponent<AttributeComponent>().Attack.Value;
             }
-            return (int)expression.Value;
+            return Mathf.CeilToInt((float)expression.Value);
         }
     }
 }

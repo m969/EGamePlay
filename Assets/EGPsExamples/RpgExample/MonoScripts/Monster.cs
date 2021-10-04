@@ -91,36 +91,34 @@ public sealed class Monster : MonoBehaviour
 
     private void OnReceiveStatus(ActionExecution combatAction)
     {
-        var action = combatAction as EffectAssignAction;
-        if (action.EffectConfig is AddStatusEffect addStatusEffect)
+        var action = combatAction as AddStatusAction;
+        var addStatusEffect = action.AddStatusEffect;
+        var statusConfig = addStatusEffect.AddStatus;
+        if (name == "Monster")
         {
-            var statusConfig = addStatusEffect.AddStatus;
-            if (name == "Monster")
-            {
-                var obj = GameObject.Instantiate(StatusIconPrefab);
-                obj.transform.SetParent(StatusSlotsTrm);
-                obj.GetComponentInChildren<Text>().text = statusConfig.Name;
-                obj.name = action.Status.Id.ToString();
-            }
+            var obj = GameObject.Instantiate(StatusIconPrefab);
+            obj.transform.SetParent(StatusSlotsTrm);
+            obj.GetComponentInChildren<Text>().text = statusConfig.Name;
+            obj.name = action.Status.Id.ToString();
+        }
 
-            if (statusConfig.ID == "Vertigo")
+        if (statusConfig.ID == "Vertigo")
+        {
+            AnimationComponent.AnimancerComponent.Play(AnimationComponent.StunAnimation);
+            if (vertigoParticle == null)
             {
-                AnimationComponent.AnimancerComponent.Play(AnimationComponent.StunAnimation);
-                if (vertigoParticle == null)
-                {
-                    vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
-                    vertigoParticle.transform.parent = transform;
-                    vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
-                }
+                vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                vertigoParticle.transform.parent = transform;
+                vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
             }
-            if (statusConfig.ID == "Weak")
+        }
+        if (statusConfig.ID == "Weak")
+        {
+            if (weakParticle == null)
             {
-                if (weakParticle == null)
-                {
-                    weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
-                    weakParticle.transform.parent = transform;
-                    weakParticle.transform.localPosition = new Vector3(0, 0, 0);
-                }
+                weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                weakParticle.transform.parent = transform;
+                weakParticle.transform.localPosition = new Vector3(0, 0, 0);
             }
         }
     }

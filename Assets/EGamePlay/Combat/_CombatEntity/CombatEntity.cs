@@ -18,6 +18,7 @@ namespace EGamePlay.Combat
         public MotionActionAbility MotionActionAbility { get; private set; }
         public DamageActionAbility DamageActionAbility { get; private set; }
         public CureActionAbility CureActionAbility { get; private set; }
+        public AddStatusActionAbility AddStatusActionAbility { get; private set; }
         public AttackActionAbility AttackActionAbility { get; private set; }
         public EffectAssignAbility EffectAssignAbility { get; private set; }
         public RoundActionAbility RoundActionAbility { get; private set; }
@@ -49,6 +50,7 @@ namespace EGamePlay.Combat
             MotionActionAbility = AttachAction<MotionActionAbility>();
             DamageActionAbility = AttachAction<DamageActionAbility>();
             CureActionAbility = AttachAction<CureActionAbility>();
+            AddStatusActionAbility = AttachAction<AddStatusActionAbility>();
             AttackActionAbility = AttachAction<AttackActionAbility>();
             EffectAssignAbility = AttachAction<EffectAssignAbility>();
             RoundActionAbility = AttachAction<RoundActionAbility>();

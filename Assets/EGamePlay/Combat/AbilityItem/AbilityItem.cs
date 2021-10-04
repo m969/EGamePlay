@@ -11,8 +11,9 @@ namespace EGamePlay.Combat
     /// </summary>
     public class AbilityItem : Entity, IPosition
     {
-        public AbilityEntity AbilityEntity { get; set; }
-        public AbilityEffectComponent AbilityEffectComponent => GetComponent<AbilityEffectComponent>();
+        public AbilityEntity AbilityEntity => AbilityExecution.AbilityEntity;
+        public AbilityExecution AbilityExecution { get; set; }
+        public ExecutionEffectComponent ExecutionEffectComponent { get; private set; }
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public CombatEntity TargetEntity { get; set; }
@@ -20,57 +21,61 @@ namespace EGamePlay.Combat
 
         public override void Awake(object initData)
         {
-            Name = (string)initData;
-            var abilityEffectComponent = AddComponent<AbilityEffectComponent>();
+            AbilityExecution = initData as AbilityExecution;
+            ExecutionEffectComponent = AddComponent<ExecutionEffectComponent>();
+            var abilityEffects = AbilityEntity.AbilityEffects;
+            foreach (var abilityEffect in abilityEffects)
+            {
+                if (abilityEffect.GetComponent<EffectSpawnItemComponent>() != null)
+                {
+                    continue;
+                }
+                if (abilityEffect.GetComponent<EffectAnimationComponent>() != null)
+                {
+                    continue;
+                }
+
+                var executionEffect = AddChild<ExecutionEffect>(abilityEffect);
+                ExecutionEffectComponent.AddEffect(executionEffect);
+
+                if (abilityEffect.EffectConfig is DamageEffect)
+                {
+                    ExecutionEffectComponent.DamageExecutionEffect = executionEffect;
+                }
+                if (abilityEffect.EffectConfig is CureEffect)
+                {
+                    ExecutionEffectComponent.CureExecutionEffect = executionEffect;
+                }
+            }
         }
 
-        ////尝试激活能力单元体
-        //public void TryActivateAbilityItem()
-        //{
-        //    //Log.Debug($"{GetType().Name}->TryActivateAbility");
-        //    ActivateAbilityItem();
-        //}
-
-        ////激活能力单元体
-        //public void ActivateAbilityItem()
-        //{
-
-        //}
-
-        ////禁用能力单元体
-        //public void DeactivateAbilityItem()
-        //{
-
-        //}
-
-        //结束能力单元体
-        public void EndAbilityItem()
+        //结束单元体
+        public void DestroyItem()
         {
             Destroy(this);
         }
 
-        public void FillAbilityEffects(AbilityEntity abilityEntity)
-        {
-            AbilityEffectComponent.FillEffects(AbilityEntity.AbilityEffects);
-        }
+        //public void FillExecutionEffects(AbilityExecution abilityExecution)
+        //{
+        //    //AbilityExecution = abilityExecution;
+        //    ExecutionEffectComponent.FillEffects(abilityExecution.ExecutionEffects);
+        //}
 
         public void OnCollision(CombatEntity otherCombatEntity)
         {
+            if (TargetEntity == null)
+            {
+                ExecutionEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
+            }
+
             if (TargetEntity != null)
             {
                 if (otherCombatEntity != TargetEntity)
                 {
                     return;
                 }
-                else
-                {
-                    AbilityEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
-                    EndAbilityItem();
-                }
-            }
-            else
-            {
-                AbilityEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
+                ExecutionEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
+                DestroyItem();
             }
         }
     }

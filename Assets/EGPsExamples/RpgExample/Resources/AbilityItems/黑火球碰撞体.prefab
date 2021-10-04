@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 484518}
   - component: {fileID: 19885350}
   - component: {fileID: 19913260}
-  - component: {fileID: 2503845905681611031}
   - component: {fileID: 5356210213332580223}
   - component: {fileID: 3189278795669374247}
+  - component: {fileID: 2503845905681611031}
   m_Layer: 0
   m_Name: "\u9ED1\u706B\u7403\u78B0\u649E\u4F53"
   m_TagString: Untagged
@@ -4759,18 +4759,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &2503845905681611031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 123644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c07c12d3a2fac4db087a1d9976ec75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5356210213332580223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4796,6 +4784,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2503845905681611031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c07c12d3a2fac4db087a1d9976ec75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &153778
 GameObject:
   m_ObjectHideFlags: 0

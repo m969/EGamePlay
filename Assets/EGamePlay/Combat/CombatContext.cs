@@ -25,6 +25,7 @@ namespace EGamePlay.Combat
             Instance = this;
             AddComponent<CombatActionManageComponent>();
             AddComponent<UpdateComponent>();
+            Subscribe<EntityDeadEvent>(OnEntityDead);
         }
 
         #region 回合制战斗
@@ -67,22 +68,29 @@ namespace EGamePlay.Combat
             return EnemyEntities[seat];
         }
 
-        public void OnCombatEntityDead(CombatEntity combatEntity)
+        public void OnEntityDead(EntityDeadEvent evnt)
         {
-            if (combatEntity.IsHero) HeroEntities.Remove(combatEntity.SeatNumber);
-            else EnemyEntities.Remove(combatEntity.SeatNumber);
+            var deadEntity = evnt.DeadEntity;
+            if (deadEntity.IsHero) HeroEntities.Remove(deadEntity.SeatNumber);
+            else EnemyEntities.Remove(deadEntity.SeatNumber);
         }
 
         public async void StartCombat()
         {
             RefreshRoundActions();
+            CombatEntity previousCreator = null;
             foreach (var item in RoundActions)
             {
                 if (item.Creator.CheckDead() || item.Target.CheckDead())
                 {
                     continue;
                 }
+                if (item.Target == previousCreator)
+                {
+                    await TimeHelper.WaitAsync(previousCreator.JumpToTime);
+                }
                 await item.ApplyRound();
+                previousCreator = item.Creator;
             }
             await TimerComponent.Instance.WaitAsync(1000);
             if (HeroEntities.Count == 0 || EnemyEntities.Count == 0)

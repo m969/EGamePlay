@@ -28,6 +28,7 @@ namespace EGamePlay.Combat
     public abstract class ActionExecution : AbilityExecution
     {
         public AbilityEffect AbilityEffect { get; set; }
+        public ExecutionEffect ExecutionEffect { get; set; }
         public ActionType ActionType { get; set; }
         public CombatEntity Creator { get; set; }
         public CombatEntity Target { get; set; }

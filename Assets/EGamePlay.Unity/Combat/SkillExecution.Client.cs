@@ -13,17 +13,13 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 技能执行体
     /// </summary>
-    public partial class SkillExecution : AbilityExecution
+    public partial class SkillExecution
     {
-        public List<AnimationData> AnimationDatas { get; set; } = new List<AnimationData>();
-        public List<ColliderSpawnData> ColliderSpawnDatas { get; set; } = new List<ColliderSpawnData>();
-        
-        
         public override void Awake(object initData)
         {
             base.Awake(initData);
 
-            this.ExecutionEffectComponent = AddComponent<ExecutionEffectComponent>(SkillAbility.AbilityEffectComponent.AbilityEffects);
+            this.ExecutionEffectComponent = AddComponent<ExecutionEffectComponent>(SkillAbility.AbilityEffects);
 
             OriginTime = ET.TimeHelper.Now();
         }
@@ -76,21 +72,19 @@ namespace EGamePlay.Combat
 
         private void TargetFlyProccess(ColliderSpawnEmitter colliderSpawnEmitter)
         {
-            var abilityItem = Entity.Create<AbilityItem>(colliderSpawnEmitter.ColliderName);
-            abilityItem.AbilityEntity = SkillAbility;
+            var abilityItem = Entity.Create<AbilityItem>(this);
+            abilityItem.Name = colliderSpawnEmitter.ColliderName;
             abilityItem.TargetEntity = InputTarget;
             abilityItem.Position = OwnerEntity.Position;
-            abilityItem.FillAbilityEffects(SkillAbility);
             CreateAbilityItemObj(abilityItem);
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(InputTarget);
         }
 
         private void ForwardFlyProccess(ColliderSpawnEmitter colliderSpawnEmitter)
         {
-            var abilityItem = Entity.Create<AbilityItem>(colliderSpawnEmitter.ColliderName);
-            abilityItem.AbilityEntity = SkillAbility;
+            var abilityItem = Entity.Create<AbilityItem>(this);
+            abilityItem.Name = colliderSpawnEmitter.ColliderName;
             abilityItem.Position = OwnerEntity.Position;
-            abilityItem.FillAbilityEffects(SkillAbility);
             CreateAbilityItemObj(abilityItem);
             var x = Mathf.Sin(Mathf.Deg2Rad * InputDirection);
             var z = Mathf.Cos(Mathf.Deg2Rad * InputDirection);
@@ -100,21 +94,19 @@ namespace EGamePlay.Combat
 
         private void FixedPositionProccess(ColliderSpawnEmitter colliderSpawnEmitter)
         {
-            var abilityItem = Entity.Create<AbilityItem>(colliderSpawnEmitter.ColliderName);
-            abilityItem.AbilityEntity = SkillAbility;
+            var abilityItem = Entity.Create<AbilityItem>(this);
+            abilityItem.Name = colliderSpawnEmitter.ColliderName;
             abilityItem.Position = InputPoint;
-            abilityItem.FillAbilityEffects(SkillAbility);
             CreateAbilityItemObj(abilityItem);
             abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
         }
 
         private void FixedDirectionProccess(ColliderSpawnEmitter colliderSpawnEmitter)
         {
-            var abilityItem = Entity.Create<AbilityItem>(colliderSpawnEmitter.ColliderName);
-            abilityItem.AbilityEntity = SkillAbility;
+            var abilityItem = Entity.Create<AbilityItem>(this);
+            abilityItem.Name = colliderSpawnEmitter.ColliderName;
             abilityItem.Position = OwnerEntity.Position;
             abilityItem.Direction = OwnerEntity.Direction;
-            abilityItem.FillAbilityEffects(SkillAbility);
             CreateAbilityItemObj(abilityItem);
             abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
         }

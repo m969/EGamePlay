@@ -59,6 +59,8 @@
         SkillTarget = 0,
         [LabelText("自身")]
         Self = 1,
+        [LabelText("其他")]
+        Other = 2,
     }
 
     [LabelText("目标类型")]

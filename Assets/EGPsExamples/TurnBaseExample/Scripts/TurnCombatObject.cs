@@ -32,7 +32,7 @@ public class TurnCombatObject : MonoBehaviour
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
         CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
-        CombatEntity.Subscribe<DeadEvent>(OnDead);
+        CombatEntity.Subscribe<EntityDeadEvent>(OnDead);
 
         //var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
         //var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
@@ -48,7 +48,7 @@ public class TurnCombatObject : MonoBehaviour
     public void OnPreJumpTo(ActionExecution action)
     {
         var jumpToAction = action as JumpToAction;
-        var targetPoint = jumpToAction.Target.ModelObject.transform.position + jumpToAction.Target.ModelObject.transform.forward * 2;
+        var targetPoint = jumpToAction.Target.ModelObject.transform.position + jumpToAction.Target.ModelObject.transform.forward * 1.7f;
         jumpToAction.Creator.ModelObject.transform.DOMove(targetPoint, jumpToAction.Creator.JumpToTime / 1000f).SetEase(Ease.Linear);
         var AnimationComponent = jumpToAction.Creator.ModelObject.GetComponent<CombatObjectData>().AnimationComponent;
         AnimationComponent.Speed = 2f;
@@ -94,7 +94,7 @@ public class TurnCombatObject : MonoBehaviour
         GameObject.Destroy(damageText.gameObject, 0.5f);
     }
 
-    private async void OnDead(DeadEvent deadEvent)
+    private async void OnDead(EntityDeadEvent deadEvent)
     {
         AnimationComponent.PlayFade(AnimationComponent.DeadAnimation);
         await TimeHelper.WaitAsync(2000);
@@ -118,39 +118,37 @@ public class TurnCombatObject : MonoBehaviour
 
     private void OnReceiveStatus(ActionExecution combatAction)
     {
-        var action = combatAction as EffectAssignAction;
-        if (action.EffectConfig is AddStatusEffect addStatusEffect)
+        var action = combatAction as AddStatusAction;
+        var addStatusEffect = action.AddStatusEffect;
+        var statusConfig = addStatusEffect.AddStatus;
+        if (name == "Monster")
         {
-            var statusConfig = addStatusEffect.AddStatus;
-            if (name == "Monster")
-            {
-                var obj = GameObject.Instantiate(CombatObjectData.StatusIconPrefab);
-                obj.transform.SetParent(CombatObjectData.StatusSlotsTrm);
-                obj.GetComponentInChildren<Text>().text = statusConfig.Name;
-                obj.name = action.Status.Id.ToString();
-            }
+            var obj = GameObject.Instantiate(CombatObjectData.StatusIconPrefab);
+            obj.transform.SetParent(CombatObjectData.StatusSlotsTrm);
+            obj.GetComponentInChildren<Text>().text = statusConfig.Name;
+            obj.name = action.Status.Id.ToString();
+        }
 
-            if (statusConfig.ID == "Vertigo")
+        if (statusConfig.ID == "Vertigo")
+        {
+            CombatEntity.GetComponent<MotionComponent>().Enable = false;
+            CombatObjectData.AnimationComponent.AnimancerComponent.Play(CombatObjectData.AnimationComponent.StunAnimation);
+            var vertigoParticle = CombatObjectData.vertigoParticle;
+            if (vertigoParticle == null)
             {
-                CombatEntity.GetComponent<MotionComponent>().Enable = false;
-                CombatObjectData.AnimationComponent.AnimancerComponent.Play(CombatObjectData.AnimationComponent.StunAnimation);
-                var vertigoParticle = CombatObjectData.vertigoParticle;
-                if (vertigoParticle == null)
-                {
-                    vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
-                    vertigoParticle.transform.parent = transform;
-                    vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
-                }
+                vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                vertigoParticle.transform.parent = transform;
+                vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
             }
-            if (statusConfig.ID == "Weak")
+        }
+        if (statusConfig.ID == "Weak")
+        {
+            var weakParticle = CombatObjectData.weakParticle;
+            if (weakParticle == null)
             {
-                var weakParticle = CombatObjectData.weakParticle;
-                if (weakParticle == null)
-                {
-                    weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
-                    weakParticle.transform.parent = transform;
-                    weakParticle.transform.localPosition = new Vector3(0, 0, 0);
-                }
+                weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                weakParticle.transform.parent = transform;
+                weakParticle.transform.localPosition = new Vector3(0, 0, 0);
             }
         }
     }

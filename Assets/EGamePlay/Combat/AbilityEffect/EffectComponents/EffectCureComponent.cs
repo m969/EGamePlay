@@ -32,7 +32,7 @@ namespace EGamePlay.Combat
             {
                 expression.Parameters["生命值上限"].Value = GetEntity<AbilityEffect>().OwnerEntity.GetComponent<AttributeComponent>().HealthPoint.Value;
             }
-            return (int)expression.Value;
+            return Mathf.CeilToInt((float)expression.Value);
         }
     }
 }

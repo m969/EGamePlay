@@ -10,6 +10,8 @@ namespace EGamePlay.Combat
     public class ExecutionEffectComponent : Component
     {
         public List<ExecutionEffect> ExecutionEffects { get; private set; } = new List<ExecutionEffect>();
+        public ExecutionEffect DamageExecutionEffect { get; set; }
+        public ExecutionEffect CureExecutionEffect { get; set; }
 
 
         public override void Setup(object initData)
@@ -18,8 +20,16 @@ namespace EGamePlay.Combat
             foreach (var abilityEffect in abilityEffects)
             {
                 var executionEffect = Entity.AddChild<ExecutionEffect>(abilityEffect);
-                //Log.Debug($"AbilityEffectComponent {item}");
                 AddEffect(executionEffect);
+
+                if (abilityEffect.EffectConfig is DamageEffect)
+                {
+                    DamageExecutionEffect = executionEffect;
+                }
+                if (abilityEffect.EffectConfig is CureEffect)
+                {
+                    CureExecutionEffect = executionEffect;
+                }
             }
         }
 
@@ -34,31 +44,31 @@ namespace EGamePlay.Combat
         //    ExecutionEffects.Add(executionEffect);
         //}
 
-        //public void FillEffects(List<ExecutionEffect> executionEffects)
-        //{
-        //    this.ExecutionEffects.Clear();
-        //    this.ExecutionEffects.AddRange(executionEffects);
-        //}
+        public void FillEffects(List<ExecutionEffect> executionEffects)
+        {
+            this.ExecutionEffects.Clear();
+            this.ExecutionEffects.AddRange(executionEffects);
+        }
 
         //public ExecutionEffect GetEffect(int index = 0)
         //{
         //    return ExecutionEffects[index];
         //}
 
-        //public void ApplyAllEffectsTo(CombatEntity targetEntity)
-        //{
-        //    if (ExecutionEffects.Count > 0)
-        //    {
-        //        foreach (var executionEffect in ExecutionEffects)
-        //        {
-        //            executionEffect.AbilityEffect.ApplyEffectTo(targetEntity);
-        //        }
-        //    }
-        //}
+        public void ApplyAllEffectsTo(CombatEntity targetEntity)
+        {
+            if (ExecutionEffects.Count > 0)
+            {
+                foreach (var executionEffect in ExecutionEffects)
+                {
+                    executionEffect.ApplyEffectTo(targetEntity);
+                }
+            }
+        }
 
-        //public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
-        //{
-        //    ExecutionEffects[index].AbilityEffect.ApplyEffectTo(targetEntity);
-        //}
+        public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
+        {
+            ExecutionEffects[index].ApplyEffectTo(targetEntity);
+        }
     }
 }

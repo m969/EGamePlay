@@ -24,16 +24,29 @@ MonoBehaviour:
     - Name: AutoRename
       Entry: 5
       Data: true
-    - Name: Effects
+    - Name: ChildrenStatuses
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ChildStatus, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Effects
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.DamageEffect, Assembly-CSharp
+      Data: 2|EGamePlay.Combat.DamageEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -74,6 +87,86 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 3|EGamePlay.Combat.CustomEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 2
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 6
+      Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: CustomEffectType
+      Entry: 1
+      Data: "\u6309\u547D\u4E2D\u76EE\u6807\u6570\u9012\u51CF\u767E\u5206\u6BD4\u4F24\u5BB3"
+    - Name: Params
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u9012\u51CF\u767E\u5206\u6BD4"
+    - Name: $v
+      Entry: 1
+      Data: 0.2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u4F24\u5BB3\u4E0B\u9650\u9650\u5236"
+    - Name: $v
+      Entry: 1
+      Data: 0.4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -88,8 +181,9 @@ MonoBehaviour:
   AreaCollider: {fileID: 0}
   AffectTargetType: 2
   ColdTime: 3000
+  EnableChildrenStatuses: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   SkillExecutionAsset: {fileID: 7402701643467124463, guid: 05f4fb3e37c0e0944addfdbd803cd7e3,
     type: 3}
   SkillAudio: {fileID: 0}
-  SkillDescription: 
+  SkillDescription: "\u6BCF\u547D\u4E2D\u4E00\u4E2A\u76EE\u6807\u540E\u4E0B\u4E00\u6B21\u4F24\u5BB3\u4F1A\u51CF\u5C1120%\uFF0C\u6700\u4F4E\u51CF\u523040%"

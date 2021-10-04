@@ -19,7 +19,6 @@ namespace EGamePlay.Combat
         //创建这个效果赋给行动的源能力
         public AbilityEntity SourceAbility { get; set; }
         public Effect EffectConfig => AbilityEffect.EffectConfig;
-        public StatusAbility Status { get; set; }
 
 
         //前置处理
@@ -31,54 +30,39 @@ namespace EGamePlay.Combat
         public void ApplyEffectAssign()
         {
             PreProcess();
-            if (EffectConfig is DamageEffect damageEffect)
+            if (EffectConfig is DamageEffect)
             {
-                //if (string.IsNullOrEmpty(damageEffect.DamageValueProperty)) damageEffect.DamageValueProperty = damageEffect.DamageValueFormula;
                 if (OwnerEntity.DamageActionAbility.TryCreateAction(out var action))
                 {
                     action.Target = Target;
-                    action.DamageSource = DamageSource.Skill;
                     action.AbilityEffect = AbilityEffect;
+                    action.ExecutionEffect = ExecutionEffect;
+                    action.DamageSource = DamageSource.Skill;
                     action.ApplyDamage();
                 }
             }
-            if (EffectConfig is CureEffect cureEffect && Target.CurrentHealth.IsFull() == false)
+
+            if (EffectConfig is CureEffect && Target.CurrentHealth.IsFull() == false)
             {
-                //if (string.IsNullOrEmpty(cureEffect.CureValueProperty)) cureEffect.CureValueProperty = cureEffect.CureValueFormula;
                 if (OwnerEntity.CureActionAbility.TryCreateAction(out var action))
                 {
                     action.Target = Target;
                     action.AbilityEffect = AbilityEffect;
+                    action.ExecutionEffect = ExecutionEffect;
                     action.ApplyCure();
                 }
             }
-            if (EffectConfig is AddStatusEffect addStatusEffect)
+
+            if (EffectConfig is AddStatusEffect)
             {
-                var statusConfig = addStatusEffect.AddStatus;
-                if (statusConfig.CanStack == false)
+                if (OwnerEntity.AddStatusActionAbility.TryCreateAction(out var action))
                 {
-                    if (Target.HasStatus(statusConfig.ID))
-                    {
-                        var status = Target.GetStatus(statusConfig.ID);
-                        var statusLifeTimer = status.GetComponent<StatusLifeTimeComponent>().LifeTimer;
-                        statusLifeTimer.MaxTime = addStatusEffect.Duration / 1000f;
-                        statusLifeTimer.Reset();
-                        return;
-                    }
+                    action.SourceAbility = SourceAbility;
+                    action.Target = Target;
+                    action.AbilityEffect = AbilityEffect;
+                    action.ExecutionEffect = ExecutionEffect;
+                    action.ApplyAddStatus();
                 }
-
-                Status = Target.AttachStatus<StatusAbility>(statusConfig);
-                Status.OwnerEntity = Creator;
-                Status.Level = SourceAbility.Level;
-                //Log.Debug($"ApplyEffectAssign AddStatusEffect {Status}");
-
-                if (statusConfig.EnabledLogicTrigger)
-                {
-                    Status.ProccessInputKVParams(addStatusEffect.Params);
-                }
-
-                Status.AddComponent<StatusLifeTimeComponent>();
-                Status.TryActivateAbility();
             }
             PostProcess();
 
@@ -88,19 +72,8 @@ namespace EGamePlay.Combat
         //后置处理
         private void PostProcess()
         {
-            if (EffectConfig is AddStatusEffect addStatusEffect)
-            {
-                Creator.TriggerActionPoint(ActionPointType.PostGiveStatus, this);
-                Target.TriggerActionPoint(ActionPointType.PostReceiveStatus, this);
-            }
+            Creator.TriggerActionPoint(ActionPointType.AssignEffect, this);
+            Target.TriggerActionPoint(ActionPointType.ReceiveEffect, this);
         }
-    }
-
-    public enum EffectType
-    {
-        DamageAffect = 1,
-        NumericModify = 2,
-        StatusAttach = 3,
-        BuffAttach = 4,
     }
 }

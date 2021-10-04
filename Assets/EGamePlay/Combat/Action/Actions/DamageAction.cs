@@ -33,12 +33,13 @@ namespace EGamePlay.Combat
             if (DamageSource == DamageSource.Attack)
             {
                 IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;
-                DamageValue = (int)Mathf.Max(1, Creator.GetComponent<AttributeComponent>().Attack.Value - Target.GetComponent<AttributeComponent>().Defense.Value);
+                DamageValue = Mathf.CeilToInt(Mathf.Max(1, Creator.GetComponent<AttributeComponent>().Attack.Value - Target.GetComponent<AttributeComponent>().Defense.Value));
                 if (IsCritical)
                 {
-                    DamageValue = (int)(DamageValue * 1.5f);
+                    DamageValue = Mathf.CeilToInt(DamageValue * 1.5f);
                 }
             }
+
             if (DamageSource == DamageSource.Skill)
             {
                 if (DamageEffect.CanCrit)
@@ -48,9 +49,10 @@ namespace EGamePlay.Combat
                 DamageValue = AbilityEffect.GetComponent<EffectDamageComponent>().GetDamageValue();
                 if (IsCritical)
                 {
-                    DamageValue = (int)(DamageValue * 1.5f);
+                    DamageValue = Mathf.CeilToInt(DamageValue * 1.5f);
                 }
             }
+
             if (DamageSource == DamageSource.Buff)
             {
                 if (DamageEffect.CanCrit)
@@ -59,6 +61,22 @@ namespace EGamePlay.Combat
                 }
                 DamageValue = AbilityEffect.GetComponent<EffectDamageComponent>().GetDamageValue();
             }
+
+            if (ExecutionEffect != null)
+            {
+                var executionDamageReduceWithTargetCountComponent = ExecutionEffect.GetComponent<ExecutionDamageReduceWithTargetCountComponent>();
+                if (executionDamageReduceWithTargetCountComponent != null)
+                {
+                    var damagePercent = executionDamageReduceWithTargetCountComponent.GetDamagePercent();
+                    DamageValue = Mathf.CeilToInt(DamageValue * damagePercent);
+                    executionDamageReduceWithTargetCountComponent.AddOneTarget();
+                }
+            }
+
+            //触发 造成伤害前 行动点
+            Creator.TriggerActionPoint(ActionPointType.PreCauseDamage, this);
+            //触发 承受伤害前 行动点
+            Target.TriggerActionPoint(ActionPointType.PreReceiveDamage, this);
         }
 
         //应用伤害
@@ -72,8 +90,9 @@ namespace EGamePlay.Combat
 
             if (Target.CheckDead())
             {
-                Target.Publish(new DeadEvent());
-                CombatContext.Instance.OnCombatEntityDead(Target);
+                var deadEvent = new EntityDeadEvent() { DeadEntity = Target };
+                Target.Publish(deadEvent);
+                CombatContext.Instance.Publish(deadEvent);
             }
 
             ApplyAction();
@@ -89,9 +108,9 @@ namespace EGamePlay.Combat
         }
     }
 
-    public class DeadEvent
+    public class EntityDeadEvent
     {
-
+        public CombatEntity DeadEntity;
     }
 
     public enum DamageSource

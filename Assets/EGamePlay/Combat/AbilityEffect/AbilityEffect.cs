@@ -23,18 +23,30 @@ namespace EGamePlay.Combat
         public override void Awake(object initData)
         {
             this.EffectConfig = initData as Effect;
+            Name = EffectConfig.GetType().Name;
 
+            //伤害效果
             if (this.EffectConfig is DamageEffect damageEffect)
             {
                 AddComponent<EffectDamageComponent>();
             }
+            //治疗效果
             if (this.EffectConfig is CureEffect cureEffect)
             {
                 AddComponent<EffectCureComponent>();
             }
+            //施加状态效果
             if (this.EffectConfig is AddStatusEffect addStatusEffect)
             {
                 AddComponent<EffectAddStatusComponent>();
+            }
+            //自定义效果
+            if (this.EffectConfig is CustomEffect customEffect)
+            {
+                if (customEffect.CustomEffectType == "按命中目标数递减百分比伤害")
+                {
+
+                }
             }
 
             if (EffectConfig.EffectTriggerType == EffectTriggerType.Instant)
@@ -79,10 +91,10 @@ namespace EGamePlay.Combat
             }
         }
 
-        public void ApplyEffect()
-        {
-            Publish(new ApplyEffectEvent() { AbilityEffect = this });
-        }
+        //public void ApplyEffect()
+        //{
+        //    Publish(new ApplyEffectEvent() { AbilityEffect = this });
+        //}
 
         public void ApplyEffectToOwner()
         {
@@ -94,22 +106,15 @@ namespace EGamePlay.Combat
             ApplyEffectTo(OwnerAbility.ParentEntity);
         }
 
-        public void ApplyEffectTo(CombatEntity targetEntity)
+        private void ApplyEffectTo(CombatEntity targetEntity)
         {
-            try
+            if (OwnerEntity.EffectAssignAbility.TryCreateAction(out var action))
             {
-                if (OwnerEntity.EffectAssignAbility.TryCreateAction(out var action))
-                {
-                    //Log.Debug($"AbilityEffect ApplyEffectTo {targetEntity} {EffectConfig}");
-                    action.Target = targetEntity;
-                    action.SourceAbility = OwnerAbility;
-                    action.AbilityEffect = this;
-                    action.ApplyEffectAssign();
-                }
-            }
-            catch (System.Exception e)
-            {
-                Log.Error(e);
+                //Log.Debug($"AbilityEffect ApplyEffectTo {targetEntity} {EffectConfig}");
+                action.Target = targetEntity;
+                action.SourceAbility = OwnerAbility;
+                action.AbilityEffect = this;
+                action.ApplyEffectAssign();
             }
         }
     }

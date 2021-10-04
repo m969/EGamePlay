@@ -33,7 +33,7 @@ using UnityEngine.Playables;
 //    }
 //}
 
-public class Skill1001Ability : AbilityItem
-{
+//public class Skill1001Ability : ExecutionItem
+//{
 
-}
+//}

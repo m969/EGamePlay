@@ -38,7 +38,7 @@ public class SkillExecution_1006 : SkillExecution
         foreach (var item in EntityChannels)
         {
 #if !EGAMEPLAY_EXCEL
-            AbilityEffectComponent.ApplyEffectByIndex(item.Key, 2);
+            ExecutionEffectComponent.ApplyEffectByIndex(item.Key, 2);
 #endif
         }
     }
@@ -63,8 +63,8 @@ public class SkillExecution_1006 : SkillExecution
 #if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
-            AbilityEffectComponent.ApplyEffectByIndex(item.Key, 0);
-            AbilityEffectComponent.ApplyEffectByIndex(item.Key, 1);
+            ExecutionEffectComponent.ApplyEffectByIndex(item.Key, 0);
+            ExecutionEffectComponent.ApplyEffectByIndex(item.Key, 1);
         }
 #endif
         EndExecute();

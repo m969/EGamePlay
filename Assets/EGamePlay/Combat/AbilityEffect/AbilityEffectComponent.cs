@@ -11,6 +11,8 @@ namespace EGamePlay.Combat
     {
         public override bool DefaultEnable { get; set; } = false;
         public List<AbilityEffect> AbilityEffects { get; private set; } = new List<AbilityEffect>();
+        public AbilityEffect DamageAbilityEffect { get; set; }
+        public AbilityEffect CureAbilityEffect { get; set; }
 
 
         public override void Setup(object initData)
@@ -21,6 +23,15 @@ namespace EGamePlay.Combat
                 var abilityEffect = Entity.AddChild<AbilityEffect>(item);
                 //Log.Debug($"AbilityEffectComponent {item}");
                 AddEffect(abilityEffect);
+
+                if (abilityEffect.EffectConfig is DamageEffect)
+                {
+                    DamageAbilityEffect = abilityEffect;
+                }
+                if (abilityEffect.EffectConfig is CureEffect)
+                {
+                    CureAbilityEffect = abilityEffect;
+                }
             }
         }
 
@@ -45,37 +56,37 @@ namespace EGamePlay.Combat
             AbilityEffects.Add(abilityEffect);
         }
 
-        public void SetOneEffect(AbilityEffect abilityEffect)
-        {
-            AbilityEffects.Clear();
-            AbilityEffects.Add(abilityEffect);
-        }
+        //public void SetOneEffect(AbilityEffect abilityEffect)
+        //{
+        //    AbilityEffects.Clear();
+        //    AbilityEffects.Add(abilityEffect);
+        //}
 
-        public void FillEffects(List<AbilityEffect> abilityEffects)
-        {
-            AbilityEffects.Clear();
-            AbilityEffects.AddRange(abilityEffects);
-        }
+        //public void FillEffects(List<AbilityEffect> abilityEffects)
+        //{
+        //    AbilityEffects.Clear();
+        //    AbilityEffects.AddRange(abilityEffects);
+        //}
 
         public AbilityEffect GetEffect(int index = 0)
         {
             return AbilityEffects[index];
         }
 
-        public void ApplyAllEffectsTo(CombatEntity targetEntity)
-        {
-            if (AbilityEffects.Count > 0)
-            {
-                foreach (var abilityEffect in AbilityEffects)
-                {
-                    abilityEffect.ApplyEffectTo(targetEntity);
-                }
-            }
-        }
+        //public void ApplyAllEffectsTo(CombatEntity targetEntity)
+        //{
+        //    if (AbilityEffects.Count > 0)
+        //    {
+        //        foreach (var abilityEffect in AbilityEffects)
+        //        {
+        //            abilityEffect.ApplyEffectTo(targetEntity);
+        //        }
+        //    }
+        //}
 
-        public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
-        {
-            AbilityEffects[index].ApplyEffectTo(targetEntity);
-        }
+        //public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
+        //{
+        //    AbilityEffects[index].ApplyEffectTo(targetEntity);
+        //}
     }
 }

@@ -33,13 +33,13 @@ namespace EGamePlay.Combat
         public void SpellSkill()
         {
             PreProcess();
-            if (SkillExecution == null)
-            {
-                SkillAbility.AbilityEffectComponent.ApplyAllEffectsTo(Target);
-                PostProcess();
-                ApplyAction();
-            }
-            else
+            //if (SkillExecution == null)
+            //{
+            //    SkillAbility.AbilityEffectComponent.ApplyAllEffectsTo(Target);
+            //    PostProcess();
+            //    ApplyAction();
+            //}
+            //else
             {
                 if (SkillTargets.Count > 0)
                 {

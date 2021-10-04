@@ -21,6 +21,5 @@ namespace EGamePlay.Combat
         public float InputDirection { get; set; }
         public GameObject SkillExecutionAsset => SkillAbility.SkillExecutionAsset;
         public long OriginTime { get; set; }
-        public ExecutionEffectComponent ExecutionEffectComponent { get; set; }
     }
 }

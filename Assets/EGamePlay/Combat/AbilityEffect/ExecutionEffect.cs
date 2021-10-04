@@ -20,6 +20,7 @@ namespace EGamePlay.Combat
         public override void Awake(object initData)
         {
             AbilityEffect = initData as AbilityEffect;
+            Name = AbilityEffect.Name;
 
             foreach (var component in AbilityEffect.Components.Values)
             {
@@ -49,6 +50,17 @@ namespace EGamePlay.Combat
                 }
             }
 
+            if (AbilityEffect.EffectConfig is CustomEffect customEffect)
+            {
+                if (customEffect.CustomEffectType == "按命中目标数递减百分比伤害")
+                {
+                    if (Parent is AbilityItem abilityItem)
+                    {
+                        abilityItem.GetComponent<ExecutionEffectComponent>().DamageExecutionEffect.AddComponent<ExecutionDamageReduceWithTargetCountComponent>(AbilityEffect);
+                    }
+                }
+            }
+
             foreach (var item in Components.Values)
             {
                 item.Enable = true;
@@ -58,8 +70,21 @@ namespace EGamePlay.Combat
         public void ApplyEffect()
         {
             //Log.Debug($"ExecutionEffect ApplyEffect");
-            AbilityEffect.ApplyEffect();
+            //AbilityEffect.ApplyEffect();
             Publish(new ExecutionEffectEvent() { ExecutionEffect = this });
+        }
+
+        public void ApplyEffectTo(CombatEntity targetEntity)
+        {
+            if (AbilityEffect.OwnerEntity.EffectAssignAbility.TryCreateAction(out var action))
+            {
+                //Log.Debug($"AbilityEffect ApplyEffectTo {targetEntity} {EffectConfig}");
+                action.Target = targetEntity;
+                action.SourceAbility = AbilityEffect.OwnerAbility;
+                action.AbilityEffect = AbilityEffect;
+                action.ExecutionEffect = this;
+                action.ApplyEffectAssign();
+            }
         }
     }
 }
