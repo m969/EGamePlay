@@ -41,22 +41,23 @@
 
 ***
 
+
 <details>
 <summary>
-Numeric
+CombatEntity
+</summary>
+CombatEntity
+</details>
+
+<details>
+<summary>
+Attribute、Numeric
 </summary>
 NumericFloat
 </details>
 
 <details>
 <summary>
-CombatEntity
-</summary>
-CombatEntity
-</details>
-
-<details>
-<summary>
 Ability
 </summary>
 Ability
@@ -64,23 +65,23 @@ Ability
 
 <details>
 <summary>
-Status
+StatusAbility
 </summary>
 StatusAbility
 </details>
 
 <details>
 <summary>
-Skill
+SkillAbility
 </summary>
 SkillAbility
 </details>
 
 <details>
 <summary>
-Effect
+AbilityEffect
 </summary>
-SkillEffect
+AbilityEffect
 </details>
 
 <details>
@@ -88,13 +89,6 @@ SkillEffect
 ExpressionParser
 </summary>
 ExpressionParser
-</details>
-
-<details>
-<summary>
-EffectConfigToJson
-</summary>
-EffectConfigToJson
 </details>
 
 ---
