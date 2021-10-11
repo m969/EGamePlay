@@ -20,7 +20,9 @@ namespace EGamePlay.Combat
 
         public void ExecutionEffect(ExecutionEffectEvent evnt)
         {
+#if !NOT_UNITY
             evnt.ExecutionEffect.GetParent<SkillExecution>().SpawnCollisionItem(EffectSpawnItemComponent.ColliderSpawnData.ColliderSpawnEmitter);
+#endif
         }
     }
 }

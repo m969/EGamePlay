@@ -190,7 +190,7 @@ namespace EGamePlay
         {
 #if !NOT_UNITY
             if (this is MasterEntity) { }
-            else if (this is ET.OnceWaitTimer) { }
+            else if (this.GetType().Name.Contains("OnceWaitTimer")) { }
             else AddComponent<GameObjectComponent>();
 #endif
         }

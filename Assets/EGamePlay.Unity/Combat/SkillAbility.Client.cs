@@ -38,6 +38,7 @@ namespace EGamePlay.Combat
                 {
                     //ColliderSpawnDatas.Add(new ColliderSpawnData() { ColliderSpawnEmitter = colliderSpawnEmitter });
                     var abilityEffect = AddChild<AbilityEffect>();
+                    abilityEffect.Name = "SpawnItem";
                     abilityEffect.AddComponent<EffectSpawnItemComponent>().ColliderSpawnData = new ColliderSpawnData() { ColliderSpawnEmitter = colliderSpawnEmitter };
                     AbilityEffectComponent.AddEffect(abilityEffect);
                 }
@@ -60,6 +61,7 @@ namespace EGamePlay.Combat
                             animationData.AnimationClip = clip.animationClip;
                             //AnimationDatas.Add(animationData);
                             var abilityEffect = AddChild<AbilityEffect>();
+                            abilityEffect.Name = "Animation";
                             abilityEffect.AddComponent<EffectAnimationComponent>().AnimationData = animationData;
                             AbilityEffectComponent.AddEffect(abilityEffect);
                         }

@@ -29,7 +29,9 @@ namespace EGamePlay.Combat
             effect = ParseEffect(SkillConfig, SkillConfig.Effect3);
             if (effect != null) Effects.Add(effect);
             AddComponent<AbilityEffectComponent>(Effects);
+#if !NOT_UNITY
             ParseAbilityEffects();
+#endif
             if (SkillConfig.Type == "被动")
             {
                 TryActivateAbility();

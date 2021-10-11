@@ -15,6 +15,9 @@ namespace EGamePlay.Combat
     /// </summary>
     public partial class SkillExecution
     {
+        public GameObject SkillExecutionAsset => SkillAbility.SkillExecutionAsset;
+
+
         public override void Awake(object initData)
         {
             base.Awake(initData);

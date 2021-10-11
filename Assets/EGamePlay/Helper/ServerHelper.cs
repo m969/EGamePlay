@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Sirenix.OdinInspector;
 
 #if NOT_UNITY
 namespace Sirenix.OdinInspector
@@ -786,6 +787,47 @@ namespace Sirenix.OdinInspector
     }
 }
 
+[LabelText("碰撞体类型")]
+public enum ColliderType
+{
+    [LabelText("固定位置碰撞体")]
+    FixedPosition,
+    [LabelText("固定朝向碰撞体")]
+    FixedDirection,
+    [LabelText("目标飞行碰撞体")]
+    TargetFly,
+    [LabelText("朝向飞行碰撞体")]
+    ForwardFly,
+}
+
+[LabelText("应用效果")]
+public enum EffectApplyType
+{
+    [LabelText("全部效果")]
+    Effects,
+    [LabelText("效果1")]
+    Effect1,
+    [LabelText("效果2")]
+    Effect2,
+    [LabelText("效果3")]
+    Effect3,
+
+    [LabelText("其他")]
+    Other = 100,
+}
+
+public class ColliderSpawnEmitter
+{
+    [LabelText("碰撞体名称")]
+    public string ColliderName;
+    public ColliderType ColliderType;
+    [LabelText("存活时间")]
+    public float ExistTime;
+    public EffectApplyType EffectApplyType;
+
+    public double time { get; set; }
+}
+
 namespace UnityEngine
 {
     public class GameObject
@@ -803,8 +845,22 @@ namespace UnityEngine
 
     }
 
+    public class AnimationClip
+    {
+
+    }
+
+    public class Resources
+    {
+        public static T Load<T>(string path) where T : class
+        {
+            return default(T);
+        }
+    }
+
     public sealed class SerializeField : Attribute
     {
+
     }
 
     /// <summary>

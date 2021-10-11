@@ -24,6 +24,7 @@ namespace EGamePlay
                 Instance = new MasterEntity();
 #if !NOT_UNITY
                 Instance.AddComponent<GameObjectComponent>();
+                UnityEngine.GameObject.DontDestroyOnLoad(MasterEntity.Instance.GetComponent<GameObjectComponent>().GameObject);
 #endif
             }
             return Instance;
