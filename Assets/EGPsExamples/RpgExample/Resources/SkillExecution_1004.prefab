@@ -50,15 +50,9 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 0}
     value: {fileID: 0}
-  - key: {fileID: 4828324310282108766, guid: a9b515be710ca4d48ba9e026ba6dde33, type: 2}
-    value: {fileID: 0}
   - key: {fileID: 0}
     value: {fileID: 0}
   - key: {fileID: 9139510270093723179, guid: a9b515be710ca4d48ba9e026ba6dde33, type: 2}
-    value: {fileID: 0}
-  - key: {fileID: -1491148847241308682, guid: 44503c16b2bf14244a3d8275a90b170c, type: 2}
-    value: {fileID: 0}
-  - key: {fileID: -4279086477150006423, guid: 44503c16b2bf14244a3d8275a90b170c, type: 2}
     value: {fileID: 0}
   - key: {fileID: 2301339561858070266, guid: c120d9e1dfbe4974e9b419ccb5bf917e, type: 2}
     value: {fileID: 0}

@@ -65,7 +65,7 @@ namespace EGamePlay.Combat
             base.EndExecute();
         }
 
-        public void SpawnCollisionItem(ColliderSpawnEmitter colliderSpawnEmitter)
+        public void SpawnCollisionItem(ExecutionEventEmitter colliderSpawnEmitter)
         {
             if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly) TargetFlyProccess(colliderSpawnEmitter);
             if (colliderSpawnEmitter.ColliderType == ColliderType.ForwardFly) ForwardFlyProccess(colliderSpawnEmitter);
@@ -73,7 +73,7 @@ namespace EGamePlay.Combat
             if (colliderSpawnEmitter.ColliderType == ColliderType.FixedDirection) FixedDirectionProccess(colliderSpawnEmitter);
         }
 
-        private void TargetFlyProccess(ColliderSpawnEmitter colliderSpawnEmitter)
+        private void TargetFlyProccess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
             abilityItem.Name = colliderSpawnEmitter.ColliderName;
@@ -83,7 +83,7 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(InputTarget);
         }
 
-        private void ForwardFlyProccess(ColliderSpawnEmitter colliderSpawnEmitter)
+        private void ForwardFlyProccess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
             abilityItem.Name = colliderSpawnEmitter.ColliderName;
@@ -95,7 +95,7 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(destination, 1f).OnMoveFinish(()=> { Entity.Destroy(abilityItem); });
         }
 
-        private void FixedPositionProccess(ColliderSpawnEmitter colliderSpawnEmitter)
+        private void FixedPositionProccess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
             abilityItem.Name = colliderSpawnEmitter.ColliderName;
@@ -104,7 +104,7 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
         }
 
-        private void FixedDirectionProccess(ColliderSpawnEmitter colliderSpawnEmitter)
+        private void FixedDirectionProccess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
             abilityItem.Name = colliderSpawnEmitter.ColliderName;

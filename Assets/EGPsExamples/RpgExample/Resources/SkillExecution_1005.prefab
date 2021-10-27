@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7402701643467124461}
   - component: {fileID: 7402701643467124462}
   m_Layer: 0
-  m_Name: Skill_1005_Execution
+  m_Name: SkillExecution_1005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,15 +49,9 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 0}
     value: {fileID: 0}
-  - key: {fileID: 4828324310282108766, guid: a9b515be710ca4d48ba9e026ba6dde33, type: 2}
-    value: {fileID: 7402701643467124463}
   - key: {fileID: 0}
     value: {fileID: 0}
   - key: {fileID: 0}
-    value: {fileID: 0}
-  - key: {fileID: 1363687636042589093, guid: a9b515be710ca4d48ba9e026ba6dde33, type: 2}
-    value: {fileID: 0}
-  - key: {fileID: 6422521448481581683, guid: a9b515be710ca4d48ba9e026ba6dde33, type: 2}
     value: {fileID: 0}
   - key: {fileID: 6422521448481581683, guid: ec21a6118acd60b4eb8e05c2d920c3b3, type: 2}
     value: {fileID: 0}
@@ -84,6 +78,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 484518, guid: ea96df4724d45e140a3fc2152409b4ee, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 484518, guid: ea96df4724d45e140a3fc2152409b4ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -96,6 +94,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 484518, guid: ea96df4724d45e140a3fc2152409b4ee, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 484518, guid: ea96df4724d45e140a3fc2152409b4ee, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -105,14 +107,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 484518, guid: ea96df4724d45e140a3fc2152409b4ee, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 484518, guid: ea96df4724d45e140a3fc2152409b4ee, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 484518, guid: ea96df4724d45e140a3fc2152409b4ee, type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 484518, guid: ea96df4724d45e140a3fc2152409b4ee, type: 3}

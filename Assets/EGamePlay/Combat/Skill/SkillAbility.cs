@@ -20,7 +20,9 @@ namespace EGamePlay.Combat
             base.Awake(initData);
             SkillConfig = initData as SkillConfigObject;
             AddComponent<AbilityEffectComponent>(SkillConfig.Effects);
+#if !SERVER
             ParseAbilityEffects();
+#endif
             if (SkillConfig.SkillSpellType == SkillSpellType.Passive)
             {
                 TryActivateAbility();

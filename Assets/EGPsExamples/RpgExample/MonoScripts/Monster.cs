@@ -78,7 +78,6 @@ public sealed class Monster : MonoBehaviour
     {
         var action = combatAction as CureAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
-
         var cureText = GameObject.Instantiate(CureText);
         cureText.transform.SetParent(CanvasTrm);
         cureText.transform.localPosition = Vector3.up * 120;

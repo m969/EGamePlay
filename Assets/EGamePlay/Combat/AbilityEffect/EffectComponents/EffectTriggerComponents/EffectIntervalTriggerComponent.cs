@@ -7,7 +7,7 @@ using GameUtils;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 逻辑间隔触发组件
+    /// 间隔触发组件
     /// </summary>
     public class EffectIntervalTriggerComponent : Component
     {

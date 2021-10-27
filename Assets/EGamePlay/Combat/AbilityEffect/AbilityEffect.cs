@@ -15,7 +15,6 @@ namespace EGamePlay.Combat
     {
         public bool Enable { get; set; }
         public AbilityEntity OwnerAbility => GetParent<AbilityEntity>();
-        public AbilityExecution ParentExecution => GetParent<AbilityExecution>();
         public CombatEntity OwnerEntity => OwnerAbility.OwnerEntity;
         public Effect EffectConfig { get; set; }
 

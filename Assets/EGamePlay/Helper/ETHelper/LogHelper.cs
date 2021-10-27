@@ -2,6 +2,7 @@
 
 namespace ET
 {
+#if !SERVER
     public static class Log
     {
         public static void Debug(string log)
@@ -24,4 +25,5 @@ namespace ET
             UnityEngine.Debug.LogError(exception.ToString());
         }
     }
+#endif
 }

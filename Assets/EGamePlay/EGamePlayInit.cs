@@ -9,13 +9,14 @@ public class EGamePlayInit : SerializedMonoBehaviour
 {
     public static EGamePlayInit Instance { get; private set; }
     public ReferenceCollector ConfigsCollector;
+    public bool EntityLog;
 
 
     private void Awake()
     {
         Instance = this;
         SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
-        Entity.EnableLog = false;
+        Entity.EnableLog = EntityLog;
         MasterEntity.Create();
         Entity.Create<TimerComponent>();
         Entity.Create<CombatContext>();

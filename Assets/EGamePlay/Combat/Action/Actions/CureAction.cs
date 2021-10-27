@@ -31,6 +31,7 @@ namespace EGamePlay.Combat
 
         public void ApplyCure()
         {
+            //Log.Debug("CureAction ApplyCure");
             PreProcess();
 
             if (Target.CurrentHealth.IsFull() == false)

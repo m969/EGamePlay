@@ -45,9 +45,20 @@ public enum EffectApplyType
     [LabelText("其他")]
     Other = 100,
 }
-#if !SERVER
-public class ColliderSpawnEmitter : SignalEmitter
+
+[LabelText("执行体事件类型")]
+public enum ExecutionEventType
 {
+    [LabelText("触发应用效果")]
+    TriggerApplyEffect,
+    [LabelText("生成碰撞体")]
+    TriggerSpawnCollider,
+}
+
+#if !SERVER
+public class ExecutionEventEmitter : SignalEmitter
+{
+    public ExecutionEventType ExecutionEventType;
     [LabelText("碰撞体名称")]
     public string ColliderName;
     public ColliderType ColliderType;
@@ -65,17 +76,24 @@ public class ColliderSpawnEmitter : SignalEmitter
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(ColliderSpawnEmitter))]
-public class ColliderSpawnEmitterInspector : OdinEditor
+[CustomEditor(typeof(ExecutionEventEmitter))]
+public class ExecutionEventEmitterInspector : OdinEditor
 {
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        var emitter = target as ColliderSpawnEmitter;
+        var emitter = target as ExecutionEventEmitter;
         if (emitter.asset == null)
         {
-            var signalAsset = AssetDatabase.LoadAssetAtPath<SignalAsset>("Assets/EGamePlay-Examples/TimelineScene/效果1.signal");
+            SignalAsset signalAsset = null;
+            var arr = AssetDatabase.FindAssets("t:SignalAsset", new string[] { "Assets" });
+            foreach (var item in arr)
+            {
+                signalAsset = AssetDatabase.LoadAssetAtPath<SignalAsset>(AssetDatabase.GUIDToAssetPath(item));
+                if (signalAsset != null) break;
+            }
+            //var signalAsset = AssetDatabase.LoadAssetAtPath<SignalAsset>("Assets/EGPsExamples/TimelineScene/效果1.signal");
             emitter.asset = signalAsset;
             serializedObject.ApplyModifiedProperties();
         }
@@ -95,20 +113,32 @@ public class ColliderSpawnEmitterInspector : OdinEditor
         //    new object[] {serializedObject});
         //return;
 
-        var emitter = target as ColliderSpawnEmitter;
+        var emitter = target as ExecutionEventEmitter;
         emitter.time = EditorGUILayout.FloatField("Time", (float)emitter.time);
         emitter.retroactive = EditorGUILayout.Toggle("Retroactive", emitter.retroactive);
         emitter.emitOnce = EditorGUILayout.Toggle("EmitOnce", emitter.emitOnce);
         EditorGUILayout.Space(20);
-        emitter.ColliderName = EditorGUILayout.TextField("碰撞体名称", emitter.ColliderName);
-        emitter.ColliderType = (ColliderType)SirenixEditorFields.EnumDropdown("碰撞体类型", emitter.ColliderType);
-        if (emitter.ColliderType != ColliderType.TargetFly)
+        emitter.ExecutionEventType = (ExecutionEventType)SirenixEditorFields.EnumDropdown("事件类型", emitter.ExecutionEventType);
+
+        if (emitter.ExecutionEventType == ExecutionEventType.TriggerSpawnCollider)
         {
-            //emitter.ColliderShape = (ColliderShape)SirenixEditorFields.EnumDropdown("碰撞体形状", emitter.ColliderShape);
-            emitter.ExistTime = EditorGUILayout.FloatField("存活时间", emitter.ExistTime);
+            emitter.ColliderName = EditorGUILayout.TextField("碰撞体名称", emitter.ColliderName);
+            emitter.ColliderType = (ColliderType)SirenixEditorFields.EnumDropdown("碰撞体类型", emitter.ColliderType);
+            if (emitter.ColliderType == ColliderType.FixedDirection
+                || emitter.ColliderType == ColliderType.FixedPosition
+                || emitter.ColliderType == ColliderType.ForwardFly
+                )
+            {
+                //emitter.ColliderShape = (ColliderShape)SirenixEditorFields.EnumDropdown("碰撞体形状", emitter.ColliderShape);
+                emitter.ExistTime = EditorGUILayout.FloatField("存活时间", emitter.ExistTime);
+            }
+            emitter.EffectApplyType = (EffectApplyType)EditorGUILayout.EnumPopup("应用效果", emitter.EffectApplyType);
         }
 
-        emitter.EffectApplyType = (EffectApplyType)EditorGUILayout.EnumPopup("应用效果", emitter.EffectApplyType);
+        if (emitter.ExecutionEventType == ExecutionEventType.TriggerApplyEffect)
+        {
+            emitter.EffectApplyType = (EffectApplyType)EditorGUILayout.EnumPopup("应用效果", emitter.EffectApplyType);
+        }
 
         serializedObject.ApplyModifiedProperties();
         if (!EditorUtility.IsDirty(emitter))

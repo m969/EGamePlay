@@ -7,7 +7,7 @@ using GameUtils;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 逻辑时间触发组件
+    /// 时间触发组件
     /// </summary>
     public class ExecutionTimeTriggerComponent : Component
     {

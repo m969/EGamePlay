@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     public class ColliderSpawnData
     {
         public bool HasStart;
-        public ColliderSpawnEmitter ColliderSpawnEmitter;
+        public ExecutionEventEmitter ColliderSpawnEmitter;
     }
 
     /// <summary>

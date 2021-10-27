@@ -58,8 +58,8 @@ public class SpellPreviewComponent : EGamePlay.Component
         if (Input.GetKeyDown(KeyCode.Y))
         {
             PreviewingSkill = CombatEntity.InputSkills[KeyCode.Y];
-            SpellComp.SpellWithTarget(PreviewingSkill, PreviewingSkill.OwnerEntity);
-            //EnterPreview();
+            //SpellComp.SpellWithTarget(PreviewingSkill, PreviewingSkill.OwnerEntity);
+            EnterPreview();
         }
 #endif
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
@@ -75,15 +75,19 @@ public class SpellPreviewComponent : EGamePlay.Component
     {
         CancelPreview();
         Previewing = true;
-        SkillTargetSelectType targetSelectType = SkillTargetSelectType.Auto;
+        var targetSelectType = SkillTargetSelectType.Auto;
+        var affectTargetType = SkillAffectTargetType.EnemyTeam;
 #if EGAMEPLAY_EXCEL
         if (PreviewingSkill.SkillConfig.TargetSelect == "手动指定") targetSelectType = SkillTargetSelectType.PlayerSelect;
         if (PreviewingSkill.SkillConfig.TargetSelect == "固定区域场检测") targetSelectType = SkillTargetSelectType.AreaSelect;
 #else
         targetSelectType = PreviewingSkill.SkillConfig.TargetSelectType;
+        affectTargetType = PreviewingSkill.SkillConfig.AffectTargetType;
 #endif
         if (targetSelectType == SkillTargetSelectType.PlayerSelect)
         {
+            TargetSelectManager.Instance.TargetLimitType = TargetLimitType.EnemyTeam;
+            if (affectTargetType == SkillAffectTargetType.SelfTeam) TargetSelectManager.Instance.TargetLimitType = TargetLimitType.SelfTeam;
             TargetSelectManager.Instance.Show(OnSelectedTarget);
         }
         if (targetSelectType == SkillTargetSelectType.AreaSelect)
@@ -118,7 +122,9 @@ public class SpellPreviewComponent : EGamePlay.Component
     private void OnSelectedTarget(GameObject selectObject)
     {
         CancelPreview();
-        var combatEntity = selectObject.transform.GetComponent<Monster>().CombatEntity;
+        CombatEntity combatEntity = null;
+        if (selectObject.GetComponent<Monster>() != null) combatEntity = selectObject.GetComponent<Monster>().CombatEntity;
+        if (selectObject.GetComponent<Hero>() != null) combatEntity = selectObject.GetComponent<Hero>().CombatEntity;
         SpellComp.SpellWithTarget(PreviewingSkill, combatEntity);
     }
     

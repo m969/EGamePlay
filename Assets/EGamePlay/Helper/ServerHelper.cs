@@ -5,6 +5,10 @@ using Sirenix.OdinInspector;
 #if NOT_UNITY
 namespace Sirenix.OdinInspector
 {
+    public class SerializedMonoBehaviour
+    {
+    }
+
     [Conditional("UNITY_EDITOR")]
     public class LabelTextAttribute : Attribute
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 逻辑行动点触发组件
+    /// 行动点触发组件
     /// </summary>
     public class EffectActionTriggerComponent : Component
     {

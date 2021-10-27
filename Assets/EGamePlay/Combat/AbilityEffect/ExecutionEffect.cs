@@ -15,6 +15,7 @@ namespace EGamePlay.Combat
     public partial class ExecutionEffect : Entity
     {
         public AbilityEffect AbilityEffect { get; set; }
+        public AbilityExecution ParentExecution => GetParent<AbilityExecution>();
 
 
         public override void Awake(object initData)
@@ -24,6 +25,19 @@ namespace EGamePlay.Combat
 
             foreach (var component in AbilityEffect.Components.Values)
             {
+                //时间到直接应用能力效果
+                if (component is EffectTimeTriggerComponent timeTriggerComponent)
+                {
+                    if (timeTriggerComponent.TriggerTime > 0)
+                    {
+                        AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)timeTriggerComponent.TriggerTime;
+                    }
+                    else
+                    {
+                        ApplyEffect();
+                    }
+                }
+                //时间到生成碰撞体，碰撞体再触发应用能力效果
                 if (component is EffectSpawnItemComponent spawnItemComponent)
                 {
                     AddComponent<ExecutionSpawnItemComponent>().EffectSpawnItemComponent = spawnItemComponent;
@@ -36,6 +50,7 @@ namespace EGamePlay.Combat
                         ApplyEffect();
                     }
                 }
+                //时间到播放动作
                 if (component is EffectAnimationComponent animationComponent)
                 {
                     AddComponent<ExecutionAnimationComponent>().EffectAnimationComponent = animationComponent;
@@ -70,15 +85,22 @@ namespace EGamePlay.Combat
         public void ApplyEffect()
         {
             //Log.Debug($"ExecutionEffect ApplyEffect");
-            //AbilityEffect.ApplyEffect();
-            Publish(new ExecutionEffectEvent() { ExecutionEffect = this });
+            //AbilityEffect.ApplyEffectToOwner();
+            if (ParentExecution is SkillExecution skillExecution)
+            {
+                if (skillExecution.InputTarget != null)
+                {
+                    ApplyEffectTo(skillExecution.InputTarget);
+                }
+            }
+            this.Publish(new ExecutionEffectEvent() { ExecutionEffect = this });
         }
 
         public void ApplyEffectTo(CombatEntity targetEntity)
         {
             if (AbilityEffect.OwnerEntity.EffectAssignAbility.TryCreateAction(out var action))
             {
-                //Log.Debug($"AbilityEffect ApplyEffectTo {targetEntity} {EffectConfig}");
+                //Log.Debug($"ExecutionEffect ApplyEffectTo {targetEntity} {AbilityEffect.EffectConfig}");
                 action.Target = targetEntity;
                 action.SourceAbility = AbilityEffect.OwnerAbility;
                 action.AbilityEffect = AbilityEffect;

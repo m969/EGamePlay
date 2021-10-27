@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 逻辑条件触发组件
+    /// 条件触发组件
     /// </summary>
     public class EffectConditionTriggerComponent : Component
     {

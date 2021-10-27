@@ -46,7 +46,12 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.AddComponent<EquipmentComponent>();
         CombatEntity.ListenActionPoint(ActionPointType.PreSpell, OnPreSpell);
         CombatEntity.ListenActionPoint(ActionPointType.PostSpell, OnPostSpell);
+        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
+        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
+        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
+        CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
         CombatEntity.Subscribe<AnimationClip>(OnPlayAnimation);
+        CombatEntity.CurrentHealth.Minus(30000);
 
 #if EGAMEPLAY_EXCEL
         var config = ConfigHelper.Get<SkillConfig>(1001);
@@ -94,6 +99,9 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.BindSkillInput(ability, KeyCode.Y);
         ability.Name = config.Name;
 #endif
+
+        HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+
         for (int i = InventoryPanelTrm.childCount; i > 0; i--)
         {
             GameObject.Destroy(InventoryPanelTrm.GetChild(i - 1).gameObject);
@@ -192,6 +200,97 @@ public sealed class Hero : MonoBehaviour
         {
             AnimationComponent.PlayFade(AnimationComponent.IdleAnimation);
         }
+    }
+
+    private void OnReceiveDamage(ActionExecution combatAction)
+    {
+        var damageAction = combatAction as DamageAction;
+        HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        var damageText = GameObject.Instantiate(DamageText);
+        damageText.transform.SetParent(CanvasTrm);
+        damageText.transform.localPosition = Vector3.up * 120;
+        damageText.transform.localScale = Vector3.one;
+        damageText.transform.localEulerAngles = Vector3.zero;
+        damageText.text = $"-{damageAction.DamageValue.ToString()}";
+        damageText.GetComponent<DOTweenAnimation>().DORestart();
+        GameObject.Destroy(damageText.gameObject, 0.5f);
+    }
+
+    private void OnReceiveCure(ActionExecution combatAction)
+    {
+        var action = combatAction as CureAction;
+        HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        var cureText = GameObject.Instantiate(CureText);
+        cureText.transform.SetParent(CanvasTrm);
+        cureText.transform.localPosition = Vector3.up * 120;
+        cureText.transform.localScale = Vector3.one;
+        cureText.transform.localEulerAngles = Vector3.zero;
+        cureText.text = $"+{action.CureValue.ToString()}";
+        cureText.GetComponent<DOTweenAnimation>().DORestart();
+        GameObject.Destroy(cureText.gameObject, 0.5f);
+    }
+
+    private void OnReceiveStatus(ActionExecution combatAction)
+    {
+        //var action = combatAction as AddStatusAction;
+        //var addStatusEffect = action.AddStatusEffect;
+        //var statusConfig = addStatusEffect.AddStatus;
+        //if (name == "Monster")
+        //{
+        //    var obj = GameObject.Instantiate(StatusIconPrefab);
+        //    obj.transform.SetParent(StatusSlotsTrm);
+        //    obj.GetComponentInChildren<Text>().text = statusConfig.Name;
+        //    obj.name = action.Status.Id.ToString();
+        //}
+
+        //if (statusConfig.ID == "Vertigo")
+        //{
+        //    AnimationComponent.AnimancerComponent.Play(AnimationComponent.StunAnimation);
+        //    if (vertigoParticle == null)
+        //    {
+        //        vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+        //        vertigoParticle.transform.parent = transform;
+        //        vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
+        //    }
+        //}
+        //if (statusConfig.ID == "Weak")
+        //{
+        //    if (weakParticle == null)
+        //    {
+        //        weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+        //        weakParticle.transform.parent = transform;
+        //        weakParticle.transform.localPosition = new Vector3(0, 0, 0);
+        //    }
+        //}
+    }
+
+    private void OnRemoveStatus(RemoveStatusEvent eventData)
+    {
+        //if (name == "Monster")
+        //{
+        //    var trm = StatusSlotsTrm.Find(eventData.StatusId.ToString());
+        //    if (trm != null)
+        //    {
+        //        GameObject.Destroy(trm.gameObject);
+        //    }
+        //}
+
+        //var statusConfig = eventData.Status.StatusConfigObject;
+        //if (statusConfig.ID == "Vertigo")
+        //{
+        //    AnimationComponent.AnimancerComponent.Play(AnimationComponent.IdleAnimation);
+        //    if (vertigoParticle != null)
+        //    {
+        //        GameObject.Destroy(vertigoParticle);
+        //    }
+        //}
+        //if (statusConfig.ID == "Weak")
+        //{
+        //    if (weakParticle != null)
+        //    {
+        //        GameObject.Destroy(weakParticle);
+        //    }
+        //}
     }
 
     private void OnPlayAnimation(AnimationClip animationClip)

@@ -158,6 +158,7 @@ MonoBehaviour:
   m_FixedDuration: 1.933333333332
   m_EditorSettings:
     m_Framerate: 60
+    m_ScenePreview: 1
   m_DurationMode: 0
   m_MarkerTrack: {fileID: -3480816774636380679}
 --- !u!114 &1041863433230830750
@@ -176,6 +177,7 @@ MonoBehaviour:
   m_Retroactive: 1
   m_EmitOnce: 1
   m_Asset: {fileID: 11400000, guid: 273191c792514424a8b2db59e73941d3, type: 2}
+  ExecutionEventType: 1
   ColliderName: "\u8840\u7EA2\u6FC0\u5149\u70AE\u78B0\u649E\u4F53"
   ColliderType: 1
   ExistTime: 0.3

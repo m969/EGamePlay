@@ -34,13 +34,43 @@ namespace EGamePlay.Combat
             var markers = timelineAsset.markerTrack.GetMarkers();
             foreach (var item in markers)
             {
-                if (item is ColliderSpawnEmitter colliderSpawnEmitter)
+                if (item is ExecutionEventEmitter colliderSpawnEmitter)
                 {
-                    //ColliderSpawnDatas.Add(new ColliderSpawnData() { ColliderSpawnEmitter = colliderSpawnEmitter });
-                    var abilityEffect = AddChild<AbilityEffect>();
-                    abilityEffect.Name = "SpawnItem";
-                    abilityEffect.AddComponent<EffectSpawnItemComponent>().ColliderSpawnData = new ColliderSpawnData() { ColliderSpawnEmitter = colliderSpawnEmitter };
-                    AbilityEffectComponent.AddEffect(abilityEffect);
+                    if (colliderSpawnEmitter.ExecutionEventType == ExecutionEventType.TriggerApplyEffect)
+                    {
+                        if (colliderSpawnEmitter.EffectApplyType == EffectApplyType.Effects)
+                        {
+                            foreach (var abilityEffect in AbilityEffects)
+                            {
+                                //abilityEffect.Name = "ApplyEffect";
+                                if (abilityEffect.Name == "SpawnItem") continue;
+                                if (abilityEffect.Name == "Animation") continue;
+                                abilityEffect.AddComponent<EffectTimeTriggerComponent>().TriggerTime = (float)colliderSpawnEmitter.time;
+                            }
+                        }
+                        if (colliderSpawnEmitter.EffectApplyType == EffectApplyType.Effect1)
+                        {
+                            var abilityEffect = AbilityEffects[0];
+                            abilityEffect.AddComponent<EffectTimeTriggerComponent>().TriggerTime = (float)colliderSpawnEmitter.time;
+                        }
+                        if (colliderSpawnEmitter.EffectApplyType == EffectApplyType.Effect2)
+                        {
+                            var abilityEffect = AbilityEffects[1];
+                            abilityEffect.AddComponent<EffectTimeTriggerComponent>().TriggerTime = (float)colliderSpawnEmitter.time;
+                        }
+                        if (colliderSpawnEmitter.EffectApplyType == EffectApplyType.Effect3)
+                        {
+                            var abilityEffect = AbilityEffects[2];
+                            abilityEffect.AddComponent<EffectTimeTriggerComponent>().TriggerTime = (float)colliderSpawnEmitter.time;
+                        }
+                    }
+                    if (colliderSpawnEmitter.ExecutionEventType == ExecutionEventType.TriggerSpawnCollider)
+                    {
+                        var abilityEffect = AddChild<AbilityEffect>();
+                        abilityEffect.Name = "SpawnItem";
+                        abilityEffect.AddComponent<EffectSpawnItemComponent>().ColliderSpawnData = new ColliderSpawnData() { ColliderSpawnEmitter = colliderSpawnEmitter };
+                        AbilityEffectComponent.AddEffect(abilityEffect);
+                    }
                 }
             }
 

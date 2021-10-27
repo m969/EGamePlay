@@ -15,8 +15,7 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 11400000, guid: 97749e4f656aecc49a164555ee9394ba, type: 2}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -31,60 +30,7 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|EGamePlay.Combat.ChildStatus, Assembly-CSharp
-    - Name: StatusConfigObject
-      Entry: 10
       Data: 0
-    - Name: Params
-      Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: "\u95F4\u9694\u65F6\u95F4"
-    - Name: $v
-      Entry: 1
-      Data: 2000
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: "\u56DE\u590D\u91CF"
-    - Name: $v
-      Entry: 1
-      Data: 100
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -93,14 +39,14 @@ MonoBehaviour:
       Data: 
     - Name: Effects
       Entry: 7
-      Data: 4|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 5|EGamePlay.Combat.CureEffect, Assembly-CSharp
+      Data: 2|EGamePlay.Combat.CureEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -130,7 +76,7 @@ MonoBehaviour:
       Data: 100%
     - Name: CureValueFormula
       Entry: 1
-      Data: 200
+      Data: 2000
     - Name: 
       Entry: 8
       Data: 
@@ -143,14 +89,15 @@ MonoBehaviour:
   Id: 1003
   Name: "\u6CBB\u6108"
   SkillSpellType: 0
-  TargetSelectType: 0
+  TargetSelectType: 1
   AffectAreaType: 0
   CircleAreaRadius: 0
   AreaCollider: {fileID: 0}
-  AffectTargetType: 0
+  AffectTargetType: 1
   ColdTime: 3000
   EnableChildrenStatuses: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillExecutionAsset: {fileID: 0}
+  SkillExecutionAsset: {fileID: 2898920878075912383, guid: 423f66bea8a67bb448298e886ab1a120,
+    type: 3}
   SkillAudio: {fileID: 0}
   SkillDescription: 
