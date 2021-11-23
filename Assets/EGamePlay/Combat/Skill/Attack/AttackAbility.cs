@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
     {
         public override AttackExecution CreateExecution()
         {
-            var execution = Entity.CreateWithParent<AttackExecution>(OwnerEntity, this);
+            var execution = OwnerEntity.AddChild<AttackExecution>(this);
             execution.AddComponent<UpdateComponent>();
             return execution;
         }

@@ -5,7 +5,7 @@ using EGamePlay;
 
 namespace EGamePlay.Combat
 {
-    public class MotionActionAbility : EffectActionAbility<MotionAction>
+    public class MotionActionAbility : ActionAbility<MotionAction>
     {
 
     }
@@ -13,7 +13,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 动作行动
     /// </summary>
-    public class MotionAction : ActionExecution<MotionActionAbility>
+    public class MotionAction : ActionExecution
     {
         public int MotionType { get; set; }
 

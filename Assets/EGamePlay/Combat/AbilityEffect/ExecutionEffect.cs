@@ -22,15 +22,18 @@ namespace EGamePlay.Combat
         {
             AbilityEffect = initData as AbilityEffect;
             Name = AbilityEffect.Name;
+            //Log.Debug($"ExecutionEffect Awake {AbilityEffect.OwnerAbility.Name} {AbilityEffect.EffectConfig}");
 
             foreach (var component in AbilityEffect.Components.Values)
             {
-                //时间到直接应用能力效果
-                if (component is EffectTimeTriggerComponent timeTriggerComponent)
+                //时间到直接应用能力给目标效果
+                if (component is EffectExecutionApplyToTargetComponent applyToTargetComponent)
                 {
-                    if (timeTriggerComponent.TriggerTime > 0)
+                    var executionApplyToTargetComponent = AddComponent<ExecutionApplyToTargetComponent>();
+                    executionApplyToTargetComponent.EffectApplyType = applyToTargetComponent.EffectApplyType;
+                    if (applyToTargetComponent.TriggerTime > 0)
                     {
-                        AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)timeTriggerComponent.TriggerTime;
+                        AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)applyToTargetComponent.TriggerTime;
                     }
                     else
                     {
@@ -38,7 +41,7 @@ namespace EGamePlay.Combat
                     }
                 }
                 //时间到生成碰撞体，碰撞体再触发应用能力效果
-                if (component is EffectSpawnItemComponent spawnItemComponent)
+                if (component is EffectExecutionSpawnItemComponent spawnItemComponent)
                 {
                     AddComponent<ExecutionSpawnItemComponent>().EffectSpawnItemComponent = spawnItemComponent;
                     if (spawnItemComponent.ColliderSpawnData.ColliderSpawnEmitter.time > 0)
@@ -51,7 +54,7 @@ namespace EGamePlay.Combat
                     }
                 }
                 //时间到播放动作
-                if (component is EffectAnimationComponent animationComponent)
+                if (component is EffectExecutionAnimationComponent animationComponent)
                 {
                     AddComponent<ExecutionAnimationComponent>().EffectAnimationComponent = animationComponent;
                     if (animationComponent.AnimationData.StartTime > 0)
@@ -86,27 +89,12 @@ namespace EGamePlay.Combat
         {
             //Log.Debug($"ExecutionEffect ApplyEffect");
             //AbilityEffect.ApplyEffectToOwner();
-            if (ParentExecution is SkillExecution skillExecution)
-            {
-                if (skillExecution.InputTarget != null)
-                {
-                    ApplyEffectTo(skillExecution.InputTarget);
-                }
-            }
             this.Publish(new ExecutionEffectEvent() { ExecutionEffect = this });
         }
 
         public void ApplyEffectTo(CombatEntity targetEntity)
         {
-            if (AbilityEffect.OwnerEntity.EffectAssignAbility.TryCreateAction(out var action))
-            {
-                //Log.Debug($"ExecutionEffect ApplyEffectTo {targetEntity} {AbilityEffect.EffectConfig}");
-                action.Target = targetEntity;
-                action.SourceAbility = AbilityEffect.OwnerAbility;
-                action.AbilityEffect = AbilityEffect;
-                action.ExecutionEffect = this;
-                action.ApplyEffectAssign();
-            }
+            AbilityEffect.ApplyEffectTo(targetEntity, this);
         }
     }
 }

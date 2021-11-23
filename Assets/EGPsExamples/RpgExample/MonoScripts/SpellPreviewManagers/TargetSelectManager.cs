@@ -34,7 +34,7 @@ public class TargetSelectManager : MonoBehaviour
         CursorImage.transform.position = Input.mousePosition;
         if (TargetLimitType == TargetLimitType.EnemyTeam)
         {
-            if (RaycastHelper.CastUnitObj(out var enemyObj))
+            if (RaycastHelper.CastEnemyObj(out var enemyObj))
             {
                 if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
                 {

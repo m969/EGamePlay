@@ -16,6 +16,8 @@ namespace ET
 		public string EffectType;
 		public string OwnerAbility;
 		public string Target;
+		public string TriggerType;
+		public string TriggerParam;
 		public string Probability;
 		public string KV1;
 		public string KV2;

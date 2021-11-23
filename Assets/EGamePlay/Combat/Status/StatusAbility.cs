@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using ET;
 
+#if !EGAMEPLAY_EXCEL
 namespace EGamePlay.Combat
 {
-    public class StatusAbility : AbilityEntity
+    public partial class StatusAbility : AbilityEntity
     {
         //投放者、施术者
         public override CombatEntity OwnerEntity { get; set; }
-        public StatusConfigObject StatusConfigObject { get; set; }
+        public StatusConfigObject StatusConfig { get; set; }
         public FloatModifier NumericModifier { get; set; }
         public bool IsChildStatus { get; set; }
+        public int Duration { get; set; }
         public ChildStatus ChildStatusData { get; set; }
         private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
 
@@ -18,34 +20,34 @@ namespace EGamePlay.Combat
         public override void Awake(object initData)
         {
             base.Awake(initData);
-            var statusConfig = StatusConfigObject = initData as StatusConfigObject;
-            Name = StatusConfigObject.ID;
+            var statusConfig = StatusConfig = initData as StatusConfigObject;
+            Name = StatusConfig.ID;
 
             //子状态效果
-            if (StatusConfigObject.EnableChildrenStatuses)
+            if (StatusConfig.EnableChildrenStatuses)
             {
 
             }
             //行为禁制
-            if (StatusConfigObject.EnabledStateModify)
+            if (StatusConfig.EnabledStateModify)
             {
 
             }
             //属性修饰
-            if (StatusConfigObject.EnabledAttributeModify)
+            if (StatusConfig.EnabledAttributeModify)
             {
                 AddComponent<StatusAttributeModifyComponent>();
             }
             //逻辑触发
-            if (StatusConfigObject.EnabledLogicTrigger)
+            if (StatusConfig.EnabledLogicTrigger)
             {
-                AddComponent<AbilityEffectComponent>(StatusConfigObject.Effects);
+                AddComponent<AbilityEffectComponent>(StatusConfig.Effects);
             }
         }
 
         public void ProccessInputKVParams(Dictionary<string, string> Params)
         {
-            for (int i = 0; i < StatusConfigObject.Effects.Count; i++)
+            for (int i = 0; i < StatusConfig.Effects.Count; i++)
             {
                 var abilityEffect = AbilityEffectComponent.GetEffect(i);
                 var logicEffect = abilityEffect.EffectConfig;
@@ -108,9 +110,9 @@ namespace EGamePlay.Combat
             base.ActivateAbility();
 
             //子状态效果
-            if (StatusConfigObject.EnableChildrenStatuses)
+            if (StatusConfig.EnableChildrenStatuses)
             {
-                foreach (var childStatusData in StatusConfigObject.ChildrenStatuses)
+                foreach (var childStatusData in StatusConfig.ChildrenStatuses)
                 {
                     var status = ParentEntity.AttachStatus<StatusAbility>(childStatusData.StatusConfigObject);
                     status.OwnerEntity = OwnerEntity;
@@ -122,9 +124,9 @@ namespace EGamePlay.Combat
                 }
             }
             //行为禁制
-            if (StatusConfigObject.EnabledStateModify)
+            if (StatusConfig.EnabledStateModify)
             {
-                ParentEntity.ActionControlType = ParentEntity.ActionControlType | StatusConfigObject.ActionControlType;
+                ParentEntity.ActionControlType = ParentEntity.ActionControlType | StatusConfig.ActionControlType;
                 //Log.Debug($"{OwnerEntity.ActionControlType}");
                 if (ParentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid))
                 {
@@ -132,11 +134,11 @@ namespace EGamePlay.Combat
                 }
             }
             //属性修饰
-            if (StatusConfigObject.EnabledAttributeModify)
+            if (StatusConfig.EnabledAttributeModify)
             {
-                if (StatusConfigObject.AttributeType != AttributeType.None && StatusConfigObject.NumericValue != "")
+                if (StatusConfig.AttributeType != AttributeType.None && StatusConfig.NumericValue != "")
                 {
-                    var numericValue = StatusConfigObject.NumericValue;
+                    var numericValue = StatusConfig.NumericValue;
                     if (IsChildStatus)
                     {
                         foreach (var paramItem in ChildStatusData.Params)
@@ -149,19 +151,19 @@ namespace EGamePlay.Combat
                     var value = (float)expression.Value;
                     NumericModifier = new FloatModifier() { Value = value };
 
-                    var attributeType = StatusConfigObject.AttributeType.ToString();
-                    if (StatusConfigObject.ModifyType == ModifyType.Add)
+                    var attributeType = StatusConfig.AttributeType.ToString();
+                    if (StatusConfig.ModifyType == ModifyType.Add)
                     {
                         ParentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalAddModifier(NumericModifier);
                     }
-                    if (StatusConfigObject.ModifyType == ModifyType.PercentAdd)
+                    if (StatusConfig.ModifyType == ModifyType.PercentAdd)
                     {
                         ParentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalPctAddModifier(NumericModifier);
                     }
                 }
             }
             //逻辑触发
-            if (StatusConfigObject.EnabledLogicTrigger)
+            if (StatusConfig.EnabledLogicTrigger)
             {
                 AbilityEffectComponent.Enable = true;
             }
@@ -171,7 +173,7 @@ namespace EGamePlay.Combat
         public override void EndAbility()
         {
             //子状态效果
-            if (StatusConfigObject.EnableChildrenStatuses)
+            if (StatusConfig.EnableChildrenStatuses)
             {
                 foreach (var item in ChildrenStatuses)
                 {
@@ -180,9 +182,9 @@ namespace EGamePlay.Combat
                 ChildrenStatuses.Clear();
             }
             //行为禁制
-            if (StatusConfigObject.EnabledStateModify)
+            if (StatusConfig.EnabledStateModify)
             {
-                ParentEntity.ActionControlType = ParentEntity.ActionControlType & (~StatusConfigObject.ActionControlType);
+                ParentEntity.ActionControlType = ParentEntity.ActionControlType & (~StatusConfig.ActionControlType);
                 //Log.Debug($"{OwnerEntity.ActionControlType}");
                 if (ParentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid) == false)
                 {
@@ -190,23 +192,23 @@ namespace EGamePlay.Combat
                 }
             }
             //属性修饰
-            if (StatusConfigObject.EnabledAttributeModify)
+            if (StatusConfig.EnabledAttributeModify)
             {
-                if (StatusConfigObject.AttributeType != AttributeType.None && StatusConfigObject.NumericValue != "")
+                if (StatusConfig.AttributeType != AttributeType.None && StatusConfig.NumericValue != "")
                 {
-                    var attributeType = StatusConfigObject.AttributeType.ToString();
-                    if (StatusConfigObject.ModifyType == ModifyType.Add)
+                    var attributeType = StatusConfig.AttributeType.ToString();
+                    if (StatusConfig.ModifyType == ModifyType.Add)
                     {
                         ParentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalAddModifier(NumericModifier);
                     }
-                    if (StatusConfigObject.ModifyType == ModifyType.PercentAdd)
+                    if (StatusConfig.ModifyType == ModifyType.PercentAdd)
                     {
                         ParentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalPctAddModifier(NumericModifier);
                     }
                 }
             }
             //逻辑触发
-            if (StatusConfigObject.EnabledLogicTrigger)
+            if (StatusConfig.EnabledLogicTrigger)
             {
 
             }
@@ -215,5 +217,11 @@ namespace EGamePlay.Combat
             ParentEntity.OnStatusRemove(this);
             base.EndAbility();
         }
+
+        public int GetDuration()
+        {
+            return Duration;
+        }
     }
 }
+#endif

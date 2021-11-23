@@ -54,3 +54,5 @@ MonoBehaviour:
     gameObject: {fileID: 4900000, guid: e816f3402f4d9054480636751f5aa9c9, type: 3}
   - key: StatusConfig
     gameObject: {fileID: 4900000, guid: ec4a396fa6fcfef46a92da7c5344d4c2, type: 3}
+  - key: ChildStatusConfig
+    gameObject: {fileID: 4900000, guid: 67db3b1729f4ed84ea52acb3cb1df7f4, type: 3}

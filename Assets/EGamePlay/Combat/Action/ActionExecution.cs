@@ -27,6 +27,7 @@ namespace EGamePlay.Combat
     /// </remarks>
     public abstract class ActionExecution : AbilityExecution
     {
+        public ActionAbility ActionAbility { get; set; }
         public AbilityEffect AbilityEffect { get; set; }
         public ExecutionEffect ExecutionEffect { get; set; }
         public ActionType ActionType { get; set; }
@@ -40,8 +41,8 @@ namespace EGamePlay.Combat
         }
     }
 
-    public abstract class ActionExecution<T> : ActionExecution where T : AbilityEntity
-    {
-        public T ActionAbility { get; set; }
-    }
+    //public abstract class ActionExecution<T> : ActionExecution where T : AbilityEntity
+    //{
+    //    public new T ActionAbility => base.ActionAbility as T;
+    //}
 }

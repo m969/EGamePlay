@@ -4,31 +4,32 @@ using System.Collections.Generic;
 
 namespace EGamePlay
 {
-    public class EventExecution<T> : Entity where T : class
+    public interface IEventExecution
     {
-        public virtual void OnStart()
+
+    }
+
+    public abstract class EventExecution : Entity, IEventExecution
+    {
+        public abstract void Run();
+    }
+
+    public abstract class EventExecution<E> : Entity, IEventExecution
+    {
+        public abstract void Run(E a1);
+    }
+
+    public abstract class AsyncEventExecution : Entity, IEventExecution
+    {
+        public ET.ETTaskCompletionSource ETTaskCompletionSource { get; set; }
+
+
+        public abstract ET.ETTask RunAsync();
+
+        public void Finish()
         {
-
-        }
-
-        public override void Update()
-        {
-            Run();
-        }
-
-        public virtual void Run()
-        {
-
-        }
-
-        public virtual void OnFinish()
-        {
-
-        }
-
-        public virtual void OnEnd()
-        {
-
+            ETTaskCompletionSource.SetResult();
+            Destroy(this);
         }
     }
 }

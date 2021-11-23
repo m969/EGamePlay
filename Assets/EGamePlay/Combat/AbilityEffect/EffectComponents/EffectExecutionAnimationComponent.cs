@@ -18,7 +18,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class EffectAnimationComponent : Component
+    public class EffectExecutionAnimationComponent : Component
     {
         public AnimationData AnimationData { get; set; }
     }

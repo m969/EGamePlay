@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
 
         public T CreateAction<T>(CombatEntity combatEntity) where T : ActionExecution
         {
-            var action = Entity.CreateWithParent<T>(combatEntity) as T;
+            var action = combatEntity.AddChild<T>();
             action.Creator = combatEntity;
             //CombatActions.Add(action);
             return action;

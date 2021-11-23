@@ -24,7 +24,7 @@ namespace EGamePlay
                 Instance = new MasterEntity();
 #if !NOT_UNITY
                 Instance.AddComponent<GameObjectComponent>();
-                UnityEngine.GameObject.DontDestroyOnLoad(MasterEntity.Instance.GetComponent<GameObjectComponent>().GameObject);
+                UnityEngine.GameObject.DontDestroyOnLoad(Instance.GetComponent<GameObjectComponent>().GameObject);
 #endif
             }
             return Instance;
@@ -32,7 +32,7 @@ namespace EGamePlay
 
         public static void Destroy()
         {
-            Entity.Destroy(Instance);
+            Destroy(Instance);
             Instance = null;
         }
 

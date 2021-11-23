@@ -7,7 +7,7 @@ using ET;
 
 namespace EGamePlay.Combat
 {
-    public class AttackActionAbility : EffectActionAbility<AttackAction>
+    public class AttackActionAbility : ActionAbility<AttackAction>
     {
 
     }
@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 普攻行动
     /// </summary>
-    public class AttackAction : ActionExecution<AttackActionAbility>
+    public class AttackAction : ActionExecution
     {
         //前置处理
         private void PreProcess()

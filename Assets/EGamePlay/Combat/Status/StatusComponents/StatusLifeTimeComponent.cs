@@ -16,8 +16,7 @@ namespace EGamePlay.Combat
 
         public override void Setup()
         {
-            var status = Entity as StatusAbility;
-            var lifeTime = status.StatusConfigObject.Duration / 1000f;
+            var lifeTime = GetEntity<StatusAbility>().GetDuration() / 1000f;
             LifeTimer = new GameTimer(lifeTime);
         }
 
@@ -25,8 +24,13 @@ namespace EGamePlay.Combat
         {
             if (LifeTimer.IsRunning)
             {
-                LifeTimer.UpdateAsFinish(Time.deltaTime, GetEntity<StatusAbility>().EndAbility);
+                LifeTimer.UpdateAsFinish(Time.deltaTime, OnLifeTimeFinish);
             }
+        }
+
+        private void OnLifeTimeFinish()
+        {
+            GetEntity<StatusAbility>().EndAbility();
         }
     }
 }

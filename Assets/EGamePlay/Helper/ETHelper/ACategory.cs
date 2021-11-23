@@ -44,16 +44,16 @@ namespace ET
                 {
 					dict.Add(int.Parse(item.Key), item.Value);
 				}
-				//if (typeName == nameof(StatusConfig))
-				//{
-				//	nameDict = new Dictionary<string, T>();
-				//	foreach (var item in dit)
-				//	{
-				//		var statusConfig = item.Value as StatusConfig;
-				//		nameDict.Add(statusConfig.StatusID, statusConfig as T);
-				//	}
-				//}
-			}
+                if (typeName == nameof(StatusConfig))
+                {
+                    nameDict = new Dictionary<string, T>();
+                    foreach (var item in dit)
+                    {
+                        var statusConfig = item.Value as StatusConfig;
+                        nameDict.Add(statusConfig.ID, statusConfig as T);
+                    }
+                }
+            }
 			catch (Exception e)
 			{
 				Log.Error(e);
@@ -78,7 +78,8 @@ namespace ET
 			T t;
 			if (!this.dict.TryGetValue(id, out t))
 			{
-				throw new Exception($"not found config: {typeof(T)} id: {id}");
+				//throw new Exception($"not found config: {typeof(T)} id: {id}");
+				return null;
 			}
 			return t;
 		}
@@ -88,7 +89,8 @@ namespace ET
 			T t;
 			if (!this.nameDict.TryGetValue(name, out t))
 			{
-				throw new Exception($"not found config: {typeof(T)} name: {name}");
+				//throw new Exception($"not found config: {typeof(T)} name: {name}");
+				return null;
 			}
 			return t;
 		}

@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class EffectSpawnItemComponent : Component
+    public class EffectExecutionSpawnItemComponent : Component
     {
         public ColliderSpawnData ColliderSpawnData { get; set; }
     }

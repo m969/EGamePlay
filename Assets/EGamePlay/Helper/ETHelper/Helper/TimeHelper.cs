@@ -26,7 +26,7 @@ namespace ET
 
 		public static async ETTask WaitAsync(int time)
         {
-			await TimerComponent.Instance.WaitAsync(time);
+			await TimerManager.Instance.WaitAsync(time);
         }
     }
 }

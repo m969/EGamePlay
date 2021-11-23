@@ -3,30 +3,32 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public sealed class HealthPoint
+    public sealed class HealthPoint : Entity
     {
-        public int Value { get; private set; }
-        public int MaxValue { get; private set; }
+        public FloatNumeric HealthPointNumeric;
+        public FloatNumeric HealthPointMaxNumeric;
+        public int Value { get => (int)HealthPointNumeric.Value; }
+        public int MaxValue { get => (int)HealthPointMaxNumeric.Value; }
 
 
         public void Reset()
         {
-            Value = MaxValue;
+            HealthPointNumeric.SetBase(HealthPointMaxNumeric.Value);
         }
 
         public void SetMaxValue(int value)
         {
-            MaxValue = value;
+            
         }
 
         public void Minus(int value)
         {
-            Value = Mathf.Max(0, Value - value);
+            HealthPointNumeric.MinusBase(value);
         }
 
         public void Add(int value)
         {
-            Value = Mathf.Min(MaxValue, Value + value);
+            HealthPointNumeric.AddBase(value);
         }
 
         public float Percent()

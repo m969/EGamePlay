@@ -6,7 +6,9 @@ using System.Reflection;
 using UnityEngine;
 using Sirenix.OdinInspector;
 #if !NOT_UNITY
+#if UNITY_EDITOR
 using Sirenix.Utilities.Editor;
+#endif
 #endif
 
 namespace EGamePlay.Combat

@@ -27,7 +27,7 @@ namespace EGamePlay.Combat
                 return;
 
             //Log.Debug($"OnInputTarget {combatEntity}");
-            if (CombatEntity.SpellActionAbility.TryCreateAction(out var action))
+            if (CombatEntity.SpellAbility.TryMakeAction(out var action))
             {
                 action.SkillAbility = spellSkill;
                 action.SkillExecution = spellSkill.CreateExecution() as SkillExecution;
@@ -43,7 +43,7 @@ namespace EGamePlay.Combat
                 return;
 
             //Log.Debug($"OnInputPoint {point}");
-            if (CombatEntity.SpellActionAbility.TryCreateAction(out var action))
+            if (CombatEntity.SpellAbility.TryMakeAction(out var action))
             {
                 action.SkillAbility = spellSkill;
                 action.SkillExecution = spellSkill.CreateExecution() as SkillExecution;
@@ -58,7 +58,7 @@ namespace EGamePlay.Combat
                 return;
 
             //Log.Debug($"OnInputDirect {direction}");
-            if (CombatEntity.SpellActionAbility.TryCreateAction(out var action))
+            if (CombatEntity.SpellAbility.TryMakeAction(out var action))
             {
                 action.SkillAbility = spellSkill;
                 action.SkillExecution = spellSkill.CreateExecution() as SkillExecution;

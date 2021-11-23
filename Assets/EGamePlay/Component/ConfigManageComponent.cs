@@ -29,7 +29,7 @@ namespace EGamePlay.Combat
         public override void Setup(object initData)
         {
             Instance = this;
-            var assembly = Assembly.GetAssembly(typeof(TimerComponent));
+            var assembly = Assembly.GetAssembly(typeof(TimerManager));
             var configsCollector = initData as ReferenceCollector;
             if (configsCollector == null)
             {

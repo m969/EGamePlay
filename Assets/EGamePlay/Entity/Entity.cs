@@ -26,6 +26,7 @@ namespace EGamePlay
         {
             var entity = Activator.CreateInstance(entityType) as Entity;
             entity.InstanceId = IdFactory.NewInstanceId();
+            entity.Id = entity.InstanceId;
             if (!Master.Entities.ContainsKey(entityType))
             {
                 Master.Entities.Add(entityType, new List<Entity>());
@@ -54,43 +55,61 @@ namespace EGamePlay
             return CreateWithId(typeof(T), id, initData) as T;
         }
 
-        public static T CreateWithParent<T>(Entity parent) where T : Entity
+        private static T CreateWithParent<T>(Entity parent) where T : Entity
         {
             return CreateWithParent(typeof(T), parent) as T;
         }
 
-        public static T CreateWithParent<T>(Entity parent, object initData) where T : Entity
+        private static T CreateWithParent<T>(Entity parent, object initData) where T : Entity
         {
             return CreateWithParent(typeof(T), parent, initData) as T;
         }
 
-        public static T CreateWithParentAndId<T>(Entity parent, long id) where T : Entity
+        private static T CreateWithParentAndId<T>(Entity parent, long id) where T : Entity
         {
             return CreateWithParentAndId(typeof(T), parent, id) as T;
         }
 
-        public static T CreateWithParentAndId<T>(Entity parent, long id, object initData) where T : Entity
+        private static T CreateWithParentAndId<T>(Entity parent, long id, object initData) where T : Entity
         {
             return CreateWithParentAndId(typeof(T), parent, id, initData) as T;
+        }
+
+        private static void SetupEntity(Entity entity, Entity parent)
+        {
+            //var preParent = entity.Parent;
+            parent.SetChild(entity);
+            //if (preParent == null)
+            {
+                entity.Awake();
+            }
+            entity.Start();
+        }
+
+        private static void SetupEntity(Entity entity, Entity parent, object initData)
+        {
+            //var preParent = entity.Parent;
+            parent.SetChild(entity);
+            //if (preParent == null)
+            {
+                entity.Awake(initData);
+            }
+            entity.Start(initData);
         }
 
         public static Entity Create(Type entityType)
         {
             var entity = NewEntity(entityType);
-            entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.Id}");
-            Master.SetChild(entity);
-            entity.Awake();
+            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}");
+            SetupEntity(entity, Master);
             return entity;
         }
 
         public static Entity Create(Type entityType, object initData)
         {
             var entity = NewEntity(entityType);
-            entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.Id}, {initData}");
-            Master.SetChild(entity);
-            entity.Awake(initData);
+            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}, {initData}");
+            SetupEntity(entity, Master, initData);
             return entity;
         }
 
@@ -98,9 +117,8 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = id;
-            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.Id}");
-            Master.SetChild(entity);
-            entity.Awake();
+            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}");
+            SetupEntity(entity, Master);
             return entity;
         }
 
@@ -108,55 +126,68 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             entity.Id = id;
-            if (EnableLog) Log.Debug($"Entity->Create, {entityType.Name}={entity.Id}, {initData}");
-            Master.SetChild(entity);
-            entity.Awake(initData);
+            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}, {initData}");
+            SetupEntity(entity, Master, initData);
             return entity;
         }
 
-        public static Entity CreateWithParent(Type entityType, Entity parent)
+        private static Entity CreateWithParent(Type entityType, Entity parent)
         {
             var entity = NewEntity(entityType);
-            entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            parent.SetChild(entity);
-            entity.Awake();
+            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+            SetupEntity(entity, parent);
             return entity;
         }
 
-        public static Entity CreateWithParentAndId(Type entityType, Entity parent, long id)
+        private static Entity CreateWithParentAndId(Type entityType, Entity parent, long id)
         {
             var entity = NewEntity(entityType);
             entity.Id = id;
-            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            parent.SetChild(entity);
-            entity.Awake();
+            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+            SetupEntity(entity, parent);
             return entity;
         }
 
-        public static Entity CreateWithParent(Type entityType, Entity parent, object initData)
+        private static Entity CreateWithParent(Type entityType, Entity parent, object initData)
         {
             var entity = NewEntity(entityType);
-            entity.Id = entity.InstanceId;
-            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            parent.SetChild(entity);
-            entity.Awake(initData);
+            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+            SetupEntity(entity, parent, initData);
             return entity;
         }
 
-        public static Entity CreateWithParentAndId(Type entityType, Entity parent, long id, object initData)
+        private static Entity CreateWithParentAndId(Type entityType, Entity parent, long id, object initData)
         {
             var entity = NewEntity(entityType);
             entity.Id = id;
-            if (EnableLog) Log.Debug($"Entity->CreateWithParent, {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            parent.SetChild(entity);
-            entity.Awake(initData);
+            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+            SetupEntity(entity, parent, initData);
             return entity;
         }
 
         public static void Destroy(Entity entity)
         {
-            entity.OnDestroy();
+            try
+            {
+                entity.OnDestroy();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+            entity.Dispose();
+        }
+
+        public static void Destroy(Component entity)
+        {
+            try
+            {
+                entity.OnDestroy();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
             entity.Dispose();
         }
     }
@@ -165,25 +196,30 @@ namespace EGamePlay
     {
         public long Id { get; set; }
         private string name;
-        public virtual string Name
+        public string Name
         {
             get => name;
             set
             {
                 name = value;
-                OnNameChangedAction?.Invoke((name));
+#if !NOT_UNITY
+                GetComponent<GameObjectComponent>().OnNameChanged(name);
+#endif
             }
         }
         public long InstanceId { get; set; }
         private Entity parent;
-        public Entity Parent { get { return parent; } private set { parent = value; OnSetParent(value); } }
+        public Entity Parent { get { return parent; } }
         public bool IsDisposed { get { return InstanceId == 0; } }
+        public List<Entity> Children { get; private set; } = new List<Entity>();
+        public Dictionary<long, Entity> Id2Children { get; private set; } = new Dictionary<long, Entity>();
+        public Dictionary<Type, List<Entity>> Type2Children { get; private set; } = new Dictionary<Type, List<Entity>>();
         public Dictionary<Type, Component> Components { get; set; } = new Dictionary<Type, Component>();
-        public Action<string> OnNameChangedAction { get; set; }
-        public Action<Component> OnAddComponentAction { get; set; }
-        public Action<Component> OnRemoveComponentAction { get; set; }
-        public Action<Entity> OnAddChildAction { get; set; }
-        public Action<Entity> OnRemoveChildAction { get; set; }
+        //public Action<Component> OnAddComponentAction { get; set; }
+        //public Action<Component> OnRemoveComponentAction { get; set; }
+        //public Action<string> OnNameChangedAction { get; set; }
+        //public Action<Entity> OnAddChildAction { get; set; }
+        //public Action<Entity> OnRemoveChildAction { get; set; }
 
 
         public Entity()
@@ -205,6 +241,21 @@ namespace EGamePlay
 
         }
 
+        public virtual void Start()
+        {
+
+        }
+
+        public virtual void Start(object initData)
+        {
+
+        }
+
+        public virtual void OnSetParent(Entity preParent, Entity nowParent)
+        {
+
+        }
+
         public virtual void Update()
         {
 
@@ -217,30 +268,29 @@ namespace EGamePlay
 
         public void Dispose()
         {
-            if (Entity.EnableLog) Log.Debug($"{GetType().Name}->Dispose");
-            var childrenComponent = GetComponent<ChildrenComponent>();
-            if (childrenComponent != null)
-            {
-                var Children = childrenComponent.Children;
-                var Type2Children = childrenComponent.Type2Children;
+            if (EnableLog) Log.Debug($"{GetType().Name}->Dispose");
+            //var childrenComponent = GetComponent<ChildrenComponent>();
+            //if (childrenComponent != null)
+            //{
+            //    var Children = childrenComponent.Children;
+            //    var Type2Children = childrenComponent.Type2Children;
                 if (Children.Count > 0)
                 {
                     for (int i = Children.Count - 1; i >= 0; i--)
                     {
-                        Entity.Destroy(Children[i]);
+                        Destroy(Children[i]);
                     }
                     Children.Clear();
                     Type2Children.Clear();
                 }
-            }
+            //}
 
             Parent?.RemoveChild(this);
-            foreach (Component component in this.Components.Values)
+            foreach (Component component in Components.Values)
             {
-                component.OnDestroy();
-                component.Dispose();
+                Destroy(component);
             }
-            this.Components.Clear();
+            Components.Clear();
             InstanceId = 0;
             if (Master.Entities.ContainsKey(GetType()))
             {
@@ -248,11 +298,7 @@ namespace EGamePlay
             }
         }
 
-        public virtual void OnSetParent(Entity parent)
-        {
-
-        }
-
+        #region 组件
         public T GetParent<T>() where T : Entity
         {
             return parent as T;
@@ -263,13 +309,16 @@ namespace EGamePlay
             var component = Activator.CreateInstance<T>();
             component.Entity = this;
             component.IsDisposed = false;
-            //component.Enable = true;
-            this.Components.Add(typeof(T), component);
+            Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
-            if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
+            if (EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
+            component.Awake();
             component.Setup();
-            OnAddComponentAction?.Invoke((component));
-            if (component.DefaultEnable) component.Enable = true;
+#if !NOT_UNITY
+            GetComponent<GameObjectComponent>().OnAddComponent(component);
+#endif
+            //OnAddComponentAction?.Invoke((component));
+            component.Enable = component.DefaultEnable;
             return component;
         }
 
@@ -278,56 +327,78 @@ namespace EGamePlay
             var component = Activator.CreateInstance<T>();
             component.Entity = this;
             component.IsDisposed = false;
-            //component.Enable = true;
-            this.Components.Add(typeof(T), component);
+            Components.Add(typeof(T), component);
             Master.AllComponents.Add(component);
-            if (Entity.EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
+            if (EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
+            component.Awake(initData);
             component.Setup(initData);
-            OnAddComponentAction?.Invoke((component));
-            if (component.DefaultEnable) component.Enable = true;
+#if !NOT_UNITY
+            GetComponent<GameObjectComponent>().OnAddComponent(component);
+#endif
+            //OnAddComponentAction?.Invoke((component));
+            component.Enable = component.DefaultEnable;
             return component;
         }
 
         public void RemoveComponent<T>() where T : Component
         {
-            var component = this.Components[typeof(T)];
+            var component = Components[typeof(T)];
             if (component.Enable) component.Enable = false;
-            component.OnDestroy();
-            component.Dispose();
-            this.Components.Remove(typeof(T));
-            OnRemoveComponentAction?.Invoke((component));
+            Destroy(component);
+            Components.Remove(typeof(T));
+#if !NOT_UNITY
+            GetComponent<GameObjectComponent>().OnRemoveComponent(component);
+#endif
+            //OnRemoveComponentAction?.Invoke((component));
         }
 
         public T GetComponent<T>() where T : Component
         {
-            if (this.Components.TryGetValue(typeof(T), out var component))
+            if (Components.TryGetValue(typeof(T), out var component))
             {
                 return component as T;
             }
             return null;
         }
+        #endregion
 
-        public void SetParent(Entity parent)
+        #region 子实体
+        private void SetParent(Entity parent)
         {
-            Parent?.RemoveChild(this);
-            parent?.SetChild(this);
+            var preParent = Parent;
+            preParent?.RemoveChild(this);
+            this.parent = parent;
+#if !NOT_UNITY
+            parent.GetComponent<GameObjectComponent>().OnAddChild(this);
+#endif
+            OnSetParent(preParent, parent);
+            //parent?.SetChild(this);
         }
 
         public void SetChild(Entity child)
         {
-            var childrenComponent = GetComponent<ChildrenComponent>();
-            if (childrenComponent == null) childrenComponent = AddComponent<ChildrenComponent>();
-            childrenComponent.SetChild(child);
-            child.Parent = this;
-            Publish(new SetChildEventAfter() { Entity = child });
+            //var childrenComponent = GetComponent<ChildrenComponent>();
+            //if (childrenComponent == null) childrenComponent = AddComponent<ChildrenComponent>();
+            //childrenComponent.SetChild(child);
+
+            Children.Add(child);
+            Id2Children.Add(child.Id, child);
+            if (!Type2Children.ContainsKey(child.GetType())) Type2Children.Add(child.GetType(), new List<Entity>());
+            Type2Children[child.GetType()].Add(child);
+            child.SetParent(this);
+            //GetComponent<GameObjectComponent>().OnAddChild(child);
+            //Fire("OnSetChildEvent", child);
         }
 
         public void RemoveChild(Entity child)
         {
-            var childrenComponent = GetComponent<ChildrenComponent>();
-            childrenComponent.RemoveChild(child);
-            child.Parent = Master;
-            Publish(new RemoveChildEventAfter() { Entity = child });
+            //var childrenComponent = GetComponent<ChildrenComponent>();
+            //childrenComponent.RemoveChild(child);
+
+            Children.Remove(child);
+            if (Type2Children.ContainsKey(child.GetType())) Type2Children[child.GetType()].Remove(child);
+            //child.SetParent(Master);
+            //Fire("OnRemoveChildEvent", child);
         }
 
         public Entity AddChild(Type entityType)
@@ -340,7 +411,7 @@ namespace EGamePlay
             return CreateWithParent<T>(this);
         }
 
-        public T AddChildWithId<T>(long id) where T : Entity
+        public T AddIdChild<T>(long id) where T : Entity
         {
             return CreateWithParent<T>(this);
         }
@@ -350,54 +421,89 @@ namespace EGamePlay
             return CreateWithParent<T>(this, initData);
         }
 
+        public Entity GetIdChild(long id)
+        {
+            Id2Children.TryGetValue(id, out var entity);
+            return entity;
+        }
+
+        public T GetIdChild<T>(long id) where T : Entity
+        {
+            Id2Children.TryGetValue(id, out var entity);
+            return entity as T;
+        }
+
         public T GetChild<T>(int index = 0) where T : Entity
         {
-            var childrenComponent = GetComponent<ChildrenComponent>();
-            if (childrenComponent == null)
+            //var childrenComponent = GetComponent<ChildrenComponent>();
+            //if (childrenComponent == null)
+            //{
+            //    return null;
+            //}
+            if (Type2Children.ContainsKey(typeof(T)) == false)
             {
                 return null;
             }
-            if (childrenComponent.Type2Children.ContainsKey(typeof(T)) == false)
+            if (Type2Children[typeof(T)].Count <= index)
             {
                 return null;
             }
-            if (childrenComponent.Type2Children[typeof(T)].Count <= index)
-            {
-                return null;
-            }
-            return childrenComponent.Type2Children[typeof(T)][index] as T;
+            return Type2Children[typeof(T)][index] as T;
         }
 
-        public Entity[] GetChildren()
+        //public Entity[] GetChildren()
+        //{
+        //    var childrenComponent = GetComponent<ChildrenComponent>();
+        //    if (childrenComponent == null)
+        //    {
+        //        return new Entity[0];
+        //    }
+        //    return childrenComponent.GetChildren();
+        //}
+
+        //public T[] GetTypeChildren<T>() where T : Entity
+        //{
+        //    var childrenComponent = GetComponent<ChildrenComponent>();
+        //    if (childrenComponent == null)
+        //    {
+        //        return new T[0];
+        //    }
+        //    return childrenComponent.GetTypeChildren<T>();
+        //}
+
+        public Entity Find(string name)
         {
-            var childrenComponent = GetComponent<ChildrenComponent>();
-            if (childrenComponent == null)
+            foreach (var item in Children)
             {
-                return new Entity[0];
+                if (item.name == name) return item;
             }
-            return childrenComponent.GetChildren();
+            return null;
         }
 
-        public Entity[] GetTypeChildren<T>() where T : Entity
+        public T Find<T>(string name) where T : Entity
         {
-            var childrenComponent = GetComponent<ChildrenComponent>();
-            if (childrenComponent == null)
+            if (Type2Children.TryGetValue(typeof(T), out var chidren))
             {
-                return new Entity[0];
+                foreach (var item in chidren)
+                {
+                    if (item.name == name) return item as T;
+                }
             }
-            return childrenComponent.GetTypeChildren<T>();
+            return null;
         }
+        #endregion
 
-        public T ExecuteEvent<T>(T TEvent) where T : class
-        {
-            var eventComponent = GetComponent<EventComponent>();
-            if (eventComponent == null)
-            {
-                return TEvent;
-            }
-            eventComponent.Publish(TEvent);
-            return TEvent;
-        }
+        #region 事件
+        //public T ExecuteEvent<T>(T TEvent) where T : class
+        //{
+        //    var eventComponent = GetComponent<EventComponent>();
+        //    if (eventComponent == null)
+        //    {
+        //        return TEvent;
+        //    }
+        //    eventComponent.Publish(TEvent);
+        //    return TEvent;
+        //}
 
         public T Publish<T>(T TEvent) where T : class
         {
@@ -410,25 +516,35 @@ namespace EGamePlay
             return TEvent;
         }
 
-        public TEvent Publish<TEvent, TParam>(TEvent evnt, TParam param) where TEvent : class
-        {
-            var eventComponent = GetComponent<EventComponent>();
-            if (eventComponent == null)
-            {
-                return evnt;
-            }
-            eventComponent.Publish(evnt);
-            return evnt;
-        }
+        //public TEvent Publish<TEvent, TParam>(TEvent evnt, TParam param) where TEvent : class
+        //{
+        //    var eventComponent = GetComponent<EventComponent>();
+        //    if (eventComponent == null)
+        //    {
+        //        return evnt;
+        //    }
+        //    eventComponent.Publish(evnt);
+        //    return evnt;
+        //}
 
-        public void Subscribe<T>(Action<T> action) where T : class
+        public SubscribeSubject Subscribe<T>(Action<T> action) where T : class
         {
             var eventComponent = GetComponent<EventComponent>();
             if (eventComponent == null)
             {
                 eventComponent = AddComponent<EventComponent>();
             }
-            eventComponent.Subscribe(action);
+            return eventComponent.Subscribe(action);
+        }
+
+        public SubscribeSubject Subscribe<T>(Action<T> action, Entity disposeWith) where T : class
+        {
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent == null)
+            {
+                eventComponent = AddComponent<EventComponent>();
+            }
+            return eventComponent.Subscribe(action).DisposeWith(disposeWith);
         }
 
         public void UnSubscribe<T>(Action<T> action) where T : class
@@ -445,9 +561,25 @@ namespace EGamePlay
 
         }
 
+        public void Fire(string eventType)
+        {
+            Fire(eventType, this);
+        }
+
+        public void Fire(string eventType, Entity entity)
+        {
+
+        }
+
+        public void OnFire(string eventType, Action<Entity> action)
+        {
+
+        }
+
         public EventStream<T> OnEvent<T>() where T : class
         {
             return new EventStream<T>();
         }
+        #endregion
     }
 }

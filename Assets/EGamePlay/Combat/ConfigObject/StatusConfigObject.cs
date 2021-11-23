@@ -137,6 +137,8 @@ namespace EGamePlay.Combat
         [OnInspectorGUI("BeginBox", append:false)]
         public GameObject ParticleEffect;
 
+        public GameObject GetParticleEffect() => ParticleEffect;
+
         [LabelText("状态音效")]
         [OnInspectorGUI("EndBox", append:true)]
         public AudioClip Audio;
@@ -250,6 +252,8 @@ namespace EGamePlay.Combat
     {
         [LabelText("状态效果")]
         public StatusConfigObject StatusConfigObject;
+
+        public ET.StatusConfig StatusConfig { get; set; }
 
         [LabelText("参数列表"), HideReferenceObjectPicker]
         public Dictionary<string, string> Params = new Dictionary<string, string>();

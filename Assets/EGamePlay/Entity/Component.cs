@@ -30,6 +30,16 @@ namespace EGamePlay
             return Entity as T;
         }
 
+        public virtual void Awake()
+        {
+
+        }
+
+        public virtual void Awake(object initData)
+        {
+
+        }
+
         public virtual void Setup()
         {
 

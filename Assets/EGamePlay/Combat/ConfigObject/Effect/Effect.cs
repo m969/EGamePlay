@@ -65,7 +65,7 @@ namespace EGamePlay.Combat
         public string TriggerProbability = "100%";
 
 
-        public string IntervalValue { get; set; }
-        public string ConditionParamValue { get; set; }
+        //public string IntervalValue { get; set; }
+        //public string ConditionParamValue { get; set; }
     }
 }

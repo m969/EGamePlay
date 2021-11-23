@@ -33,7 +33,11 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
         CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
 
+#if EGAMEPLAY_EXCEL
+        var config = ET.StatusConfigCategory.Instance.GetByName("Tenacity");
+#else
         var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
+#endif
         var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
         Status.OwnerEntity = CombatEntity;
         Status.TryActivateAbility();
@@ -92,7 +96,11 @@ public sealed class Monster : MonoBehaviour
     {
         var action = combatAction as AddStatusAction;
         var addStatusEffect = action.AddStatusEffect;
+#if EGAMEPLAY_EXCEL
+        var statusConfig = addStatusEffect.AddStatusConfig;
+#else
         var statusConfig = addStatusEffect.AddStatus;
+#endif
         if (name == "Monster")
         {
             var obj = GameObject.Instantiate(StatusIconPrefab);
@@ -106,7 +114,7 @@ public sealed class Monster : MonoBehaviour
             AnimationComponent.AnimancerComponent.Play(AnimationComponent.StunAnimation);
             if (vertigoParticle == null)
             {
-                vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                vertigoParticle = GameObject.Instantiate(statusConfig.GetParticleEffect());
                 vertigoParticle.transform.parent = transform;
                 vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
             }
@@ -115,7 +123,7 @@ public sealed class Monster : MonoBehaviour
         {
             if (weakParticle == null)
             {
-                weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                weakParticle = GameObject.Instantiate(statusConfig.GetParticleEffect());
                 weakParticle.transform.parent = transform;
                 weakParticle.transform.localPosition = new Vector3(0, 0, 0);
             }
@@ -133,7 +141,7 @@ public sealed class Monster : MonoBehaviour
             }
         }
         
-        var statusConfig = eventData.Status.StatusConfigObject;
+        var statusConfig = eventData.Status.StatusConfig;
         if (statusConfig.ID == "Vertigo")
         {
             AnimationComponent.AnimancerComponent.Play(AnimationComponent.IdleAnimation);
@@ -149,5 +157,7 @@ public sealed class Monster : MonoBehaviour
                 GameObject.Destroy(weakParticle);
             }
         }
+
+        //EEvent.Run<BossDeadEventExecution>(eventData.CombatEntity);
     }
 }

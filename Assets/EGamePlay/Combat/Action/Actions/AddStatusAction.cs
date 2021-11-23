@@ -6,7 +6,7 @@ using EGamePlay.Combat;
 
 namespace EGamePlay.Combat
 {
-    public class AddStatusActionAbility : EffectActionAbility<AddStatusAction>
+    public class AddStatusActionAbility : ActionAbility<AddStatusAction>
     {
 
     }
@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 施加状态行动
     /// </summary>
-    public class AddStatusAction : ActionExecution<AddStatusActionAbility>
+    public class AddStatusAction : ActionExecution
     {
         public AbilityEntity SourceAbility { get; set; }
         public AddStatusEffect AddStatusEffect => AbilityEffect.EffectConfig as AddStatusEffect;
@@ -31,8 +31,16 @@ namespace EGamePlay.Combat
         {
             PreProcess();
 
+#if EGAMEPLAY_EXCEL
+            var statusConfig = AddStatusEffect.AddStatusConfig;
+            var canStack = statusConfig.CanStack == "是";
+            var enabledLogicTrigger = statusConfig.EnabledLogicTrigger();
+#else
             var statusConfig = AddStatusEffect.AddStatus;
-            if (statusConfig.CanStack == false)
+            var canStack = statusConfig.CanStack;
+            var enabledLogicTrigger = statusConfig.EnabledLogicTrigger;
+#endif
+            if (canStack == false)
             {
                 if (Target.HasStatus(statusConfig.ID))
                 {
@@ -47,9 +55,10 @@ namespace EGamePlay.Combat
             Status = Target.AttachStatus<StatusAbility>(statusConfig);
             Status.OwnerEntity = Creator;
             Status.Level = SourceAbility.Level;
+            Status.Duration = (int)AddStatusEffect.Duration;
             //Log.Debug($"ApplyEffectAssign AddStatusEffect {Status}");
 
-            if (statusConfig.EnabledLogicTrigger)
+            if (enabledLogicTrigger)
             {
                 Status.ProccessInputKVParams(AddStatusEffect.Params);
             }

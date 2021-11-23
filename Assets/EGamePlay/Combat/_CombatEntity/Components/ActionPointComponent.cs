@@ -12,6 +12,30 @@ namespace EGamePlay.Combat
     public sealed class ActionPoint
     {
         public List<Action<ActionExecution>> Listeners { get; set; } = new List<Action<ActionExecution>>();
+
+
+        public void AddListener(Action<ActionExecution> action)
+        {
+            Listeners.Add(action);
+        }
+
+        public void RemoveListener(Action<ActionExecution> action)
+        {
+            Listeners.Remove(action);
+        }
+
+        public void TriggerAllActions(ActionExecution actionExecution)
+        {
+            if (Listeners.Count == 0)
+            {
+                return;
+            }
+            for (int i = Listeners.Count - 1; i >= 0; i--)
+            {
+                var item = Listeners[i];
+                item.Invoke(actionExecution);
+            }
+        }
     }
 
     [Flags]
@@ -87,26 +111,28 @@ namespace EGamePlay.Combat
             {
                 ActionPoints.Add(actionPointType, new ActionPoint());
             }
-            ActionPoints[actionPointType].Listeners.Add(action);
+            ActionPoints[actionPointType].AddListener(action);
         }
 
         public void RemoveListener(ActionPointType actionPointType, Action<ActionExecution> action)
         {
             if (ActionPoints.ContainsKey(actionPointType))
             {
-                ActionPoints[actionPointType].Listeners.Remove(action);
+                ActionPoints[actionPointType].RemoveListener(action);
             }
         }
 
-        public void TriggerActionPoint(ActionPointType actionPointType, ActionExecution action)
+        public ActionPoint GetActionPoint(ActionPointType actionPointType)
         {
-            if (ActionPoints.ContainsKey(actionPointType) && ActionPoints[actionPointType].Listeners.Count > 0)
+            if (ActionPoints.TryGetValue(actionPointType, out var actionPoint)) ;
+            return actionPoint;
+        }
+
+        public void TriggerActionPoint(ActionPointType actionPointType, ActionExecution actionExecution)
+        {
+            if (ActionPoints.TryGetValue(actionPointType, out var actionPoint))
             {
-                for (int i = ActionPoints[actionPointType].Listeners.Count - 1; i >= 0; i--)
-                {
-                    var item = ActionPoints[actionPointType].Listeners[i];
-                    item.Invoke(action);
-                }
+                actionPoint.TriggerAllActions(actionExecution);
             }
         }
     }

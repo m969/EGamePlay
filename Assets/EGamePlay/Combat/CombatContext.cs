@@ -92,12 +92,12 @@ namespace EGamePlay.Combat
                 await item.ApplyRound();
                 previousCreator = item.Creator;
             }
-            await TimerComponent.Instance.WaitAsync(1000);
+            await TimeHelper.WaitAsync(1000);
             if (HeroEntities.Count == 0 || EnemyEntities.Count == 0)
             {
                 HeroEntities.Clear();
                 EnemyEntities.Clear();
-                await TimerComponent.Instance.WaitAsync(2000);
+                await TimeHelper.WaitAsync(2000);
                 this.Publish(new CombatEndEvent());
                 return;
             }
@@ -114,7 +114,7 @@ namespace EGamePlay.Combat
 
             foreach (var item in HeroEntities)
             {
-                if (item.Value.RoundActionAbility.TryCreateAction(out var turnAction))
+                if (item.Value.RoundAbility.TryMakeAction(out var turnAction))
                 {
                     if (EnemyEntities.ContainsKey(item.Key))
                     {
@@ -129,7 +129,7 @@ namespace EGamePlay.Combat
             }
             foreach (var item in EnemyEntities)
             {
-                if (item.Value.RoundActionAbility.TryCreateAction(out var roundAction))
+                if (item.Value.RoundAbility.TryMakeAction(out var roundAction))
                 {
                     if (HeroEntities.ContainsKey(item.Key))
                     {

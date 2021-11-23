@@ -41,10 +41,11 @@ namespace EGamePlay.Combat
             }
         }
     }
+
     /// <summary>
     /// 浮点型数值
     /// </summary>
-    public class FloatNumeric
+    public class FloatNumeric : Entity
     {
         public float Value { get; private set; }
         public float baseValue { get; private set; }
@@ -58,63 +59,88 @@ namespace EGamePlay.Combat
         private FloatModifierCollection FinalPctAddCollection { get; } = new FloatModifierCollection();
 
 
-        public void Initialize()
+        public override void Awake()
         {
             baseValue = add = pctAdd = finalAdd = finalPctAdd = 0f;
         }
+
         public float SetBase(float value)
         {
             baseValue = value;
             Update();
             return baseValue;
         }
+
+        public float AddBase(float value)
+        {
+            baseValue += value;
+            Update();
+            return baseValue;
+        }
+
+        public float MinusBase(float value)
+        {
+            baseValue -= value;
+            if (baseValue < 0) baseValue = 0;
+            Update();
+            return baseValue;
+        }
+
         public void AddAddModifier(FloatModifier modifier)
         {
             add = AddCollection.AddModifier(modifier);
             Update();
         }
+
         public void AddPctAddModifier(FloatModifier modifier)
         {
             pctAdd = PctAddCollection.AddModifier(modifier);
             Update();
         }
+
         public void AddFinalAddModifier(FloatModifier modifier)
         {
             finalAdd = FinalAddCollection.AddModifier(modifier);
             Update();
         }
+
         public void AddFinalPctAddModifier(FloatModifier modifier)
         {
             finalPctAdd = FinalPctAddCollection.AddModifier(modifier);
             Update();
         }
+
         public void RemoveAddModifier(FloatModifier modifier)
         {
             add = AddCollection.RemoveModifier(modifier);
             Update();
         }
+
         public void RemovePctAddModifier(FloatModifier modifier)
         {
             pctAdd = PctAddCollection.RemoveModifier(modifier);
             Update();
         }
+
         public void RemoveFinalAddModifier(FloatModifier modifier)
         {
             finalAdd = FinalAddCollection.RemoveModifier(modifier);
             Update();
         }
+
         public void RemoveFinalPctAddModifier(FloatModifier modifier)
         {
             finalPctAdd = FinalPctAddCollection.RemoveModifier(modifier);
             Update();
         }
 
-        public void Update()
+        public new void Update()
         {
             var value1 = baseValue;
             var value2 = (value1 + add) * (100 + pctAdd) / 100f;
             var value3 = (value2 + finalAdd) * (100 + finalPctAdd) / 100f;
             Value = value3;
+            Parent.GetComponent<AttributeComponent>().OnNumericUpdate(this);
         }
     }
 }

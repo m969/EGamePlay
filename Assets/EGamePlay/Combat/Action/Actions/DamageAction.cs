@@ -8,19 +8,27 @@ using GameUtils;
 
 namespace EGamePlay.Combat
 {
-    public class DamageActionAbility : EffectActionAbility<DamageAction>
+    public class DamageActionAbility : ActionAbility<DamageAction>
     {
-
+        public override void Awake()
+        {
+            AddComponent<DamageBloodSuckComponent>();
+        }
     }
 
     /// <summary>
     /// 伤害行动
     /// </summary>
-    public class DamageAction : ActionExecution<DamageActionAbility>
+    public class DamageAction : ActionExecution
     {
+        public DamageActionAbility DamageAbility => ActionAbility as DamageActionAbility;
         public DamageEffect DamageEffect => AbilityEffect.EffectConfig as DamageEffect;
         //伤害来源
         public DamageSource DamageSource { get; set; }
+        //伤害攻势
+        public int DamagePotential { get; set; }
+        //防御架势
+        public int DefensePosture { get; set; }
         //伤害数值
         public int DamageValue { get; set; }
         //是否是暴击
@@ -106,11 +114,6 @@ namespace EGamePlay.Combat
             //触发 承受伤害后 行动点
             Target.TriggerActionPoint(ActionPointType.PostReceiveDamage, this);
         }
-    }
-
-    public class EntityDeadEvent
-    {
-        public CombatEntity DeadEntity;
     }
 
     public enum DamageSource

@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public class ApplyEffectEvent
-    {
-        public AbilityEffect AbilityEffect;
-    }
+    public class ApplyEffectEvent { public AbilityEffect AbilityEffect; }
+    public enum EffectSourceType { Ability, Execution }
+
     /// <summary>
     /// 能力效果
     /// </summary>
@@ -17,12 +16,14 @@ namespace EGamePlay.Combat
         public AbilityEntity OwnerAbility => GetParent<AbilityEntity>();
         public CombatEntity OwnerEntity => OwnerAbility.OwnerEntity;
         public Effect EffectConfig { get; set; }
+        public EffectSourceType EffectSourceType { get; set; }
 
 
         public override void Awake(object initData)
         {
             this.EffectConfig = initData as Effect;
             Name = EffectConfig.GetType().Name;
+            //Log.Debug($"AbilityEffect Awake {OwnerAbility.Name} {EffectConfig}");
 
             //伤害效果
             if (this.EffectConfig is DamageEffect damageEffect)
@@ -48,24 +49,29 @@ namespace EGamePlay.Combat
                 }
             }
 
+            //立即触发
             if (EffectConfig.EffectTriggerType == EffectTriggerType.Instant)
             {
                 ApplyEffectToParent();
             }
+            //行动点触发
             if (EffectConfig.EffectTriggerType == EffectTriggerType.Action)
             {
                 AddComponent<EffectActionTriggerComponent>();
             }
+            //间隔触发
             if (EffectConfig.EffectTriggerType == EffectTriggerType.Interval)
             {
-                if (!string.IsNullOrEmpty(this.EffectConfig.Interval))
+                Log.Debug($"AbilityEffect Awake EffectConfig.Interval={EffectConfig.Interval}");
+                if (!string.IsNullOrEmpty(EffectConfig.Interval))
                 {
                     AddComponent<EffectIntervalTriggerComponent>();
                 }
             }
+            //条件触发
             if (EffectConfig.EffectTriggerType == EffectTriggerType.Condition)
             {
-                if (!string.IsNullOrEmpty(this.EffectConfig.ConditionParam))
+                if (!string.IsNullOrEmpty(EffectConfig.ConditionParam))
                 {
                     AddComponent<EffectConditionTriggerComponent>();
                 }
@@ -107,12 +113,25 @@ namespace EGamePlay.Combat
 
         private void ApplyEffectTo(CombatEntity targetEntity)
         {
-            if (OwnerEntity.EffectAssignAbility.TryCreateAction(out var action))
+            if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
             {
                 //Log.Debug($"AbilityEffect ApplyEffectTo {targetEntity} {EffectConfig}");
                 action.Target = targetEntity;
                 action.SourceAbility = OwnerAbility;
                 action.AbilityEffect = this;
+                action.ApplyEffectAssign();
+            }
+        }
+
+        public void ApplyEffectTo(CombatEntity targetEntity, ExecutionEffect executionEffect)
+        {
+            if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
+            {
+                //Log.Debug($"AbilityEffect ApplyEffectTo {targetEntity} {EffectConfig}");
+                action.Target = targetEntity;
+                action.SourceAbility = OwnerAbility;
+                action.AbilityEffect = this;
+                action.ExecutionEffect = executionEffect;
                 action.ApplyEffectAssign();
             }
         }

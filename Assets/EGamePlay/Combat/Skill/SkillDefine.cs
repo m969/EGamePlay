@@ -133,6 +133,8 @@
         [LabelText("（空）")]
         None = 0,
 
+        [LabelText("生命值上限")]
+        HealthPointMax = 999,
         [LabelText("生命值")]
         HealthPoint = 1000,
         [LabelText("攻击力")]

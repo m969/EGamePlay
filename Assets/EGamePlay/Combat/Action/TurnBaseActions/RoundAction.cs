@@ -7,7 +7,7 @@ using ET;
 
 namespace EGamePlay.Combat
 {
-    public class RoundActionAbility : EffectActionAbility<RoundAction>
+    public class RoundActionAbility : ActionAbility<RoundAction>
     {
 
     }
@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 回合行动
     /// </summary>
-    public class RoundAction : ActionExecution<RoundActionAbility>
+    public class RoundAction : ActionExecution
     {
         public int RoundActionType { get; set; }
 
@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
         {
             PreProcess();
 
-            if (Creator.JumpToActionAbility.TryCreateAction(out var jumpToAction))
+            if (Creator.JumpToAbility.TryMakeAction(out var jumpToAction))
             {
                 jumpToAction.Target = Target;
                 await jumpToAction.ApplyJumpTo();

@@ -164,7 +164,7 @@ public class TurnCombatObject : MonoBehaviour
             }
         }
 
-        var statusConfig = eventData.Status.StatusConfigObject;
+        var statusConfig = eventData.Status.StatusConfig;
         if (statusConfig.ID == "Vertigo")
         {
             CombatEntity.GetComponent<MotionComponent>().Enable = true;
@@ -193,7 +193,7 @@ public class TurnCombatObject : MonoBehaviour
             token.Cancel();
         }
         token = new ETCancellationToken();
-        var isTimeout = await TimerComponent.Instance.WaitAsync((int)(animation.length * 1000), token);
+        var isTimeout = await TimerManager.Instance.WaitAsync((int)(animation.length * 1000), token);
         if (isTimeout)
         {
             AnimationComponent.PlayFade(AnimationComponent.IdleAnimation);

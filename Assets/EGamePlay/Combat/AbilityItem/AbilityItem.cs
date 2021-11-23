@@ -26,11 +26,11 @@ namespace EGamePlay.Combat
             var abilityEffects = AbilityEntity.AbilityEffects;
             foreach (var abilityEffect in abilityEffects)
             {
-                if (abilityEffect.GetComponent<EffectSpawnItemComponent>() != null)
+                if (abilityEffect.GetComponent<EffectExecutionSpawnItemComponent>() != null)
                 {
                     continue;
                 }
-                if (abilityEffect.GetComponent<EffectAnimationComponent>() != null)
+                if (abilityEffect.GetComponent<EffectExecutionAnimationComponent>() != null)
                 {
                     continue;
                 }

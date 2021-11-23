@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: Status_AttackPowerPctModify
+  m_Name: Status_AttackModify
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -50,8 +50,8 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: AttackPowerPctModify
-  Name: "\u653B\u51FB\u529B\u767E\u5206\u6BD4\u4FEE\u9970"
+  ID: AttackModify
+  Name: "\u653B\u51FB\u529B\u4FEE\u9970"
   StatusType: 2
   Duration: 3000
   ShowInStatusSlots: 1
@@ -63,7 +63,7 @@ MonoBehaviour:
   EnabledAttributeModify: 1
   AttributeType: 1001
   NumericValue: "\u53D8\u52A8\u6570\u503C"
-  ModifyType: 1
+  ModifyType: 0
   EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}

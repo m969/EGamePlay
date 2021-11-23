@@ -7,12 +7,12 @@ using ET;
 
 namespace EGamePlay.Combat
 {
-    public class JumpToActionAbility : EffectActionAbility<JumpToAction>
+    public class JumpToActionAbility : ActionAbility<JumpToAction>
     {
 
     }
 
-    public class JumpToAction : ActionExecution<JumpToActionAbility>
+    public class JumpToAction : ActionExecution
     {
         //前置处理
         private void PreProcess()
@@ -28,7 +28,7 @@ namespace EGamePlay.Combat
 
             PostProcess();
 
-            if (Creator.AttackActionAbility.TryCreateAction(out var attackAction))
+            if (Creator.SpellAttackAbility.TryMakeAction(out var attackAction))
             {
                 attackAction.Target = Target;
                 await attackAction.ApplyAttackAwait();

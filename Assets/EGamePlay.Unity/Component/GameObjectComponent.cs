@@ -16,11 +16,11 @@ namespace EGamePlay
             var view = GameObject.AddComponent<ComponentView>();
             view.Type = GameObject.name;
             view.Component = this;
-            Entity.OnNameChangedAction = OnNameChanged;
-            Entity.OnAddComponentAction = OnAddComponent;
-            Entity.OnRemoveComponentAction = OnRemoveComponent;
-            Entity.Subscribe<SetChildEventAfter>(OnAddChild);
-            Entity.Subscribe<RemoveChildEventAfter>(OnRemoveChild);
+            //Entity.OnNameChangedAction = OnNameChanged;
+            //Entity.OnAddComponentAction = OnAddComponent;
+            //Entity.OnRemoveComponentAction = OnRemoveComponent;
+            //Entity.Subscribe<SetChildEventAfter>(OnAddChild);
+            //Entity.Subscribe<RemoveChildEventAfter>(OnRemoveChild);
         }
 
         public override void OnDestroy()
@@ -29,37 +29,44 @@ namespace EGamePlay
             UnityEngine.GameObject.Destroy(GameObject);
         }
         
-        private void OnNameChanged(string name)
+        public void OnNameChanged(string name)
         {
             GameObject.name = $"{Entity.GetType().Name}: {name}";
         }
 
-        private void OnAddComponent(Component component)
+        public void OnAddComponent(Component component)
         {
             var view = GameObject.AddComponent<ComponentView>();
             view.Type = component.GetType().Name;
             view.Component = component;
         }
-        
-        private void OnRemoveComponent(Component component)
+
+        public void OnRemoveComponent(Component component)
         {
-            UnityEngine.GameObject.Destroy(GameObject.GetComponent<ComponentView>());
-        }
-        
-        private void OnAddChild(SetChildEventAfter evnt)
-        {
-            if (evnt.Entity.GetComponent<GameObjectComponent>() != null)
+            var comps = GameObject.GetComponents<ComponentView>();
+            foreach (var item in comps)
             {
-                evnt.Entity.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(GameObject.transform);
+                if (item.Component == component)
+                {
+                    UnityEngine.GameObject.Destroy(item);
+                }
             }
         }
-        
-        private void OnRemoveChild(RemoveChildEventAfter evnt)
+
+        public void OnAddChild(Entity child)
         {
-            if (evnt.Entity.GetComponent<GameObjectComponent>() != null)
+            if (child.GetComponent<GameObjectComponent>() != null)
             {
-                evnt.Entity.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(null);
+                child.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(GameObject.transform);
             }
         }
+
+        //public void OnRemoveChild(Entity child)
+        //{
+        //    if (child.GetComponent<GameObjectComponent>() != null)
+        //    {
+        //        child.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(GameObject.transform);
+        //    }
+        //}
     }
 }

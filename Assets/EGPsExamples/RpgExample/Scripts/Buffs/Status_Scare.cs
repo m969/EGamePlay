@@ -22,7 +22,7 @@ public class Status_Scare : StatusAbility
             {
                 break;
             }
-            await ET.TimerComponent.Instance.WaitAsync(100);
+            await ET.TimeHelper.WaitAsync(100);
         }
     }
 }

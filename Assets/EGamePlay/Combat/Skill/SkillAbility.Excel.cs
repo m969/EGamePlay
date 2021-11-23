@@ -19,6 +19,7 @@ namespace EGamePlay.Combat
         {
             base.Awake(initData);
             SkillConfig = initData as SkillConfig;
+            Name = SkillConfig.Name;
             var Effects = new List<Effect>();
             var effect = ParseSkillDamage(SkillConfig);
             if (effect != null) Effects.Add(effect);
@@ -50,7 +51,7 @@ namespace EGamePlay.Combat
 
         public override AbilityExecution CreateExecution()
         {
-            var execution = Entity.CreateWithParent<SkillExecution>(OwnerEntity, this);
+            var execution = OwnerEntity.AddChild<SkillExecution>(this);
             execution.AddComponent<UpdateComponent>();
             return execution;
         }
@@ -117,7 +118,7 @@ namespace EGamePlay.Combat
                     if (Type == "物理伤害") damageEffect.DamageType = DamageType.Physic;
                     if (Type == "真实伤害") damageEffect.DamageType = DamageType.Real;
                 }
-                if (effectType == "Cure")
+                else if (effectType == "Cure")
                 {
                     var Type = "";
                     var CureValueFormula = "";
@@ -147,11 +148,7 @@ namespace EGamePlay.Combat
                     }
                     var addStatusEffect = new AddStatusEffect();
                     effect = addStatusEffect;
-                    addStatusEffect.AddStatus = Resources.Load<StatusConfigObject>($"StatusConfigs/Status_{StatusID}");
-                    if (addStatusEffect.AddStatus == null)
-                    {
-                        addStatusEffect.AddStatus = Resources.Load<StatusConfigObject>($"StatusConfigs/BaseStatus/Status_{StatusID}");
-                    }
+                    addStatusEffect.AddStatusConfig = StatusConfigCategory.Instance.GetByName(StatusID);
                     addStatusEffect.Duration = (uint)(float.Parse(Duration) * 1000);
                     ParseParam(skillEffectConfig.Param1);
                     ParseParam(skillEffectConfig.Param2);

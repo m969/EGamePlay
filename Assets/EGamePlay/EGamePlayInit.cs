@@ -18,7 +18,7 @@ public class EGamePlayInit : SerializedMonoBehaviour
         SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
         Entity.EnableLog = EntityLog;
         MasterEntity.Create();
-        Entity.Create<TimerComponent>();
+        Entity.Create<TimerManager>();
         Entity.Create<CombatContext>();
         MasterEntity.Instance.AddComponent<ConfigManageComponent>(ConfigsCollector);
     }
@@ -27,7 +27,7 @@ public class EGamePlayInit : SerializedMonoBehaviour
     {
         ThreadSynchronizationContext.Instance.Update();
         MasterEntity.Instance.Update();
-        TimerComponent.Instance.Update();
+        TimerManager.Instance.Update();
     }
 
     private void OnApplicationQuit()

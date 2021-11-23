@@ -5,7 +5,7 @@ using EGamePlay;
 
 namespace EGamePlay.Combat
 {
-    public class CureActionAbility : EffectActionAbility<CureAction>
+    public class CureActionAbility : ActionAbility<CureAction>
     {
 
     }
@@ -13,7 +13,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 治疗行动
     /// </summary>
-    public class CureAction : ActionExecution<CureActionAbility>
+    public class CureAction : ActionExecution
     {
         public CureEffect CureEffect => AbilityEffect.EffectConfig as CureEffect;
         //治疗数值

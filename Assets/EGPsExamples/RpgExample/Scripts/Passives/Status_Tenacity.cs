@@ -57,7 +57,7 @@ public class StatusTenacity : StatusAbility
         {
             return;
         }
-        if (OwnerEntity.CureActionAbility.TryCreateAction(out var action))
+        if (OwnerEntity.CureAbility.TryMakeAction(out var action))
         {
             action.Target = OwnerEntity;
             action.AbilityEffect = CureAbilityEffect;

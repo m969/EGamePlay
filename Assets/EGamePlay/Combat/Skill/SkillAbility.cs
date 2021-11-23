@@ -19,6 +19,7 @@ namespace EGamePlay.Combat
         {
             base.Awake(initData);
             SkillConfig = initData as SkillConfigObject;
+            Name = SkillConfig.Name;
             AddComponent<AbilityEffectComponent>(SkillConfig.Effects);
 #if !SERVER
             ParseAbilityEffects();

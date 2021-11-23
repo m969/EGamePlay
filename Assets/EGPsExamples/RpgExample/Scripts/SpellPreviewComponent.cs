@@ -140,7 +140,7 @@ public class SpellPreviewComponent : EGamePlay.Component
 
     public void SelectTargetsWithDistance(SkillAbility SpellSkill, float distance)
     {
-        if (CombatEntity.SpellActionAbility.TryCreateAction(out var action))
+        if (CombatEntity.SpellAbility.TryMakeAction(out var action))
         {
             var enemiesRoot = GameObject.Find("Enemies");
             foreach (Transform item in enemiesRoot.transform)

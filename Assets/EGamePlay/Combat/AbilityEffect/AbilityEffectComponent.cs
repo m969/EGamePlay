@@ -20,8 +20,8 @@ namespace EGamePlay.Combat
             var effects = initData as List<Effect>;
             foreach (var item in effects)
             {
+                //Log.Debug($"AbilityEffectComponent Setup {item}");
                 var abilityEffect = Entity.AddChild<AbilityEffect>(item);
-                //Log.Debug($"AbilityEffectComponent {item}");
                 AddEffect(abilityEffect);
 
                 if (abilityEffect.EffectConfig is DamageEffect)

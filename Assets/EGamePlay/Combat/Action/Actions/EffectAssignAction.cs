@@ -6,7 +6,7 @@ using EGamePlay.Combat;
 
 namespace EGamePlay.Combat
 {
-    public class EffectAssignAbility : EffectActionAbility<EffectAssignAction>
+    public class EffectAssignAbility : ActionAbility<EffectAssignAction>
     {
 
     }
@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 赋给效果行动
     /// </summary>
-    public class EffectAssignAction : ActionExecution<EffectAssignAbility>
+    public class EffectAssignAction : ActionExecution
     {
         //创建这个效果赋给行动的源能力
         public AbilityEntity SourceAbility { get; set; }
@@ -29,41 +29,44 @@ namespace EGamePlay.Combat
 
         public void ApplyEffectAssign()
         {
+            //Log.Debug($"ApplyEffectAssign {EffectConfig}");
             PreProcess();
+
             if (EffectConfig is DamageEffect)
             {
-                if (OwnerEntity.DamageActionAbility.TryCreateAction(out var action))
+                if (OwnerEntity.DamageAbility.TryMakeAction(out var damageAction))
                 {
-                    action.Target = Target;
-                    action.AbilityEffect = AbilityEffect;
-                    action.ExecutionEffect = ExecutionEffect;
-                    action.DamageSource = DamageSource.Skill;
-                    action.ApplyDamage();
+                    damageAction.Target = Target;
+                    damageAction.AbilityEffect = AbilityEffect;
+                    damageAction.ExecutionEffect = ExecutionEffect;
+                    damageAction.DamageSource = DamageSource.Skill;
+                    damageAction.ApplyDamage();
                 }
             }
 
             if (EffectConfig is CureEffect && Target.CurrentHealth.IsFull() == false)
             {
-                if (OwnerEntity.CureActionAbility.TryCreateAction(out var action))
+                if (OwnerEntity.CureAbility.TryMakeAction(out var cureAction))
                 {
-                    action.Target = Target;
-                    action.AbilityEffect = AbilityEffect;
-                    action.ExecutionEffect = ExecutionEffect;
-                    action.ApplyCure();
+                    cureAction.Target = Target;
+                    cureAction.AbilityEffect = AbilityEffect;
+                    cureAction.ExecutionEffect = ExecutionEffect;
+                    cureAction.ApplyCure();
                 }
             }
 
             if (EffectConfig is AddStatusEffect)
             {
-                if (OwnerEntity.AddStatusActionAbility.TryCreateAction(out var action))
+                if (OwnerEntity.AddStatusAbility.TryMakeAction(out var addStatusAction))
                 {
-                    action.SourceAbility = SourceAbility;
-                    action.Target = Target;
-                    action.AbilityEffect = AbilityEffect;
-                    action.ExecutionEffect = ExecutionEffect;
-                    action.ApplyAddStatus();
+                    addStatusAction.SourceAbility = SourceAbility;
+                    addStatusAction.Target = Target;
+                    addStatusAction.AbilityEffect = AbilityEffect;
+                    addStatusAction.ExecutionEffect = ExecutionEffect;
+                    addStatusAction.ApplyAddStatus();
                 }
             }
+
             PostProcess();
 
             ApplyAction();

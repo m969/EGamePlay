@@ -7,7 +7,7 @@ namespace EGamePlay.Combat
     {
         public override string Label => "治疗英雄";
 
-        [ToggleGroup("Enabled"), LabelText("治疗参数")]
+        [ToggleGroup("Enabled"), LabelText("治疗取值")]
         public string CureValueFormula;
         public string CureValueProperty { get; set; }
     }

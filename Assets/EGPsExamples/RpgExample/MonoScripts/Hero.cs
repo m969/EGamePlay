@@ -41,7 +41,7 @@ public sealed class Hero : MonoBehaviour
     void Start()
     {
         Instance = this;
-        CombatEntity = Entity.CreateWithParent<CombatEntity>(CombatContext.Instance);
+        CombatEntity = CombatContext.Instance.AddChild<CombatEntity>();
         CombatEntity.AddComponent<SpellPreviewComponent>();
         CombatEntity.AddComponent<EquipmentComponent>();
         CombatEntity.ListenActionPoint(ActionPointType.PreSpell, OnPreSpell);
@@ -68,36 +68,31 @@ public sealed class Hero : MonoBehaviour
 
         SkillSlotsTrm.Find("SkillButtonD").gameObject.SetActive(false);
         SkillSlotsTrm.Find("SkillButtonE").gameObject.SetActive(false);
+        SkillSlotsTrm.Find("SkillButtonF").gameObject.SetActive(false);
 #else
         SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
         SkillAbility ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.Q);
-        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.W);
-        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.E);
-        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1005_火弹");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.R);
-        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1006_灵魂镣铐");
         ability = CombatEntity.AttachSkill<SkillAbility_1006>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.T);
-        ability.Name = config.Name;
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1003_治愈");
         ability = CombatEntity.AttachSkill<SkillAbility>(config);
         CombatEntity.BindSkillInput(ability, KeyCode.Y);
-        ability.Name = config.Name;
 #endif
 
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -132,7 +127,7 @@ public sealed class Hero : MonoBehaviour
                 {
                     equipText.color = Color.red;
                 }
-                var itemData = Entity.CreateWithParent<ItemData>(CombatEntity);
+                var itemData = CombatEntity.AddChild<ItemData>();
                 equipObj.name = $"{itemData.Id}";
                 itemData.ConfigId = (short)item.Value.Id;
                 CombatEntity.GetComponent<EquipmentComponent>().AddItemData(itemData);
@@ -327,7 +322,7 @@ public sealed class Hero : MonoBehaviour
     {
         //PlayThenIdleAsync(AnimationComponent.AttackAnimation).Coroutine();
 
-        if (CombatEntity.AttackActionAbility.TryCreateAction(out var action))
+        if (CombatEntity.SpellAttackAbility.TryMakeAction(out var action))
         {
             var monster = GameObject.Find("Monster");
             SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
@@ -351,7 +346,7 @@ public sealed class Hero : MonoBehaviour
             token.Cancel();
         }
         token = new ETCancellationToken();
-        var isTimeout = await TimerComponent.Instance.WaitAsync((int)(animation.length * 1000), token);
+        var isTimeout = await TimerManager.Instance.WaitAsync((int)(animation.length * 1000), token);
         if (isTimeout)
         {
             AnimationComponent.PlayFade(AnimationComponent.IdleAnimation);

@@ -7,7 +7,7 @@ using ET;
 
 namespace EGamePlay.Combat
 {
-    public class SpellActionAbility : EffectActionAbility<SpellAction>
+    public class SpellActionAbility : ActionAbility<SpellAction>
     {
 
     }
@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 施法行动
     /// </summary>
-    public class SpellAction : ActionExecution<SpellActionAbility>
+    public class SpellAction : ActionExecution
     {
         public SkillAbility SkillAbility { get; set; }
         public SkillExecution SkillExecution { get; set; }
@@ -33,22 +33,13 @@ namespace EGamePlay.Combat
         public void SpellSkill()
         {
             PreProcess();
-            //if (SkillExecution == null)
-            //{
-            //    SkillAbility.AbilityEffectComponent.ApplyAllEffectsTo(Target);
-            //    PostProcess();
-            //    ApplyAction();
-            //}
-            //else
+            if (SkillTargets.Count > 0)
             {
-                if (SkillTargets.Count > 0)
-                {
-                    SkillExecution.SkillTargets.AddRange(SkillTargets);
-                }
-                SkillExecution.Name = SkillAbility.Name;
-                SkillExecution.BeginExecute();
-                AddComponent<UpdateComponent>();
+                SkillExecution.SkillTargets.AddRange(SkillTargets);
             }
+            SkillExecution.Name = SkillAbility.Name;
+            SkillExecution.BeginExecute();
+            AddComponent<UpdateComponent>();
         }
 
         public override void Update()

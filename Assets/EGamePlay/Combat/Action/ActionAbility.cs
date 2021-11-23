@@ -8,16 +8,16 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 战斗效果行动能力
+    /// 战斗行动能力
     /// </summary>
-    public class EffectActionAbility : AbilityEntity
+    public class ActionAbility : AbilityEntity
     {
-        public AbilityExecution CreateAction()
+        public AbilityExecution MakeAction()
         {
             return CreateExecution();
         }
 
-        public AbilityExecution TryCreateAction()
+        public AbilityExecution TryMakeAction()
         {
             if (Enable == false)
             {
@@ -26,7 +26,7 @@ namespace EGamePlay.Combat
             return CreateExecution();
         }
 
-        public bool TryCreateAction(out AbilityExecution abilityExecution)
+        public bool TryMakeAction(out AbilityExecution abilityExecution)
         {
             if (Enable == false)
             {
@@ -40,19 +40,29 @@ namespace EGamePlay.Combat
         }
     }
 
-    public class EffectActionAbility<T> : EffectActionAbility where T : ActionExecution
+    public class ActionAbility<T> : ActionAbility where T : ActionExecution
     {
         public override AbilityExecution CreateExecution()
         {
-            return OwnerEntity.CreateAction<T>();
+            var execution = OwnerEntity.MakeAction<T>();
+            execution.ActionAbility = this;
+            return execution;
         }
 
-        public new T CreateAction()
+        /// <summary>
+        /// 发动行动
+        /// </summary>
+        /// <returns></returns>
+        public new T MakeAction()
         {
             return CreateExecution() as T;
         }
 
-        public new T TryCreateAction()
+        /// <summary>
+        /// 尝试发动行动
+        /// </summary>
+        /// <returns></returns>
+        public new T TryMakeAction()
         {
             if (Enable == false)
             {
@@ -61,7 +71,12 @@ namespace EGamePlay.Combat
             return CreateExecution() as T;
         }
 
-        public bool TryCreateAction(out T abilityExecution)
+        /// <summary>
+        /// 尝试发动行动
+        /// </summary>
+        /// <param name="abilityExecution"></param>
+        /// <returns></returns>
+        public bool TryMakeAction(out T abilityExecution)
         {
             if (Enable == false)
             {

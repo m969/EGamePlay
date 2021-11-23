@@ -1,8 +1,10 @@
 ﻿#if !SERVER
+#if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
-using Sirenix.OdinInspector;
 using Sirenix.Utilities.Editor;
 using UnityEditor;
+#endif
+using Sirenix.OdinInspector;
 using UnityEngine.Timeline;
 #endif
 

@@ -6,24 +6,36 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
+    public class EntityDeadEvent { public CombatEntity DeadEntity; }
+
     /// <summary>
     /// 战斗实体
     /// </summary>
     public sealed class CombatEntity : Entity, IPosition
     {
         public GameObject ModelObject { get; set; }
-        public HealthPoint CurrentHealth { get; private set; } = new HealthPoint();
+        public HealthPoint CurrentHealth { get; private set; }
 
-        public SpellActionAbility SpellActionAbility { get; private set; }
-        public MotionActionAbility MotionActionAbility { get; private set; }
-        public DamageActionAbility DamageActionAbility { get; private set; }
-        public CureActionAbility CureActionAbility { get; private set; }
-        public AddStatusActionAbility AddStatusActionAbility { get; private set; }
-        public AttackActionAbility AttackActionAbility { get; private set; }
+        //效果赋给行动能力
         public EffectAssignAbility EffectAssignAbility { get; private set; }
-        public RoundActionAbility RoundActionAbility { get; private set; }
-        public JumpToActionAbility JumpToActionAbility { get; private set; }
+        //施法技能行动能力
+        public SpellActionAbility SpellAbility { get; private set; }
+        //移动行动能力
+        public MotionActionAbility MotionAbility { get; private set; }
+        //伤害行动能力
+        public DamageActionAbility DamageAbility { get; private set; }
+        //治疗行动能力
+        public CureActionAbility CureAbility { get; private set; }
+        //施加状态行动能力
+        public AddStatusActionAbility AddStatusAbility { get; private set; }
+        //施法普攻行动能力
+        public AttackActionAbility SpellAttackAbility { get; private set; }
+        //回合行动能力
+        public RoundActionAbility RoundAbility { get; private set; }
+        //起跳行动能力
+        public JumpToActionAbility JumpToAbility { get; private set; }
 
+        //普攻能力
         public AttackAbility AttackAbility { get; set; }
         public SkillExecution CurrentSkillExecution { get; set; }
         public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
@@ -44,24 +56,27 @@ namespace EGamePlay.Combat
             AddComponent<StatusComponent>();
             AddComponent<SkillComponent>();
             AddComponent<SpellComponent>();
-            CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
+            CurrentHealth = AddChild<HealthPoint>();
+            CurrentHealth.HealthPointNumeric = GetComponent<AttributeComponent>().HealthPoint;
+            CurrentHealth.HealthPointMaxNumeric = GetComponent<AttributeComponent>().HealthPointMax;
+            //CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
             CurrentHealth.Reset();
-            SpellActionAbility = AttachAction<SpellActionAbility>();
-            MotionActionAbility = AttachAction<MotionActionAbility>();
-            DamageActionAbility = AttachAction<DamageActionAbility>();
-            CureActionAbility = AttachAction<CureActionAbility>();
-            AddStatusActionAbility = AttachAction<AddStatusActionAbility>();
-            AttackActionAbility = AttachAction<AttackActionAbility>();
+            SpellAbility = AttachAction<SpellActionAbility>();
+            MotionAbility = AttachAction<MotionActionAbility>();
+            DamageAbility = AttachAction<DamageActionAbility>();
+            CureAbility = AttachAction<CureActionAbility>();
+            AddStatusAbility = AttachAction<AddStatusActionAbility>();
+            SpellAttackAbility = AttachAction<AttackActionAbility>();
             EffectAssignAbility = AttachAction<EffectAssignAbility>();
-            RoundActionAbility = AttachAction<RoundActionAbility>();
-            JumpToActionAbility = AttachAction<JumpToActionAbility>();
+            RoundAbility = AttachAction<RoundActionAbility>();
+            JumpToAbility = AttachAction<JumpToActionAbility>();
             AttackAbility = AttachAbility<AttackAbility>(null);
         }
 
         /// <summary>
-        /// 创建行动
+        /// 发起行动
         /// </summary>
-        public T CreateAction<T>() where T : ActionExecution
+        public T MakeAction<T>() where T : ActionExecution
         {
             var action = Parent.GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
             return action;
@@ -123,13 +138,13 @@ namespace EGamePlay.Combat
             return ability;
         }
 
-        public T AttachAction<T>() where T : EffectActionAbility
+        public T AttachAction<T>() where T : ActionAbility
         {
             var action = AttachAbility<T>(null);
             return action;
         }
 
-        public T GetAction<T>() where T : EffectActionAbility
+        public T GetAction<T>() where T : ActionAbility
         {
             return GetChild<T>();
         }
@@ -144,20 +159,20 @@ namespace EGamePlay.Combat
         public T AttachStatus<T>(object configObject) where T : StatusAbility
         {
             var status = AttachAbility<T>(configObject);
-            if (!TypeIdStatuses.ContainsKey(status.StatusConfigObject.ID))
+            if (!TypeIdStatuses.ContainsKey(status.StatusConfig.ID))
             {
-                TypeIdStatuses.Add(status.StatusConfigObject.ID, new List<StatusAbility>());
+                TypeIdStatuses.Add(status.StatusConfig.ID, new List<StatusAbility>());
             }
-            TypeIdStatuses[status.StatusConfigObject.ID].Add(status);
+            TypeIdStatuses[status.StatusConfig.ID].Add(status);
             return status;
         }
 
         public void OnStatusRemove(StatusAbility statusAbility)
         {
-            TypeIdStatuses[statusAbility.StatusConfigObject.ID].Remove(statusAbility);
-            if (TypeIdStatuses[statusAbility.StatusConfigObject.ID].Count == 0)
+            TypeIdStatuses[statusAbility.StatusConfig.ID].Remove(statusAbility);
+            if (TypeIdStatuses[statusAbility.StatusConfig.ID].Count == 0)
             {
-                TypeIdStatuses.Remove(statusAbility.StatusConfigObject.ID);
+                TypeIdStatuses.Remove(statusAbility.StatusConfig.ID);
             }
             this.Publish(new RemoveStatusEvent() { CombatEntity = this, Status = statusAbility, StatusId = statusAbility.Id });
         }
