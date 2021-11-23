@@ -601,7 +601,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    Standalone: ODIN_INSPECTOR;EGAMEPLAY_EXCEL
+    Standalone: ODIN_INSPECTOR
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
