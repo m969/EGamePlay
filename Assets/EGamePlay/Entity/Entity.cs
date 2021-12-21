@@ -360,6 +360,48 @@ namespace EGamePlay
             }
             return null;
         }
+
+        public T Get<T>() where T : Component
+        {
+            if (Components.TryGetValue(typeof(T), out var component))
+            {
+                return component as T;
+            }
+            return null;
+        }
+
+        public bool TryGet<T>(out T component) where T : Component
+        {
+            if (Components.TryGetValue(typeof(T), out var c))
+            {
+                component = c as T;
+                return true;
+            }
+            component = null;
+            return false;
+        }
+
+        public bool TryGet<T, T1>(out T component, out T1 component1) where T : Component  where T1 : Component
+        {
+            component = null;
+            component1 = null;
+            if (Components.TryGetValue(typeof(T), out var c)) component = c as T;
+            if (Components.TryGetValue(typeof(T1), out var c1)) component1 = c1 as T1;
+            if (component != null && component1 != null) return true;
+            return false;
+        }
+
+        public bool TryGet<T, T1, T2>(out T component, out T1 component1, out T2 component2) where T : Component where T1 : Component where T2 : Component
+        {
+            component = null;
+            component1 = null;
+            component2 = null;
+            if (Components.TryGetValue(typeof(T), out var c)) component = c as T;
+            if (Components.TryGetValue(typeof(T1), out var c1)) component1 = c1 as T1;
+            if (Components.TryGetValue(typeof(T2), out var c2)) component2 = c2 as T2;
+            if (component != null && component1 != null && component2 != null) return true;
+            return false;
+        }
         #endregion
 
         #region 子实体

@@ -19,6 +19,7 @@ public sealed class Monster : MonoBehaviour
     public GameObject StatusIconPrefab;
     private GameObject vertigoParticle;
     private GameObject weakParticle;
+    public MotionComponent MotionComponent { get; set; }
 
 
     // Start is called before the first frame update
@@ -27,7 +28,7 @@ public sealed class Monster : MonoBehaviour
         CombatEntity = CombatContext.Instance.AddChild<CombatEntity>();
         CombatContext.Instance.Object2Entities.Add(gameObject, CombatEntity);
         CombatEntity.Position = transform.position;
-        CombatEntity.AddComponent<MotionComponent>();
+        MotionComponent = CombatEntity.AddComponent<MotionComponent>();
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
@@ -46,10 +47,9 @@ public sealed class Monster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var motionComponent = CombatEntity.GetComponent<MotionComponent>();
-        if (motionComponent.Enable)
+        if (MotionComponent.Enable)
         {
-            if (motionComponent.MoveTimer.IsRunning)
+            if (MotionComponent.MoveTimer.IsRunning)
             {
                 AnimationComponent.Speed = CombatEntity.GetComponent<AttributeComponent>().MoveSpeed.Value;
                 AnimationComponent.TryPlayFade(AnimationComponent.RunAnimation);

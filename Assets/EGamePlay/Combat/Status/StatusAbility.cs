@@ -52,28 +52,20 @@ namespace EGamePlay.Combat
                 var abilityEffect = AbilityEffectComponent.GetEffect(i);
                 var logicEffect = abilityEffect.EffectConfig;
 
-                if (logicEffect.EffectTriggerType == EffectTriggerType.Interval)
+                if (abilityEffect.TryGet(out EffectIntervalTriggerComponent intervalTriggerComponent))
                 {
-                    if (!string.IsNullOrEmpty(logicEffect.Interval))
+                    intervalTriggerComponent.IntervalValue = logicEffect.Interval;
+                    foreach (var aInputKVItem in Params)
                     {
-                        var intervalComponent = abilityEffect.GetComponent<EffectIntervalTriggerComponent>();
-                        intervalComponent.IntervalValue = logicEffect.Interval;
-                        foreach (var aInputKVItem in Params)
-                        {
-                            intervalComponent.IntervalValue = intervalComponent.IntervalValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                        }
+                        intervalTriggerComponent.IntervalValue = intervalTriggerComponent.IntervalValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
                     }
                 }
-                if (logicEffect.EffectTriggerType == EffectTriggerType.Condition)
+                if (abilityEffect.TryGet(out EffectConditionTriggerComponent conditionTriggerComponent))
                 {
-                    if (!string.IsNullOrEmpty(logicEffect.ConditionParam))
+                    conditionTriggerComponent.ConditionParamValue = logicEffect.ConditionParam;
+                    foreach (var aInputKVItem in Params)
                     {
-                        var conditionComponent = abilityEffect.GetComponent<EffectConditionTriggerComponent>();
-                        conditionComponent.ConditionParamValue = logicEffect.ConditionParam;
-                        foreach (var aInputKVItem in Params)
-                        {
-                            conditionComponent.ConditionParamValue = conditionComponent.ConditionParamValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                        }
+                        conditionTriggerComponent.ConditionParamValue = conditionTriggerComponent.ConditionParamValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
                     }
                 }
 

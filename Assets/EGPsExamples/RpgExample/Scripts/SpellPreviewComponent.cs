@@ -11,7 +11,7 @@ using EGamePlay.Combat;
 public class SpellPreviewComponent : EGamePlay.Component
 {
     private CombatEntity CombatEntity => GetEntity<CombatEntity>();
-    private SpellComponent SpellComp => Entity.GetComponent<SpellComponent>();
+    private SpellComponent SpellComponent => Entity.GetComponent<SpellComponent>();
     public override bool DefaultEnable { get; set; } = true;
     private bool Previewing { get; set; }
     private SkillAbility PreviewingSkill { get; set; }
@@ -125,17 +125,17 @@ public class SpellPreviewComponent : EGamePlay.Component
         CombatEntity combatEntity = null;
         if (selectObject.GetComponent<Monster>() != null) combatEntity = selectObject.GetComponent<Monster>().CombatEntity;
         if (selectObject.GetComponent<Hero>() != null) combatEntity = selectObject.GetComponent<Hero>().CombatEntity;
-        SpellComp.SpellWithTarget(PreviewingSkill, combatEntity);
+        SpellComponent.SpellWithTarget(PreviewingSkill, combatEntity);
     }
     
     private void OnInputPoint(Vector3 point)
     {
-        SpellComp.SpellWithPoint(PreviewingSkill, point);
+        SpellComponent.SpellWithPoint(PreviewingSkill, point);
     }
 
     private void OnInputDirect(float direction, Vector3 point)
     {
-        SpellComp.SpellWithDirect(PreviewingSkill, direction, point);
+        SpellComponent.SpellWithDirect(PreviewingSkill, direction, point);
     }
 
     public void SelectTargetsWithDistance(SkillAbility SpellSkill, float distance)
