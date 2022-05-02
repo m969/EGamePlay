@@ -18,7 +18,7 @@ namespace EGamePlay.Combat
 
         public void SetMaxValue(int value)
         {
-            
+            HealthPointMaxNumeric.SetBase(value);
         }
 
         public void Minus(int value)

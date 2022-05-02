@@ -19,7 +19,7 @@ public class TurnCombatObject : MonoBehaviour
     {
         if (transform.parent.name.Contains("Hero")) CombatEntity = CombatContext.Instance.AddHeroEntity(seat);
         if (transform.parent.name.Contains("Monster")) CombatEntity = CombatContext.Instance.AddMonsterEntity(seat);
-        CombatEntity.CurrentHealth.SetMaxValue(999);
+        CombatEntity.CurrentHealth.SetMaxValue(1200);
         CombatEntity.CurrentHealth.Reset();
 
         CombatObjectData = GetComponent<CombatObjectData>();

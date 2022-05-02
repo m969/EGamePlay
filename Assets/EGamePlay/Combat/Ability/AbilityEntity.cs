@@ -41,7 +41,7 @@ namespace EGamePlay.Combat
         //激活能力
         public virtual void ActivateAbility()
         {
-            
+            FireEvent(nameof(ActivateAbility));
         }
 
         //禁用能力

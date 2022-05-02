@@ -65,15 +65,23 @@ namespace EGamePlay.Combat
             base.EndExecute();
         }
 
+        /// <summary>
+        /// 技能碰撞体生成事件
+        /// </summary>
+        /// <param name="colliderSpawnEmitter"></param>
         public void SpawnCollisionItem(ExecutionEventEmitter colliderSpawnEmitter)
         {
-            if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly) TargetFlyProccess(colliderSpawnEmitter);
-            if (colliderSpawnEmitter.ColliderType == ColliderType.ForwardFly) ForwardFlyProccess(colliderSpawnEmitter);
-            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedPosition) FixedPositionProccess(colliderSpawnEmitter);
-            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedDirection) FixedDirectionProccess(colliderSpawnEmitter);
+            if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly) TargetFlyProcess(colliderSpawnEmitter);
+            if (colliderSpawnEmitter.ColliderType == ColliderType.ForwardFly) ForwardFlyProcess(colliderSpawnEmitter);
+            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedPosition) FixedPositionProcess(colliderSpawnEmitter);
+            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedDirection) FixedDirectionProcess(colliderSpawnEmitter);
         }
 
-        private void TargetFlyProccess(ExecutionEventEmitter colliderSpawnEmitter)
+        /// <summary>
+        /// 目标飞行碰撞体
+        /// </summary>
+        /// <param name="colliderSpawnEmitter"></param>
+        private void TargetFlyProcess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
             abilityItem.Name = colliderSpawnEmitter.ColliderName;
@@ -83,7 +91,11 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(InputTarget);
         }
 
-        private void ForwardFlyProccess(ExecutionEventEmitter colliderSpawnEmitter)
+        /// <summary>
+        /// 前向飞行碰撞体
+        /// </summary>
+        /// <param name="colliderSpawnEmitter"></param>
+        private void ForwardFlyProcess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
             abilityItem.Name = colliderSpawnEmitter.ColliderName;
@@ -95,7 +107,11 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(destination, 1f).OnMoveFinish(()=> { Entity.Destroy(abilityItem); });
         }
 
-        private void FixedPositionProccess(ExecutionEventEmitter colliderSpawnEmitter)
+        /// <summary>
+        /// 固定位置碰撞体
+        /// </summary>
+        /// <param name="colliderSpawnEmitter"></param>
+        private void FixedPositionProcess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
             abilityItem.Name = colliderSpawnEmitter.ColliderName;
@@ -104,7 +120,11 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
         }
 
-        private void FixedDirectionProccess(ExecutionEventEmitter colliderSpawnEmitter)
+        /// <summary>
+        /// 固定方向碰撞体
+        /// </summary>
+        /// <param name="colliderSpawnEmitter"></param>
+        private void FixedDirectionProcess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
             abilityItem.Name = colliderSpawnEmitter.ColliderName;
@@ -114,6 +134,10 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
         }
 
+        /// <summary>
+        /// 创建技能碰撞体
+        /// </summary>
+        /// <param name="abilityItem"></param>
         public void CreateAbilityItemObj(AbilityItem abilityItem)
         {
             var abilityItemObj = GameObject.Instantiate(Resources.Load<GameObject>($"AbilityItems/{abilityItem.Name}"), abilityItem.Position, Quaternion.Euler(0, abilityItem.Direction, 0));

@@ -39,7 +39,8 @@ public sealed class Monster : MonoBehaviour
 #else
         var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
 #endif
-        var Status = CombatEntity.AttachStatus<StatusTenacity>(config);
+        var Status = CombatEntity.AttachStatus<StatusAbility>(config);
+        Status.AddComponent<StatusTenacityComponent>();
         Status.OwnerEntity = CombatEntity;
         Status.TryActivateAbility();
     }

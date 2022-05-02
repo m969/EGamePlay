@@ -6,192 +6,6 @@ using GameUtils;
 
 namespace EGamePlay
 {
-    [System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    sealed class EnableUpdateAttribute : Attribute
-    {
-        public EnableUpdateAttribute()
-        {
-        }
-    }
-
-    public class SetChildEventAfter { public Entity Entity; }
-    public class RemoveChildEventAfter { public Entity Entity; }
-
-    public abstract partial class Entity
-    {
-        public static MasterEntity Master => MasterEntity.Instance;
-        public static bool EnableLog { get; set; } = false;
-
-        private static Entity NewEntity(Type entityType)
-        {
-            var entity = Activator.CreateInstance(entityType) as Entity;
-            entity.InstanceId = IdFactory.NewInstanceId();
-            entity.Id = entity.InstanceId;
-            if (!Master.Entities.ContainsKey(entityType))
-            {
-                Master.Entities.Add(entityType, new List<Entity>());
-            }
-            Master.Entities[entityType].Add(entity);
-            return entity;
-        }
-
-        public static T Create<T>() where T : Entity
-        {
-            return Create(typeof(T)) as T;
-        }
-
-        public static T Create<T>(object initData) where T : Entity
-        {
-            return Create(typeof(T), initData) as T;
-        }
-
-        public static T CreateWithId<T>(long id) where T : Entity
-        {
-            return CreateWithId(typeof(T), id) as T;
-        }
-
-        public static T CreateWithId<T>(long id, object initData) where T : Entity
-        {
-            return CreateWithId(typeof(T), id, initData) as T;
-        }
-
-        private static T CreateWithParent<T>(Entity parent) where T : Entity
-        {
-            return CreateWithParent(typeof(T), parent) as T;
-        }
-
-        private static T CreateWithParent<T>(Entity parent, object initData) where T : Entity
-        {
-            return CreateWithParent(typeof(T), parent, initData) as T;
-        }
-
-        private static T CreateWithParentAndId<T>(Entity parent, long id) where T : Entity
-        {
-            return CreateWithParentAndId(typeof(T), parent, id) as T;
-        }
-
-        private static T CreateWithParentAndId<T>(Entity parent, long id, object initData) where T : Entity
-        {
-            return CreateWithParentAndId(typeof(T), parent, id, initData) as T;
-        }
-
-        private static void SetupEntity(Entity entity, Entity parent)
-        {
-            //var preParent = entity.Parent;
-            parent.SetChild(entity);
-            //if (preParent == null)
-            {
-                entity.Awake();
-            }
-            entity.Start();
-        }
-
-        private static void SetupEntity(Entity entity, Entity parent, object initData)
-        {
-            //var preParent = entity.Parent;
-            parent.SetChild(entity);
-            //if (preParent == null)
-            {
-                entity.Awake(initData);
-            }
-            entity.Start(initData);
-        }
-
-        public static Entity Create(Type entityType)
-        {
-            var entity = NewEntity(entityType);
-            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}");
-            SetupEntity(entity, Master);
-            return entity;
-        }
-
-        public static Entity Create(Type entityType, object initData)
-        {
-            var entity = NewEntity(entityType);
-            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}, {initData}");
-            SetupEntity(entity, Master, initData);
-            return entity;
-        }
-
-        public static Entity CreateWithId(Type entityType, long id)
-        {
-            var entity = NewEntity(entityType);
-            entity.Id = id;
-            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}");
-            SetupEntity(entity, Master);
-            return entity;
-        }
-
-        public static Entity CreateWithId(Type entityType, long id, object initData)
-        {
-            var entity = NewEntity(entityType);
-            entity.Id = id;
-            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}, {initData}");
-            SetupEntity(entity, Master, initData);
-            return entity;
-        }
-
-        private static Entity CreateWithParent(Type entityType, Entity parent)
-        {
-            var entity = NewEntity(entityType);
-            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            SetupEntity(entity, parent);
-            return entity;
-        }
-
-        private static Entity CreateWithParentAndId(Type entityType, Entity parent, long id)
-        {
-            var entity = NewEntity(entityType);
-            entity.Id = id;
-            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            SetupEntity(entity, parent);
-            return entity;
-        }
-
-        private static Entity CreateWithParent(Type entityType, Entity parent, object initData)
-        {
-            var entity = NewEntity(entityType);
-            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            SetupEntity(entity, parent, initData);
-            return entity;
-        }
-
-        private static Entity CreateWithParentAndId(Type entityType, Entity parent, long id, object initData)
-        {
-            var entity = NewEntity(entityType);
-            entity.Id = id;
-            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            SetupEntity(entity, parent, initData);
-            return entity;
-        }
-
-        public static void Destroy(Entity entity)
-        {
-            try
-            {
-                entity.OnDestroy();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-            entity.Dispose();
-        }
-
-        public static void Destroy(Component entity)
-        {
-            try
-            {
-                entity.OnDestroy();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-            entity.Dispose();
-        }
-    }
-
     public abstract partial class Entity : IDisposable
     {
         public long Id { get; set; }
@@ -304,6 +118,17 @@ namespace EGamePlay
             return parent as T;
         }
 
+        public T As<T>() where T : Entity
+        {
+            return this as T;
+        }
+
+        public bool As<T>(out T entity) where T : Entity
+        {
+            entity = this as T;
+            return entity != null;
+        }
+
         public T AddComponent<T>() where T : Component
         {
             var component = Activator.CreateInstance<T>();
@@ -361,11 +186,29 @@ namespace EGamePlay
             return null;
         }
 
+        public Component GetComponent(Type componentType)
+        {
+            if (this.Components.TryGetValue(componentType, out var component))
+            {
+                return component;
+            }
+            return null;
+        }
+
         public T Get<T>() where T : Component
         {
             if (Components.TryGetValue(typeof(T), out var component))
             {
                 return component as T;
+            }
+            return null;
+        }
+
+        public Component Get(Type componentType)
+        {
+            if (this.Components.TryGetValue(componentType, out var component))
+            {
+                return component;
             }
             return null;
         }
@@ -598,29 +441,37 @@ namespace EGamePlay
             }
         }
 
-        public void SendSignal(int signal)
+        public void FireEvent(string eventType)
         {
-
+            FireEvent(eventType, this);
         }
 
-        public void Fire(string eventType)
+        public void FireEvent<T>(string eventType, T entity) where T : Entity
         {
-            Fire(eventType, this);
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent == null)
+            {
+                eventComponent = AddComponent<EventComponent>();
+            }
+            eventComponent.FireEvent(eventType, entity);
         }
 
-        public void Fire(string eventType, Entity entity)
+        public void OnEvent<T>(string eventType, Action<T> action) where T : Entity
         {
-
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent != null)
+            {
+                eventComponent.OnEvent(eventType, action);
+            }
         }
 
-        public void OnFire(string eventType, Action<Entity> action)
+        public void OffEvent<T>(string eventType, Action<T> action) where T : Entity
         {
-
-        }
-
-        public EventStream<T> OnEvent<T>() where T : class
-        {
-            return new EventStream<T>();
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent != null)
+            {
+                eventComponent.OffEvent(eventType, action);
+            }
         }
         #endregion
     }

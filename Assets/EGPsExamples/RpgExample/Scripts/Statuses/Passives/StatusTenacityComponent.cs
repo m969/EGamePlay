@@ -7,20 +7,28 @@ using EGamePlay;
 using GameUtils;
 using ET;
 
-public class StatusTenacity : StatusAbility
+/// <summary>
+/// 状态的坚韧效果组件
+/// </summary>
+public class StatusTenacityComponent : EGamePlay.Component
 {
     private GameTimer HealthReplyTimer { get; set; } = new GameTimer(2f);
     private bool CanReplyHealth { get; set; }
     private AbilityEffect CureAbilityEffect { get; set; }
 
 
-    public override void ActivateAbility()
+    public override void Awake()
     {
-        base.ActivateAbility();
-        CureAbilityEffect = GetComponent<AbilityEffectComponent>().CureAbilityEffect;
+        Entity.OnEvent<StatusAbility>(nameof(StatusAbility.ActivateAbility), OnActivateAbility);
+    }
+
+    public void OnActivateAbility(StatusAbility statusAbility)
+    {
+        var OwnerEntity = statusAbility.OwnerEntity;
+        CureAbilityEffect = statusAbility.GetComponent<AbilityEffectComponent>().CureAbilityEffect;
         OwnerEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
         OwnerEntity.ListenerCondition(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
-        AddComponent<UpdateComponent>();
+        statusAbility.AddComponent<UpdateComponent>();
     }
 
     public override void Update()
@@ -43,7 +51,7 @@ public class StatusTenacity : StatusAbility
     //开始生命回复
     private void StartReplyHealth()
     {
-        if (OwnerEntity.CurrentHealth.IsFull() == false)
+        if (GetEntity<StatusAbility>().OwnerEntity.CurrentHealth.IsFull() == false)
         {
             CanReplyHealth = true;
             HealthReplyTimer.Reset();
@@ -53,6 +61,7 @@ public class StatusTenacity : StatusAbility
     //生命回复
     private void ReplyHealth()
     {
+        var OwnerEntity = GetEntity<StatusAbility>().OwnerEntity;
         if (OwnerEntity.CurrentHealth.IsFull())
         {
             return;

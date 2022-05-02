@@ -206,21 +206,21 @@ public sealed class Hero : MonoBehaviour
         damageText.transform.localPosition = Vector3.up * 120;
         damageText.transform.localScale = Vector3.one;
         damageText.transform.localEulerAngles = Vector3.zero;
-        damageText.text = $"-{damageAction.DamageValue.ToString()}";
+        damageText.text = $"-{damageAction.DamageValue}";
         damageText.GetComponent<DOTweenAnimation>().DORestart();
         GameObject.Destroy(damageText.gameObject, 0.5f);
     }
 
     private void OnReceiveCure(ActionExecution combatAction)
     {
-        var action = combatAction as CureAction;
+        var cureAction = combatAction as CureAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
         var cureText = GameObject.Instantiate(CureText);
         cureText.transform.SetParent(CanvasTrm);
         cureText.transform.localPosition = Vector3.up * 120;
         cureText.transform.localScale = Vector3.one;
         cureText.transform.localEulerAngles = Vector3.zero;
-        cureText.text = $"+{action.CureValue.ToString()}";
+        cureText.text = $"+{cureAction.CureValue}";
         cureText.GetComponent<DOTweenAnimation>().DORestart();
         GameObject.Destroy(cureText.gameObject, 0.5f);
     }
