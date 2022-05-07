@@ -31,32 +31,32 @@ namespace EGamePlay.Combat
             ConfigObject = initData;
         }
 
-        //尝试激活能力
+        /// 尝试激活能力
         public virtual void TryActivateAbility()
         {
             //Log.Debug($"{GetType().Name}->TryActivateAbility");
             ActivateAbility();
         }
-        
-        //激活能力
+
+        /// 激活能力
         public virtual void ActivateAbility()
         {
             FireEvent(nameof(ActivateAbility));
         }
 
-        //禁用能力
+        /// 禁用能力
         public virtual void DeactivateAbility()
         {
 
         }
 
-        //结束能力
+        /// 结束能力
         public virtual void EndAbility()
         {
             Destroy(this);
         }
 
-        //创建能力执行体
+        /// 创建能力执行体
         public virtual AbilityExecution CreateExecution()
         {
             return null;

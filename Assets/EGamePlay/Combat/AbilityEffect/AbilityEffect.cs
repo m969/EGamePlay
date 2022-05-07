@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     public enum EffectSourceType { Ability, Execution }
 
     /// <summary>
-    /// 能力效果
+    /// 能力效果，如伤害、治疗、施加状态等这些和技能数值、状态相关的效果
     /// </summary>
     public partial class AbilityEffect : Entity
     {
@@ -96,11 +96,6 @@ namespace EGamePlay.Combat
             }
         }
 
-        //public void ApplyEffect()
-        //{
-        //    Publish(new ApplyEffectEvent() { AbilityEffect = this });
-        //}
-
         public void ApplyEffectToOwner()
         {
             ApplyEffectTo(OwnerAbility.OwnerEntity);
@@ -111,7 +106,7 @@ namespace EGamePlay.Combat
             ApplyEffectTo(OwnerAbility.ParentEntity);
         }
 
-        private void ApplyEffectTo(CombatEntity targetEntity)
+        public void ApplyEffectTo(CombatEntity targetEntity)
         {
             if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
             {

@@ -10,7 +10,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class ExecutionSpawnItemComponent : Component
     {
-        public EffectExecutionSpawnItemComponent EffectSpawnItemComponent { get; set; }
+        public SpawnItemEffect SpawnItemEffect { get; set; }
 
 
         public override void Setup()
@@ -21,7 +21,7 @@ namespace EGamePlay.Combat
         public void OnTriggerExecutionEffect(ExecutionEffectEvent evnt)
         {
 #if !NOT_UNITY
-            evnt.ExecutionEffect.GetParent<SkillExecution>().SpawnCollisionItem(EffectSpawnItemComponent.ColliderSpawnData.ColliderSpawnEmitter);
+            evnt.ExecutionEffect.GetParent<SkillExecution>().SpawnCollisionItem(SpawnItemEffect.ColliderSpawnData.ColliderSpawnEmitter);
 #endif
         }
     }

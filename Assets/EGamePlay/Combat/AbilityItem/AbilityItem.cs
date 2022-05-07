@@ -13,7 +13,8 @@ namespace EGamePlay.Combat
     {
         public AbilityEntity AbilityEntity => AbilityExecution.AbilityEntity;
         public AbilityExecution AbilityExecution { get; set; }
-        public ExecutionEffectComponent ExecutionEffectComponent { get; private set; }
+        public ExecutionEffectComponent ItemExecutionEffectComponent { get; private set; }
+        public EffectApplyType EffectApplyType { get; private set; }
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
         public CombatEntity TargetEntity { get; set; }
@@ -22,31 +23,31 @@ namespace EGamePlay.Combat
         public override void Awake(object initData)
         {
             AbilityExecution = initData as AbilityExecution;
-            ExecutionEffectComponent = AddComponent<ExecutionEffectComponent>();
-            var abilityEffects = AbilityEntity.AbilityEffects;
-            foreach (var abilityEffect in abilityEffects)
-            {
-                if (abilityEffect.GetComponent<EffectExecutionSpawnItemComponent>() != null)
-                {
-                    continue;
-                }
-                if (abilityEffect.GetComponent<EffectExecutionAnimationComponent>() != null)
-                {
-                    continue;
-                }
+            //ItemExecutionEffectComponent = AddComponent<ExecutionEffectComponent>();
+            //var abilityEffects = AbilityEntity.AbilityEffects;
+            //foreach (var abilityEffect in abilityEffects)
+            //{
+            //    if (abilityEffect.GetComponent<EffectExecutionSpawnItemComponent>() != null)
+            //    {
+            //        continue;
+            //    }
+            //    if (abilityEffect.GetComponent<EffectExecutionAnimationComponent>() != null)
+            //    {
+            //        continue;
+            //    }
 
-                var executionEffect = AddChild<ExecutionEffect>(abilityEffect);
-                ExecutionEffectComponent.AddEffect(executionEffect);
+            //    var executionEffect = AddChild<ExecutionEffect>(abilityEffect);
+            //    ItemExecutionEffectComponent.AddEffect(executionEffect);
 
-                if (abilityEffect.EffectConfig is DamageEffect)
-                {
-                    ExecutionEffectComponent.DamageExecutionEffect = executionEffect;
-                }
-                if (abilityEffect.EffectConfig is CureEffect)
-                {
-                    ExecutionEffectComponent.CureExecutionEffect = executionEffect;
-                }
-            }
+            //    if (abilityEffect.EffectConfig is DamageEffect)
+            //    {
+            //        ItemExecutionEffectComponent.DamageExecutionEffect = executionEffect;
+            //    }
+            //    if (abilityEffect.EffectConfig is CureEffect)
+            //    {
+            //        ItemExecutionEffectComponent.CureExecutionEffect = executionEffect;
+            //    }
+            //}
         }
 
         //结束单元体
@@ -55,26 +56,34 @@ namespace EGamePlay.Combat
             Destroy(this);
         }
 
-        //public void FillExecutionEffects(AbilityExecution abilityExecution)
-        //{
-        //    //AbilityExecution = abilityExecution;
-        //    ExecutionEffectComponent.FillEffects(abilityExecution.ExecutionEffects);
-        //}
-
         public void OnCollision(CombatEntity otherCombatEntity)
         {
-            if (TargetEntity == null)
-            {
-                ExecutionEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
-            }
-
             if (TargetEntity != null)
             {
                 if (otherCombatEntity != TargetEntity)
                 {
                     return;
                 }
-                ExecutionEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
+                //ItemExecutionEffectComponent.ApplyAllEffectsTo(TargetEntity);
+            }
+
+            if (EffectApplyType == EffectApplyType.AllEffects)
+            {
+                AbilityEntity.AbilityEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
+            }
+            else
+            {
+                AbilityEntity.AbilityEffectComponent.ApplyEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+            }
+
+            //var abilityEffects = AbilityEntity.AbilityEffects;
+            //foreach (var abilityEffect in abilityEffects)
+            //{
+            //    abilityEffect.ApplyEffectTo(otherCombatEntity);
+            //}
+
+            if (TargetEntity != null)
+            {
                 DestroyItem();
             }
         }

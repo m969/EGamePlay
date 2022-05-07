@@ -50,6 +50,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: false
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -64,7 +67,7 @@ MonoBehaviour:
       Data: 0
     - Name: ActionPointType
       Entry: 3
-      Data: 0
+      Data: 16
     - Name: Interval
       Entry: 1
       Data: "\u95F4\u9694\u65F6\u95F4"

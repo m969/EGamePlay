@@ -15,7 +15,8 @@ namespace EGamePlay.Combat
     /// </summary>
     public partial class SkillExecution
     {
-        public GameObject SkillExecutionAsset => SkillAbility.SkillExecutionAsset;
+        public SkillExecutionData SkillExecutionData => SkillAbility.SkillExecutionData;
+        public GameObject SkillExecutionAsset => SkillAbility.SkillExecutionData.SkillExecutionAsset;
 
 
         public override void Awake(object initData)
@@ -36,7 +37,7 @@ namespace EGamePlay.Combat
 
             var nowSeconds = (double)(ET.TimeHelper.Now() - OriginTime) / 1000;
 
-            if (nowSeconds >= SkillAbility.SkillExecuteTime)
+            if (nowSeconds >= SkillAbility.SkillExecutionData.SkillExecuteTime)
             {
                 EndExecute();
             }
@@ -65,10 +66,7 @@ namespace EGamePlay.Combat
             base.EndExecute();
         }
 
-        /// <summary>
-        /// 技能碰撞体生成事件
-        /// </summary>
-        /// <param name="colliderSpawnEmitter"></param>
+        /// <summary>   技能碰撞体生成事件   </summary>
         public void SpawnCollisionItem(ExecutionEventEmitter colliderSpawnEmitter)
         {
             if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly) TargetFlyProcess(colliderSpawnEmitter);
@@ -77,10 +75,7 @@ namespace EGamePlay.Combat
             if (colliderSpawnEmitter.ColliderType == ColliderType.FixedDirection) FixedDirectionProcess(colliderSpawnEmitter);
         }
 
-        /// <summary>
-        /// 目标飞行碰撞体
-        /// </summary>
-        /// <param name="colliderSpawnEmitter"></param>
+        /// <summary>   目标飞行碰撞体     </summary>
         private void TargetFlyProcess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
@@ -91,10 +86,7 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(InputTarget);
         }
 
-        /// <summary>
-        /// 前向飞行碰撞体
-        /// </summary>
-        /// <param name="colliderSpawnEmitter"></param>
+        /// <summary>   前向飞行碰撞体     </summary>
         private void ForwardFlyProcess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
@@ -107,10 +99,7 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(destination, 1f).OnMoveFinish(()=> { Entity.Destroy(abilityItem); });
         }
 
-        /// <summary>
-        /// 固定位置碰撞体
-        /// </summary>
-        /// <param name="colliderSpawnEmitter"></param>
+        /// <summary>   固定位置碰撞体     </summary>
         private void FixedPositionProcess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
@@ -120,10 +109,7 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
         }
 
-        /// <summary>
-        /// 固定方向碰撞体
-        /// </summary>
-        /// <param name="colliderSpawnEmitter"></param>
+        /// <summary>   固定方向碰撞体     </summary>
         private void FixedDirectionProcess(ExecutionEventEmitter colliderSpawnEmitter)
         {
             var abilityItem = Entity.Create<AbilityItem>(this);
@@ -134,10 +120,7 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
         }
 
-        /// <summary>
-        /// 创建技能碰撞体
-        /// </summary>
-        /// <param name="abilityItem"></param>
+        /// <summary>   创建技能碰撞体     </summary>
         public void CreateAbilityItemObj(AbilityItem abilityItem)
         {
             var abilityItemObj = GameObject.Instantiate(Resources.Load<GameObject>($"AbilityItems/{abilityItem.Name}"), abilityItem.Position, Quaternion.Euler(0, abilityItem.Direction, 0));

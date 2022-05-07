@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EGamePlay.Combat
 {
@@ -15,11 +12,10 @@ namespace EGamePlay.Combat
         public AnimationClip AnimationClip;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class EffectExecutionAnimationComponent : Component
+    public class AnimationEffect : Effect
     {
+        public override string Label => "播放动作";
+
         public AnimationData AnimationData { get; set; }
     }
 }

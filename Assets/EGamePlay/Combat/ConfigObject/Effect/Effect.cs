@@ -34,6 +34,9 @@ namespace EGamePlay.Combat
         public bool IsSkillEffect;
 
         [HideInInspector]
+        public bool IsExecutionEffect;
+
+        [HideInInspector]
         public virtual string Label => "Effect";
 
         [ToggleGroup("Enabled", "$Label")]
@@ -63,9 +66,5 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("Enabled"), /*HideIf("IsSkillEffect", true), */LabelText("触发概率")]
         public string TriggerProbability = "100%";
-
-
-        //public string IntervalValue { get; set; }
-        //public string ConditionParamValue { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class ExecutionAnimationComponent : Component
     {
-        public EffectExecutionAnimationComponent EffectAnimationComponent { get; set; }
+        public AnimationEffect AnimationEffect { get; set; }
 
 
         public override void Setup()
@@ -20,7 +20,7 @@ namespace EGamePlay.Combat
 
         public void OnTriggerExecutionEffect(ExecutionEffectEvent evnt)
         {
-            evnt.ExecutionEffect.GetParent<SkillExecution>().OwnerEntity.Publish(EffectAnimationComponent.AnimationData.AnimationClip);
+            evnt.ExecutionEffect.GetParent<SkillExecution>().OwnerEntity.Publish(AnimationEffect.AnimationData.AnimationClip);
         }
     }
 }

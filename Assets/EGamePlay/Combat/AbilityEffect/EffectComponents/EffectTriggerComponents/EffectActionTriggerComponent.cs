@@ -10,7 +10,15 @@ namespace EGamePlay.Combat
     /// </summary>
     public class EffectActionTriggerComponent : Component
     {
+        public override bool DefaultEnable { get; set; } = false;
+
+
         public override void Setup()
+        {
+
+        }
+
+        public override void OnEnable()
         {
             var actionPointType = GetEntity<AbilityEffect>().EffectConfig.ActionPointType;
             GetEntity<AbilityEffect>().GetParent<StatusAbility>().OwnerEntity.ListenActionPoint(actionPointType, OnActionPointTrigger);

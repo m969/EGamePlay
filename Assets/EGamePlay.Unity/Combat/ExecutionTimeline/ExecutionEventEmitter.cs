@@ -36,7 +36,7 @@ public enum ColliderType
 public enum EffectApplyType
 {
     [LabelText("全部效果")]
-    Effects,
+    AllEffects,
     [LabelText("效果1")]
     Effect1,
     [LabelText("效果2")]

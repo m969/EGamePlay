@@ -73,20 +73,20 @@ namespace EGamePlay.Combat
             return AbilityEffects[index];
         }
 
-        //public void ApplyAllEffectsTo(CombatEntity targetEntity)
-        //{
-        //    if (AbilityEffects.Count > 0)
-        //    {
-        //        foreach (var abilityEffect in AbilityEffects)
-        //        {
-        //            abilityEffect.ApplyEffectTo(targetEntity);
-        //        }
-        //    }
-        //}
+        public void ApplyAllEffectsTo(CombatEntity targetEntity)
+        {
+            if (AbilityEffects.Count > 0)
+            {
+                foreach (var abilityEffect in AbilityEffects)
+                {
+                    abilityEffect.ApplyEffectTo(targetEntity);
+                }
+            }
+        }
 
-        //public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
-        //{
-        //    AbilityEffects[index].ApplyEffectTo(targetEntity);
-        //}
+        public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
+        {
+            AbilityEffects[index].ApplyEffectTo(targetEntity);
+        }
     }
 }

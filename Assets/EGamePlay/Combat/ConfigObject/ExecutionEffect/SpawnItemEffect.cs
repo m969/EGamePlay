@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 namespace EGamePlay.Combat
 {
@@ -11,11 +9,10 @@ namespace EGamePlay.Combat
         public ExecutionEventEmitter ColliderSpawnEmitter;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class EffectExecutionSpawnItemComponent : Component
+    public class SpawnItemEffect : Effect
     {
+        public override string Label => "生成碰撞体";
+
         public ColliderSpawnData ColliderSpawnData { get; set; }
     }
 }
