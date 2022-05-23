@@ -28,7 +28,7 @@ namespace EGamePlay.Combat
 
         private void OnConditionTrigger()
         {
-            GetEntity<AbilityEffect>().ApplyEffectToOwner();
+            GetEntity<AbilityEffect>().TryAssignEffectToOwner();
         }
     }
 }

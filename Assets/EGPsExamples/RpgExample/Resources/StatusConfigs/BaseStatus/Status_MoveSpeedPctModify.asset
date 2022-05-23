@@ -43,7 +43,68 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.AttributeModifyEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: false
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
       Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 6
+      Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: Components
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Component, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+    - Name: AttributeType
+      Entry: 3
+      Data: 2002
+    - Name: NumericValue
+      Entry: 1
+      Data: "\u53D8\u52A8\u6570\u503C"
+    - Name: ModifyType
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -58,13 +119,6 @@ MonoBehaviour:
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 0
-  EnabledStateModify: 0
-  ActionControlType: 0
-  EnabledAttributeModify: 1
-  AttributeType: 2002
-  NumericValue: "\u53D8\u52A8\u6570\u503C"
-  ModifyType: 1
-  EnabledLogicTrigger: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

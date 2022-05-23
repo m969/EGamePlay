@@ -50,6 +50,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: true
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -74,6 +77,37 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Decorators
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 4|EGamePlay.Combat.DamageReduceWithTargetCountDecorator, Assembly-CSharp
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: ReducePercent
+      Entry: 4
+      Data: 20
+    - Name: MinPercent
+      Entry: 4
+      Data: 40
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
     - Name: DamageType
       Entry: 3
       Data: 1
@@ -88,10 +122,13 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|EGamePlay.Combat.CustomEffect, Assembly-CSharp
+      Data: 5|EGamePlay.Combat.CustomEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -116,16 +153,22 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Decorators
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u4FEE\u9970\u6548\u679C)"
     - Name: CustomEffectType
       Entry: 1
       Data: "\u6309\u547D\u4E2D\u76EE\u6807\u6570\u9012\u51CF\u767E\u5206\u6BD4\u4F24\u5BB3"
     - Name: Params
       Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+      Data: 6|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 7|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8

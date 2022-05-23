@@ -77,6 +77,22 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Components
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Component, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
     - Name: DamageType
       Entry: 3
       Data: 0
@@ -103,13 +119,6 @@ MonoBehaviour:
   CanStack: 0
   MaxStack: 99
   EnableChildrenStatuses: 0
-  EnabledStateModify: 0
-  ActionControlType: 0
-  EnabledAttributeModify: 0
-  AttributeType: 0
-  NumericValue: 
-  ModifyType: 0
-  EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

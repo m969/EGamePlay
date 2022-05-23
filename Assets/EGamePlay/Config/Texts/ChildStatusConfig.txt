@@ -1,3 +1,2 @@
 {
-"200":{"Id":200,"ID":"Weak","ChildStatus1":"CauseDamagePctModify","Status1KV1":"变动数值=-60%","ChildStatus2":"MoveSpeedPctModify","Status2KV1":"变动数值=-60%"}
 }

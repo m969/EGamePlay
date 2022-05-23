@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -56,3 +57,5 @@ MonoBehaviour:
     gameObject: {fileID: 4900000, guid: ec4a396fa6fcfef46a92da7c5344d4c2, type: 3}
   - key: ChildStatusConfig
     gameObject: {fileID: 4900000, guid: 67db3b1729f4ed84ea52acb3cb1df7f4, type: 3}
+  - key: StatusEffectsConfig
+    gameObject: {fileID: 4900000, guid: 9793e11789345274b9d0dccfcc551fd5, type: 3}

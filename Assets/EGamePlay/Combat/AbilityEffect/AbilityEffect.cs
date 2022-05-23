@@ -25,56 +25,51 @@ namespace EGamePlay.Combat
             Name = EffectConfig.GetType().Name;
             //Log.Debug($"AbilityEffect Awake {OwnerAbility.Name} {EffectConfig}");
 
-            //伤害效果
-            if (this.EffectConfig is DamageEffect damageEffect)
-            {
-                AddComponent<EffectDamageComponent>();
-            }
-            //治疗效果
-            if (this.EffectConfig is CureEffect cureEffect)
-            {
-                AddComponent<EffectCureComponent>();
-            }
-            //施加状态效果
-            if (this.EffectConfig is AddStatusEffect addStatusEffect)
-            {
-                AddComponent<EffectAddStatusComponent>();
-            }
-            //自定义效果
+            /// 行动禁制
+            if (this.EffectConfig is ActionControlEffect actionProhibitEffect) AddComponent<EffectActionControlComponent>();
+            /// 属性修饰
+            if (this.EffectConfig is AttributeModifyEffect attributeModifyEffect) AddComponent<EffectAttributeModifyComponent>();
+
+            /// 伤害效果
+            if (this.EffectConfig is DamageEffect damageEffect) AddComponent<EffectDamageComponent>();
+            /// 治疗效果
+            if (this.EffectConfig is CureEffect cureEffect) AddComponent<EffectCureComponent>();
+            /// 施加状态效果
+            if (this.EffectConfig is AddStatusEffect addStatusEffect) AddComponent<EffectAddStatusComponent>();
+            /// 自定义效果
             if (this.EffectConfig is CustomEffect customEffect)
             {
-                if (customEffect.CustomEffectType == "按命中目标数递减百分比伤害")
-                {
+                //if (customEffect.CustomEffectType == "按命中目标数递减百分比伤害")
+                //{
 
+                //}
+            }
+
+            if (this.EffectConfig.Decorators != null)
+            {
+                foreach (var effectDecorator in this.EffectConfig.Decorators)
+                {
+                    if (effectDecorator is DamageReduceWithTargetCountDecorator reduceWithTargetCountDecorator)
+                    {
+                        AddComponent<EffectDamageReduceWithTargetCountComponent>();
+                    }
                 }
             }
 
-            //立即触发
-            if (EffectConfig.EffectTriggerType == EffectTriggerType.Instant)
+            var triggable = !(this.EffectConfig is ActionControlEffect) && !(this.EffectConfig is AttributeModifyEffect);
+            if (triggable)
             {
-                ApplyEffectToParent();
-            }
-            //行动点触发
-            if (EffectConfig.EffectTriggerType == EffectTriggerType.Action)
-            {
-                AddComponent<EffectActionTriggerComponent>();
-            }
-            //间隔触发
-            if (EffectConfig.EffectTriggerType == EffectTriggerType.Interval)
-            {
-                Log.Debug($"AbilityEffect Awake EffectConfig.Interval={EffectConfig.Interval}");
-                if (!string.IsNullOrEmpty(EffectConfig.Interval))
-                {
-                    AddComponent<EffectIntervalTriggerComponent>();
-                }
-            }
-            //条件触发
-            if (EffectConfig.EffectTriggerType == EffectTriggerType.Condition)
-            {
-                if (!string.IsNullOrEmpty(EffectConfig.ConditionParam))
-                {
-                    AddComponent<EffectConditionTriggerComponent>();
-                }
+                /// 立即触发
+                if (EffectConfig.EffectTriggerType == EffectTriggerType.Instant) TryAssignEffectToParent();
+                /// 行动点触发
+                var isAction = EffectConfig.EffectTriggerType == EffectTriggerType.Action;
+                if (isAction) AddComponent<EffectActionTriggerComponent>();
+                /// 间隔触发
+                var isInterval = EffectConfig.EffectTriggerType == EffectTriggerType.Interval && !string.IsNullOrEmpty(EffectConfig.Interval);
+                if (isInterval) AddComponent<EffectIntervalTriggerComponent>();
+                /// 条件触发
+                var isCondition = EffectConfig.EffectTriggerType == EffectTriggerType.Condition && !string.IsNullOrEmpty(EffectConfig.ConditionParam);
+                if (isCondition) AddComponent<EffectConditionTriggerComponent>();
             }
         }
 
@@ -96,17 +91,20 @@ namespace EGamePlay.Combat
             }
         }
 
-        public void ApplyEffectToOwner()
+        /// <summary>   尝试将效果赋给施术者   </summary>
+        public void TryAssignEffectToOwner()
         {
-            ApplyEffectTo(OwnerAbility.OwnerEntity);
+            TryAssignEffectTo(OwnerAbility.OwnerEntity);
         }
 
-        public void ApplyEffectToParent()
+        /// <summary>   尝试将效果赋给父对象   </summary>
+        public void TryAssignEffectToParent()
         {
-            ApplyEffectTo(OwnerAbility.ParentEntity);
+            TryAssignEffectTo(OwnerAbility.ParentEntity);
         }
 
-        public void ApplyEffectTo(CombatEntity targetEntity)
+        /// <summary>   尝试将效果赋给目标   </summary>
+        public void TryAssignEffectTo(CombatEntity targetEntity)
         {
             if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
             {
@@ -118,7 +116,8 @@ namespace EGamePlay.Combat
             }
         }
 
-        public void ApplyEffectTo(CombatEntity targetEntity, ExecutionEffect executionEffect)
+        /// <summary>   尝试将效果赋给目标   </summary>
+        public void TryAssignEffectToTargetWithAbilityItem(CombatEntity targetEntity, AbilityItem abilityItem)
         {
             if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
             {
@@ -126,7 +125,7 @@ namespace EGamePlay.Combat
                 action.Target = targetEntity;
                 action.SourceAbility = OwnerAbility;
                 action.AbilityEffect = this;
-                action.ExecutionEffect = executionEffect;
+                action.AbilityItem = abilityItem;
                 action.ApplyEffectAssign();
             }
         }

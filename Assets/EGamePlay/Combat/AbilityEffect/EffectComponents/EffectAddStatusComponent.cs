@@ -34,18 +34,18 @@ namespace EGamePlay.Combat
                 }
             }
 #else
-            var statusConfig = AddStatusEffect.AddStatus;
-            if (statusConfig.EnabledAttributeModify)
-            {
-                if (!string.IsNullOrEmpty(statusConfig.NumericValue))
-                {
-                    NumericValueProperty = statusConfig.NumericValue;
-                    foreach (var aInputKVItem in AddStatusEffect.Params)
-                    {
-                        NumericValueProperty = NumericValueProperty.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                    }
-                }
-            }
+            //var statusConfig = AddStatusEffect.AddStatus;
+            //if (statusConfig.EnabledAttributeModify)
+            //{
+            //    if (!string.IsNullOrEmpty(statusConfig.NumericValue))
+            //    {
+            //        NumericValueProperty = statusConfig.NumericValue;
+            //        foreach (var aInputKVItem in AddStatusEffect.Params)
+            //        {
+            //            NumericValueProperty = NumericValueProperty.Replace(aInputKVItem.Key, aInputKVItem.Value);
+            //        }
+            //    }
+            //}
 #endif
         }
 

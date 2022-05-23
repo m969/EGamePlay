@@ -52,6 +52,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: true
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -76,6 +79,12 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Components
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
     - Name: DamageType
       Entry: 3
       Data: 1
@@ -94,6 +103,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: true
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -118,6 +130,12 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Components
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
     - Name: AddStatus
       Entry: 10
       Data: 0
@@ -153,6 +171,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: true
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -177,6 +198,12 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Components
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
     - Name: AddStatus
       Entry: 10
       Data: 1

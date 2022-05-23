@@ -29,6 +29,8 @@ namespace EGamePlay.Combat
     {
         public ActionAbility ActionAbility { get; set; }
         public AbilityEffect AbilityEffect { get; set; }
+        public AbilityExecution AbilityExecution { get; set; }
+        public AbilityItem AbilityItem { get; set; }
         public ExecutionEffect ExecutionEffect { get; set; }
         public ActionType ActionType { get; set; }
         public CombatEntity Creator { get; set; }

@@ -15,9 +15,7 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 11400000, guid: d474d595ed70f2e4f82fc4bf10b77fb6, type: 2}
-    - {fileID: 11400000, guid: e2cd781d8805b6f4fb70d7ab86de8abd, type: 2}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -32,89 +30,7 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 1|EGamePlay.Combat.ChildStatus, Assembly-CSharp
-    - Name: StatusConfigObject
-      Entry: 10
       Data: 0
-    - Name: Params
-      Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: "\u53D8\u52A8\u6570\u503C"
-    - Name: $v
-      Entry: 1
-      Data: -60%
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 4|EGamePlay.Combat.ChildStatus, Assembly-CSharp
-    - Name: StatusConfigObject
-      Entry: 10
-      Data: 1
-    - Name: Params
-      Entry: 7
-      Data: 5|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 6|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 1
-      Data: "\u53D8\u52A8\u6570\u503C"
-    - Name: $v
-      Entry: 1
-      Data: -60%
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -123,11 +39,113 @@ MonoBehaviour:
       Data: 
     - Name: Effects
       Entry: 7
-      Data: 7|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+      Data: 1|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.AttributeModifyEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: false
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
       Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 6
+      Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: Decorators
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+    - Name: AttributeType
+      Entry: 3
+      Data: 4001
+    - Name: NumericValue
+      Entry: 1
+      Data: -60%
+    - Name: ModifyType
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|EGamePlay.Combat.AttributeModifyEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: false
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 6
+      Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: Decorators
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+    - Name: AttributeType
+      Entry: 3
+      Data: 2002
+    - Name: NumericValue
+      Entry: 1
+      Data: -60%
+    - Name: ModifyType
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -141,14 +159,7 @@ MonoBehaviour:
   ShowInStatusSlots: 1
   CanStack: 0
   MaxStack: 1
-  EnableChildrenStatuses: 1
-  EnabledStateModify: 0
-  ActionControlType: 0
-  EnabledAttributeModify: 0
-  AttributeType: 0
-  NumericValue: 
-  ModifyType: 0
-  EnabledLogicTrigger: 0
+  EnableChildrenStatuses: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 181232, guid: b9cf594d1d8302e4a884738a176ead3a, type: 3}
   Audio: {fileID: 0}

@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
         public AbilityEntity AbilityEntity { get; set; }
         public AbilityEffectComponent AbilityEffectComponent => AbilityEntity.GetComponent<AbilityEffectComponent>();
         public ExecutionEffectComponent ExecutionEffectComponent { get; set; }
-        public List<AbilityEffect> AbilityEffects => GetComponent<AbilityEffectComponent>().AbilityEffects;
+        public List<AbilityEffect> AbilityEffects => AbilityEffectComponent.AbilityEffects;
         public List<ExecutionEffect> ExecutionEffects => GetComponent<ExecutionEffectComponent>().ExecutionEffects;
         public CombatEntity OwnerEntity => GetParent<CombatEntity>();
 

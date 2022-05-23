@@ -56,37 +56,38 @@ namespace EGamePlay.Combat
             AbilityEffects.Add(abilityEffect);
         }
 
-        //public void SetOneEffect(AbilityEffect abilityEffect)
-        //{
-        //    AbilityEffects.Clear();
-        //    AbilityEffects.Add(abilityEffect);
-        //}
-
-        //public void FillEffects(List<AbilityEffect> abilityEffects)
-        //{
-        //    AbilityEffects.Clear();
-        //    AbilityEffects.AddRange(abilityEffects);
-        //}
-
         public AbilityEffect GetEffect(int index = 0)
         {
             return AbilityEffects[index];
         }
 
-        public void ApplyAllEffectsTo(CombatEntity targetEntity)
+        /// <summary>   尝试将所有效果赋给目标   </summary>
+        public void TryAssignAllEffectsToTargetWithExecution(CombatEntity targetEntity, AbilityExecution execution)
         {
             if (AbilityEffects.Count > 0)
             {
                 foreach (var abilityEffect in AbilityEffects)
                 {
-                    abilityEffect.ApplyEffectTo(targetEntity);
+                    abilityEffect.TryAssignEffectTo(targetEntity);
                 }
             }
         }
 
-        public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
+        /// <summary>   尝试将所有效果赋给目标   </summary>
+        public void TryAssignAllEffectsToTargetWithAbilityItem(CombatEntity targetEntity, AbilityItem abilityItem)
         {
-            AbilityEffects[index].ApplyEffectTo(targetEntity);
+            if (AbilityEffects.Count > 0)
+            {
+                foreach (var abilityEffect in AbilityEffects)
+                {
+                    abilityEffect.TryAssignEffectToTargetWithAbilityItem(targetEntity, abilityItem);
+                }
+            }
+        }
+
+        public void TryAssignEffectByIndex(CombatEntity targetEntity, int index)
+        {
+            AbilityEffects[index].TryAssignEffectTo(targetEntity);
         }
     }
 }

@@ -50,6 +50,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: false
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -74,6 +77,12 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Components
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
     - Name: DamageType
       Entry: 3
       Data: 1
@@ -100,13 +109,6 @@ MonoBehaviour:
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 0
-  EnabledStateModify: 0
-  ActionControlType: 0
-  EnabledAttributeModify: 0
-  AttributeType: 0
-  NumericValue: 
-  ModifyType: 0
-  EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

@@ -23,8 +23,6 @@ namespace EGamePlay.Combat
             ExecutionEffectConfig = initData as Effect;
             Name = ExecutionEffectConfig.GetType().Name;
 
-            //foreach (var component in AbilityEffect.Components.Values)
-            //{
             //时间到直接应用能力给目标效果
             if (ExecutionEffectConfig is ApplyToTargetEffect applyEffect)
             {
@@ -65,19 +63,17 @@ namespace EGamePlay.Combat
                     ApplyEffect();
                 }
             }
-            //}
 
-            //if (AbilityEffect.EffectConfig is CustomEffect customEffect)
-            //{
-            //    if (customEffect.CustomEffectType == "按命中目标数递减百分比伤害")
-            //    {
-            //        if (Parent is AbilityItem abilityItem)
-            //        {
-            //            //abilityItem.GetComponent<ExecutionEffectComponent>().DamageExecutionEffect.AddComponent<ExecutionDamageReduceWithTargetCountComponent>(AbilityEffect);
-            //            abilityItem.AddComponent<ExecutionDamageReduceWithTargetCountComponent>(AbilityEffect);
-            //        }
-            //    }
-            //}
+            if (ExecutionEffectConfig.Decorators != null)
+            {
+                foreach (var effectDecorator in ExecutionEffectConfig.Decorators)
+                {
+                    if (effectDecorator is DamageReduceWithTargetCountDecorator reduceWithTargetCountDecorator)
+                    {
+
+                    }
+                }
+            }
 
             foreach (var item in Components.Values)
             {
@@ -92,7 +88,7 @@ namespace EGamePlay.Combat
             this.Publish(new ExecutionEffectEvent() { ExecutionEffect = this });
         }
 
-        public void ApplyEffectTo(CombatEntity targetEntity)
+        public void ExecuteEffectAssignWithTarget(CombatEntity targetEntity)
         {
             //AbilityEffect.ApplyEffectTo(targetEntity, this);
         }

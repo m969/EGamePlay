@@ -24,30 +24,20 @@ namespace EGamePlay.Combat
         {
             AbilityExecution = initData as AbilityExecution;
             //ItemExecutionEffectComponent = AddComponent<ExecutionEffectComponent>();
-            //var abilityEffects = AbilityEntity.AbilityEffects;
-            //foreach (var abilityEffect in abilityEffects)
-            //{
-            //    if (abilityEffect.GetComponent<EffectExecutionSpawnItemComponent>() != null)
-            //    {
-            //        continue;
-            //    }
-            //    if (abilityEffect.GetComponent<EffectExecutionAnimationComponent>() != null)
-            //    {
-            //        continue;
-            //    }
-
-            //    var executionEffect = AddChild<ExecutionEffect>(abilityEffect);
-            //    ItemExecutionEffectComponent.AddEffect(executionEffect);
-
-            //    if (abilityEffect.EffectConfig is DamageEffect)
-            //    {
-            //        ItemExecutionEffectComponent.DamageExecutionEffect = executionEffect;
-            //    }
-            //    if (abilityEffect.EffectConfig is CureEffect)
-            //    {
-            //        ItemExecutionEffectComponent.CureExecutionEffect = executionEffect;
-            //    }
-            //}
+            var abilityEffects = AbilityExecution.AbilityEffects;
+            foreach (var abilityEffect in abilityEffects)
+            {
+                if (abilityEffect.EffectConfig.Decorators != null)
+                {
+                    foreach (var effectDecorator in abilityEffect.EffectConfig.Decorators)
+                    {
+                        if (effectDecorator is DamageReduceWithTargetCountDecorator reduceWithTargetCountDecorator)
+                        {
+                            AddComponent<AbilityItemTargetCounterComponent>();
+                        }
+                    }
+                }
+            }
         }
 
         //结束单元体
@@ -64,23 +54,21 @@ namespace EGamePlay.Combat
                 {
                     return;
                 }
-                //ItemExecutionEffectComponent.ApplyAllEffectsTo(TargetEntity);
             }
 
             if (EffectApplyType == EffectApplyType.AllEffects)
             {
-                AbilityEntity.AbilityEffectComponent.ApplyAllEffectsTo(otherCombatEntity);
+                AbilityEntity.AbilityEffectComponent.TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
             }
             else
             {
-                AbilityEntity.AbilityEffectComponent.ApplyEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                AbilityEntity.AbilityEffectComponent.TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
             }
 
-            //var abilityEffects = AbilityEntity.AbilityEffects;
-            //foreach (var abilityEffect in abilityEffects)
-            //{
-            //    abilityEffect.ApplyEffectTo(otherCombatEntity);
-            //}
+            if (TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))
+            {
+                targetCounterComponent.TargetCounter++;
+            }
 
             if (TargetEntity != null)
             {

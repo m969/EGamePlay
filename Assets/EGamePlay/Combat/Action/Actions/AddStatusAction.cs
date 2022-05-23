@@ -38,7 +38,7 @@ namespace EGamePlay.Combat
 #else
             var statusConfig = AddStatusEffect.AddStatus;
             var canStack = statusConfig.CanStack;
-            var enabledLogicTrigger = statusConfig.EnabledLogicTrigger;
+            //var enabledLogicTrigger = statusConfig.EnabledLogicTrigger;
 #endif
             if (canStack == false)
             {
@@ -58,10 +58,7 @@ namespace EGamePlay.Combat
             Status.Duration = (int)AddStatusEffect.Duration;
             //Log.Debug($"ApplyEffectAssign AddStatusEffect {Status}");
 
-            if (enabledLogicTrigger)
-            {
-                Status.ProccessInputKVParams(AddStatusEffect.Params);
-            }
+            Status.ProccessInputKVParams(AddStatusEffect.Params);
 
             Status.AddComponent<StatusLifeTimeComponent>();
             Status.TryActivateAbility();

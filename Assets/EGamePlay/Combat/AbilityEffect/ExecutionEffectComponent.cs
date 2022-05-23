@@ -55,14 +55,14 @@ namespace EGamePlay.Combat
             {
                 foreach (var executionEffect in ExecutionEffects)
                 {
-                    executionEffect.ApplyEffectTo(targetEntity);
+                    executionEffect.ExecuteEffectAssignWithTarget(targetEntity);
                 }
             }
         }
 
         public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
         {
-            ExecutionEffects[index].ApplyEffectTo(targetEntity);
+            ExecutionEffects[index].ExecuteEffectAssignWithTarget(targetEntity);
         }
     }
 }

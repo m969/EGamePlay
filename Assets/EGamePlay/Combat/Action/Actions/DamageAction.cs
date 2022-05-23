@@ -23,19 +23,19 @@ namespace EGamePlay.Combat
     {
         public DamageActionAbility DamageAbility => ActionAbility as DamageActionAbility;
         public DamageEffect DamageEffect => AbilityEffect.EffectConfig as DamageEffect;
-        //伤害来源
+        /// 伤害来源
         public DamageSource DamageSource { get; set; }
-        //伤害攻势
+        /// 伤害攻势
         public int DamagePotential { get; set; }
-        //防御架势
+        /// 防御架势
         public int DefensePosture { get; set; }
-        //伤害数值
+        /// 伤害数值
         public int DamageValue { get; set; }
-        //是否是暴击
+        /// 是否是暴击
         public bool IsCritical { get; set; }
 
 
-        //前置处理
+        /// 前置处理
         private void PreProcess()
         {
             if (DamageSource == DamageSource.Attack)
@@ -70,16 +70,21 @@ namespace EGamePlay.Combat
                 DamageValue = AbilityEffect.GetComponent<EffectDamageComponent>().GetDamageValue();
             }
 
-            if (ExecutionEffect != null)
+            var executionDamageReduceWithTargetCountComponent = AbilityEffect.GetComponent<EffectDamageReduceWithTargetCountComponent>();
+            if (executionDamageReduceWithTargetCountComponent != null)
             {
-                var executionDamageReduceWithTargetCountComponent = ExecutionEffect.GetComponent<ExecutionDamageReduceWithTargetCountComponent>();
-                if (executionDamageReduceWithTargetCountComponent != null)
+                if (AbilityItem.TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))
                 {
-                    var damagePercent = executionDamageReduceWithTargetCountComponent.GetDamagePercent();
+                    var damagePercent = executionDamageReduceWithTargetCountComponent.GetDamagePercent(targetCounterComponent.TargetCounter);
+                    //Log.Debug($"{targetCounterComponent.TargetCounter} {damagePercent}");
                     DamageValue = Mathf.CeilToInt(DamageValue * damagePercent);
-                    executionDamageReduceWithTargetCountComponent.AddOneTarget();
                 }
+                //executionDamageReduceWithTargetCountComponent.AddOneTarget();
             }
+            //if (ExecutionEffect != null)
+            //{
+
+            //}
 
             //触发 造成伤害前 行动点
             Creator.TriggerActionPoint(ActionPointType.PreCauseDamage, this);
@@ -87,7 +92,7 @@ namespace EGamePlay.Combat
             Target.TriggerActionPoint(ActionPointType.PreReceiveDamage, this);
         }
 
-        //应用伤害
+        /// 应用伤害
         public void ApplyDamage()
         {
             PreProcess();
@@ -106,7 +111,7 @@ namespace EGamePlay.Combat
             ApplyAction();
         }
 
-        //后置处理
+        /// 后置处理
         private void PostProcess()
         {
             //触发 造成伤害后 行动点
@@ -118,8 +123,8 @@ namespace EGamePlay.Combat
 
     public enum DamageSource
     {
-        Attack,//普攻
-        Skill,//技能
-        Buff,//Buff
+        Attack,/// 普攻
+        Skill,/// 技能
+        Buff,/// Buff
     }
 }

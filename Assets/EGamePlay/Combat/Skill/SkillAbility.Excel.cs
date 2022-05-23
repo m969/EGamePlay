@@ -88,16 +88,6 @@ namespace EGamePlay.Combat
                 KVList.Add(skillEffectConfig.KV1);
                 KVList.Add(skillEffectConfig.KV2);
                 KVList.Add(skillEffectConfig.KV3);
-                //var effectJsonStr = "{";
-                //foreach (var item in paramList)
-                //{
-                //    var fieldStr = item.Replace("=", ":");
-                //    fieldStr = fieldStr.Replace("伤害类型", "DamageType");
-                //    fieldStr = fieldStr.Replace("伤害取值", "DamageValueFormula");
-                //    effectJsonStr += $"{fieldStr},";
-                //}
-                //effectJsonStr += "}";
-                //Log.Debug(effectJsonStr);
                 if (effectType == "Damage")
                 {
                     var Type = "";
@@ -137,7 +127,6 @@ namespace EGamePlay.Combat
                 }
                 else if (effectType == "AddStatus")
                 {
-                    //var skillEffectConfig = ConfigHelper.Get<SkillEffectsConfig>(int.Parse(effectId));
                     var StatusID = "";
                     var Duration = "";
                     foreach (var item in KVList)

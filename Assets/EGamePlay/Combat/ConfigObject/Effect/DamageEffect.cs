@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System.Collections.Generic;
 
 namespace EGamePlay.Combat
 {
@@ -17,5 +18,11 @@ namespace EGamePlay.Combat
         public bool CanCrit;
      
         public string DamageValueProperty { get; set; }
+
+        //[ToggleGroup("Enabled"), LabelText("效果修饰")]
+        //[HideReferenceObjectPicker, ListDrawerSettings(DraggableItems = false)]
+        //[ShowInInspector]
+        ///// Effect是直接效果，Effect的组件是基于直接效果的辅助效果
+        //public override List<Component> Components { get; set; } = new List<Component>();
     }
 }

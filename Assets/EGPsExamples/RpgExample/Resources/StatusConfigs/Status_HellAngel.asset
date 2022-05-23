@@ -51,6 +51,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: false
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -75,6 +78,22 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Components
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Component, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
     - Name: AddStatus
       Entry: 10
       Data: 0
@@ -83,11 +102,11 @@ MonoBehaviour:
       Data: 2000
     - Name: Params
       Entry: 7
-      Data: 3|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 4|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -118,13 +137,6 @@ MonoBehaviour:
   CanStack: 0
   MaxStack: 1
   EnableChildrenStatuses: 0
-  EnabledStateModify: 0
-  ActionControlType: 0
-  EnabledAttributeModify: 0
-  AttributeType: 0
-  NumericValue: 
-  ModifyType: 0
-  EnabledLogicTrigger: 1
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}

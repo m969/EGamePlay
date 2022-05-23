@@ -33,40 +33,12 @@ namespace EGamePlay.Combat
                 {
                     if (EffectApplyType == EffectApplyType.AllEffects)
                     {
-                        GetEntity<ExecutionEffect>().ParentExecution.AbilityEffectComponent.ApplyAllEffectsTo(skillExecution.InputTarget);
+                        GetEntity<ExecutionEffect>().ParentExecution.AbilityEffectComponent.TryAssignAllEffectsToTargetWithExecution(skillExecution.InputTarget, skillExecution);
                     }
                     else
                     {
-                        GetEntity<ExecutionEffect>().ParentExecution.AbilityEffectComponent.ApplyEffectByIndex(skillExecution.InputTarget, (int)EffectApplyType - 1);
+                        GetEntity<ExecutionEffect>().ParentExecution.AbilityEffectComponent.TryAssignEffectByIndex(skillExecution.InputTarget, (int)EffectApplyType - 1);
                     }
-
-                    //var executionEffects = GetEntity<ExecutionEffect>().ParentExecution.ExecutionEffects;
-                    //if (EffectApplyType == EffectApplyType.AllEffects)
-                    //{
-                    //    foreach (var executionEffect in executionEffects)
-                    //    {
-                    //        if (executionEffect.Name == "SpawnItem") continue;
-                    //        if (executionEffect.Name == "Animation") continue;
-                    //        if (executionEffect.Name == "ApplyToTarget") continue;
-                    //        executionEffect.ApplyEffectTo(skillExecution.InputTarget);
-                    //    }
-                    //}
-                    //ExecutionEffect eecutionEffect2 = null;
-                    //if (EffectApplyType == EffectApplyType.Effect1)
-                    //{
-                    //    eecutionEffect2 = executionEffects[0];
-                    //    eecutionEffect2.ApplyEffectTo(skillExecution.InputTarget);
-                    //}
-                    //if (EffectApplyType == EffectApplyType.Effect2)
-                    //{
-                    //    eecutionEffect2 = executionEffects[1];
-                    //    eecutionEffect2.ApplyEffectTo(skillExecution.InputTarget);
-                    //}
-                    //if (EffectApplyType == EffectApplyType.Effect3)
-                    //{
-                    //    eecutionEffect2 = executionEffects[2];
-                    //    eecutionEffect2.ApplyEffectTo(skillExecution.InputTarget);
-                    //}
                 }
             }
 #endif

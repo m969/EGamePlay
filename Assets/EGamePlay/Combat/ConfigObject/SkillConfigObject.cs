@@ -51,14 +51,15 @@ namespace EGamePlay.Combat
         }
 
         [LabelText("效果列表"), Space(30)]
-        [ListDrawerSettings(Expanded = true, DraggableItems = true, ShowItemCount = false, HideAddButton = true)]
+        [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
 
+        //[ShowInInspector]
+        //public static bool Draggable;
+
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
-        [HideLabel]
-        [OnValueChanged("AddEffect")]
-        [ValueDropdown("EffectTypeSelect")]
+        [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect")]
         public string EffectTypeName = "(添加效果)";
 
         public IEnumerable<string> EffectTypeSelect()
@@ -66,7 +67,7 @@ namespace EGamePlay.Combat
             var types = typeof(Effect).Assembly.GetTypes()
                 .Where(x => !x.IsAbstract)
                 .Where(x => typeof(Effect).IsAssignableFrom(x))
-                .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
+                .Where(x => x.GetCustomAttribute<EffectAttribute>() != null && x != typeof(ActionControlEffect) && x != typeof(AttributeModifyEffect))
                 .OrderBy(x => x.GetCustomAttribute<EffectAttribute>().Order)
                 .Select(x => x.GetCustomAttribute<EffectAttribute>().EffectType);
             var results = types.ToList();
@@ -83,7 +84,7 @@ namespace EGamePlay.Combat
                     .Where(x => typeof(Effect).IsAssignableFrom(x))
                     .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
                     .Where(x => x.GetCustomAttribute<EffectAttribute>().EffectType == EffectTypeName)
-                    .First();
+                    .FirstOrDefault();
 
                 var effect = Activator.CreateInstance(effectType) as Effect;
                 effect.Enabled = true;
@@ -92,7 +93,6 @@ namespace EGamePlay.Combat
 
                 EffectTypeName = "(添加效果)";
             }
-            //SkillHelper.AddEffect(Effects, EffectType);
         }
 
 #if !NOT_UNITY

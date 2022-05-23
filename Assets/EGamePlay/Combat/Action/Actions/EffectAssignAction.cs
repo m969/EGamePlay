@@ -32,44 +32,51 @@ namespace EGamePlay.Combat
             //Log.Debug($"ApplyEffectAssign {EffectConfig}");
             PreProcess();
 
-            if (EffectConfig is DamageEffect)
-            {
-                if (OwnerEntity.DamageAbility.TryMakeAction(out var damageAction))
-                {
-                    damageAction.Target = Target;
-                    damageAction.AbilityEffect = AbilityEffect;
-                    damageAction.ExecutionEffect = ExecutionEffect;
-                    damageAction.DamageSource = DamageSource.Skill;
-                    damageAction.ApplyDamage();
-                }
-            }
-
-            if (EffectConfig is CureEffect && Target.CurrentHealth.IsFull() == false)
-            {
-                if (OwnerEntity.CureAbility.TryMakeAction(out var cureAction))
-                {
-                    cureAction.Target = Target;
-                    cureAction.AbilityEffect = AbilityEffect;
-                    cureAction.ExecutionEffect = ExecutionEffect;
-                    cureAction.ApplyCure();
-                }
-            }
-
-            if (EffectConfig is AddStatusEffect)
-            {
-                if (OwnerEntity.AddStatusAbility.TryMakeAction(out var addStatusAction))
-                {
-                    addStatusAction.SourceAbility = SourceAbility;
-                    addStatusAction.Target = Target;
-                    addStatusAction.AbilityEffect = AbilityEffect;
-                    addStatusAction.ExecutionEffect = ExecutionEffect;
-                    addStatusAction.ApplyAddStatus();
-                }
-            }
+            if (EffectConfig is DamageEffect) TryAssignDamage();
+            if (EffectConfig is CureEffect && Target.CurrentHealth.IsFull() == false) TryAssignCure();
+            if (EffectConfig is AddStatusEffect) TryAssignAddStatus();
 
             PostProcess();
 
             ApplyAction();
+        }
+
+        private void FillDatasToAction(ActionExecution action)
+        {
+            action.Target = Target;
+            action.AbilityEffect = AbilityEffect;
+            action.ExecutionEffect = ExecutionEffect;
+            action.AbilityExecution = AbilityExecution;
+            action.AbilityItem = AbilityItem;
+        }
+
+        private void TryAssignDamage()
+        {
+            if (OwnerEntity.DamageAbility.TryMakeAction(out var damageAction))
+            {
+                FillDatasToAction(damageAction);
+                damageAction.DamageSource = DamageSource.Skill;
+                damageAction.ApplyDamage();
+            }
+        }
+
+        private void TryAssignCure()
+        {
+            if (OwnerEntity.CureAbility.TryMakeAction(out var cureAction))
+            {
+                FillDatasToAction(cureAction);
+                cureAction.ApplyCure();
+            }
+        }
+
+        private void TryAssignAddStatus()
+        {
+            if (OwnerEntity.AddStatusAbility.TryMakeAction(out var addStatusAction))
+            {
+                FillDatasToAction(addStatusAction);
+                addStatusAction.SourceAbility = SourceAbility;
+                addStatusAction.ApplyAddStatus();
+            }
         }
 
         //∫Û÷√¥¶¿Ì

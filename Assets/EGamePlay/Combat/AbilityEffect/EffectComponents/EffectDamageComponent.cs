@@ -11,13 +11,13 @@ namespace EGamePlay.Combat
     public class EffectDamageComponent : Component
     {
         public DamageEffect DamageEffect { get; set; }
-        public string DamageValueProperty { get; set; }
+        public string DamageValueFormula { get; set; }
 
 
         public override void Setup()
         {
             DamageEffect = GetEntity<AbilityEffect>().EffectConfig as DamageEffect;
-            DamageValueProperty = DamageEffect.DamageValueFormula;
+            DamageValueFormula = DamageEffect.DamageValueFormula;
         }
 
         public int GetDamageValue()
@@ -27,7 +27,7 @@ namespace EGamePlay.Combat
 
         private int ParseDamage()
         {
-            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(DamageValueProperty);
+            var expression = ExpressionHelper.ExpressionParser.EvaluateExpression(DamageValueFormula);
             if (expression.Parameters.ContainsKey("自身攻击力"))
             {
                 expression.Parameters["自身攻击力"].Value = GetEntity<AbilityEffect>().OwnerEntity.GetComponent<AttributeComponent>().Attack.Value;

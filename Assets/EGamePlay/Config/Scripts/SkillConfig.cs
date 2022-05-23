@@ -18,12 +18,12 @@ namespace ET
 		public string TargetSelect;
 		public float Cooldown;
 		public string Description;
-		public string Effect1;
-		public string Effect2;
-		public string Effect3;
 		public string DamageTarget;
 		public string Probability;
 		public string DamageType;
 		public string ValueFormula;
+		public string Effect1;
+		public string Effect2;
+		public string Effect3;
 	}
 }

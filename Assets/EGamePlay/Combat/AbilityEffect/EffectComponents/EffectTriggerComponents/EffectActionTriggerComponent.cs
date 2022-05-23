@@ -26,7 +26,7 @@ namespace EGamePlay.Combat
 
         private void OnActionPointTrigger(ActionExecution combatAction)
         {
-            GetEntity<AbilityEffect>().ApplyEffectToOwner();
+            GetEntity<AbilityEffect>().TryAssignEffectToOwner();
         }
     }
 }
