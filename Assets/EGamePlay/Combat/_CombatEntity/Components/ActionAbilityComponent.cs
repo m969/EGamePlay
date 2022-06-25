@@ -5,7 +5,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class ActionComponent : Component
+    public class ActionAbilityComponent : Component
 	{
 
 	}

@@ -7,13 +7,57 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public class AttackAbility : AbilityEntity<AttackExecution>
+    public class AttackAbility : Entity, IAbilityEntity
     {
-        public override AttackExecution CreateExecution()
+        public CombatEntity OwnerEntity { get => GetParent<CombatEntity>(); set { } }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
+
+
+        public override void Awake(object initData)
+        {
+            var effects = new List<Effect>();
+            var damageEffect = new DamageEffect();
+            damageEffect.Enabled = true;
+            damageEffect.AddSkillEffectTargetType = AddSkillEffetTargetType.SkillTarget;
+            damageEffect.EffectTriggerType = EffectTriggerType.Condition;
+            damageEffect.CanCrit = true;
+            damageEffect.DamageType = DamageType.Physic;
+            damageEffect.DamageValueFormula = $"自身攻击力";
+            effects.Add(damageEffect);
+            AddComponent<AbilityEffectComponent>(effects);
+        }
+
+        public void ActivateAbility()
+        {
+            throw new NotImplementedException();
+        }
+
+        public AttackExecution CreateExecution()
         {
             var execution = OwnerEntity.AddChild<AttackExecution>(this);
-            execution.AddComponent<UpdateComponent>();
+            execution.AbilityEntity = this;
             return execution;
+        }
+
+        public void DeactivateAbility()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EndAbility()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TryActivateAbility()
+        {
+            throw new NotImplementedException();
+        }
+
+        Entity IAbilityEntity.CreateExecution()
+        {
+            throw new NotImplementedException();
         }
     }
 }

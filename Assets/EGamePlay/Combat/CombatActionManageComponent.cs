@@ -9,10 +9,10 @@ namespace EGamePlay.Combat
     /// </summary>
     public class CombatActionManageComponent : Component
     {
-        private List<ActionExecution> CombatActions = new List<ActionExecution>();
+        private List<Entity> CombatActions = new List<Entity>();
 
 
-        public T CreateAction<T>(CombatEntity combatEntity) where T : ActionExecution
+        public T CreateAction<T>(CombatEntity combatEntity) where T : Entity, IActionExecution
         {
             var action = combatEntity.AddChild<T>();
             action.Creator = combatEntity;

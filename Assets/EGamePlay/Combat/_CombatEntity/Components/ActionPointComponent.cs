@@ -7,24 +7,24 @@ using Sirenix.OdinInspector;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 行动点，一次战斗行动<see cref="ActionExecution"/>会触发战斗实体一系列的行动点<see cref="ActionPoint"/>
+    /// 行动点，一次战斗行动<see cref="IActionExecution"/>会触发战斗实体一系列的行动点<see cref="ActionPoint"/>
     /// </summary>
     public sealed class ActionPoint
     {
-        public List<Action<ActionExecution>> Listeners { get; set; } = new List<Action<ActionExecution>>();
+        public List<Action<IActionExecution>> Listeners { get; set; } = new List<Action<IActionExecution>>();
 
 
-        public void AddListener(Action<ActionExecution> action)
+        public void AddListener(Action<IActionExecution> action)
         {
             Listeners.Add(action);
         }
 
-        public void RemoveListener(Action<ActionExecution> action)
+        public void RemoveListener(Action<IActionExecution> action)
         {
             Listeners.Remove(action);
         }
 
-        public void TriggerAllActions(ActionExecution actionExecution)
+        public void TriggerAllActions(IActionExecution actionExecution)
         {
             if (Listeners.Count == 0)
             {
@@ -59,9 +59,9 @@ namespace EGamePlay.Combat
         [LabelText("接受治疗后")]
         PostReceiveCure = 1 << 6,
 
-        [LabelText("赋给效果")]
+        [LabelText("赋给技能效果")]
         AssignEffect = 1 << 7,
-        [LabelText("接受效果")]
+        [LabelText("接受技能效果")]
         ReceiveEffect = 1 << 8,
 
         [LabelText("赋加状态后")]
@@ -89,6 +89,15 @@ namespace EGamePlay.Combat
         [LabelText("施法后")]
         PostSpell = 1 << 18,
 
+        [LabelText("赋给普攻效果前")]
+        PreGiveAttackEffect = 1 << 19,
+        [LabelText("赋给普攻效果后")]
+        PostGiveAttackEffect = 1 << 20,
+        [LabelText("承受普攻效果前")]
+        PreReceiveAttackEffect = 1 << 21,
+        [LabelText("承受普攻效果后")]
+        PostReceiveAttackEffect = 1 << 22,
+
         Max,
     }
 
@@ -105,7 +114,7 @@ namespace EGamePlay.Combat
             base.Setup();
         }
 
-        public void AddListener(ActionPointType actionPointType, Action<ActionExecution> action)
+        public void AddListener(ActionPointType actionPointType, Action<IActionExecution> action)
         {
             if (!ActionPoints.ContainsKey(actionPointType))
             {
@@ -114,7 +123,7 @@ namespace EGamePlay.Combat
             ActionPoints[actionPointType].AddListener(action);
         }
 
-        public void RemoveListener(ActionPointType actionPointType, Action<ActionExecution> action)
+        public void RemoveListener(ActionPointType actionPointType, Action<IActionExecution> action)
         {
             if (ActionPoints.ContainsKey(actionPointType))
             {
@@ -128,7 +137,7 @@ namespace EGamePlay.Combat
             return actionPoint;
         }
 
-        public void TriggerActionPoint(ActionPointType actionPointType, ActionExecution actionExecution)
+        public void TriggerActionPoint(ActionPointType actionPointType, IActionExecution actionExecution)
         {
             if (ActionPoints.TryGetValue(actionPointType, out var actionPoint))
             {

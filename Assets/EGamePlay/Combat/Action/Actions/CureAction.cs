@@ -5,27 +5,92 @@ using EGamePlay;
 
 namespace EGamePlay.Combat
 {
-    public class CureActionAbility : ActionAbility<CureAction>
+    public class CureActionAbility : Entity, IActionAbility
     {
+        public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
 
+
+        public bool TryMakeAction(out CureAction action)
+        {
+            if (Enable == false)
+            {
+                action = null;
+            }
+            else
+            {
+                action = OwnerEntity.AddChild<CureAction>();
+                action.ActionAbility = this;
+                action.Creator = OwnerEntity;
+            }
+            return Enable;
+        }
+
+        //public void TryActivateAbility() => ActivateAbility();
+
+        //public void ActivateAbility() => Enable = true;
+
+        //public void DeactivateAbility() { }
+
+        //public void EndAbility() { }
+
+        //public Entity CreateExecution()
+        //{
+        //    var execution = OwnerEntity.MakeAction<CureAction>();
+        //    execution.ActionAbility = this;
+        //    return execution;
+        //}
+
+        //public bool TryMakeAction(out CureAction abilityExecution)
+        //{
+        //    if (Enable == false)
+        //    {
+        //        abilityExecution = null;
+        //    }
+        //    else
+        //    {
+        //        abilityExecution = CreateExecution() as CureAction;
+        //    }
+        //    return Enable;
+        //}
+
+        //IAbilityExecution IAbilityEntity.CreateExecution()
+        //{
+
+        //}
     }
 
     /// <summary>
     /// 治疗行动
     /// </summary>
-    public class CureAction : ActionExecution
+    public class CureAction : Entity, IActionExecution
     {
-        public CureEffect CureEffect => AbilityEffect.EffectConfig as CureEffect;
-        //治疗数值
+        public CureEffect CureEffect => SourceAssignAction.AbilityEffect.EffectConfig as CureEffect;
+        /// 治疗数值
         public int CureValue { get; set; }
 
+        /// 行动能力
+        public Entity ActionAbility { get; set; }
+        /// 效果赋给行动源
+        public EffectAssignAction SourceAssignAction { get; set; }
+        /// 行动实体
+        public CombatEntity Creator { get; set; }
+        /// 目标对象
+        public CombatEntity Target { get; set; }
+
+
+        public void FinishAction()
+        {
+            Entity.Destroy(this);
+        }
 
         //前置处理
         private void PreProcess()
         {
-            if (AbilityEffect != null)
+            if (SourceAssignAction != null && SourceAssignAction.AbilityEffect != null)
             {
-                CureValue = AbilityEffect.GetComponent<EffectCureComponent>().GetCureValue();
+                CureValue = SourceAssignAction.AbilityEffect.GetComponent<EffectCureComponent>().GetCureValue();
             }
         }
 
@@ -41,7 +106,7 @@ namespace EGamePlay.Combat
 
             PostProcess();
 
-            ApplyAction();
+            FinishAction();
         }
 
         //后置处理

@@ -6,20 +6,67 @@ using EGamePlay.Combat;
 
 namespace EGamePlay.Combat
 {
-    public class AddStatusActionAbility : ActionAbility<AddStatusAction>
+    public class AddStatusActionAbility : Entity, IActionAbility
     {
+        public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
 
+
+        public bool TryMakeAction(out AddStatusAction action)
+        {
+            if (Enable == false)
+            {
+                action = null;
+            }
+            else
+            {
+                action = OwnerEntity.AddChild<AddStatusAction>();
+                action.ActionAbility = this;
+                action.Creator = OwnerEntity;
+            }
+            return Enable;
+        }
+
+        //public void TryActivateAbility() => ActivateAbility();
+
+        //public void ActivateAbility() => Enable = true;
+
+        //public void DeactivateAbility() { }
+
+        //public void EndAbility() { }
+
+        //public Entity CreateExecution()
+        //{
+        //    var execution = OwnerEntity.MakeAction<AddStatusAction>();
+        //    execution.ActionAbility = this;
+        //    return execution;
+        //}
     }
 
     /// <summary>
     /// 施加状态行动
     /// </summary>
-    public class AddStatusAction : ActionExecution
+    public class AddStatusAction : Entity, IActionExecution
     {
-        public AbilityEntity SourceAbility { get; set; }
-        public AddStatusEffect AddStatusEffect => AbilityEffect.EffectConfig as AddStatusEffect;
+        public Entity SourceAbility { get; set; }
+        public AddStatusEffect AddStatusEffect => SourceAssignAction.AbilityEffect.EffectConfig as AddStatusEffect;
         public StatusAbility Status { get; set; }
 
+        /// 行动能力
+        public Entity ActionAbility { get; set; }
+        /// 效果赋给行动源
+        public EffectAssignAction SourceAssignAction { get; set; }
+        /// 行动实体
+        public CombatEntity Creator { get; set; }
+        /// 目标对象
+        public CombatEntity Target { get; set; }
+
+
+        public void FinishAction()
+        {
+            Entity.Destroy(this);
+        }
 
         //前置处理
         private void PreProcess()
@@ -54,7 +101,7 @@ namespace EGamePlay.Combat
 
             Status = Target.AttachStatus<StatusAbility>(statusConfig);
             Status.OwnerEntity = Creator;
-            Status.Level = SourceAbility.Level;
+            Status.Get<AbilityLevelComponent>().Level = SourceAbility.Get<AbilityLevelComponent>().Level;
             Status.Duration = (int)AddStatusEffect.Duration;
             //Log.Debug($"ApplyEffectAssign AddStatusEffect {Status}");
 
@@ -65,7 +112,7 @@ namespace EGamePlay.Combat
 
             PostProcess();
 
-            ApplyAction();
+            FinishAction();
         }
 
         //后置处理

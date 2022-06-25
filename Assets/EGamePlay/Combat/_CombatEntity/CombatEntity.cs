@@ -37,6 +37,8 @@ namespace EGamePlay.Combat
 
         //普攻能力
         public AttackAbility AttackAbility { get; set; }
+        public AttackBlockActionAbility AttackBlockAbility { get; set; }
+
         public SkillExecution CurrentSkillExecution { get; set; }
         public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
         public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
@@ -50,7 +52,7 @@ namespace EGamePlay.Combat
         public override void Awake()
         {
             AddComponent<AttributeComponent>();
-            AddComponent<ActionComponent>();
+            AddComponent<ActionAbilityComponent>();
             AddComponent<ActionPointComponent>();
             AddComponent<ConditionComponent>();
             AddComponent<StatusComponent>();
@@ -59,8 +61,11 @@ namespace EGamePlay.Combat
             CurrentHealth = AddChild<HealthPoint>();
             CurrentHealth.HealthPointNumeric = GetComponent<AttributeComponent>().HealthPoint;
             CurrentHealth.HealthPointMaxNumeric = GetComponent<AttributeComponent>().HealthPointMax;
-            //CurrentHealth.SetMaxValue((int)GetComponent<AttributeComponent>().HealthPoint.Value);
             CurrentHealth.Reset();
+
+            AttackAbility = AttachAbility<AttackAbility>(null);
+            AttackBlockAbility = AttachAction<AttackBlockActionAbility>();
+
             SpellAbility = AttachAction<SpellActionAbility>();
             MotionAbility = AttachAction<MotionActionAbility>();
             DamageAbility = AttachAction<DamageActionAbility>();
@@ -70,30 +75,29 @@ namespace EGamePlay.Combat
             EffectAssignAbility = AttachAction<EffectAssignAbility>();
             RoundAbility = AttachAction<RoundActionAbility>();
             JumpToAbility = AttachAction<JumpToActionAbility>();
-            AttackAbility = AttachAbility<AttackAbility>(null);
         }
 
         /// <summary>
         /// 发起行动
         /// </summary>
-        public T MakeAction<T>() where T : ActionExecution
+        public T MakeAction<T>() where T : Entity, IActionExecution
         {
             var action = Parent.GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
             return action;
         }
 
         #region 行动点事件
-        public void ListenActionPoint(ActionPointType actionPointType, Action<ActionExecution> action)
+        public void ListenActionPoint(ActionPointType actionPointType, Action<IActionExecution> action)
         {
             GetComponent<ActionPointComponent>().AddListener(actionPointType, action);
         }
 
-        public void UnListenActionPoint(ActionPointType actionPointType, Action<ActionExecution> action)
+        public void UnListenActionPoint(ActionPointType actionPointType, Action<IActionExecution> action)
         {
             GetComponent<ActionPointComponent>().RemoveListener(actionPointType, action);
         }
 
-        public void TriggerActionPoint(ActionPointType actionPointType, ActionExecution action)
+        public void TriggerActionPoint(ActionPointType actionPointType, IActionExecution action)
         {
             GetComponent<ActionPointComponent>().TriggerActionPoint(actionPointType, action);
         }
@@ -111,13 +115,13 @@ namespace EGamePlay.Combat
         }
         #endregion
 
-        public void ReceiveDamage(ActionExecution combatAction)
+        public void ReceiveDamage(IActionExecution combatAction)
         {
             var damageAction = combatAction as DamageAction;
             CurrentHealth.Minus(damageAction.DamageValue);
         }
 
-        public void ReceiveCure(ActionExecution combatAction)
+        public void ReceiveCure(IActionExecution combatAction)
         {
             var cureAction = combatAction as CureAction;
             CurrentHealth.Add(cureAction.CureValue);
@@ -132,19 +136,23 @@ namespace EGamePlay.Combat
         /// 挂载能力，技能、被动、buff等都通过这个接口挂载
         /// </summary>
         /// <param name="configObject"></param>
-        private T AttachAbility<T>(object configObject) where T : AbilityEntity
+        private T AttachAbility<T>(object configObject) where T : Entity, IAbilityEntity
         {
             var ability = this.AddChild<T>(configObject);
             return ability;
         }
 
-        public T AttachAction<T>() where T : ActionAbility
+        public T AttachAction<T>() where T : Entity, IActionAbility
         {
-            var action = AttachAbility<T>(null);
+            var action = AddChild<T>();
+            action.Enable = true;
+            //var action = AttachAbility<T>(null);
+            //action.AddComponent<ActionComponent>();
+            //action.TryActivateAbility();
             return action;
         }
 
-        public T GetAction<T>() where T : ActionAbility
+        public T GetAction<T>() where T : Entity, IActionAbility
         {
             return GetChild<T>();
         }

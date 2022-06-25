@@ -17,7 +17,7 @@ namespace EGamePlay.Combat
             combatEntity.ListenActionPoint(ActionPointType.PostCauseDamage, OnCauseDamage);
         }
 
-        private void OnCauseDamage(ActionExecution action)
+        private void OnCauseDamage(IActionExecution action)
         {
             var damageAction = action as DamageAction;
             var value = damageAction.DamageValue * 0.2f;
@@ -27,6 +27,7 @@ namespace EGamePlay.Combat
                 cureAction.Creator = combatEntity;
                 cureAction.Target = combatEntity;
                 cureAction.CureValue = (int)value;
+                cureAction.SourceAssignAction = null;
                 cureAction.ApplyCure();
             }
         }

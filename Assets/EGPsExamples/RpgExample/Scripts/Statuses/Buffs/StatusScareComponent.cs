@@ -5,16 +5,15 @@ using Sirenix.OdinInspector;
 using EGamePlay.Combat;
 using EGamePlay;
 
-public class Status_Scare : StatusAbility
+public class StatusScareComponent : EGamePlay.Component
 {
-    public override void ActivateAbility()
+    public override void Awake()
     {
-        base.ActivateAbility();
-        Coroutine();
+        Entity.OnEvent(nameof(IAbilityEntity.ActivateAbility), Coroutine);
     }
 
     //协程
-    private async void Coroutine()
+    private async void Coroutine(Entity statusAbility)
     {
         while (true)
         {

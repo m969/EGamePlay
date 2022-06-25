@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
-  m_Name: "Skill_1005_\u706B\u5F39"
+  m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
+  m_Name: Status_GeDang
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -46,10 +46,10 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 2|EGamePlay.Combat.DamageEffect, Assembly-CSharp
+      Data: 2|EGamePlay.Combat.CustomEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
-      Data: true
+      Data: false
     - Name: IsExecutionEffect
       Entry: 5
       Data: false
@@ -61,13 +61,13 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 0
+      Data: 3
     - Name: ConditionType
       Entry: 3
       Data: 0
     - Name: ActionPointType
       Entry: 3
-      Data: 0
+      Data: 2097152
     - Name: Interval
       Entry: 6
       Data: 
@@ -76,29 +76,14 @@ MonoBehaviour:
       Data: 
     - Name: TriggerProbability
       Entry: 1
-      Data: 100%
+      Data: 30%
     - Name: Decorators
       Entry: 7
       Data: 3|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 4|EGamePlay.Combat.DamageReduceWithTargetCountDecorator, Assembly-CSharp
-    - Name: Enabled
-      Entry: 5
-      Data: true
-    - Name: ReducePercent
-      Entry: 4
-      Data: 20
-    - Name: MinPercent
-      Entry: 4
-      Data: 40
-    - Name: 
-      Entry: 8
-      Data: 
+      Data: 0
     - Name: 
       Entry: 13
       Data: 
@@ -108,15 +93,29 @@ MonoBehaviour:
     - Name: EffectTypeName
       Entry: 1
       Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
-    - Name: DamageType
-      Entry: 3
-      Data: 1
-    - Name: DamageValueFormula
+    - Name: CustomEffectType
       Entry: 1
-      Data: 500
-    - Name: CanCrit
-      Entry: 5
-      Data: false
+      Data: "\u683C\u6321\u666E\u653B"
+    - Name: Params
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -126,18 +125,15 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  Id: 1005
-  Name: "\u706B\u5F39"
-  SkillSpellType: 0
-  TargetSelectType: 2
-  AffectAreaType: 0
-  CircleAreaRadius: 0
-  AreaCollider: {fileID: 0}
-  AffectTargetType: 2
-  ColdTime: 3000
+  ID: GeDang
+  Name: "\u683C\u6321"
+  StatusType: 0
+  Duration: 0
+  ShowInStatusSlots: 0
+  CanStack: 0
+  MaxStack: 0
   EnableChildrenStatuses: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillExecutionAsset: {fileID: 7402701643467124463, guid: 05f4fb3e37c0e0944addfdbd803cd7e3,
-    type: 3}
-  SkillAudio: {fileID: 0}
-  SkillDescription: "\u6BCF\u547D\u4E2D\u4E00\u4E2A\u76EE\u6807\u540E\u4E0B\u4E00\u6B21\u4F24\u5BB3\u4F1A\u51CF\u5C1120%\uFF0C\u6700\u4F4E\u51CF\u523040%"
+  ParticleEffect: {fileID: 0}
+  Audio: {fileID: 0}
+  StatusDescription: 

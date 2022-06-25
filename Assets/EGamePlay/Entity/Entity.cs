@@ -186,6 +186,11 @@ namespace EGamePlay
             return null;
         }
 
+        public bool HasComponent<T>() where T : Component
+        {
+            return Components.TryGetValue(typeof(T), out var component);
+        }
+
         public Component GetComponent(Type componentType)
         {
             if (this.Components.TryGetValue(componentType, out var component))
@@ -289,6 +294,11 @@ namespace EGamePlay
         public Entity AddChild(Type entityType)
         {
             return CreateWithParent(entityType, this);
+        }
+
+        public Entity AddChild(Type entityType, object initData)
+        {
+            return CreateWithParent(entityType, this, initData);
         }
 
         public T AddChild<T>() where T : Entity
@@ -446,26 +456,26 @@ namespace EGamePlay
             FireEvent(eventType, this);
         }
 
-        public void FireEvent<T>(string eventType, T entity) where T : Entity
+        public void FireEvent(string eventType, Entity entity)
+        {
+            var eventComponent = GetComponent<EventComponent>();
+            if (eventComponent != null)
+            {
+                eventComponent.FireEvent(eventType, entity);
+            }
+        }
+
+        public void OnEvent(string eventType, Action<Entity> action)
         {
             var eventComponent = GetComponent<EventComponent>();
             if (eventComponent == null)
             {
                 eventComponent = AddComponent<EventComponent>();
             }
-            eventComponent.FireEvent(eventType, entity);
+            eventComponent.OnEvent(eventType, action);
         }
 
-        public void OnEvent<T>(string eventType, Action<T> action) where T : Entity
-        {
-            var eventComponent = GetComponent<EventComponent>();
-            if (eventComponent != null)
-            {
-                eventComponent.OnEvent(eventType, action);
-            }
-        }
-
-        public void OffEvent<T>(string eventType, Action<T> action) where T : Entity
+        public void OffEvent(string eventType, Action<Entity> action)
         {
             var eventComponent = GetComponent<EventComponent>();
             if (eventComponent != null)
@@ -476,3 +486,32 @@ namespace EGamePlay
         #endregion
     }
 }
+
+
+//public void FireEvent<T>(string eventType, T entity) where T : Entity
+//{
+//    var eventComponent = GetComponent<EventComponent>();
+//    if (eventComponent != null)
+//    {
+//        eventComponent.FireEvent(eventType, entity);
+//    }
+//}
+
+//public void OnEvent<T>(string eventType, Action<T> action) where T : Entity
+//{
+//    var eventComponent = GetComponent<EventComponent>();
+//    if (eventComponent == null)
+//    {
+//        eventComponent = AddComponent<EventComponent>();
+//    }
+//    eventComponent.OnEvent(eventType, action);
+//}
+
+//public void OffEvent<T>(string eventType, Action<T> action) where T : Entity
+//{
+//    var eventComponent = GetComponent<EventComponent>();
+//    if (eventComponent != null)
+//    {
+//        eventComponent.OffEvent(eventType, action);
+//    }
+//}

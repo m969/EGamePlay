@@ -153,7 +153,7 @@ public class SpellPreviewComponent : EGamePlay.Component
 
             if (action.SkillTargets.Count == 0)
             {
-                action.ApplyAction();
+                action.FinishAction();
                 return;
             }
 

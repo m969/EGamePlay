@@ -33,11 +33,11 @@ namespace EGamePlay.Combat
                 {
                     if (EffectApplyType == EffectApplyType.AllEffects)
                     {
-                        GetEntity<ExecutionEffect>().ParentExecution.AbilityEffectComponent.TryAssignAllEffectsToTargetWithExecution(skillExecution.InputTarget, skillExecution);
+                        GetEntity<ExecutionEffect>().ParentExecution.AbilityEntity.Get<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithExecution(skillExecution.InputTarget, skillExecution);
                     }
                     else
                     {
-                        GetEntity<ExecutionEffect>().ParentExecution.AbilityEffectComponent.TryAssignEffectByIndex(skillExecution.InputTarget, (int)EffectApplyType - 1);
+                        GetEntity<ExecutionEffect>().ParentExecution.AbilityEntity.Get<AbilityEffectComponent>().TryAssignEffectByIndex(skillExecution.InputTarget, (int)EffectApplyType - 1);
                     }
                 }
             }

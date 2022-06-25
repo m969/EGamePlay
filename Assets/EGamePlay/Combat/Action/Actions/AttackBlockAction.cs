@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using EGamePlay;
-using EGamePlay.Combat;
-using ET;
 
 namespace EGamePlay.Combat
 {
-    public class RoundActionAbility : Entity, IActionAbility
+    public class AttackBlockActionAbility : Entity, IActionAbility
     {
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
         public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
 
 
-        public bool TryMakeAction(out RoundAction action)
+        public override void Awake()
+        {
+            ParentEntity.AttackAbility.OnEvent(nameof(AttackExecution.TriggerAttackPreProcess), OnTriggerAttackPreProcess);
+        }
+
+        public bool TryMakeAction(out AttackBlockAction action)
         {
             if (Enable == false)
             {
@@ -22,7 +25,7 @@ namespace EGamePlay.Combat
             }
             else
             {
-                action = OwnerEntity.AddChild<RoundAction>();
+                action = OwnerEntity.AddChild<AttackBlockAction>();
                 action.ActionAbility = this;
                 action.Creator = OwnerEntity;
             }
@@ -39,12 +42,12 @@ namespace EGamePlay.Combat
 
         //public Entity CreateExecution()
         //{
-        //    var execution = OwnerEntity.MakeAction<RoundAction>();
+        //    var execution = OwnerEntity.MakeAction<AttackBlockAction>();
         //    execution.ActionAbility = this;
         //    return execution;
         //}
 
-        //public bool TryMakeAction(out RoundAction abilityExecution)
+        //public bool TryMakeAction(out AttackBlockAction abilityExecution)
         //{
         //    if (Enable == false)
         //    {
@@ -52,19 +55,40 @@ namespace EGamePlay.Combat
         //    }
         //    else
         //    {
-        //        abilityExecution = CreateExecution() as RoundAction;
+        //        abilityExecution = CreateExecution() as AttackBlockAction;
         //    }
         //    return Enable;
         //}
+
+        private void OnTriggerAttackPreProcess(Entity attackExecution)
+        {
+            TryBlock(attackExecution.As<AttackExecution>());
+        }
+
+        private bool IsAbilityEffectTrigger()
+        {
+            if (TryGet(out AbilityProbabilityTriggerComponent probabilityTriggerComponent))
+            {
+                var r = ET.RandomHelper.RandomNumber(0, 10000);
+                return r < probabilityTriggerComponent.Probability;
+            }
+            return false;
+        }
+
+        private void TryBlock(AttackExecution attackExecution)
+        {
+            if (IsAbilityEffectTrigger())
+            {
+                attackExecution.SetBlocked();
+            }
+        }
     }
 
     /// <summary>
-    /// 回合行动
+    /// 格挡行动
     /// </summary>
-    public class RoundAction : Entity, IActionExecution
+    public class AttackBlockAction : Entity, IActionExecution
     {
-        public int RoundActionType { get; set; }
-
         /// 行动能力
         public Entity ActionAbility { get; set; }
         /// 效果赋给行动源
@@ -86,15 +110,12 @@ namespace EGamePlay.Combat
 
         }
 
-        public async ETTask ApplyRound()
+        public void ApplyBlock()
         {
             PreProcess();
 
-            if (Creator.JumpToAbility.TryMakeAction(out var jumpToAction))
-            {
-                jumpToAction.Target = Target;
-                await jumpToAction.ApplyJumpTo();
-            }
+            //var attackAction = SourceEffectAssignAction.TargetAction.As<AttackAction>();
+            //attackAction.SetBlocked();
 
             PostProcess();
         }
@@ -102,7 +123,8 @@ namespace EGamePlay.Combat
         //后置处理
         private void PostProcess()
         {
-
+            //Creator.TriggerActionPoint(ActionPointType.PostGiveCure, this);
+            //Target.TriggerActionPoint(ActionPointType.PostReceiveCure, this);
         }
     }
 }

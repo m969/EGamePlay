@@ -87,7 +87,8 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.BindSkillInput(ability, KeyCode.R);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1006_灵魂镣铐");
-        ability = CombatEntity.AttachSkill<SkillAbility_1006>(config);
+        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        ability.AddComponent<Skill1006Component>();
         CombatEntity.BindSkillInput(ability, KeyCode.T);
 
         config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1003_治愈");
@@ -164,14 +165,14 @@ public sealed class Hero : MonoBehaviour
         }
     }
 
-    private void OnPreSpell(ActionExecution combatAction)
+    private void OnPreSpell(IActionExecution combatAction)
     {
         var spellAction = combatAction as SpellAction;
         if (spellAction.SkillExecution != null)
         {
             StopMove();
 
-            if (spellAction.SkillAbility is SkillAbility_1006)
+            if (spellAction.SkillAbility is Skill1006Component)
             {
                 return;
             }
@@ -188,7 +189,7 @@ public sealed class Hero : MonoBehaviour
         }
     }
 
-    private void OnPostSpell(ActionExecution combatAction)
+    private void OnPostSpell(IActionExecution combatAction)
     {
         var spellAction = combatAction as SpellAction;
         if (spellAction.SkillExecution != null)
@@ -197,7 +198,7 @@ public sealed class Hero : MonoBehaviour
         }
     }
 
-    private void OnReceiveDamage(ActionExecution combatAction)
+    private void OnReceiveDamage(IActionExecution combatAction)
     {
         var damageAction = combatAction as DamageAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -211,7 +212,7 @@ public sealed class Hero : MonoBehaviour
         GameObject.Destroy(damageText.gameObject, 0.5f);
     }
 
-    private void OnReceiveCure(ActionExecution combatAction)
+    private void OnReceiveCure(IActionExecution combatAction)
     {
         var cureAction = combatAction as CureAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -225,7 +226,7 @@ public sealed class Hero : MonoBehaviour
         GameObject.Destroy(cureText.gameObject, 0.5f);
     }
 
-    private void OnReceiveStatus(ActionExecution combatAction)
+    private void OnReceiveStatus(IActionExecution combatAction)
     {
         //var action = combatAction as AddStatusAction;
         //var addStatusEffect = action.AddStatusEffect;
@@ -332,7 +333,7 @@ public sealed class Hero : MonoBehaviour
 
             action.Target = monster.GetComponent<Monster>().CombatEntity;
             action.ApplyAttack();
-            Entity.Destroy(action);
+            //Entity.Destroy(action);
         }
     }
 

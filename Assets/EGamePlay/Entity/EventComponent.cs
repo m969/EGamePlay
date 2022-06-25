@@ -76,12 +76,13 @@ namespace EGamePlay
         {
             if (FireEvent2ActionLists.TryGetValue(eventType, out var actionList))
             {
-                actionList.Add(action);
             }
             else
             {
-                FireEvent2ActionLists.Add(eventType, new List<object>());
+                actionList = new List<object>();
+                FireEvent2ActionLists.Add(eventType, actionList);
             }
+            actionList.Add(action);
         }
 
         public void OffEvent<T>(string eventType, Action<T> action) where T : Entity
@@ -93,3 +94,37 @@ namespace EGamePlay
         }
     }
 }
+
+
+//public void FireEvent<T>(string eventType, T entity) where T : Entity
+//{
+//    if (FireEvent2ActionLists.TryGetValue(eventType, out var actionList))
+//    {
+//        var tempList = actionList.ToArray();
+//        foreach (Action<T> action in tempList)
+//        {
+//            action.Invoke(entity);
+//        }
+//    }
+//}
+
+//public void OnEvent<T>(string eventType, Action<T> action) where T : Entity
+//{
+//    if (FireEvent2ActionLists.TryGetValue(eventType, out var actionList))
+//    {
+//    }
+//    else
+//    {
+//        actionList = new List<object>();
+//        FireEvent2ActionLists.Add(eventType, actionList);
+//    }
+//    actionList.Add(action);
+//}
+
+//public void OffEvent<T>(string eventType, Action<T> action) where T : Entity
+//{
+//    if (FireEvent2ActionLists.TryGetValue(eventType, out var actionList))
+//    {
+//        actionList.Remove(action);
+//    }
+//}

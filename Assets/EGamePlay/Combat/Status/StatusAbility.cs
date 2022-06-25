@@ -4,11 +4,13 @@ using ET;
 
 namespace EGamePlay.Combat
 {
-    public partial class StatusAbility : AbilityEntity
+    public partial class StatusAbility : Entity, IAbilityEntity
     {
 #if !EGAMEPLAY_EXCEL
         /// 投放者、施术者
-        public override CombatEntity OwnerEntity { get; set; }
+        public CombatEntity OwnerEntity { get; set; }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
         public StatusConfigObject StatusConfig { get; set; }
         public ActionControlType ActionControlType { get; set; }
         public Dictionary<string, FloatModifier> AddModifiers { get; set; } = new Dictionary<string, FloatModifier>();
@@ -33,9 +35,10 @@ namespace EGamePlay.Combat
         }
 
         /// 激活
-        public override void ActivateAbility()
+        public void ActivateAbility()
         {
-            base.ActivateAbility();
+            //base.ActivateAbility();
+            FireEvent(nameof(ActivateAbility), this);
 
             /// 子状态效果
             if (StatusConfig.EnableChildrenStatuses)
@@ -52,11 +55,11 @@ namespace EGamePlay.Combat
                 }
             }
 
-            AbilityEffectComponent.Enable = true;
+            Get<AbilityEffectComponent>().Enable = true;
         }
 
         /// 结束
-        public override void EndAbility()
+        public void EndAbility()
         {
             /// 子状态效果
             if (StatusConfig.EnableChildrenStatuses)
@@ -77,7 +80,7 @@ namespace EGamePlay.Combat
             }
 
             ParentEntity.OnStatusRemove(this);
-            base.EndAbility();
+            Entity.Destroy(this);
         }
 
         public int GetDuration()
@@ -86,10 +89,27 @@ namespace EGamePlay.Combat
         }
 
 #endif
+        public Entity CreateExecution()
+        {
+            var execution = OwnerEntity.AddChild<SkillExecution>(this);
+            execution.AddComponent<UpdateComponent>();
+            return execution;
+        }
+
+        public void TryActivateAbility()
+        {
+            this.ActivateAbility();
+        }
+
+        public void DeactivateAbility()
+        {
+            Enable = false;
+        }
+
         /// 这里处理技能传入的参数数值替换
         public void ProccessInputKVParams(Dictionary<string, string> Params)
         {
-            foreach (var abilityEffect in AbilityEffectComponent.AbilityEffects)
+            foreach (var abilityEffect in Get<AbilityEffectComponent>().AbilityEffects)
             {
                 var effect = abilityEffect.EffectConfig;
 

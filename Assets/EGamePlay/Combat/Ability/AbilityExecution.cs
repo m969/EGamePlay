@@ -9,36 +9,35 @@ namespace EGamePlay.Combat
     /// 能力执行体，能力执行体是实际创建、执行能力表现，触发能力效果应用的地方
     /// 这里可以存一些表现执行相关的临时的状态数据
     /// </summary>
-    public abstract class AbilityExecution : Entity
+    public interface IAbilityExecution
     {
-        public AbilityEntity AbilityEntity { get; set; }
-        public AbilityEffectComponent AbilityEffectComponent => AbilityEntity.GetComponent<AbilityEffectComponent>();
-        public ExecutionEffectComponent ExecutionEffectComponent { get; set; }
-        public List<AbilityEffect> AbilityEffects => AbilityEffectComponent.AbilityEffects;
-        public List<ExecutionEffect> ExecutionEffects => GetComponent<ExecutionEffectComponent>().ExecutionEffects;
-        public CombatEntity OwnerEntity => GetParent<CombatEntity>();
+        public Entity AbilityEntity { get; set; }
+        public CombatEntity OwnerEntity { get; set; }
+        //public AbilityEffectComponent AbilityEffectComponent => AbilityEntity.GetComponent<AbilityEffectComponent>();
+        //public List<AbilityEffect> AbilityEffects => Get<AbilityEffectComponent>().AbilityEffects;
+        //public List<ExecutionEffect> ExecutionEffects => Get<ExecutionEffectComponent>().ExecutionEffects;
 
 
-        public override void Awake(object initData)
-        {
-            AbilityEntity = initData as AbilityEntity;
-        }
+        //public override void Awake(object initData)
+        //{
+        //    AbilityEntity = initData as Entity;
+        //}
 
         //开始执行
-        public virtual void BeginExecute()
-        {
+        public void BeginExecute();
+        //{
 
-        }
+        //}
 
         //结束执行
-        public virtual void EndExecute()
-        {
-            Destroy(this);
-        }
+        public void EndExecute();
+        //{
+        //    Destroy(this);
+        //}
 
-        public T GetAbility<T>() where T : AbilityEntity
-        {
-            return AbilityEntity as T;
-        }
+        //public T GetAbility<T>() where T : Entity
+        //{
+        //    return AbilityEntity as T;
+        //}
     }
 }

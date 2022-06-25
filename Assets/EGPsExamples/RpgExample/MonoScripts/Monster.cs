@@ -43,6 +43,16 @@ public sealed class Monster : MonoBehaviour
         Status.AddComponent<StatusTenacityComponent>();
         Status.OwnerEntity = CombatEntity;
         Status.TryActivateAbility();
+        if (name == "Monster")
+        {
+#if !EGAMEPLAY_EXCEL
+            config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_GeDang");
+            Status = CombatEntity.AttachStatus<StatusAbility>(config);
+            Status.AddComponent<StatusTenacityComponent>();
+            Status.OwnerEntity = CombatEntity;
+            Status.TryActivateAbility();
+#endif
+        }
     }
 
     // Update is called once per frame
@@ -65,7 +75,7 @@ public sealed class Monster : MonoBehaviour
         }
     }
 
-    private void OnReceiveDamage(ActionExecution combatAction)
+    private void OnReceiveDamage(IActionExecution combatAction)
     {
         var damageAction = combatAction as DamageAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -79,7 +89,7 @@ public sealed class Monster : MonoBehaviour
         GameObject.Destroy(damageText.gameObject, 0.5f);
     }
 
-    private void OnReceiveCure(ActionExecution combatAction)
+    private void OnReceiveCure(IActionExecution combatAction)
     {
         var action = combatAction as CureAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -93,7 +103,7 @@ public sealed class Monster : MonoBehaviour
         GameObject.Destroy(cureText.gameObject, 0.5f);
     }
 
-    private void OnReceiveStatus(ActionExecution combatAction)
+    private void OnReceiveStatus(IActionExecution combatAction)
     {
         var action = combatAction as AddStatusAction;
         var addStatusEffect = action.AddStatusEffect;

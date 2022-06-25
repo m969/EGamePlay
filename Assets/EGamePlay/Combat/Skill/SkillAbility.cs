@@ -7,12 +7,16 @@ using UnityEngine;
 #if !EGAMEPLAY_EXCEL
 namespace EGamePlay.Combat
 {
-    public partial class SkillAbility : AbilityEntity
+    public partial class SkillAbility : Entity, IAbilityEntity
     {
         public SkillConfigObject SkillConfig { get; set; }
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
         private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
+        public CombatEntity OwnerEntity { get; set; }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
+        //public Func<SkillExecution> Enable { get; set; }
 
 
         public override void Awake(object initData)
@@ -30,9 +34,10 @@ namespace EGamePlay.Combat
             }
         }
 
-        public override void ActivateAbility()
+        public void ActivateAbility()
         {
-            base.ActivateAbility();
+            //base.ActivateAbility();
+            FireEvent(nameof(ActivateAbility));
             //子状态效果
             if (SkillConfig.EnableChildrenStatuses)
             {
@@ -49,9 +54,9 @@ namespace EGamePlay.Combat
             }
         }
 
-        public override void EndAbility()
+        public void EndAbility()
         {
-            base.EndAbility();
+            //base.EndAbility();
             //子状态效果
             if (SkillConfig.EnableChildrenStatuses)
             {
@@ -61,13 +66,25 @@ namespace EGamePlay.Combat
                 }
                 ChildrenStatuses.Clear();
             }
+            Entity.Destroy(this);
         }
 
-        public override AbilityExecution CreateExecution()
+        public Entity CreateExecution()
         {
             var execution = OwnerEntity.AddChild<SkillExecution>(this);
+            this.FireEvent(nameof(CreateExecution), execution);
             execution.AddComponent<UpdateComponent>();
             return execution;
+        }
+
+        public void TryActivateAbility()
+        {
+            this.ActivateAbility();
+        }
+
+        public void DeactivateAbility()
+        {
+            Enable = false;
         }
     }
 }

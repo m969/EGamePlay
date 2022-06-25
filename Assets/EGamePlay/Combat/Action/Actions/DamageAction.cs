@@ -8,21 +8,69 @@ using GameUtils;
 
 namespace EGamePlay.Combat
 {
-    public class DamageActionAbility : ActionAbility<DamageAction>
+    public class DamageActionAbility : Entity, IActionAbility
     {
+        public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
+
+
         public override void Awake()
         {
             AddComponent<DamageBloodSuckComponent>();
         }
+
+        public bool TryMakeAction(out DamageAction action)
+        {
+            if (Enable == false)
+            {
+                action = null;
+            }
+            else
+            {
+                action = OwnerEntity.AddChild<DamageAction>();
+                action.ActionAbility = this;
+                action.Creator = OwnerEntity;
+            }
+            return Enable;
+        }
+
+        //public void TryActivateAbility() => ActivateAbility();
+
+        //public void ActivateAbility() => Enable = true;
+
+        //public void DeactivateAbility() { }
+
+        //public void EndAbility() { }
+
+        //public Entity CreateExecution()
+        //{
+        //    var execution = OwnerEntity.MakeAction<DamageAction>();
+        //    execution.ActionAbility = this;
+        //    return execution;
+        //}
+
+        //public bool TryMakeAction(out DamageAction abilityExecution)
+        //{
+        //    if (Enable == false)
+        //    {
+        //        abilityExecution = null;
+        //    }
+        //    else
+        //    {
+        //        abilityExecution = CreateExecution() as DamageAction;
+        //    }
+        //    return Enable;
+        //}
     }
 
     /// <summary>
     /// 伤害行动
     /// </summary>
-    public class DamageAction : ActionExecution
+    public class DamageAction : Entity, IActionExecution
     {
         public DamageActionAbility DamageAbility => ActionAbility as DamageActionAbility;
-        public DamageEffect DamageEffect => AbilityEffect.EffectConfig as DamageEffect;
+        public DamageEffect DamageEffect => SourceAssignAction.AbilityEffect.EffectConfig as DamageEffect;
         /// 伤害来源
         public DamageSource DamageSource { get; set; }
         /// 伤害攻势
@@ -34,6 +82,20 @@ namespace EGamePlay.Combat
         /// 是否是暴击
         public bool IsCritical { get; set; }
 
+        /// 行动能力
+        public Entity ActionAbility { get; set; }
+        /// 效果赋给行动源
+        public EffectAssignAction SourceAssignAction { get; set; }
+        /// 行动实体
+        public CombatEntity Creator { get; set; }
+        /// 目标对象
+        public CombatEntity Target { get; set; }
+
+
+        public void FinishAction()
+        {
+            Entity.Destroy(this);
+        }
 
         /// 前置处理
         private void PreProcess()
@@ -54,7 +116,7 @@ namespace EGamePlay.Combat
                 {
                     IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;
                 }
-                DamageValue = AbilityEffect.GetComponent<EffectDamageComponent>().GetDamageValue();
+                DamageValue = SourceAssignAction.AbilityEffect.GetComponent<EffectDamageComponent>().GetDamageValue();
                 if (IsCritical)
                 {
                     DamageValue = Mathf.CeilToInt(DamageValue * 1.5f);
@@ -67,13 +129,13 @@ namespace EGamePlay.Combat
                 {
                     IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;
                 }
-                DamageValue = AbilityEffect.GetComponent<EffectDamageComponent>().GetDamageValue();
+                DamageValue = SourceAssignAction.AbilityEffect.GetComponent<EffectDamageComponent>().GetDamageValue();
             }
 
-            var executionDamageReduceWithTargetCountComponent = AbilityEffect.GetComponent<EffectDamageReduceWithTargetCountComponent>();
+            var executionDamageReduceWithTargetCountComponent = SourceAssignAction.AbilityEffect.GetComponent<EffectDamageReduceWithTargetCountComponent>();
             if (executionDamageReduceWithTargetCountComponent != null)
             {
-                if (AbilityItem.TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))
+                if (SourceAssignAction.AbilityItem.TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))
                 {
                     var damagePercent = executionDamageReduceWithTargetCountComponent.GetDamagePercent(targetCounterComponent.TargetCounter);
                     //Log.Debug($"{targetCounterComponent.TargetCounter} {damagePercent}");
@@ -97,6 +159,7 @@ namespace EGamePlay.Combat
         {
             PreProcess();
 
+            //Log.Debug($"DamageAction ApplyDamage");
             Target.ReceiveDamage(this);
 
             PostProcess();
@@ -108,7 +171,7 @@ namespace EGamePlay.Combat
                 CombatContext.Instance.Publish(deadEvent);
             }
 
-            ApplyAction();
+            FinishAction();
         }
 
         /// 后置处理

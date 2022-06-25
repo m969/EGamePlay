@@ -24,9 +24,9 @@ namespace EGamePlay.Combat
             GetEntity<AbilityEffect>().GetParent<StatusAbility>().OwnerEntity.ListenActionPoint(actionPointType, OnActionPointTrigger);
         }
 
-        private void OnActionPointTrigger(ActionExecution combatAction)
+        private void OnActionPointTrigger(IActionExecution combatAction)
         {
-            GetEntity<AbilityEffect>().TryAssignEffectToOwner();
+            GetEntity<AbilityEffect>().TryTriggerEffect();
         }
     }
 }

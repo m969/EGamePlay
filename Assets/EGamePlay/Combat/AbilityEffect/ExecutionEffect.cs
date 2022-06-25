@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
     public partial class ExecutionEffect : Entity
     {
         public Effect ExecutionEffectConfig { get; set; }
-        public AbilityExecution ParentExecution => GetParent<AbilityExecution>();
+        public SkillExecution ParentExecution => GetParent<SkillExecution>();
 
 
         public override void Awake(object initData)

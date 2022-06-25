@@ -21,9 +21,11 @@ namespace EGamePlay.Combat
 
         public override void Awake(object initData)
         {
-            base.Awake(initData);
+            AbilityEntity = initData as SkillAbility;
 
-            this.ExecutionEffectComponent = AddComponent<ExecutionEffectComponent>(SkillAbility.AbilityEffects);
+            OwnerEntity = GetParent<CombatEntity>();
+
+            AddComponent<ExecutionEffectComponent>(SkillAbility.Get<AbilityEffectComponent>().AbilityEffects);
 
             OriginTime = ET.TimeHelper.Now();
         }
@@ -43,7 +45,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        public override void BeginExecute()
+        public void BeginExecute()
         {
             GetParent<CombatEntity>().CurrentSkillExecution = this;
             SkillAbility.Spelling = true;
@@ -55,15 +57,16 @@ namespace EGamePlay.Combat
                 return;
             var skillExecutionObj = GameObject.Instantiate(SkillExecutionAsset, OwnerEntity.Position, Quaternion.Euler(0, OwnerEntity.Direction, 0));
             GameObject.Destroy(skillExecutionObj, (float)timelineAsset.duration);
-            base.BeginExecute();
+            //base.BeginExecute();
         }
 
-        public override void EndExecute()
+        public void EndExecute()
         {
             GetParent<CombatEntity>().CurrentSkillExecution = null;
             SkillAbility.Spelling = false;
             SkillTargets.Clear();
-            base.EndExecute();
+            Entity.Destroy(this);
+            //base.EndExecute();
         }
 
         /// <summary>   技能碰撞体生成事件   </summary>

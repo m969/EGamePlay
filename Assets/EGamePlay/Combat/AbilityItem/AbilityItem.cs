@@ -11,8 +11,8 @@ namespace EGamePlay.Combat
     /// </summary>
     public class AbilityItem : Entity, IPosition
     {
-        public AbilityEntity AbilityEntity => AbilityExecution.AbilityEntity;
-        public AbilityExecution AbilityExecution { get; set; }
+        public Entity AbilityEntity => AbilityExecution.AbilityEntity;
+        public IAbilityExecution AbilityExecution { get; set; }
         public ExecutionEffectComponent ItemExecutionEffectComponent { get; private set; }
         public EffectApplyType EffectApplyType { get; private set; }
         public Vector3 Position { get; set; }
@@ -22,9 +22,9 @@ namespace EGamePlay.Combat
 
         public override void Awake(object initData)
         {
-            AbilityExecution = initData as AbilityExecution;
+            AbilityExecution = initData as IAbilityExecution;
             //ItemExecutionEffectComponent = AddComponent<ExecutionEffectComponent>();
-            var abilityEffects = AbilityExecution.AbilityEffects;
+            var abilityEffects = AbilityExecution.AbilityEntity.Get<AbilityEffectComponent>().AbilityEffects;
             foreach (var abilityEffect in abilityEffects)
             {
                 if (abilityEffect.EffectConfig.Decorators != null)
@@ -58,11 +58,11 @@ namespace EGamePlay.Combat
 
             if (EffectApplyType == EffectApplyType.AllEffects)
             {
-                AbilityEntity.AbilityEffectComponent.TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
+                AbilityEntity.Get<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
             }
             else
             {
-                AbilityEntity.AbilityEffectComponent.TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                AbilityEntity.Get<AbilityEffectComponent>().TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
             }
 
             if (TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))

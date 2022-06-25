@@ -19,11 +19,12 @@ public class StatusTenacityComponent : EGamePlay.Component
 
     public override void Awake()
     {
-        Entity.OnEvent<StatusAbility>(nameof(StatusAbility.ActivateAbility), OnActivateAbility);
+        Entity.OnEvent(nameof(StatusAbility.ActivateAbility), OnActivateAbility);
     }
 
-    public void OnActivateAbility(StatusAbility statusAbility)
+    public void OnActivateAbility(Entity entity)
     {
+        var statusAbility = entity.As<StatusAbility>();
         var OwnerEntity = statusAbility.OwnerEntity;
         CureAbilityEffect = statusAbility.GetComponent<AbilityEffectComponent>().CureAbilityEffect;
         OwnerEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
@@ -43,7 +44,7 @@ public class StatusTenacityComponent : EGamePlay.Component
     }
 
     //结束生命回复
-    private void EndReplyHealth(ActionExecution combatAction)
+    private void EndReplyHealth(IActionExecution combatAction)
     {
         CanReplyHealth = false;
     }
@@ -66,11 +67,12 @@ public class StatusTenacityComponent : EGamePlay.Component
         {
             return;
         }
-        if (OwnerEntity.CureAbility.TryMakeAction(out var action))
-        {
-            action.Target = OwnerEntity;
-            action.AbilityEffect = CureAbilityEffect;
-            action.ApplyCure();
-        }
+        Entity.Get<AbilityEffectComponent>().TryAssignEffectByIndex(OwnerEntity, 0);
+        //if (OwnerEntity.CureAbility.TryMakeAction(out var action))
+        //{
+        //    action.Target = OwnerEntity;
+        //    //action.AbilityEffect = CureAbilityEffect;
+        //    action.ApplyCure();
+        //}
     }
 }

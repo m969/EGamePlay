@@ -128,5 +128,10 @@ namespace EGamePlay.Combat
                 EffectTypeName = EffectTypeNameStr;
             }
         }
+
+        public override string ToString()
+        {
+            return ET.JsonHelper.ToJson(this);
+        }
     }
 }

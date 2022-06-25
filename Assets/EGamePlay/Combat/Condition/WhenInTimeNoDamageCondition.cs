@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        private void WhenReceiveDamage(ActionExecution combatAction)
+        private void WhenReceiveDamage(IActionExecution combatAction)
         {
             //Log.Debug($"{GetType().Name}->WhenReceiveDamage");
             NoDamageTimer.Reset();

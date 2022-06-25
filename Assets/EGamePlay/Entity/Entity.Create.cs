@@ -42,15 +42,15 @@ namespace EGamePlay
             return Create(typeof(T), initData) as T;
         }
 
-        public static T CreateWithId<T>(long id) where T : Entity
-        {
-            return CreateWithId(typeof(T), id) as T;
-        }
+        //public static T CreateWithId<T>(long id) where T : Entity
+        //{
+        //    return CreateWithId(typeof(T), id) as T;
+        //}
 
-        public static T CreateWithId<T>(long id, object initData) where T : Entity
-        {
-            return CreateWithId(typeof(T), id, initData) as T;
-        }
+        //public static T CreateWithId<T>(long id, object initData) where T : Entity
+        //{
+        //    return CreateWithId(typeof(T), id, initData) as T;
+        //}
 
         private static T CreateWithParent<T>(Entity parent) where T : Entity
         {
@@ -62,15 +62,15 @@ namespace EGamePlay
             return CreateWithParent(typeof(T), parent, initData) as T;
         }
 
-        private static T CreateWithParentAndId<T>(Entity parent, long id) where T : Entity
-        {
-            return CreateWithParentAndId(typeof(T), parent, id) as T;
-        }
+        //private static T CreateWithParentAndId<T>(Entity parent, long id) where T : Entity
+        //{
+        //    return CreateWithParentAndId(typeof(T), parent, id) as T;
+        //}
 
-        private static T CreateWithParentAndId<T>(Entity parent, long id, object initData) where T : Entity
-        {
-            return CreateWithParentAndId(typeof(T), parent, id, initData) as T;
-        }
+        //private static T CreateWithParentAndId<T>(Entity parent, long id, object initData) where T : Entity
+        //{
+        //    return CreateWithParentAndId(typeof(T), parent, id, initData) as T;
+        //}
 
         private static void SetupEntity(Entity entity, Entity parent)
         {
@@ -110,23 +110,23 @@ namespace EGamePlay
             return entity;
         }
 
-        public static Entity CreateWithId(Type entityType, long id)
-        {
-            var entity = NewEntity(entityType);
-            entity.Id = id;
-            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}");
-            SetupEntity(entity, Master);
-            return entity;
-        }
+        //public static Entity CreateWithId(Type entityType, long id)
+        //{
+        //    var entity = NewEntity(entityType);
+        //    entity.Id = id;
+        //    if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}");
+        //    SetupEntity(entity, Master);
+        //    return entity;
+        //}
 
-        public static Entity CreateWithId(Type entityType, long id, object initData)
-        {
-            var entity = NewEntity(entityType);
-            entity.Id = id;
-            if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}, {initData}");
-            SetupEntity(entity, Master, initData);
-            return entity;
-        }
+        //public static Entity CreateWithId(Type entityType, long id, object initData)
+        //{
+        //    var entity = NewEntity(entityType);
+        //    entity.Id = id;
+        //    if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}, {initData}");
+        //    SetupEntity(entity, Master, initData);
+        //    return entity;
+        //}
 
         private static Entity CreateWithParent(Type entityType, Entity parent)
         {
@@ -136,14 +136,14 @@ namespace EGamePlay
             return entity;
         }
 
-        private static Entity CreateWithParentAndId(Type entityType, Entity parent, long id)
-        {
-            var entity = NewEntity(entityType);
-            entity.Id = id;
-            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            SetupEntity(entity, parent);
-            return entity;
-        }
+        //private static Entity CreateWithParentAndId(Type entityType, Entity parent, long id)
+        //{
+        //    var entity = NewEntity(entityType);
+        //    entity.Id = id;
+        //    if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+        //    SetupEntity(entity, parent);
+        //    return entity;
+        //}
 
         private static Entity CreateWithParent(Type entityType, Entity parent, object initData)
         {
@@ -153,14 +153,14 @@ namespace EGamePlay
             return entity;
         }
 
-        private static Entity CreateWithParentAndId(Type entityType, Entity parent, long id, object initData)
-        {
-            var entity = NewEntity(entityType);
-            entity.Id = id;
-            if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
-            SetupEntity(entity, parent, initData);
-            return entity;
-        }
+        //private static Entity CreateWithParentAndId(Type entityType, Entity parent, long id, object initData)
+        //{
+        //    var entity = NewEntity(entityType);
+        //    entity.Id = id;
+        //    if (EnableLog) Log.Debug($"CreateWithParent {parent.GetType().Name}, {entityType.Name}={entity.Id}");
+        //    SetupEntity(entity, parent, initData);
+        //    return entity;
+        //}
 
         public static void Destroy(Entity entity)
         {

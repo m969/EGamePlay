@@ -13,8 +13,8 @@ namespace EGamePlay.Combat
     public partial class AbilityEffect : Entity
     {
         public bool Enable { get; set; }
-        public AbilityEntity OwnerAbility => GetParent<AbilityEntity>();
-        public CombatEntity OwnerEntity => OwnerAbility.OwnerEntity;
+        public Entity OwnerAbility => Parent;
+        public CombatEntity OwnerEntity => (OwnerAbility as IAbilityEntity).OwnerEntity;
         public Effect EffectConfig { get; set; }
         public EffectSourceType EffectSourceType { get; set; }
 
@@ -26,35 +26,20 @@ namespace EGamePlay.Combat
             //Log.Debug($"AbilityEffect Awake {OwnerAbility.Name} {EffectConfig}");
 
             /// 行动禁制
-            if (this.EffectConfig is ActionControlEffect actionProhibitEffect) AddComponent<EffectActionControlComponent>();
+            if (this.EffectConfig is ActionControlEffect) AddComponent<EffectActionControlComponent>();
             /// 属性修饰
-            if (this.EffectConfig is AttributeModifyEffect attributeModifyEffect) AddComponent<EffectAttributeModifyComponent>();
+            if (this.EffectConfig is AttributeModifyEffect) AddComponent<EffectAttributeModifyComponent>();
 
             /// 伤害效果
-            if (this.EffectConfig is DamageEffect damageEffect) AddComponent<EffectDamageComponent>();
+            if (this.EffectConfig is DamageEffect) AddComponent<EffectDamageComponent>();
             /// 治疗效果
-            if (this.EffectConfig is CureEffect cureEffect) AddComponent<EffectCureComponent>();
+            if (this.EffectConfig is CureEffect) AddComponent<EffectCureComponent>();
             /// 施加状态效果
-            if (this.EffectConfig is AddStatusEffect addStatusEffect) AddComponent<EffectAddStatusComponent>();
+            if (this.EffectConfig is AddStatusEffect) AddComponent<EffectAddStatusComponent>();
             /// 自定义效果
-            if (this.EffectConfig is CustomEffect customEffect)
-            {
-                //if (customEffect.CustomEffectType == "按命中目标数递减百分比伤害")
-                //{
-
-                //}
-            }
-
-            if (this.EffectConfig.Decorators != null)
-            {
-                foreach (var effectDecorator in this.EffectConfig.Decorators)
-                {
-                    if (effectDecorator is DamageReduceWithTargetCountDecorator reduceWithTargetCountDecorator)
-                    {
-                        AddComponent<EffectDamageReduceWithTargetCountComponent>();
-                    }
-                }
-            }
+            if (this.EffectConfig is CustomEffect) AddComponent<EffectCustomComponent>();
+            /// 效果修饰
+            AddComponent<EffectDecoratosComponent>();
 
             var triggable = !(this.EffectConfig is ActionControlEffect) && !(this.EffectConfig is AttributeModifyEffect);
             if (triggable)
@@ -91,19 +76,32 @@ namespace EGamePlay.Combat
             }
         }
 
+        /// <summary>   尝试触发效果   </summary>
+        public void TryTriggerEffect()
+        {
+            this.FireEvent(nameof(TryTriggerEffect));
+        }
+
+        /// <summary>   尝试触发效果   </summary>
+        public void TryTriggerEffectWithAction(IActionExecution action)
+        {
+            //this.FireEvent(nameof(TryTriggerEffect));
+            TryTriggerEffectToAction(action);
+        }
+
         /// <summary>   尝试将效果赋给施术者   </summary>
         public void TryAssignEffectToOwner()
         {
-            TryAssignEffectTo(OwnerAbility.OwnerEntity);
+            TryAssignEffectTo((OwnerAbility as IAbilityEntity).OwnerEntity);
         }
 
         /// <summary>   尝试将效果赋给父对象   </summary>
         public void TryAssignEffectToParent()
         {
-            TryAssignEffectTo(OwnerAbility.ParentEntity);
+            TryAssignEffectTo((OwnerAbility as IAbilityEntity).ParentEntity);
         }
 
-        /// <summary>   尝试将效果赋给目标   </summary>
+        /// <summary>   尝试将效果赋给目标实体   </summary>
         public void TryAssignEffectTo(CombatEntity targetEntity)
         {
             if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
@@ -116,7 +114,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        /// <summary>   尝试将效果赋给目标   </summary>
+        /// <summary>   尝试将效果赋给目标实体   </summary>
         public void TryAssignEffectToTargetWithAbilityItem(CombatEntity targetEntity, AbilityItem abilityItem)
         {
             if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
@@ -128,6 +126,25 @@ namespace EGamePlay.Combat
                 action.AbilityItem = abilityItem;
                 action.ApplyEffectAssign();
             }
+        }
+
+        /// <summary>   尝试将效果赋给目标行动   </summary>
+        public void TryTriggerEffectToAction(IActionExecution action)
+        {
+            if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var assignAction))
+            {
+                //Log.Debug($"AbilityEffect ApplyEffectTo {targetEntity} {EffectConfig}");
+                assignAction.SourceAbility = OwnerAbility;
+                assignAction.AbilityEffect = this;
+                assignAction.TargetAction = action;
+                assignAction.ApplyEffectAssign();
+            }
+        }
+
+        /// <summary>   开始赋给效果   </summary>
+        public void StartAssignEffect(EffectAssignAction effectAssignAction)
+        {
+            this.FireEvent(nameof(StartAssignEffect), effectAssignAction);
         }
     }
 }

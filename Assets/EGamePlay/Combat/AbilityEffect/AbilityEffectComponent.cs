@@ -17,6 +17,10 @@ namespace EGamePlay.Combat
 
         public override void Setup(object initData)
         {
+            if (initData == null)
+            {
+                return;
+            }
             var effects = initData as List<Effect>;
             foreach (var item in effects)
             {
@@ -62,7 +66,7 @@ namespace EGamePlay.Combat
         }
 
         /// <summary>   尝试将所有效果赋给目标   </summary>
-        public void TryAssignAllEffectsToTargetWithExecution(CombatEntity targetEntity, AbilityExecution execution)
+        public void TryAssignAllEffectsToTargetWithExecution(CombatEntity targetEntity, IAbilityExecution execution)
         {
             if (AbilityEffects.Count > 0)
             {

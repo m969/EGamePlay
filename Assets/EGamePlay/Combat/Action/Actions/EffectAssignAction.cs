@@ -6,22 +6,80 @@ using EGamePlay.Combat;
 
 namespace EGamePlay.Combat
 {
-    public class EffectAssignAbility : ActionAbility<EffectAssignAction>
+    public class EffectAssignAbility : Entity, IActionAbility
     {
+        public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
 
+
+        public bool TryMakeAction(out EffectAssignAction action)
+        {
+            if (Enable == false)
+            {
+                action = null;
+            }
+            else
+            {
+                action = OwnerEntity.AddChild<EffectAssignAction>();
+                action.ActionAbility = this;
+                action.Creator = OwnerEntity;
+            }
+            return Enable;
+        }
+
+        //public void TryActivateAbility() => ActivateAbility();
+
+        //public void ActivateAbility() => Enable = true;
+
+        //public void DeactivateAbility() { }
+
+        //public void EndAbility() { }
+
+        //public Entity CreateExecution()
+        //{
+        //    var execution = OwnerEntity.MakeAction<EffectAssignAction>();
+        //    execution.ActionAbility = this;
+        //    return execution;
+        //}
+
+        //public bool TryMakeAction(out EffectAssignAction abilityExecution)
+        //{
+        //    if (Enable == false)
+        //    {
+        //        abilityExecution = null;
+        //    }
+        //    else
+        //    {
+        //        abilityExecution = CreateExecution() as EffectAssignAction;
+        //    }
+        //    return Enable;
+        //}
     }
 
     /// <summary>
     /// 赋给效果行动
     /// </summary>
-    public class EffectAssignAction : ActionExecution
+    public class EffectAssignAction : Entity, IActionExecution
     {
-        //创建这个效果赋给行动的源能力
-        public AbilityEntity SourceAbility { get; set; }
+        /// 创建这个效果赋给行动的源能力
+        public Entity SourceAbility { get; set; }
+        /// 目标行动
+        public IActionExecution TargetAction { get; set; }
+        public AbilityEffect AbilityEffect { get; set; }
+        public AbilityItem AbilityItem { get; set; }
         public Effect EffectConfig => AbilityEffect.EffectConfig;
+        /// 行动能力
+        public Entity ActionAbility { get; set; }
+        /// 效果赋给行动源
+        public EffectAssignAction SourceAssignAction { get; set; }
+        /// 行动实体
+        public CombatEntity Creator { get; set; }
+        /// 目标对象
+        public CombatEntity Target { get; set; }
 
 
-        //前置处理
+        /// 前置处理
         private void PreProcess()
         {
 
@@ -32,58 +90,65 @@ namespace EGamePlay.Combat
             //Log.Debug($"ApplyEffectAssign {EffectConfig}");
             PreProcess();
 
-            if (EffectConfig is DamageEffect) TryAssignDamage();
-            if (EffectConfig is CureEffect && Target.CurrentHealth.IsFull() == false) TryAssignCure();
-            if (EffectConfig is AddStatusEffect) TryAssignAddStatus();
+            AbilityEffect.StartAssignEffect(this);
+            //if (AbilityEffect.HasComponent<EffectDamageComponent>()) TryAssignDamage();
+            //if (AbilityEffect.HasComponent<EffectCureComponent>() && Target.CurrentHealth.IsFull() == false) TryAssignCure();
+            //if (AbilityEffect.HasComponent<EffectAddStatusComponent>()) TryAssignAddStatus();
 
             PostProcess();
 
-            ApplyAction();
+            FinishAction();
         }
 
-        private void FillDatasToAction(ActionExecution action)
+        public void FillDatasToAction(IActionExecution action)
         {
+            action.SourceAssignAction = this;
             action.Target = Target;
-            action.AbilityEffect = AbilityEffect;
-            action.ExecutionEffect = ExecutionEffect;
-            action.AbilityExecution = AbilityExecution;
-            action.AbilityItem = AbilityItem;
+            //action.AbilityEffect = AbilityEffect;
+            //action.ExecutionEffect = ExecutionEffect;
+            //action.AbilityExecution = AbilityExecution;
+            //action.AbilityItem = AbilityItem;
         }
 
-        private void TryAssignDamage()
-        {
-            if (OwnerEntity.DamageAbility.TryMakeAction(out var damageAction))
-            {
-                FillDatasToAction(damageAction);
-                damageAction.DamageSource = DamageSource.Skill;
-                damageAction.ApplyDamage();
-            }
-        }
+        //private void TryAssignDamage()
+        //{
+        //    if (OwnerEntity.DamageAbility.TryMakeAction(out var damageAction))
+        //    {
+        //        FillDatasToAction(damageAction);
+        //        damageAction.DamageSource = DamageSource.Skill;
+        //        damageAction.ApplyDamage();
+        //    }
+        //}
 
-        private void TryAssignCure()
-        {
-            if (OwnerEntity.CureAbility.TryMakeAction(out var cureAction))
-            {
-                FillDatasToAction(cureAction);
-                cureAction.ApplyCure();
-            }
-        }
+        //private void TryAssignCure()
+        //{
+        //    if (OwnerEntity.CureAbility.TryMakeAction(out var cureAction))
+        //    {
+        //        FillDatasToAction(cureAction);
+        //        cureAction.ApplyCure();
+        //    }
+        //}
 
-        private void TryAssignAddStatus()
-        {
-            if (OwnerEntity.AddStatusAbility.TryMakeAction(out var addStatusAction))
-            {
-                FillDatasToAction(addStatusAction);
-                addStatusAction.SourceAbility = SourceAbility;
-                addStatusAction.ApplyAddStatus();
-            }
-        }
+        //private void TryAssignAddStatus()
+        //{
+        //    if (OwnerEntity.AddStatusAbility.TryMakeAction(out var addStatusAction))
+        //    {
+        //        FillDatasToAction(addStatusAction);
+        //        addStatusAction.SourceAbility = SourceAbility;
+        //        addStatusAction.ApplyAddStatus();
+        //    }
+        //}
 
-        //后置处理
+        /// 后置处理
         private void PostProcess()
         {
             Creator.TriggerActionPoint(ActionPointType.AssignEffect, this);
             Target.TriggerActionPoint(ActionPointType.ReceiveEffect, this);
+        }
+
+        public void FinishAction()
+        {
+            Entity.Destroy(this);
         }
     }
 }

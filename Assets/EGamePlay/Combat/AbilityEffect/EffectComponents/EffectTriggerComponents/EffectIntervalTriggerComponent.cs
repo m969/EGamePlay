@@ -36,7 +36,7 @@ namespace EGamePlay.Combat
             var expression = ExpressionHelper.TryEvaluate(intervalExpression);
             if (expression.Parameters.ContainsKey("技能等级"))
             {
-                expression.Parameters["技能等级"].Value = GetEntity<AbilityEffect>().GetParent<StatusAbility>().Level;
+                expression.Parameters["技能等级"].Value = GetEntity<AbilityEffect>().GetParent<StatusAbility>().Get<AbilityLevelComponent>().Level;
             }
 #if EGAMEPLAY_EXCEL
             var interval = (float)expression.Value;

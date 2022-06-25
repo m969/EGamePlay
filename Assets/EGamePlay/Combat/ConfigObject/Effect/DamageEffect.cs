@@ -16,8 +16,8 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("Enabled"), LabelText("能否暴击")]
         public bool CanCrit;
-     
-        public string DamageValueProperty { get; set; }
+
+        //public string DamageValueProperty { get; set; }
 
         //[ToggleGroup("Enabled"), LabelText("效果修饰")]
         //[HideReferenceObjectPicker, ListDrawerSettings(DraggableItems = false)]
