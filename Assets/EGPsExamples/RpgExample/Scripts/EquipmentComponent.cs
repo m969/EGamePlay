@@ -15,16 +15,6 @@ public class EquipmentComponent : EGamePlay.Component
     public Dictionary<long, FloatModifier> EquipmentNumerics { get; set; } = new Dictionary<long, FloatModifier>();
 
 
-    public override void Setup()
-    {
-
-    }
-
-    public override void Update()
-    {
-
-    }
-
     public void AddItemData(ItemData itemData)
     {
         ItemDatas.Add(itemData.Id, itemData);

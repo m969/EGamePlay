@@ -46,7 +46,10 @@ namespace EGamePlay.Combat
         public Dictionary<Type, List<StatusAbility>> TypeStatuses { get; set; } = new Dictionary<Type, List<StatusAbility>>();
         public Vector3 Position { get; set; }
         public float Direction { get; set; }
+        /// 行为禁制
         public ActionControlType ActionControlType { get; set; }
+        /// 禁制豁免
+        public ActionControlType ActionControlImmuneType { get; set; }
 
 
         public override void Awake()
@@ -77,27 +80,18 @@ namespace EGamePlay.Combat
             JumpToAbility = AttachAction<JumpToActionAbility>();
         }
 
-        /// <summary>
-        /// 发起行动
-        /// </summary>
-        public T MakeAction<T>() where T : Entity, IActionExecution
-        {
-            var action = Parent.GetComponent<CombatActionManageComponent>().CreateAction<T>(this);
-            return action;
-        }
-
         #region 行动点事件
-        public void ListenActionPoint(ActionPointType actionPointType, Action<IActionExecution> action)
+        public void ListenActionPoint(ActionPointType actionPointType, Action<Entity> action)
         {
             GetComponent<ActionPointComponent>().AddListener(actionPointType, action);
         }
 
-        public void UnListenActionPoint(ActionPointType actionPointType, Action<IActionExecution> action)
+        public void UnListenActionPoint(ActionPointType actionPointType, Action<Entity> action)
         {
             GetComponent<ActionPointComponent>().RemoveListener(actionPointType, action);
         }
 
-        public void TriggerActionPoint(ActionPointType actionPointType, IActionExecution action)
+        public void TriggerActionPoint(ActionPointType actionPointType, Entity action)
         {
             GetComponent<ActionPointComponent>().TriggerActionPoint(actionPointType, action);
         }
@@ -139,22 +133,18 @@ namespace EGamePlay.Combat
         private T AttachAbility<T>(object configObject) where T : Entity, IAbilityEntity
         {
             var ability = this.AddChild<T>(configObject);
+            ability.AddComponent<AbilityLevelComponent>();
             return ability;
         }
 
         public T AttachAction<T>() where T : Entity, IActionAbility
         {
             var action = AddChild<T>();
+            action.AddComponent<ActionComponent>();
             action.Enable = true;
             //var action = AttachAbility<T>(null);
-            //action.AddComponent<ActionComponent>();
             //action.TryActivateAbility();
             return action;
-        }
-
-        public T GetAction<T>() where T : Entity, IActionAbility
-        {
-            return GetChild<T>();
         }
 
         public T AttachSkill<T>(object configObject) where T : SkillAbility

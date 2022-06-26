@@ -12,7 +12,7 @@ namespace EGamePlay.Combat
     {
 
 
-        public override void Setup()
+        public override void Awake()
         {
             if (GetEntity<AbilityEffect>().EffectConfig.Decorators != null)
             {

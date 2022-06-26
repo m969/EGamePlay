@@ -9,14 +9,13 @@ namespace EGamePlay.Combat
 {
     public partial class SkillAbility : Entity, IAbilityEntity
     {
+        public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
         public SkillConfigObject SkillConfig { get; set; }
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
         private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
-        public CombatEntity OwnerEntity { get; set; }
-        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
-        public bool Enable { get; set; }
-        //public Func<SkillExecution> Enable { get; set; }
 
 
         public override void Awake(object initData)
@@ -32,6 +31,16 @@ namespace EGamePlay.Combat
             {
                 TryActivateAbility();
             }
+        }
+        
+        public void TryActivateAbility()
+        {
+            this.ActivateAbility();
+        }
+
+        public void DeactivateAbility()
+        {
+            Enable = false;
         }
 
         public void ActivateAbility()
@@ -56,7 +65,6 @@ namespace EGamePlay.Combat
 
         public void EndAbility()
         {
-            //base.EndAbility();
             //子状态效果
             if (SkillConfig.EnableChildrenStatuses)
             {
@@ -73,18 +81,11 @@ namespace EGamePlay.Combat
         {
             var execution = OwnerEntity.AddChild<SkillExecution>(this);
             this.FireEvent(nameof(CreateExecution), execution);
-            execution.AddComponent<UpdateComponent>();
+            if (SkillExecutionData.TimelineAsset != null)
+            {
+                execution.AddComponent<UpdateComponent>();
+            }
             return execution;
-        }
-
-        public void TryActivateAbility()
-        {
-            this.ActivateAbility();
-        }
-
-        public void DeactivateAbility()
-        {
-            Enable = false;
         }
     }
 }

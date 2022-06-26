@@ -46,9 +46,8 @@ public sealed class Monster : MonoBehaviour
         if (name == "Monster")
         {
 #if !EGAMEPLAY_EXCEL
-            config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_GeDang");
+            config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_QiangTi");
             Status = CombatEntity.AttachStatus<StatusAbility>(config);
-            Status.AddComponent<StatusTenacityComponent>();
             Status.OwnerEntity = CombatEntity;
             Status.TryActivateAbility();
 #endif
@@ -75,7 +74,7 @@ public sealed class Monster : MonoBehaviour
         }
     }
 
-    private void OnReceiveDamage(IActionExecution combatAction)
+    private void OnReceiveDamage(Entity combatAction)
     {
         var damageAction = combatAction as DamageAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -89,7 +88,7 @@ public sealed class Monster : MonoBehaviour
         GameObject.Destroy(damageText.gameObject, 0.5f);
     }
 
-    private void OnReceiveCure(IActionExecution combatAction)
+    private void OnReceiveCure(Entity combatAction)
     {
         var action = combatAction as CureAction;
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -103,7 +102,7 @@ public sealed class Monster : MonoBehaviour
         GameObject.Destroy(cureText.gameObject, 0.5f);
     }
 
-    private void OnReceiveStatus(IActionExecution combatAction)
+    private void OnReceiveStatus(Entity combatAction)
     {
         var action = combatAction as AddStatusAction;
         var addStatusEffect = action.AddStatusEffect;

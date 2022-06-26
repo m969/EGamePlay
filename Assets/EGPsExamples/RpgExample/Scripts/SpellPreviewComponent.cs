@@ -17,11 +17,6 @@ public class SpellPreviewComponent : EGamePlay.Component
     private SkillAbility PreviewingSkill { get; set; }
 
 
-    public override void Setup()
-    {
-
-    }
-
     public override void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))

@@ -42,18 +42,19 @@ namespace EGamePlay.Combat
         }
 
         /// 前置处理
-        public void TriggerAttackPreProcess()
+        private void PreProcess()
         {
-            AbilityEntity.FireEvent(nameof(TriggerAttackPreProcess), this);
+            AttackAction.Creator.TriggerActionPoint(ActionPointType.PreGiveAttackEffect, AttackAction);
+            AttackAction.Target.TriggerActionPoint(ActionPointType.PreReceiveAttackEffect, AttackAction);
         }
 
         /// <summary>   尝试触发普攻效果   </summary>
         private void TryTriggerAttackEffect()
         {
-            Log.Debug("AttackExecution TryTriggerAttackEffect");
+            //Log.Debug("AttackExecution TryTriggerAttackEffect");
             HasTriggerDamage = true;
 
-            TriggerAttackPreProcess();
+            PreProcess();
 
             if (BeBlocked)
             {
@@ -62,12 +63,6 @@ namespace EGamePlay.Combat
             else
             {
                 AbilityEntity.Get<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithExecution(AttackAction.Target, this);
-                //if (OwnerEntity.DamageAbility.TryMakeAction(out var action))
-                //{
-                //    action.Target = AttackAction.Target;
-                //    action.DamageSource = DamageSource.Attack;
-                //    action.ApplyDamage();
-                //}
             }
         }
 

@@ -11,13 +11,13 @@ namespace EGamePlay.Combat
     /// </summary>
     public class DamageBloodSuckComponent : Component
     {
-        public override void Setup()
+        public override void Awake()
         {
             var combatEntity = Entity.GetParent<CombatEntity>();
             combatEntity.ListenActionPoint(ActionPointType.PostCauseDamage, OnCauseDamage);
         }
 
-        private void OnCauseDamage(IActionExecution action)
+        private void OnCauseDamage(Entity action)
         {
             var damageAction = action as DamageAction;
             var value = damageAction.DamageValue * 0.2f;

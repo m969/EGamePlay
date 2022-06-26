@@ -10,7 +10,6 @@ namespace EGamePlay.Combat
     public class AttackActionAbility : Entity, IActionAbility
     {
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
-        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
 
 
@@ -28,34 +27,6 @@ namespace EGamePlay.Combat
             }
             return Enable;
         }
-
-        //public void TryActivateAbility() => ActivateAbility();
-
-        //public void ActivateAbility() => Enable = true;
-
-        //public void DeactivateAbility() { }
-
-        //public void EndAbility() { }
-
-        //public Entity CreateExecution()
-        //{
-        //    var execution = OwnerEntity.MakeAction<AttackAction>();
-        //    execution.ActionAbility = this;
-        //    return execution;
-        //}
-
-        //public bool TryMakeAction(out AttackAction abilityExecution)
-        //{
-        //    if (Enable == false)
-        //    {
-        //        abilityExecution = null;
-        //    }
-        //    else
-        //    {
-        //        abilityExecution = CreateExecution() as AttackAction;
-        //    }
-        //    return Enable;
-        //}
     }
 
     /// <summary>
@@ -71,6 +42,7 @@ namespace EGamePlay.Combat
         public CombatEntity Creator { get; set; }
         /// 目标对象
         public CombatEntity Target { get; set; }
+        public AttackExecution AttackExecution { get; set; }
 
 
         public void FinishAction()
@@ -102,9 +74,9 @@ namespace EGamePlay.Combat
 
         public void ApplyAttack()
         {
-            var attackExecution = Creator.AttackAbility.CreateExecution();
-            attackExecution.AttackAction = this;
-            attackExecution.BeginExecute();
+            AttackExecution = Creator.AttackAbility.CreateExecution() as AttackExecution;
+            AttackExecution.AttackAction = this;
+            AttackExecution.BeginExecute();
         }
 
         //后置处理

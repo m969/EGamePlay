@@ -23,10 +23,17 @@ public class SkillExecution1006Component : EGamePlay.Component
 {
     public Dictionary<CombatEntity, LineRenderer> EntityChannels { get; set; } = new Dictionary<CombatEntity, LineRenderer>();
     public GameUtils.GameTimer LockTimer = new GameUtils.GameTimer(2);
+    public override bool DefaultEnable => false;
 
 
-    public void BeginExecute()
+    public override void Awake()
     {
+        Entity.OnEvent(nameof(SkillExecution.BeginExecute), OnBeginExecute);
+    }
+
+    public void OnBeginExecute(Entity entity)
+    {
+        GetEntity<SkillExecution>().ActionOccupy = false;
         var channelPrefab = GetEntity<SkillExecution>().SkillExecutionAsset.transform.Find("Channel");
         channelPrefab.gameObject.SetActive(false);
         for (int i = GetEntity<SkillExecution>().SkillTargets.Count - 1; i >= 0; i--)
@@ -44,6 +51,7 @@ public class SkillExecution1006Component : EGamePlay.Component
             GetEntity<SkillExecution>().SkillAbility.Get<AbilityEffectComponent>().TryAssignEffectByIndex(item.Key, 2);
 #endif
         }
+        Enable = true;
     }
 
     public override void Update()
@@ -57,12 +65,14 @@ public class SkillExecution1006Component : EGamePlay.Component
         {
             item.Value.SetPosition(0, GetEntity<SkillExecution>().OwnerEntity.Position);
             item.Value.SetPosition(1, item.Key.Position);
+            //Log.Debug($"{GetEntity<SkillExecution>().OwnerEntity.Position}    {item.Key.Position}");
         }
         LockTimer.UpdateAsFinish(Time.deltaTime, OnLock);
     }
 
     public void OnLock()
     {
+        //Log.Debug("OnLock");
 #if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
@@ -75,12 +85,13 @@ public class SkillExecution1006Component : EGamePlay.Component
 
     public void EndExecute()
     {
+        GetEntity<SkillExecution>().EndExecute();
         foreach (var item in EntityChannels)
         {
             GameObject.Destroy(item.Value.gameObject);
         }
         EntityChannels.Clear();
-        Entity.Destroy(this);
+        //Entity.Destroy(this);
         //base.EndExecute();
     }
 }

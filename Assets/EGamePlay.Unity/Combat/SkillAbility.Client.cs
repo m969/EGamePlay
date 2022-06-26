@@ -21,13 +21,20 @@ namespace EGamePlay.Combat
         public void ParseAbilityEffects()
         {
             SkillExecutionData = new SkillExecutionData();
-            SkillExecutionData.SkillExecutionAsset = Resources.Load<GameObject>($"SkillExecution_{this.SkillConfig.Id}");
-
-            if (SkillExecutionData.SkillExecutionAsset == null)
+            var executionObj = Resources.Load<GameObject>($"SkillExecution_{this.SkillConfig.Id}");
+            if (executionObj == null)
+            {
                 return;
+            }
+            SkillExecutionData.SkillExecutionAsset = executionObj;
+            if (executionObj.GetComponent<PlayableDirector>() == null)
+            {
+                return;
+            }
             var timelineAsset = SkillExecutionData.SkillExecutionAsset.GetComponent<PlayableDirector>().playableAsset as TimelineAsset;
             if (timelineAsset == null)
                 return;
+            SkillExecutionData.TimelineAsset = timelineAsset;
 
             SkillExecutionData.SkillExecuteTime = (float)timelineAsset.duration;
 

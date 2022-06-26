@@ -16,7 +16,7 @@ namespace EGamePlay.Combat
         public string ModifyValueFormula { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             AttributeModifyEffect = GetEntity<AbilityEffect>().EffectConfig as AttributeModifyEffect;
         }

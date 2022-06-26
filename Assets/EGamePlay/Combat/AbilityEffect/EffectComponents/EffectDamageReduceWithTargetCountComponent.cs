@@ -16,7 +16,7 @@ namespace EGamePlay.Combat
         public float MinPercent { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             var damageEffect = (Entity as AbilityEffect).EffectConfig as DamageEffect;
             //ReducePercent = float.Parse(customEffect.Params["递减百分比"]);

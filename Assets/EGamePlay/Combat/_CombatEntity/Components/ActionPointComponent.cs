@@ -11,20 +11,20 @@ namespace EGamePlay.Combat
     /// </summary>
     public sealed class ActionPoint
     {
-        public List<Action<IActionExecution>> Listeners { get; set; } = new List<Action<IActionExecution>>();
+        public List<Action<Entity>> Listeners { get; set; } = new List<Action<Entity>>();
 
 
-        public void AddListener(Action<IActionExecution> action)
+        public void AddListener(Action<Entity> action)
         {
             Listeners.Add(action);
         }
 
-        public void RemoveListener(Action<IActionExecution> action)
+        public void RemoveListener(Action<Entity> action)
         {
             Listeners.Remove(action);
         }
 
-        public void TriggerAllActions(IActionExecution actionExecution)
+        public void TriggerAllActions(Entity actionExecution)
         {
             if (Listeners.Count == 0)
             {
@@ -109,12 +109,7 @@ namespace EGamePlay.Combat
         private Dictionary<ActionPointType, ActionPoint> ActionPoints { get; set; } = new Dictionary<ActionPointType, ActionPoint>();
 
 
-        public override void Setup()
-        {
-            base.Setup();
-        }
-
-        public void AddListener(ActionPointType actionPointType, Action<IActionExecution> action)
+        public void AddListener(ActionPointType actionPointType, Action<Entity> action)
         {
             if (!ActionPoints.ContainsKey(actionPointType))
             {
@@ -123,7 +118,7 @@ namespace EGamePlay.Combat
             ActionPoints[actionPointType].AddListener(action);
         }
 
-        public void RemoveListener(ActionPointType actionPointType, Action<IActionExecution> action)
+        public void RemoveListener(ActionPointType actionPointType, Action<Entity> action)
         {
             if (ActionPoints.ContainsKey(actionPointType))
             {
@@ -137,7 +132,7 @@ namespace EGamePlay.Combat
             return actionPoint;
         }
 
-        public void TriggerActionPoint(ActionPointType actionPointType, IActionExecution actionExecution)
+        public void TriggerActionPoint(ActionPointType actionPointType, Entity actionExecution)
         {
             if (ActionPoints.TryGetValue(actionPointType, out var actionPoint))
             {

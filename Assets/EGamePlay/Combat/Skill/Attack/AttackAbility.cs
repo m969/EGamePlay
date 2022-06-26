@@ -28,36 +28,36 @@ namespace EGamePlay.Combat
             AddComponent<AbilityEffectComponent>(effects);
         }
 
-        public void ActivateAbility()
-        {
-            throw new NotImplementedException();
-        }
-
-        public AttackExecution CreateExecution()
-        {
-            var execution = OwnerEntity.AddChild<AttackExecution>(this);
-            execution.AbilityEntity = this;
-            return execution;
-        }
+        //public AttackExecution CreateExecution()
+        //{
+        //    var execution = OwnerEntity.AddChild<AttackExecution>(this);
+        //    execution.AbilityEntity = this;
+        //    return execution;
+        //}
 
         public void DeactivateAbility()
         {
-            throw new NotImplementedException();
         }
 
         public void EndAbility()
         {
-            throw new NotImplementedException();
         }
 
         public void TryActivateAbility()
         {
-            throw new NotImplementedException();
+            ActivateAbility();
+        }
+        
+        public void ActivateAbility()
+        {
+            Enable = true;
         }
 
-        Entity IAbilityEntity.CreateExecution()
+        public Entity CreateExecution()
         {
-            throw new NotImplementedException();
+            var execution = OwnerEntity.AddChild<AttackExecution>(this);
+            execution.AbilityEntity = this;
+            return execution;
         }
     }
 }

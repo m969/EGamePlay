@@ -13,7 +13,7 @@ namespace EGamePlay.Combat
         public AnimationEffect AnimationEffect { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             Entity.Subscribe<ExecutionEffectEvent>(OnTriggerExecutionEffect);
         }

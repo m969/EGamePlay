@@ -16,11 +16,6 @@ namespace EGamePlay.Combat
         public GameTimer IntervalTimer { get; set; }
 
 
-        public override void Setup()
-        {
-
-        }
-
         public override void Update()
         {
             if (IntervalTimer != null)

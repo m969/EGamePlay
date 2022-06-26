@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
         public ActionControlType ActionControlType { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             ActionControlEffect = GetEntity<AbilityEffect>().EffectConfig as ActionControlEffect;
         }

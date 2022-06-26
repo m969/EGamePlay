@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Timeline;
 using EGamePlay.Combat;
 using ET;
 using Log = EGamePlay.Log;
@@ -12,6 +13,7 @@ namespace EGamePlay.Combat
     {
 #if !NOT_UNITY
         public GameObject SkillExecutionAsset { get; set; }
+        public TimelineAsset TimelineAsset { get; set; }
 #endif
         public float SkillExecuteTime { get; set; }
         public List<Effect> ExecutionEffects { get; set; } = new List<Effect>();
@@ -31,5 +33,7 @@ namespace EGamePlay.Combat
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
         public long OriginTime { get; set; }
+        /// 行为占用
+        public bool ActionOccupy { get; set; } = true;
     }
 }

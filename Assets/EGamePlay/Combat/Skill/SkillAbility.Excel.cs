@@ -7,8 +7,11 @@ using UnityEngine;
 #if EGAMEPLAY_EXCEL
 namespace EGamePlay.Combat
 {
-    public partial class SkillAbility : AbilityEntity
+    public partial class SkillAbility : Entity, IAbilityEntity
     {
+        public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
+        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public bool Enable { get; set; }
         public SkillConfig SkillConfig { get; set; }
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
@@ -39,19 +42,30 @@ namespace EGamePlay.Combat
             }
         }
 
-        public override void ActivateAbility()
+        public void TryActivateAbility()
         {
-            base.ActivateAbility();
+            this.ActivateAbility();
         }
 
-        public override void EndAbility()
+        public void DeactivateAbility()
         {
-            base.EndAbility();
+            Enable = false;
         }
 
-        public override AbilityExecution CreateExecution()
+        public void ActivateAbility()
+        {
+            FireEvent(nameof(ActivateAbility));
+        }
+
+        public void EndAbility()
+        {
+            Entity.Destroy(this);
+        }
+
+        public Entity CreateExecution()
         {
             var execution = OwnerEntity.AddChild<SkillExecution>(this);
+            this.FireEvent(nameof(CreateExecution), execution);
             execution.AddComponent<UpdateComponent>();
             return execution;
         }

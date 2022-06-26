@@ -14,10 +14,11 @@ namespace EGamePlay.Combat
         public string CureValueProperty { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             CureEffect = GetEntity<AbilityEffect>().EffectConfig as CureEffect;
             CureValueProperty = CureEffect.CureValueFormula;
+            Entity.OnEvent(nameof(AbilityEffect.StartAssignEffect), OnAssignEffect);
         }
 
         public int GetCureValue()
@@ -33,6 +34,17 @@ namespace EGamePlay.Combat
                 expression.Parameters["生命值上限"].Value = GetEntity<AbilityEffect>().OwnerEntity.GetComponent<AttributeComponent>().HealthPoint.Value;
             }
             return Mathf.CeilToInt((float)expression.Value);
+        }
+
+        private void OnAssignEffect(Entity entity)
+        {
+            //Log.Debug($"EffectCureComponent OnAssignEffect");
+            var effectAssignAction = entity.As<EffectAssignAction>();
+            if (GetEntity<AbilityEffect>().OwnerEntity.CureAbility.TryMakeAction(out var action))
+            {
+                effectAssignAction.FillDatasToAction(action);
+                action.ApplyCure();
+            }
         }
     }
 }

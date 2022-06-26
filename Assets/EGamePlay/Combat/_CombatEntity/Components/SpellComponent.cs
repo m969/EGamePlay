@@ -16,11 +16,6 @@ namespace EGamePlay.Combat
         public override bool DefaultEnable { get; set; } = true;
 
 
-        public override void Setup()
-        {
-
-        }
-
         public void SpellWithTarget(SkillAbility spellSkill, CombatEntity targetEntity)
         {
             if (CombatEntity.CurrentSkillExecution != null)

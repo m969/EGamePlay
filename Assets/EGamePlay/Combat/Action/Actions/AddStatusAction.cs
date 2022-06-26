@@ -9,7 +9,6 @@ namespace EGamePlay.Combat
     public class AddStatusActionAbility : Entity, IActionAbility
     {
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
-        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
 
 
@@ -27,21 +26,6 @@ namespace EGamePlay.Combat
             }
             return Enable;
         }
-
-        //public void TryActivateAbility() => ActivateAbility();
-
-        //public void ActivateAbility() => Enable = true;
-
-        //public void DeactivateAbility() { }
-
-        //public void EndAbility() { }
-
-        //public Entity CreateExecution()
-        //{
-        //    var execution = OwnerEntity.MakeAction<AddStatusAction>();
-        //    execution.ActionAbility = this;
-        //    return execution;
-        //}
     }
 
     /// <summary>

@@ -293,27 +293,37 @@ namespace EGamePlay
 
         public Entity AddChild(Type entityType)
         {
-            return CreateWithParent(entityType, this);
+            var entity = NewEntity(entityType);
+            if (EnableLog) Log.Debug($"AddChild {this.GetType().Name}, {entityType.Name}={entity.Id}");
+            SetupEntity(entity, this);
+            return entity;
         }
 
         public Entity AddChild(Type entityType, object initData)
         {
-            return CreateWithParent(entityType, this, initData);
+            var entity = NewEntity(entityType);
+            if (EnableLog) Log.Debug($"AddChild {this.GetType().Name}, {entityType.Name}={entity.Id}");
+            SetupEntity(entity, this, initData);
+            return entity;
         }
 
         public T AddChild<T>() where T : Entity
         {
-            return CreateWithParent<T>(this);
+            return AddChild(typeof(T)) as T;
         }
 
         public T AddIdChild<T>(long id) where T : Entity
         {
-            return CreateWithParent<T>(this);
+            var entityType = typeof(T);
+            var entity = NewEntity(entityType, id);
+            if (EnableLog) Log.Debug($"AddChild {this.GetType().Name}, {entityType.Name}={entity.Id}");
+            SetupEntity(entity, this);
+            return entity as T;
         }
 
         public T AddChild<T>(object initData) where T : Entity
         {
-            return CreateWithParent<T>(this, initData);
+            return AddChild(typeof(T), initData) as T;
         }
 
         public Entity GetIdChild(long id)

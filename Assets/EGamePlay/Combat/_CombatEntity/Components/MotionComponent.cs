@@ -22,9 +22,8 @@ namespace EGamePlay.Combat
         private Vector3 originPos;
 
 
-        public override void Setup()
+        public override void Awake()
         {
-            base.Setup();
             IdleTimer = new GameTimer(RandomHelper.RandomNumber(20, 30) / 10f);
             MoveTimer = new GameTimer(RandomHelper.RandomNumber(20, 40) / 10f);
             IdleTimer.Reset();

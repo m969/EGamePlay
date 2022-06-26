@@ -23,7 +23,7 @@ namespace EGamePlay.Combat
         public FloatNumeric CauseDamage { get { return attributeNameNumerics[nameof(AttributeType.CauseDamage)]; } }//暴击概率
 
 
-        public override void Setup()
+        public override void Awake()
         {
             Initialize();
         }

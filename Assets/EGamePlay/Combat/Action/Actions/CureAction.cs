@@ -8,7 +8,6 @@ namespace EGamePlay.Combat
     public class CureActionAbility : Entity, IActionAbility
     {
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
-        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
 
 
@@ -26,39 +25,6 @@ namespace EGamePlay.Combat
             }
             return Enable;
         }
-
-        //public void TryActivateAbility() => ActivateAbility();
-
-        //public void ActivateAbility() => Enable = true;
-
-        //public void DeactivateAbility() { }
-
-        //public void EndAbility() { }
-
-        //public Entity CreateExecution()
-        //{
-        //    var execution = OwnerEntity.MakeAction<CureAction>();
-        //    execution.ActionAbility = this;
-        //    return execution;
-        //}
-
-        //public bool TryMakeAction(out CureAction abilityExecution)
-        //{
-        //    if (Enable == false)
-        //    {
-        //        abilityExecution = null;
-        //    }
-        //    else
-        //    {
-        //        abilityExecution = CreateExecution() as CureAction;
-        //    }
-        //    return Enable;
-        //}
-
-        //IAbilityExecution IAbilityEntity.CreateExecution()
-        //{
-
-        //}
     }
 
     /// <summary>

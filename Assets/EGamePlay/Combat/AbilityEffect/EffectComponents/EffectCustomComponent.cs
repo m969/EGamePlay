@@ -13,21 +13,27 @@ namespace EGamePlay.Combat
         public override bool DefaultEnable => false;
 
 
-        public override void Setup()
+        public override void Awake()
         {
-
+            Entity.OnEvent(nameof(AbilityEffect.StartAssignEffect), OnAssignEffect);
         }
 
         public override void OnEnable()
         {
             if (GetEntity<AbilityEffect>().EffectConfig is CustomEffect customEffect)
             {
-                if (customEffect.CustomEffectType == "格挡普攻")
+                if (customEffect.CustomEffectType == "强体")
                 {
                     var probabilityTriggerComponent = GetEntity<AbilityEffect>().OwnerEntity.AttackBlockAbility.AddComponent<AbilityProbabilityTriggerComponent>();
-                    probabilityTriggerComponent.Probability = (int)(float.Parse(customEffect.TriggerProbability.Replace("%", "")) * 100);
+                    var param = customEffect.Params.First().Value;
+                    probabilityTriggerComponent.Probability = (int)(float.Parse(param.Replace("%", "")) * 100);
                 }
             }
+        }
+
+        private void OnAssignEffect(Entity entity)
+        {
+
         }
     }
 }

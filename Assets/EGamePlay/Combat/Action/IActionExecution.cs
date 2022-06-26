@@ -39,8 +39,5 @@ namespace EGamePlay.Combat
 
 
         public void FinishAction();
-        //{
-        //    EndExecute();
-        //}
     }
 }

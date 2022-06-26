@@ -11,7 +11,6 @@ namespace EGamePlay.Combat
     public class DamageActionAbility : Entity, IActionAbility
     {
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
-        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
 
 
@@ -34,34 +33,6 @@ namespace EGamePlay.Combat
             }
             return Enable;
         }
-
-        //public void TryActivateAbility() => ActivateAbility();
-
-        //public void ActivateAbility() => Enable = true;
-
-        //public void DeactivateAbility() { }
-
-        //public void EndAbility() { }
-
-        //public Entity CreateExecution()
-        //{
-        //    var execution = OwnerEntity.MakeAction<DamageAction>();
-        //    execution.ActionAbility = this;
-        //    return execution;
-        //}
-
-        //public bool TryMakeAction(out DamageAction abilityExecution)
-        //{
-        //    if (Enable == false)
-        //    {
-        //        abilityExecution = null;
-        //    }
-        //    else
-        //    {
-        //        abilityExecution = CreateExecution() as DamageAction;
-        //    }
-        //    return Enable;
-        //}
     }
 
     /// <summary>

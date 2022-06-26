@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
         private Type ActionType;
 
 
-        public override void Setup(object initData)
+        public override void Awake(object initData)
         {
             ActionType = initData as Type;
         }

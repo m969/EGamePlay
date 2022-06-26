@@ -22,7 +22,7 @@ namespace EGamePlay.Combat
         private System.Action MoveFinishAction { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             PositionEntity = (IPosition)Entity;
         }

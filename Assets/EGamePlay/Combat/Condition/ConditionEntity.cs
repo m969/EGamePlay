@@ -1,7 +1,7 @@
 ﻿
 namespace EGamePlay.Combat
 {
-    public abstract class ConditionEntity : Entity
+    public sealed class ConditionEntity : Entity
     {
 
     }

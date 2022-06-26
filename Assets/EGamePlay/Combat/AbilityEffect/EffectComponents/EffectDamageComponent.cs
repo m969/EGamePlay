@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
         public string DamageValueFormula { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             //Log.Debug($"EffectDamageComponent Setup");
             DamageEffect = GetEntity<AbilityEffect>().EffectConfig as DamageEffect;

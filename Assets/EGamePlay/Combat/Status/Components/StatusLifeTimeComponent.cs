@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
         public GameTimer LifeTimer { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             var lifeTime = GetEntity<StatusAbility>().GetDuration() / 1000f;
             LifeTimer = new GameTimer(lifeTime);

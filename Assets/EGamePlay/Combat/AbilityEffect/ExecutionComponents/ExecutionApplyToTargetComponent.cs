@@ -17,7 +17,7 @@ namespace EGamePlay.Combat
         public EffectApplyType EffectApplyType { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             Entity.Subscribe<ExecutionEffectEvent>(OnTriggerExecutionEffect);
         }

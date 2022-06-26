@@ -14,11 +14,6 @@ namespace EGamePlay.Combat
         public string ConditionParamValue { get; set; }
 
 
-        public override void Setup()
-        {
-
-        }
-
         public override void OnEnable()
         {
             var conditionType = GetEntity<AbilityEffect>().EffectConfig.ConditionType;

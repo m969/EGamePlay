@@ -8,13 +8,12 @@ namespace EGamePlay.Combat
     public class AttackBlockActionAbility : Entity, IActionAbility
     {
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
-        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
 
 
         public override void Awake()
         {
-            ParentEntity.AttackAbility.OnEvent(nameof(AttackExecution.TriggerAttackPreProcess), OnTriggerAttackPreProcess);
+            OwnerEntity.ListenActionPoint(ActionPointType.PreReceiveAttackEffect, TryBlock);
         }
 
         public bool TryMakeAction(out AttackBlockAction action)
@@ -32,54 +31,28 @@ namespace EGamePlay.Combat
             return Enable;
         }
 
-        //public void TryActivateAbility() => ActivateAbility();
-
-        //public void ActivateAbility() => Enable = true;
-
-        //public void DeactivateAbility() { }
-
-        //public void EndAbility() { }
-
-        //public Entity CreateExecution()
-        //{
-        //    var execution = OwnerEntity.MakeAction<AttackBlockAction>();
-        //    execution.ActionAbility = this;
-        //    return execution;
-        //}
-
-        //public bool TryMakeAction(out AttackBlockAction abilityExecution)
-        //{
-        //    if (Enable == false)
-        //    {
-        //        abilityExecution = null;
-        //    }
-        //    else
-        //    {
-        //        abilityExecution = CreateExecution() as AttackBlockAction;
-        //    }
-        //    return Enable;
-        //}
-
-        private void OnTriggerAttackPreProcess(Entity attackExecution)
-        {
-            TryBlock(attackExecution.As<AttackExecution>());
-        }
-
         private bool IsAbilityEffectTrigger()
         {
             if (TryGet(out AbilityProbabilityTriggerComponent probabilityTriggerComponent))
             {
                 var r = ET.RandomHelper.RandomNumber(0, 10000);
+                //Log.Debug($"IsAbilityEffectTrigger {r} < {probabilityTriggerComponent.Probability}");
                 return r < probabilityTriggerComponent.Probability;
             }
             return false;
         }
 
-        private void TryBlock(AttackExecution attackExecution)
+        public void TryBlock(Entity action)
         {
+            //Log.Debug($"TryBlock");
             if (IsAbilityEffectTrigger())
             {
-                attackExecution.SetBlocked();
+                if (TryMakeAction(out var attackBlockAction))
+                {
+                    attackBlockAction.ActionAbility = this;
+                    attackBlockAction.AttackExecution = action.As<AttackAction>().AttackExecution;
+                    attackBlockAction.ApplyBlock();
+                }
             }
         }
     }
@@ -97,6 +70,7 @@ namespace EGamePlay.Combat
         public CombatEntity Creator { get; set; }
         /// 目标对象
         public CombatEntity Target { get; set; }
+        public AttackExecution AttackExecution { get; set; }
 
 
         public void FinishAction()
@@ -114,10 +88,11 @@ namespace EGamePlay.Combat
         {
             PreProcess();
 
-            //var attackAction = SourceEffectAssignAction.TargetAction.As<AttackAction>();
-            //attackAction.SetBlocked();
+            AttackExecution.SetBlocked();
 
             PostProcess();
+
+            FinishAction();
         }
 
         //后置处理

@@ -10,7 +10,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class StatusAttributeModifyComponent : Component
     {
-        public override void Setup()
+        public override void Awake()
         {
             var status = Entity as StatusAbility;
         }

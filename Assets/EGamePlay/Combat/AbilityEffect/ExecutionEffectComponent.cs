@@ -10,27 +10,11 @@ namespace EGamePlay.Combat
     public class ExecutionEffectComponent : Component
     {
         public List<ExecutionEffect> ExecutionEffects { get; private set; } = new List<ExecutionEffect>();
-        //public ExecutionEffect DamageExecutionEffect { get; set; }
-        //public ExecutionEffect CureExecutionEffect { get; set; }
 
 
-        public override void Setup(object initData)
+        public override void Awake(object initData)
         {
             var abilityEffects = initData as List<AbilityEffect>;
-            foreach (var abilityEffect in abilityEffects)
-            {
-                //var executionEffect = Entity.AddChild<ExecutionEffect>(abilityEffect);
-                //AddEffect(executionEffect);
-
-                //if (abilityEffect.EffectConfig is DamageEffect)
-                //{
-                //    DamageExecutionEffect = executionEffect;
-                //}
-                //if (abilityEffect.EffectConfig is CureEffect)
-                //{
-                //    CureExecutionEffect = executionEffect;
-                //}
-            }
             foreach (var effect in GetEntity<SkillExecution>().SkillExecutionData.ExecutionEffects)
             {
                 var executionEffect = Entity.AddChild<ExecutionEffect>(effect);

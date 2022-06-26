@@ -14,7 +14,7 @@ namespace EGamePlay
         public GameTimer LifeTimer { get; set; }
 
 
-        public override void Setup(object initData)
+        public override void Awake(object initData)
         {
             LifeTimer = new GameTimer((float)initData);
         }

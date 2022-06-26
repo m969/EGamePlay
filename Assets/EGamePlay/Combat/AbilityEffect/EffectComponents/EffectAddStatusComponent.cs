@@ -15,10 +15,11 @@ namespace EGamePlay.Combat
         public string NumericValueProperty { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             AddStatusEffect = GetEntity<AbilityEffect>().EffectConfig as AddStatusEffect;
             Duration = AddStatusEffect.Duration;
+            Entity.OnEvent(nameof(AbilityEffect.StartAssignEffect), OnAssignEffect);
 
 #if EGAMEPLAY_EXCEL
             var statusConfig = AddStatusEffect.AddStatusConfig;
@@ -34,24 +35,25 @@ namespace EGamePlay.Combat
                 }
             }
 #else
-            //var statusConfig = AddStatusEffect.AddStatus;
-            //if (statusConfig.EnabledAttributeModify)
-            //{
-            //    if (!string.IsNullOrEmpty(statusConfig.NumericValue))
-            //    {
-            //        NumericValueProperty = statusConfig.NumericValue;
-            //        foreach (var aInputKVItem in AddStatusEffect.Params)
-            //        {
-            //            NumericValueProperty = NumericValueProperty.Replace(aInputKVItem.Key, aInputKVItem.Value);
-            //        }
-            //    }
-            //}
+
 #endif
         }
 
         public int GetNumericValue()
         {
             return 1;
+        }
+
+        private void OnAssignEffect(Entity entity)
+        {
+            //Log.Debug($"EffectCureComponent OnAssignEffect");
+            var effectAssignAction = entity.As<EffectAssignAction>();
+            if (GetEntity<AbilityEffect>().OwnerEntity.AddStatusAbility.TryMakeAction(out var action))
+            {
+                effectAssignAction.FillDatasToAction(action);
+                action.SourceAbility = effectAssignAction.SourceAbility;
+                action.ApplyAddStatus();
+            }
         }
     }
 }

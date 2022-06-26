@@ -9,9 +9,8 @@ namespace EGamePlay
         public UnityEngine.GameObject GameObject { get; private set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
-            base.Setup();
             GameObject = new UnityEngine.GameObject(Entity.GetType().Name);
             var view = GameObject.AddComponent<ComponentView>();
             view.Type = GameObject.name;

@@ -17,6 +17,7 @@ namespace EGamePlay.Combat
     {
         public SkillExecutionData SkillExecutionData => SkillAbility.SkillExecutionData;
         public GameObject SkillExecutionAsset => SkillAbility.SkillExecutionData.SkillExecutionAsset;
+        public TimelineAsset TimelineAsset => SkillAbility.SkillExecutionData.TimelineAsset;
 
 
         public override void Awake(object initData)
@@ -50,13 +51,16 @@ namespace EGamePlay.Combat
             GetParent<CombatEntity>().CurrentSkillExecution = this;
             SkillAbility.Spelling = true;
 
-            if (SkillExecutionAsset == null)
-                return;
-            var timelineAsset = SkillExecutionAsset.GetComponent<PlayableDirector>().playableAsset as TimelineAsset;
-            if (timelineAsset == null)
-                return;
-            var skillExecutionObj = GameObject.Instantiate(SkillExecutionAsset, OwnerEntity.Position, Quaternion.Euler(0, OwnerEntity.Direction, 0));
-            GameObject.Destroy(skillExecutionObj, (float)timelineAsset.duration);
+            if (SkillExecutionAsset != null && TimelineAsset != null)
+            {
+                var timelineAsset = TimelineAsset;
+                if (timelineAsset != null)
+                {
+                    var skillExecutionObj = GameObject.Instantiate(SkillExecutionAsset, OwnerEntity.Position, Quaternion.Euler(0, OwnerEntity.Direction, 0));
+                    GameObject.Destroy(skillExecutionObj, (float)timelineAsset.duration);
+                }
+            }
+            FireEvent(nameof(BeginExecute));
             //base.BeginExecute();
         }
 

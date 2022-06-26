@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
         public AbilityEffect CureAbilityEffect { get; set; }
 
 
-        public override void Setup(object initData)
+        public override void Awake(object initData)
         {
             if (initData == null)
             {

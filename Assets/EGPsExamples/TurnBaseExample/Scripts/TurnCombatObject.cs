@@ -45,7 +45,7 @@ public class TurnCombatObject : MonoBehaviour
         CombatEntity.Position = transform.position;
     }
 
-    public void OnPreJumpTo(IActionExecution action)
+    public void OnPreJumpTo(Entity action)
     {
         var jumpToAction = action as JumpToAction;
         var targetPoint = jumpToAction.Target.ModelObject.transform.position + jumpToAction.Target.ModelObject.transform.forward * 1.7f;
@@ -55,13 +55,13 @@ public class TurnCombatObject : MonoBehaviour
         AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
     }
 
-    public void OnPreAttack(IActionExecution action)
+    public void OnPreAttack(Entity action)
     {
         AnimationComponent.Speed = 1f;
         AnimationComponent.PlayFade(AnimationComponent.AttackAnimation);
     }
 
-    public async void OnPostAttack(IActionExecution action)
+    public async void OnPostAttack(Entity action)
     {
         transform.DOMove(SeatPoint, CombatEntity.JumpToTime / 1000f).SetEase(Ease.Linear);
         var modelTrm = transform.GetChild(0);
@@ -74,7 +74,7 @@ public class TurnCombatObject : MonoBehaviour
         modelTrm.forward = -modelTrm.forward;
     }
 
-    private void OnReceiveDamage(IActionExecution combatAction)
+    private void OnReceiveDamage(Entity combatAction)
     {
         AnimationComponent.Speed = 1f;
         if (CombatEntity.CheckDead() == false)
@@ -101,7 +101,7 @@ public class TurnCombatObject : MonoBehaviour
         GameObject.Destroy(gameObject);
     }
 
-    private void OnReceiveCure(IActionExecution combatAction)
+    private void OnReceiveCure(Entity combatAction)
     {
         var action = combatAction as CureAction;
         CombatObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
@@ -116,7 +116,7 @@ public class TurnCombatObject : MonoBehaviour
         GameObject.Destroy(cureText.gameObject, 0.5f);
     }
 
-    private void OnReceiveStatus(IActionExecution combatAction)
+    private void OnReceiveStatus(Entity combatAction)
     {
         var action = combatAction as AddStatusAction;
         var addStatusEffect = action.AddStatusEffect;

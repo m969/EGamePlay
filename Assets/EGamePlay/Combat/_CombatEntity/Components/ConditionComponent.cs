@@ -11,20 +11,16 @@ namespace EGamePlay.Combat
         private Dictionary<Action, ConditionEntity> Conditions { get; set; } = new Dictionary<Action, ConditionEntity>();
 
 
-        public override void Setup()
-        {
-            base.Setup();
-        }
-
         public void AddListener(ConditionType conditionType, Action action, object paramObj = null)
         {
             switch (conditionType)
             {
                 case ConditionType.WhenInTimeNoDamage:
                     var time = (float)paramObj;
-                    var condition = Entity.AddChild<WhenInTimeNoDamageCondition>(time);
+                    var condition = Entity.AddChild<ConditionEntity>();
+                    var comp = condition.AddComponent<ConditionWhenInTimeNoDamageComponent>(time);
                     Conditions.Add(action, condition);
-                    condition.StartListen(action);
+                    comp.StartListen(action);
                     break;
                 case ConditionType.WhenHPLower:
                     break;

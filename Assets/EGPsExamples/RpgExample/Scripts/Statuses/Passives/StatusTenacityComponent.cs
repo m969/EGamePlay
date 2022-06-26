@@ -44,7 +44,7 @@ public class StatusTenacityComponent : EGamePlay.Component
     }
 
     //结束生命回复
-    private void EndReplyHealth(IActionExecution combatAction)
+    private void EndReplyHealth(Entity combatAction)
     {
         CanReplyHealth = false;
     }

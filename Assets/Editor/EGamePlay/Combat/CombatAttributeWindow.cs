@@ -50,7 +50,7 @@ namespace EGamePlay.Combat
         protected override void OnEnable()
         {
             base.OnEnable();
-			attributeConfigObject = AssetDatabase.LoadAssetAtPath<AttributeConfigObject>("Assets/EGamePlay-Examples/RpgExample/Resources/战斗属性配置.asset");
+			attributeConfigObject = AssetDatabase.LoadAssetAtPath<AttributeConfigObject>("Assets/EGPsExamples/RpgExample/Resources/战斗属性配置.asset");
 			if (attributeConfigObject == null)
             {
 				return;
@@ -60,62 +60,39 @@ namespace EGamePlay.Combat
 			Init();
 		}
 
-        public void DrawStateList()
+		public void DrawStateList()
 		{
-			//EditorGUILayout.BeginHorizontal();
-			//{
-			//	//EditorGUILayout.BeginHorizontal(GUILayout.Width(20));
-			//	{
-			//		EditorGUILayout.BeginVertical(GUILayout.Width(20));
-			//		EditorGUILayout.LabelField("");
-			//		EditorGUILayout.LabelField("魔免");
-			//		EditorGUILayout.LabelField("魔免");
-			//		EditorGUILayout.LabelField("魔免");
-			//		EditorGUILayout.LabelField("魔免");
-			//		EditorGUILayout.EndVertical();
-			//	}
-			//	//EditorGUILayout.EndHorizontal();
-			//}
-			EditorGUILayout.BeginHorizontal();
-			EditorGUILayout.LabelField("", GUILayout.Width(100));
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("", GUILayout.Width(100));
             foreach (var item in StateConfigs)
             {
-				EditorGUILayout.LabelField($"{item.AliasName}", GUILayout.Width(100));
-			}
-			//for (int j = 0; j < 8; j++)
-			//{
-			//	EditorGUILayout.LabelField("魔免", GUILayout.Width(60));
-			//}
-			EditorGUILayout.EndHorizontal();
-			EditorGUILayout.BeginVertical();
-			if (attributeConfigObject.StateMutexTable == null)
+                EditorGUILayout.LabelField($"{item.AliasName}", GUILayout.Width(100));
+            }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginVertical();
+            if (attributeConfigObject.StateMutexTable == null)
             {
-				attributeConfigObject.StateMutexTable = new List<List<bool>>();
-			}
-			attributeConfigObject.StateMutexTable.SetLength(StateConfigs.Count);
-			for (int i = 0; i < StateConfigs.Count; i++)
-			{
-				//if (attributeConfigObject.StateMutexTable.Count <= i)
-    //            {
-				//	attributeConfigObject.StateMutexTable.Add(new List<bool>(StateConfigs.Count));
-    //            }
-				if (attributeConfigObject.StateMutexTable[i] == null)
+                attributeConfigObject.StateMutexTable = new List<List<bool>>();
+            }
+            attributeConfigObject.StateMutexTable.SetLength(StateConfigs.Count);
+            for (int i = 0; i < StateConfigs.Count; i++)
+            {
+                if (attributeConfigObject.StateMutexTable[i] == null)
                 {
-					attributeConfigObject.StateMutexTable[i] = new List<bool>();
-				}
-				attributeConfigObject.StateMutexTable[i].SetLength(StateConfigs.Count);
-				var item = StateConfigs[i];
-				EditorGUILayout.BeginHorizontal(GUILayout.Height(30));
-				EditorGUILayout.LabelField($"{item.AliasName}", GUILayout.Width(100));
-				for (int j = 0; j < StateConfigs.Count; j++)
-				{
-					attributeConfigObject.StateMutexTable[i][j] = EditorGUILayout.Toggle(attributeConfigObject.StateMutexTable[i][j], GUILayout.Width(100));
-				}
-				EditorGUILayout.EndHorizontal();
-			}
-			EditorGUILayout.EndVertical();
-			//this.BeginWindows();
-		}
+                    attributeConfigObject.StateMutexTable[i] = new List<bool>();
+                }
+                attributeConfigObject.StateMutexTable[i].SetLength(StateConfigs.Count);
+                var item = StateConfigs[i];
+                EditorGUILayout.BeginHorizontal(GUILayout.Height(30));
+                EditorGUILayout.LabelField($"{item.AliasName}", GUILayout.Width(100));
+                for (int j = 0; j < StateConfigs.Count; j++)
+                {
+                    attributeConfigObject.StateMutexTable[i][j] = EditorGUILayout.Toggle(attributeConfigObject.StateMutexTable[i][j], GUILayout.Width(100));
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndVertical();
+        }
 
 		////[HorizontalGroup("Split")]
 		//[OnInspectorGUI(PrependMethodName ="DrawStateList", AppendMethodName = "EndDrawStateMatrix")]
@@ -180,11 +157,12 @@ namespace EGamePlay.Combat
 		}
 
 
-        //[MenuItem("Tools/EGamePlay/战斗属性编辑界面")]
+        [MenuItem("Tools/EGamePlay/战斗属性编辑界面")]
         private static void ShowWindow()
 		{
-			var window = GetWindowWithRect<CombatAttributeWindow>(new Rect(0, 0, 800, 600), true, "战斗属性编辑界面");
-            window.position = GUIHelper.GetEditorWindowRect().AlignCenter(700, 700);
+			var window = GetWindow<CombatAttributeWindow>(false, "战斗属性编辑界面");
+			//var window = GetWindowWithRect<CombatAttributeWindow>(new Rect(0, 0, 1000, 600), true, "战斗属性编辑界面");
+			//window.position = GUIHelper.GetEditorWindowRect().AlignCenter(700, 700);
 		}
 
 		bool isDraging = false;
@@ -194,17 +172,26 @@ namespace EGamePlay.Combat
 
 		private void Init()
         {
+			if (timeline == null)
+            {
+				SetTimeline();
+            }
+		}
+
+		private void SetTimeline()
+        {
 			pos = position.position + new Vector2(200, 200);
-			Timeline.segmentTex = boxTex = EditorGUIUtility.Load("Square.png") as Texture;
+			boxTex = EditorGUIUtility.Load("Square.png") as Texture;
+			Timeline.segmentTex = boxTex;
 
 			timeline = new Timeline() { timelineSegments = new List<TimelineSegment>(), localPosition = pos };
 			timeline.AddSegment();
 		}
 
-        protected override void OnGUI()
+		protected override void OnGUI()
         {
 			base.OnGUI();
-			//DrawStateList();
+			DrawStateList();
 			var currentEvent = Event.current;
 
 			if (Timeline.boxStyle == null)
@@ -296,10 +283,11 @@ namespace EGamePlay.Combat
 				//}
 				//currentEvent.Use();
 			}
-			timeline.DrawSegments();
-			//GUI.Box(new Rect(pos, new Vector2(10, 20)), boxTex);
-			//GUI.Box(new Rect(pos+new Vector2(10, 5), new Vector2(80, 10)), boxTex);
-			//GUI.Box(new Rect(pos+new Vector2(90, 0), new Vector2(10, 20)), boxTex);
+			if (timeline == null)
+			{
+				SetTimeline();
+			}
+			timeline.DrawTimeLine();
 		}
 	}
 
@@ -322,7 +310,97 @@ namespace EGamePlay.Combat
         {
 			timelineSegments.Add(new TimelineSegment() { timeline = this });
 		}
-    }
+
+		//ActorController actorController;
+		//ActorModel model;
+		public int totalStateFrames;
+		int currentStateFrame;
+
+		float currentAnimDuration;
+		float normalizedTime;
+
+		bool play = false;
+
+		public void DrawTimeLine()
+		{
+			// the framelength of current selected behavior
+			totalStateFrames = 120;
+
+			//// null reference check
+			//if (model == null)
+			//{
+			//	return;
+			//}
+			//if (model.anim == null)
+			//{
+			//	Debug.LogError(" No Animator Detected. In order to preview the behavior,  Animator is required");
+			//	return;
+			//}
+
+			// Draw the Menu bar above the timeline
+			//DrawTimeLineMenuBar();
+
+			Rect playTrackRect = DrawTimeLinePlayTrack();
+
+			// Draw KeyFrames of the time line
+			DrawKeyFrames(playTrackRect);
+
+			// Draw PlayHead of the timeline
+			DrawPlayHead(playTrackRect);
+
+			// add a little bit space at the end
+			GUILayout.Space(30);
+
+			DrawSegments();
+		}
+
+		private void DrawPlayHead(Rect playTrackRect)
+		{
+			float currrentFrameX = playTrackRect.x + currentStateFrame * playTrackRect.width / totalStateFrames;
+			Handles.color = Color.red;
+			Handles.DrawAAPolyLine(3, new Vector3(currrentFrameX, playTrackRect.yMin), new Vector3(currrentFrameX, playTrackRect.yMax));
+		}
+
+		private Rect DrawTimeLinePlayTrack()
+		{
+			// outter Rect of the Timeline
+			var borderRect = EditorGUILayout.GetControlRect(false, 30);
+			EditorGUI.DrawRect(borderRect, Color.black);
+			//inner Rect of the Timeline
+			var innerRect = new Rect(borderRect.x + 2, borderRect.y + 2, borderRect.width - 4, borderRect.height - 4);
+			EditorGUI.DrawRect(innerRect, Color.grey);
+			return innerRect;
+		}
+
+		void DrawKeyFrames(Rect innerRect)
+		{
+			// the space between each keyframe  
+			float singleSpace = 10;
+			//float singleSpace = innerRect.width / totalStateFrames;
+			// a threshold to hide the number label
+			int threshold = 10;
+			//int threshold = (int)(totalStateFrames / singleSpace);
+			EditorGUILayout.BeginHorizontal();
+
+			for (int i = 0; i < totalStateFrames + 1; i++)
+			{
+				EditorGUI.DrawRect(new Rect(innerRect.x + i * singleSpace, innerRect.y + 15, 1, innerRect.height - 18), Color.black);
+
+				if (threshold > 0)
+				{
+					if (i % threshold == 0)
+					{
+						EditorGUI.LabelField(new Rect(innerRect.x + i * singleSpace, innerRect.y + 30, 20, innerRect.height - 13), i.ToString());
+					}
+				}
+				else if (threshold == 0)
+				{
+					EditorGUI.LabelField(new Rect(innerRect.x + i * singleSpace, innerRect.y + 30, 20, innerRect.height - 13), i.ToString());
+				}
+			}
+			EditorGUILayout.EndHorizontal();
+		}
+	}
 
 	public class TimelineSegment
     {

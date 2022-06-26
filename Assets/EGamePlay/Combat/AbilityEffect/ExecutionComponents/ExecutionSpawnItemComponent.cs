@@ -13,7 +13,7 @@ namespace EGamePlay.Combat
         public SpawnItemEffect SpawnItemEffect { get; set; }
 
 
-        public override void Setup()
+        public override void Awake()
         {
             Entity.Subscribe<ExecutionEffectEvent>(OnTriggerExecutionEffect);
         }

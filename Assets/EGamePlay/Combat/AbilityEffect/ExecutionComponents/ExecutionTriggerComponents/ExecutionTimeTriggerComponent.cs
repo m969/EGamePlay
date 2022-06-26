@@ -17,11 +17,6 @@ namespace EGamePlay.Combat
         public GameTimer TriggerTimer { get; set; }
 
 
-        public override void Setup()
-        {
-
-        }
-
         public override void Update()
         {
             if (TriggerTimer != null && TriggerTimer.IsFinished == false)

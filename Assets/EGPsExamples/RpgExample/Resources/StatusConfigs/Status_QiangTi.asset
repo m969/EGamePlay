@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179f1b93668139542837378f98986303, type: 3}
-  m_Name: Status_GeDang
+  m_Name: Status_QiangTi
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -61,7 +61,7 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 3
+      Data: 0
     - Name: ConditionType
       Entry: 3
       Data: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
       Data: 
     - Name: TriggerProbability
       Entry: 1
-      Data: 30%
+      Data: 100%
     - Name: Decorators
       Entry: 7
       Data: 3|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
@@ -95,7 +95,7 @@ MonoBehaviour:
       Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
     - Name: CustomEffectType
       Entry: 1
-      Data: "\u683C\u6321\u666E\u653B"
+      Data: "\u5F3A\u4F53"
     - Name: Params
       Entry: 7
       Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
@@ -109,7 +109,19 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 0
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: "\u683C\u6321\u6982\u7387"
+    - Name: $v
+      Entry: 1
+      Data: 30%
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -125,8 +137,8 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  ID: GeDang
-  Name: "\u683C\u6321"
+  ID: QiangTi
+  Name: "\u5F3A\u4F53"
   StatusType: 0
   Duration: 0
   ShowInStatusSlots: 0
@@ -136,4 +148,4 @@ MonoBehaviour:
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
   ParticleEffect: {fileID: 0}
   Audio: {fileID: 0}
-  StatusDescription: 
+  StatusDescription: "\u670930%\u7684\u6982\u7387\u683C\u6321\u666E\u653B"
