@@ -54,13 +54,8 @@ MonoBehaviour:
   Name: "\u9B54\u7130\u4E4B\u57DF"
   SkillSpellType: 0
   TargetSelectType: 3
-  AffectAreaType: 0
-  CircleAreaRadius: 5
-  AreaCollider: {fileID: 0}
   AffectTargetType: 2
   ColdTime: 0
   EnableChildrenStatuses: 0
-  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillExecutionAsset: {fileID: 0}
-  SkillAudio: {fileID: 0}
   SkillDescription: 
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

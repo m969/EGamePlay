@@ -8,6 +8,7 @@ using DG.Tweening;
 
 public sealed class Monster : MonoBehaviour
 {
+    public static Monster Boss { get; set; }
     public CombatEntity CombatEntity;
     public AnimationComponent AnimationComponent;
     public float MoveSpeed = 0.2f;
@@ -28,7 +29,8 @@ public sealed class Monster : MonoBehaviour
         CombatEntity = CombatContext.Instance.AddChild<CombatEntity>();
         CombatContext.Instance.Object2Entities.Add(gameObject, CombatEntity);
         CombatEntity.Position = transform.position;
-        MotionComponent = CombatEntity.AddComponent<MotionComponent>();
+        MotionComponent = CombatEntity.Get<MotionComponent>();
+        MotionComponent.RunAI();
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
@@ -39,15 +41,16 @@ public sealed class Monster : MonoBehaviour
 #else
         var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
 #endif
-        var Status = CombatEntity.AttachStatus<StatusAbility>(config);
+        var Status = CombatEntity.AttachStatus(config);
         Status.AddComponent<StatusTenacityComponent>();
         Status.OwnerEntity = CombatEntity;
         Status.TryActivateAbility();
         if (name == "Monster")
         {
+            Boss = this;
 #if !EGAMEPLAY_EXCEL
             config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_QiangTi");
-            Status = CombatEntity.AttachStatus<StatusAbility>(config);
+            Status = CombatEntity.AttachStatus(config);
             Status.OwnerEntity = CombatEntity;
             Status.TryActivateAbility();
 #endif
@@ -70,7 +73,12 @@ public sealed class Monster : MonoBehaviour
                 AnimationComponent.TryPlayFade(AnimationComponent.IdleAnimation);
             }
             transform.position = CombatEntity.Position;
-            transform.GetChild(0).localEulerAngles = new Vector3(0, CombatEntity.Direction + 90, 0);
+            transform.GetChild(0).localEulerAngles = new Vector3(0, CombatEntity.Rotation.eulerAngles.y + 90, 0);
+        }
+        else
+        {
+            AnimationComponent.Speed = 1;
+            AnimationComponent.TryPlayFade(AnimationComponent.IdleAnimation);
         }
     }
 
@@ -113,10 +121,13 @@ public sealed class Monster : MonoBehaviour
 #endif
         if (name == "Monster")
         {
-            var obj = GameObject.Instantiate(StatusIconPrefab);
-            obj.transform.SetParent(StatusSlotsTrm);
-            obj.GetComponentInChildren<Text>().text = statusConfig.Name;
-            obj.name = action.Status.Id.ToString();
+            if (StatusSlotsTrm != null)
+            {
+                var obj = GameObject.Instantiate(StatusIconPrefab);
+                obj.transform.SetParent(StatusSlotsTrm);
+                obj.GetComponentInChildren<Text>().text = statusConfig.Name;
+                obj.name = action.Status.Id.ToString();
+            }
         }
 
         if (statusConfig.ID == "Vertigo")
@@ -144,10 +155,13 @@ public sealed class Monster : MonoBehaviour
     {
         if (name == "Monster")
         {
-            var trm = StatusSlotsTrm.Find(eventData.StatusId.ToString());
-            if (trm != null)
+            if (StatusSlotsTrm != null)
             {
-                GameObject.Destroy(trm.gameObject);
+                var trm = StatusSlotsTrm.Find(eventData.StatusId.ToString());
+                if (trm != null)
+                {
+                    GameObject.Destroy(trm.gameObject);
+                }
             }
         }
         

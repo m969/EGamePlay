@@ -58,6 +58,11 @@ namespace EGamePlay.Combat
             }
         }
 
+        public override void OnDestroy()
+        {
+            DisableEffect();
+        }
+
         public void EnableEffect()
         {
             Enable = true;
@@ -106,7 +111,7 @@ namespace EGamePlay.Combat
         {
             if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
             {
-                //Log.Debug($"AbilityEffect ApplyEffectTo {targetEntity} {EffectConfig}");
+                //Log.Debug($"AbilityEffect TryAssignEffectTo {targetEntity} {EffectConfig}");
                 action.Target = targetEntity;
                 action.SourceAbility = OwnerAbility;
                 action.AbilityEffect = this;

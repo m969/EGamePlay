@@ -10,17 +10,18 @@ namespace EGamePlay.Combat
     /// </summary>
     public class ExecutionAnimationComponent : Component
     {
-        public AnimationEffect AnimationEffect { get; set; }
+        public AnimationClip AnimationClip { get; set; }
 
 
         public override void Awake()
         {
-            Entity.Subscribe<ExecutionEffectEvent>(OnTriggerExecutionEffect);
+            Entity.OnEvent(nameof(ExecutionEffect.TriggerEffect), OnTriggerExecutionEffect);
         }
 
-        public void OnTriggerExecutionEffect(ExecutionEffectEvent evnt)
+        public void OnTriggerExecutionEffect(Entity entity)
         {
-            evnt.ExecutionEffect.GetParent<SkillExecution>().OwnerEntity.Publish(AnimationEffect.AnimationData.AnimationClip);
+            //Log.Debug("ExecutionAnimationComponent OnTriggerExecutionEffect");
+            Entity.GetParent<SkillExecution>().OwnerEntity.Publish(AnimationClip);
         }
     }
 }

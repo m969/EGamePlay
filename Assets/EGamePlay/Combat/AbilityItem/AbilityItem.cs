@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using ET;
+using GameUtils;
 
 namespace EGamePlay.Combat
 {
@@ -13,18 +14,21 @@ namespace EGamePlay.Combat
     {
         public Entity AbilityEntity => AbilityExecution.AbilityEntity;
         public IAbilityExecution AbilityExecution { get; set; }
-        public ExecutionEffectComponent ItemExecutionEffectComponent { get; private set; }
-        public EffectApplyType EffectApplyType { get; private set; }
+        //public ExecutionEffectComponent ItemExecutionEffectComponent { get; private set; }
+        public EffectApplyType EffectApplyType { get; set; }
         public Vector3 Position { get; set; }
-        public float Direction { get; set; }
+        public Quaternion Rotation { get; set; }
         public CombatEntity TargetEntity { get; set; }
 
 
         public override void Awake(object initData)
         {
             AbilityExecution = initData as IAbilityExecution;
-            //ItemExecutionEffectComponent = AddComponent<ExecutionEffectComponent>();
-            var abilityEffects = AbilityExecution.AbilityEntity.Get<AbilityEffectComponent>().AbilityEffects;
+            if (AbilityEntity == null)
+            {
+                return;
+            }
+            var abilityEffects = AbilityEntity.Get<AbilityEffectComponent>().AbilityEffects;
             foreach (var abilityEffect in abilityEffects)
             {
                 if (abilityEffect.EffectConfig.Decorators != null)
@@ -40,9 +44,10 @@ namespace EGamePlay.Combat
             }
         }
 
-        //结束单元体
+        /// 结束单元体
         public void DestroyItem()
         {
+            Log.Debug("AbilityItem DestroyItem");
             Destroy(this);
         }
 
@@ -56,13 +61,29 @@ namespace EGamePlay.Combat
                 }
             }
 
-            if (EffectApplyType == EffectApplyType.AllEffects)
+            var collisionExecuteData = Get<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
+
+            if (AbilityEntity != null)
             {
-                AbilityEntity.Get<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
+                if (collisionExecuteData.ActionData.ActionEventType == FireEventType.AssignEffect)
+                {
+                    if (EffectApplyType == EffectApplyType.AllEffects)
+                    {
+                        AbilityEntity.Get<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
+                    }
+                    else
+                    {
+                        AbilityEntity.Get<AbilityEffectComponent>().TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                    }
+                }
             }
-            else
+
+            if (AbilityExecution != null)
             {
-                AbilityEntity.Get<AbilityEffectComponent>().TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                if (collisionExecuteData.ActionData.ActionEventType == FireEventType.TriggerNewExecution)
+                {
+                    OnTriggerNewExecution(collisionExecuteData.ActionData);
+                }
             }
 
             if (TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))
@@ -73,6 +94,28 @@ namespace EGamePlay.Combat
             if (TargetEntity != null)
             {
                 DestroyItem();
+            }
+        }
+
+        public void OnTriggerNewExecution(ActionEventData ActionEventData)
+        {
+            Log.Debug($"AbilityItem OnTriggerNewExecution");
+            var executionObject = AssetUtils.Load<ExecutionObject>(ActionEventData.NewExecution);
+            if (executionObject == null)
+            {
+                Log.Error($"Can not find {ActionEventData.NewExecution}");
+                return;
+            }
+            var sourceExecution = AbilityExecution as SkillExecution;
+            var execution = sourceExecution.OwnerEntity.AddChild<SkillExecution>(sourceExecution.SkillAbility);
+            execution.ExecutionObject = executionObject;
+            //execution.InputTarget = sourceExecution.InputTarget;
+            execution.InputPoint = Position;
+            execution.LoadExecutionEffects();
+            execution.BeginExecute();
+            if (executionObject != null)
+            {
+                execution.AddComponent<UpdateComponent>();
             }
         }
     }

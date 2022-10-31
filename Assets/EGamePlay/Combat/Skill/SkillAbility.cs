@@ -25,7 +25,7 @@ namespace EGamePlay.Combat
             Name = SkillConfig.Name;
             AddComponent<AbilityEffectComponent>(SkillConfig.Effects);
 #if !SERVER
-            ParseAbilityEffects();
+            Awake_Client();
 #endif
             if (SkillConfig.SkillSpellType == SkillSpellType.Passive)
             {
@@ -52,11 +52,11 @@ namespace EGamePlay.Combat
             {
                 foreach (var item in SkillConfig.ChildrenStatuses)
                 {
-                    var status = OwnerEntity.AttachStatus<StatusAbility>(item.StatusConfigObject);
+                    var status = OwnerEntity.AttachStatus(item.StatusConfigObject);
                     status.OwnerEntity = OwnerEntity;
                     status.IsChildStatus = true;
                     status.ChildStatusData = item;
-                    status.ProccessInputKVParams(item.Params);
+                    status.ProcessInputKVParams(item.Params);
                     status.TryActivateAbility();
                     ChildrenStatuses.Add(status);
                 }
@@ -80,8 +80,10 @@ namespace EGamePlay.Combat
         public Entity CreateExecution()
         {
             var execution = OwnerEntity.AddChild<SkillExecution>(this);
+            execution.ExecutionObject = ExecutionObject;
+            execution.LoadExecutionEffects();
             this.FireEvent(nameof(CreateExecution), execution);
-            if (SkillExecutionData.TimelineAsset != null)
+            if (ExecutionObject != null)
             {
                 execution.AddComponent<UpdateComponent>();
             }

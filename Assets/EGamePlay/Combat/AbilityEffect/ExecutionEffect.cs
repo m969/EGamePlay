@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public class ExecutionEffectEvent
+    public class ExecuteEffectEvent
     {
         public ExecutionEffect ExecutionEffect;
     }
@@ -14,142 +14,96 @@ namespace EGamePlay.Combat
     /// </summary>
     public partial class ExecutionEffect : Entity
     {
-        public Effect ExecutionEffectConfig { get; set; }
+        public ExecuteClipData ExecutionEffectConfig { get; set; }
         public SkillExecution ParentExecution => GetParent<SkillExecution>();
 
 
         public override void Awake(object initData)
         {
-            ExecutionEffectConfig = initData as Effect;
+            ExecutionEffectConfig = initData as ExecuteClipData;
             Name = ExecutionEffectConfig.GetType().Name;
 
-            //时间到直接应用能力给目标效果
-            if (ExecutionEffectConfig is ApplyToTargetEffect applyEffect)
+            var clipType = ExecutionEffectConfig.ExecuteClipType;
+            if (clipType == ExecuteClipType.ActionEvent)
             {
-                var executionApplyToTargetComponent = AddComponent<ExecutionApplyToTargetComponent>();
-                executionApplyToTargetComponent.EffectApplyType = applyEffect.EffectApplyType;
-                if (applyEffect.TriggerTime > 0)
+                var spawnItemEffect = ExecutionEffectConfig.ActionEventData;
+                //应用效果给目标效果
+                if (spawnItemEffect.ActionEventType == FireEventType.AssignEffect)
                 {
-                    AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)applyEffect.TriggerTime;
+                    AddComponent<ExecutionAssignToTargetComponent>().EffectApplyType = spawnItemEffect.EffectApply;
                 }
-                else
+                //触发新的执行体效果
+                if (spawnItemEffect.ActionEventType == FireEventType.TriggerNewExecution)
                 {
-                    ApplyEffect();
+                    AddComponent<ExecutionTriggerNewExecutionComponent>().ActionEventData = spawnItemEffect;
                 }
             }
-            //时间到生成碰撞体，碰撞体再触发应用能力效果
-            if (ExecutionEffectConfig is SpawnItemEffect spawnItemEffect)
+            //生成碰撞体效果，碰撞体再触发应用能力效果
+            if (clipType == ExecuteClipType.CollisionExecute)
             {
-                AddComponent<ExecutionSpawnItemComponent>().SpawnItemEffect = spawnItemEffect;
-                if (spawnItemEffect.ColliderSpawnData.ColliderSpawnEmitter.time > 0)
-                {
-                    AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)spawnItemEffect.ColliderSpawnData.ColliderSpawnEmitter.time;
-                }
-                else
-                {
-                    ApplyEffect();
-                }
+                var spawnItemEffect = ExecutionEffectConfig.CollisionExecuteData;
+                AddComponent<ExecutionSpawnCollisionComponent>().CollisionExecuteData = spawnItemEffect;
             }
-            //时间到播放动作
-            if (ExecutionEffectConfig is AnimationEffect animationEffect)
+            //播放动作效果
+            if (clipType == ExecuteClipType.Animation)
             {
-                AddComponent<ExecutionAnimationComponent>().AnimationEffect = animationEffect;
-                if (animationEffect.AnimationData.StartTime > 0)
-                {
-                    AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)animationEffect.AnimationData.StartTime;
-                }
-                else
-                {
-                    ApplyEffect();
-                }
+                var animationEffect = ExecutionEffectConfig.AnimationData;
+                AddComponent<ExecutionAnimationComponent>().AnimationClip = animationEffect.AnimationClip;
+            }
+            //播放特效效果
+            if (clipType == ExecuteClipType.ParticleEffect)
+            {
+                var animationEffect = ExecutionEffectConfig.ParticleEffectData;
+                AddComponent<ExecutionParticleEffectComponent>().ParticleEffectPrefab = animationEffect.ParticleEffect;
             }
 
-            if (ExecutionEffectConfig.Decorators != null)
+            //时间到触发执行效果
+            if (clipType == ExecuteClipType.ActionEvent)
             {
-                foreach (var effectDecorator in ExecutionEffectConfig.Decorators)
-                {
-                    if (effectDecorator is DamageReduceWithTargetCountDecorator reduceWithTargetCountDecorator)
-                    {
-
-                    }
-                }
+                Add<ExecutionTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
+            }
+            else if (ExecutionEffectConfig.Duration > 0)
+            {
+                Add<ExecutionTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
+                Get<ExecutionTimeTriggerComponent>().EndTime = ExecutionEffectConfig.EndTime;
             }
 
+            //if (ExecutionEffectConfig.Decorators != null)
+            //{
+            //    foreach (var effectDecorator in ExecutionEffectConfig.Decorators)
+            //    {
+            //        if (effectDecorator is DamageReduceWithTargetCountDecorator reduceWithTargetCountDecorator)
+            //        {
+
+            //        }
+            //    }
+            //}
+        }
+
+        public void BeginExecute()
+        {
+            if (!TryGet(out ExecutionTimeTriggerComponent timeTriggerComponent))
+            {
+                TriggerEffect();
+            }
             foreach (var item in Components.Values)
             {
                 item.Enable = true;
             }
         }
 
-        public void ApplyEffect()
+        public void TriggerEffect()
         {
             //Log.Debug($"ExecutionEffect ApplyEffect");
-            //AbilityEffect.ApplyEffectToOwner();
-            this.Publish(new ExecutionEffectEvent() { ExecutionEffect = this });
+            this.Publish(new ExecuteEffectEvent() { ExecutionEffect = this });
+            this.FireEvent(nameof(TriggerEffect));
         }
 
-        public void ExecuteEffectAssignWithTarget(CombatEntity targetEntity)
+        public void EndEffect()
         {
-            //AbilityEffect.ApplyEffectTo(targetEntity, this);
+            //Log.Debug($"ExecutionEffect ApplyEffect");
+            //this.Publish(new ExecuteEffectEvent() { ExecutionEffect = this });
+            this.FireEvent(nameof(EndEffect));
         }
     }
 }
-
-//AbilityEffect = initData as AbilityEffect;
-//Name = AbilityEffect.Name;
-
-//foreach (var component in AbilityEffect.Components.Values)
-//{
-//    //时间到直接应用能力给目标效果
-//    if (component is EffectExecutionApplyToTargetComponent applyToTargetComponent)
-//    {
-//        var executionApplyToTargetComponent = AddComponent<ExecutionApplyToTargetComponent>();
-//        executionApplyToTargetComponent.EffectApplyType = applyToTargetComponent.EffectApplyType;
-//        if (applyToTargetComponent.TriggerTime > 0)
-//        {
-//            AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)applyToTargetComponent.TriggerTime;
-//        }
-//        else
-//        {
-//            ApplyEffect();
-//        }
-//    }
-//    //时间到生成碰撞体，碰撞体再触发应用能力效果
-//    if (component is EffectExecutionSpawnItemComponent spawnItemComponent)
-//    {
-//        AddComponent<ExecutionSpawnItemComponent>().EffectSpawnItemComponent = spawnItemComponent;
-//        if (spawnItemComponent.ColliderSpawnData.ColliderSpawnEmitter.time > 0)
-//        {
-//            AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)spawnItemComponent.ColliderSpawnData.ColliderSpawnEmitter.time;
-//        }
-//        else
-//        {
-//            ApplyEffect();
-//        }
-//    }
-//    //时间到播放动作
-//    if (component is EffectExecutionAnimationComponent animationComponent)
-//    {
-//        AddComponent<ExecutionAnimationComponent>().EffectAnimationComponent = animationComponent;
-//        if (animationComponent.AnimationData.StartTime > 0)
-//        {
-//            AddComponent<ExecutionTimeTriggerComponent>().TriggerTime = (float)animationComponent.AnimationData.StartTime;
-//        }
-//        else
-//        {
-//            ApplyEffect();
-//        }
-//    }
-//}
-
-//if (AbilityEffect.EffectConfig is CustomEffect customEffect)
-//{
-//    if (customEffect.CustomEffectType == "按命中目标数递减百分比伤害")
-//    {
-//        if (Parent is AbilityItem abilityItem)
-//        {
-//            //abilityItem.GetComponent<ExecutionEffectComponent>().DamageExecutionEffect.AddComponent<ExecutionDamageReduceWithTargetCountComponent>(AbilityEffect);
-//            abilityItem.AddComponent<ExecutionDamageReduceWithTargetCountComponent>(AbilityEffect);
-//        }
-//    }
-//}

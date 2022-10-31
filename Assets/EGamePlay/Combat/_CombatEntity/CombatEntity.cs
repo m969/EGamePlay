@@ -13,7 +13,8 @@ namespace EGamePlay.Combat
     /// </summary>
     public sealed class CombatEntity : Entity, IPosition
     {
-        public GameObject ModelObject { get; set; }
+        public GameObject HeroObject { get; set; }
+        public Transform ModelTrans { get; set; }
         public HealthPoint CurrentHealth { get; private set; }
 
         //效果赋给行动能力
@@ -39,13 +40,15 @@ namespace EGamePlay.Combat
         public AttackAbility AttackAbility { get; set; }
         public AttackBlockActionAbility AttackBlockAbility { get; set; }
 
-        public SkillExecution CurrentSkillExecution { get; set; }
+        //执行中的执行体
+        public SkillExecution SpellingExecution { get; set; }
         public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
+        public Dictionary<int, SkillAbility> IdSkills { get; set; } = new Dictionary<int, SkillAbility>();
         public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
         public Dictionary<string, List<StatusAbility>> TypeIdStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
-        public Dictionary<Type, List<StatusAbility>> TypeStatuses { get; set; } = new Dictionary<Type, List<StatusAbility>>();
+        //public Dictionary<Type, List<StatusAbility>> TypeStatuses { get; set; } = new Dictionary<Type, List<StatusAbility>>();
         public Vector3 Position { get; set; }
-        public float Direction { get; set; }
+        public Quaternion Rotation { get; set; }
         /// 行为禁制
         public ActionControlType ActionControlType { get; set; }
         /// 禁制豁免
@@ -55,12 +58,12 @@ namespace EGamePlay.Combat
         public override void Awake()
         {
             AddComponent<AttributeComponent>();
-            AddComponent<ActionAbilityComponent>();
             AddComponent<ActionPointComponent>();
             AddComponent<ConditionComponent>();
             AddComponent<StatusComponent>();
             AddComponent<SkillComponent>();
             AddComponent<SpellComponent>();
+            AddComponent<MotionComponent>();
             CurrentHealth = AddChild<HealthPoint>();
             CurrentHealth.HealthPointNumeric = GetComponent<AttributeComponent>().HealthPoint;
             CurrentHealth.HealthPointMaxNumeric = GetComponent<AttributeComponent>().HealthPointMax;
@@ -69,13 +72,13 @@ namespace EGamePlay.Combat
             AttackAbility = AttachAbility<AttackAbility>(null);
             AttackBlockAbility = AttachAction<AttackBlockActionAbility>();
 
+            EffectAssignAbility = AttachAction<EffectAssignAbility>();
             SpellAbility = AttachAction<SpellActionAbility>();
             MotionAbility = AttachAction<MotionActionAbility>();
             DamageAbility = AttachAction<DamageActionAbility>();
             CureAbility = AttachAction<CureActionAbility>();
             AddStatusAbility = AttachAction<AddStatusActionAbility>();
             SpellAttackAbility = AttachAction<AttackActionAbility>();
-            EffectAssignAbility = AttachAction<EffectAssignAbility>();
             RoundAbility = AttachAction<RoundActionAbility>();
             JumpToAbility = AttachAction<JumpToActionAbility>();
         }
@@ -130,7 +133,7 @@ namespace EGamePlay.Combat
         /// 挂载能力，技能、被动、buff等都通过这个接口挂载
         /// </summary>
         /// <param name="configObject"></param>
-        private T AttachAbility<T>(object configObject) where T : Entity, IAbilityEntity
+        public T AttachAbility<T>(object configObject) where T : Entity, IAbilityEntity
         {
             var ability = this.AddChild<T>(configObject);
             ability.AddComponent<AbilityLevelComponent>();
@@ -147,32 +150,22 @@ namespace EGamePlay.Combat
             return action;
         }
 
-        public T AttachSkill<T>(object configObject) where T : SkillAbility
+        public SkillAbility AttachSkill(object configObject)
         {
-            var skill = AttachAbility<T>(configObject);
+            var skill = AttachAbility<SkillAbility>(configObject);
             NameSkills.Add(skill.SkillConfig.Name, skill);
+            IdSkills.Add(skill.SkillConfig.Id, skill);
             return skill;
         }
 
-        public T AttachStatus<T>(object configObject) where T : StatusAbility
+        public StatusAbility AttachStatus(object configObject)
         {
-            var status = AttachAbility<T>(configObject);
-            if (!TypeIdStatuses.ContainsKey(status.StatusConfig.ID))
-            {
-                TypeIdStatuses.Add(status.StatusConfig.ID, new List<StatusAbility>());
-            }
-            TypeIdStatuses[status.StatusConfig.ID].Add(status);
-            return status;
+            return GetComponent<StatusComponent>().AttachStatus(configObject);
         }
 
         public void OnStatusRemove(StatusAbility statusAbility)
         {
-            TypeIdStatuses[statusAbility.StatusConfig.ID].Remove(statusAbility);
-            if (TypeIdStatuses[statusAbility.StatusConfig.ID].Count == 0)
-            {
-                TypeIdStatuses.Remove(statusAbility.StatusConfig.ID);
-            }
-            this.Publish(new RemoveStatusEvent() { CombatEntity = this, Status = statusAbility, StatusId = statusAbility.Id });
+            GetComponent<StatusComponent>().OnStatusRemove(statusAbility);
         }
 
         public void BindSkillInput(SkillAbility abilityEntity, KeyCode keyCode)
@@ -181,19 +174,14 @@ namespace EGamePlay.Combat
             abilityEntity.TryActivateAbility();
         }
 
-        public bool HasStatus<T>(T statusType) where T : StatusAbility
-        {
-            return TypeStatuses.ContainsKey(statusType.GetType());
-        }
-        
         public bool HasStatus(string statusTypeId)
         {
-            return TypeIdStatuses.ContainsKey(statusTypeId);
+            return GetComponent<StatusComponent>().TypeIdStatuses.ContainsKey(statusTypeId);
         }
 
         public StatusAbility GetStatus(string statusTypeId)
         {
-            return TypeIdStatuses[statusTypeId][0];
+            return GetComponent<StatusComponent>().TypeIdStatuses[statusTypeId][0];
         }
 
         #region 回合制战斗

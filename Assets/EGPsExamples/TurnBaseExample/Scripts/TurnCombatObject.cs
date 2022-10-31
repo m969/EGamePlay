@@ -24,7 +24,7 @@ public class TurnCombatObject : MonoBehaviour
 
         CombatObjectData = GetComponent<CombatObjectData>();
         SeatPoint = transform.position;
-        CombatEntity.ModelObject = gameObject;
+        CombatEntity.HeroObject = gameObject;
         CombatEntity.ListenActionPoint(ActionPointType.PreJumpTo, OnPreJumpTo);
         CombatEntity.ListenActionPoint(ActionPointType.PreGiveAttack, OnPreAttack);
         CombatEntity.ListenActionPoint(ActionPointType.PostGiveAttack, OnPostAttack);
@@ -48,9 +48,9 @@ public class TurnCombatObject : MonoBehaviour
     public void OnPreJumpTo(Entity action)
     {
         var jumpToAction = action as JumpToAction;
-        var targetPoint = jumpToAction.Target.ModelObject.transform.position + jumpToAction.Target.ModelObject.transform.forward * 1.7f;
-        jumpToAction.Creator.ModelObject.transform.DOMove(targetPoint, jumpToAction.Creator.JumpToTime / 1000f).SetEase(Ease.Linear);
-        var AnimationComponent = jumpToAction.Creator.ModelObject.GetComponent<CombatObjectData>().AnimationComponent;
+        var targetPoint = jumpToAction.Target.HeroObject.transform.position + jumpToAction.Target.HeroObject.transform.forward * 1.7f;
+        jumpToAction.Creator.HeroObject.transform.DOMove(targetPoint, jumpToAction.Creator.JumpToTime / 1000f).SetEase(Ease.Linear);
+        var AnimationComponent = jumpToAction.Creator.HeroObject.GetComponent<CombatObjectData>().AnimationComponent;
         AnimationComponent.Speed = 2f;
         AnimationComponent.PlayFade(AnimationComponent.RunAnimation);
     }

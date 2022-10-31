@@ -4,6 +4,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
+using UnityEditor;
+using UnityEngine.UI;
+using GameUtils;
+using System.Drawing;
 
 namespace EGamePlay.Combat
 {
@@ -14,53 +18,70 @@ namespace EGamePlay.Combat
     {
         private CombatEntity CombatEntity => GetEntity<CombatEntity>();
         public override bool DefaultEnable { get; set; } = true;
+        public Dictionary<int, ExecutionObject> ExecutionObjects = new Dictionary<int, ExecutionObject>();
 
+
+        public override void Awake()
+        {
+
+        }
+
+        public void LoadExecutionObjects()
+        {
+            foreach (var item in CombatEntity.IdSkills)
+            {
+                var executionObj = AssetUtils.Load<ExecutionObject>($"Execution_{item.Key}");
+                if (executionObj != null)
+                {
+                    ExecutionObjects.Add(item.Key, executionObj);
+                }
+            }
+        }
 
         public void SpellWithTarget(SkillAbility spellSkill, CombatEntity targetEntity)
         {
-            if (CombatEntity.CurrentSkillExecution != null)
+            if (CombatEntity.SpellingExecution != null)
                 return;
 
-            //Log.Debug($"OnInputTarget {combatEntity}");
-            if (CombatEntity.SpellAbility.TryMakeAction(out var action))
+            if (CombatEntity.SpellAbility.TryMakeAction(out var spellAction))
             {
-                action.SkillAbility = spellSkill;
-                action.SkillExecution = spellSkill.CreateExecution() as SkillExecution;
-                action.SkillTargets.Add(targetEntity);
-                action.SkillExecution.InputTarget = targetEntity;
-                action.SpellSkill();
+                spellAction.SkillAbility = spellSkill;
+                spellAction.InputTarget = targetEntity;
+                spellAction.InputPoint = targetEntity.Position;
+                spellSkill.OwnerEntity.Rotation = Quaternion.LookRotation(targetEntity.Position - spellSkill.OwnerEntity.Position);
+                spellAction.InputDirection = spellSkill.OwnerEntity.Rotation.eulerAngles.y;
+                spellAction.SpellSkill();
             }
         }
 
         public void SpellWithPoint(SkillAbility spellSkill, Vector3 point)
         {
-            if (CombatEntity.CurrentSkillExecution != null)
+            if (CombatEntity.SpellingExecution != null)
                 return;
 
-            //Log.Debug($"OnInputPoint {point}");
-            if (CombatEntity.SpellAbility.TryMakeAction(out var action))
+            if (CombatEntity.SpellAbility.TryMakeAction(out var spellAction))
             {
-                action.SkillAbility = spellSkill;
-                action.SkillExecution = spellSkill.CreateExecution() as SkillExecution;
-                action.SkillExecution.InputPoint = point;
-                action.SpellSkill();
+                spellAction.SkillAbility = spellSkill;
+                spellAction.InputPoint = point;
+                spellSkill.OwnerEntity.Rotation = Quaternion.LookRotation(point - spellSkill.OwnerEntity.Position);
+                spellAction.InputDirection = spellSkill.OwnerEntity.Rotation.eulerAngles.y;
+                spellAction.SpellSkill();
             }
         }
 
-        public void SpellWithDirect(SkillAbility spellSkill, float direction, Vector3 point)
-        {
-            if (CombatEntity.CurrentSkillExecution != null)
-                return;
+        //public void SpellWithDirect(SkillAbility spellSkill, float direction, Vector3 point)
+        //{
+        //    if (CombatEntity.SpellingExecution != null)
+        //        return;
 
-            //Log.Debug($"OnInputDirect {direction}");
-            if (CombatEntity.SpellAbility.TryMakeAction(out var action))
-            {
-                action.SkillAbility = spellSkill;
-                action.SkillExecution = spellSkill.CreateExecution() as SkillExecution;
-                action.SkillExecution.InputPoint = point;
-                action.SkillExecution.InputDirection = direction;
-                action.SpellSkill();
-            }
-        }
+        //    if (CombatEntity.SpellAbility.TryMakeAction(out var spellAction))
+        //    {
+        //        spellAction.SkillAbility = spellSkill;
+        //        spellAction.InputPoint = point;
+        //        spellSkill.OwnerEntity.Rotation = Quaternion.LookRotation(point - spellSkill.OwnerEntity.Position);
+        //        spellAction.InputDirection = spellSkill.OwnerEntity.Rotation.eulerAngles.y;
+        //        spellAction.SpellSkill();
+        //    }
+        //}
     }
 }

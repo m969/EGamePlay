@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1396265068132933951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db22cb51ab2b354aae7c5f4e7e1d7aa, type: 3}
+  m_Name: ExecuteClip
+  m_EditorClassIdentifier: 
+  StartTime: 0
+  EndTime: 0.3
+  ExecuteClipType: 0
+  ActionEventData:
+    ActionEventType: 0
+    EffectApply: 0
+    NewExecution: 
+  CollisionExecuteData:
+    ExecuteType: 0
+    ActionData:
+      ActionEventType: 0
+      EffectApply: 0
+      NewExecution: 
+    Shape: 0
+    Radius: 3
+    Center: {x: 0, y: 0, z: 0}
+    Size: {x: 0, y: 0, z: 0}
+    MoveType: 0
+    ObjAsset: {fileID: 4659930441604555287, guid: e04cf34d12876b249b8a764625ced6f6,
+      type: 3}
+    Speed: 1
+    Points: []
+  AnimationData:
+    AnimationClip: {fileID: 0}
+  AudioData:
+    AudioClip: {fileID: 0}
+  ParticleEffectData:
+    ParticleEffect: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb448c210e2a7b4bb0777daef6b1b34, type: 3}
+  m_Name: Execution_1008_Expllosion
+  m_EditorClassIdentifier: 
+  Id: 1008_Expllosion
+  TotalTime: 0.3
+  ObjAsset: {fileID: 0}
+  TargetInputType: 2
+  RangeIndicatorObjAsset: {fileID: 0}
+  DirectionIndicatorObjAsset: {fileID: 0}
+  ExecuteClips:
+  - {fileID: -1396265068132933951}

@@ -7,6 +7,9 @@ using ET;
 using Log = EGamePlay.Log;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
+using DG.Tweening;
+using System.Linq;
+using System;
 
 namespace EGamePlay.Combat
 {
@@ -15,32 +18,28 @@ namespace EGamePlay.Combat
     /// </summary>
     public partial class SkillExecution
     {
-        public SkillExecutionData SkillExecutionData => SkillAbility.SkillExecutionData;
-        public GameObject SkillExecutionAsset => SkillAbility.SkillExecutionData.SkillExecutionAsset;
-        public TimelineAsset TimelineAsset => SkillAbility.SkillExecutionData.TimelineAsset;
-
-
         public override void Awake(object initData)
         {
             AbilityEntity = initData as SkillAbility;
-
             OwnerEntity = GetParent<CombatEntity>();
-
-            AddComponent<ExecutionEffectComponent>(SkillAbility.Get<AbilityEffectComponent>().AbilityEffects);
-
             OriginTime = ET.TimeHelper.Now();
+        }
+
+        public void LoadExecutionEffects()
+        {
+            AddComponent<ExecutionEffectComponent>();
         }
 
         public override void Update()
         {
-            if (SkillAbility.Spelling == false)
-            {
-                return;
-            }
+            //if (SkillAbility.Spelling == false)
+            //{
+            //    return;
+            //}
 
             var nowSeconds = (double)(ET.TimeHelper.Now() - OriginTime) / 1000;
 
-            if (nowSeconds >= SkillAbility.SkillExecutionData.SkillExecuteTime)
+            if (nowSeconds >= ExecutionObject.TotalTime)
             {
                 EndExecute();
             }
@@ -48,96 +47,149 @@ namespace EGamePlay.Combat
 
         public void BeginExecute()
         {
-            GetParent<CombatEntity>().CurrentSkillExecution = this;
-            SkillAbility.Spelling = true;
-
-            if (SkillExecutionAsset != null && TimelineAsset != null)
+            GetParent<CombatEntity>().SpellingExecution = this;
+            if (SkillAbility != null)
             {
-                var timelineAsset = TimelineAsset;
-                if (timelineAsset != null)
-                {
-                    var skillExecutionObj = GameObject.Instantiate(SkillExecutionAsset, OwnerEntity.Position, Quaternion.Euler(0, OwnerEntity.Direction, 0));
-                    GameObject.Destroy(skillExecutionObj, (float)timelineAsset.duration);
-                }
+                SkillAbility.Spelling = true;
             }
+
+            Get<ExecutionEffectComponent>().BeginExecute();
+
             FireEvent(nameof(BeginExecute));
-            //base.BeginExecute();
         }
 
         public void EndExecute()
         {
-            GetParent<CombatEntity>().CurrentSkillExecution = null;
-            SkillAbility.Spelling = false;
+            //Log.Debug("SkillExecution EndExecute");
+            GetParent<CombatEntity>().SpellingExecution = null;
+            if (SkillAbility != null)
+            {
+                SkillAbility.Spelling = false;
+            }
             SkillTargets.Clear();
             Entity.Destroy(this);
             //base.EndExecute();
         }
 
         /// <summary>   技能碰撞体生成事件   </summary>
-        public void SpawnCollisionItem(ExecutionEventEmitter colliderSpawnEmitter)
+        public void SpawnCollisionItem(ExecuteClipData clipData)
         {
-            if (colliderSpawnEmitter.ColliderType == ColliderType.TargetFly) TargetFlyProcess(colliderSpawnEmitter);
-            if (colliderSpawnEmitter.ColliderType == ColliderType.ForwardFly) ForwardFlyProcess(colliderSpawnEmitter);
-            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedPosition) FixedPositionProcess(colliderSpawnEmitter);
-            if (colliderSpawnEmitter.ColliderType == ColliderType.FixedDirection) FixedDirectionProcess(colliderSpawnEmitter);
+            //Log.Debug($"SkillExecution SpawnCollisionItem {clipData.StartTime} {clipData.Duration}");
+
+            var abilityItem = Entity.Create<AbilityItem>(this);
+            abilityItem.AddComponent<AbilityItemCollisionExecuteComponent>(clipData);
+
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.PathFly) PathFlyProcess(abilityItem);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirectionPathFly) PathFlyProcess(abilityItem);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.TargetFly) TargetFlyProcess(abilityItem);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.ForwardFly) ForwardFlyProcess(abilityItem);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedPosition) FixedPositionProcess(abilityItem);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirection) FixedDirectionProcess(abilityItem);
+
+            CreateAbilityItemProxyObj(abilityItem);
         }
 
         /// <summary>   目标飞行碰撞体     </summary>
-        private void TargetFlyProcess(ExecutionEventEmitter colliderSpawnEmitter)
+        private void TargetFlyProcess(AbilityItem abilityItem)
         {
-            var abilityItem = Entity.Create<AbilityItem>(this);
-            abilityItem.Name = colliderSpawnEmitter.ColliderName;
+            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.TargetEntity = InputTarget;
             abilityItem.Position = OwnerEntity.Position;
-            CreateAbilityItemObj(abilityItem);
-            abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(InputTarget);
+            abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveToWithTime(InputTarget, clipData.Duration);
         }
 
         /// <summary>   前向飞行碰撞体     </summary>
-        private void ForwardFlyProcess(ExecutionEventEmitter colliderSpawnEmitter)
+        private void ForwardFlyProcess(AbilityItem abilityItem)
         {
-            var abilityItem = Entity.Create<AbilityItem>(this);
-            abilityItem.Name = colliderSpawnEmitter.ColliderName;
             abilityItem.Position = OwnerEntity.Position;
-            CreateAbilityItemObj(abilityItem);
             var x = Mathf.Sin(Mathf.Deg2Rad * InputDirection);
             var z = Mathf.Cos(Mathf.Deg2Rad * InputDirection);
             var destination = abilityItem.Position + new Vector3(x, 0, z) * 30;
-            abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(destination, 1f).OnMoveFinish(()=> { Entity.Destroy(abilityItem); });
+            abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(destination, 1f).OnMoveFinish(() => { Entity.Destroy(abilityItem); });
+        }
+
+        /// <summary>   路径飞行     </summary>
+        private void PathFlyProcess(AbilityItem abilityItem)
+        {
+            //abilityItem.Position = OwnerEntity.Position;
+            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
+            var tempPoints = clipData.CollisionExecuteData.GetCtrlPoints();
+
+            var angle = OwnerEntity.Rotation.eulerAngles.y - 90;
+            var a = angle * MathF.PI / 180;
+            //Log.Debug($"agree={agree}");
+            foreach (var item in tempPoints)
+            {
+                var x = item.position.x;
+                var y = item.position.z;
+                var x1 = x * Mathf.Cos(a) - y * Mathf.Sin(a);
+                var y1 = -(y * Mathf.Cos(a) + x * Mathf.Sin(a));
+                //Log.Debug($"x={x},y={y} x1={x1},y={y1}");
+                item.position = OwnerEntity.Position + new Vector3(x1, item.position.y, y1);
+            }
+
+            abilityItem.Position = tempPoints[0].position;
+            var moveComp = abilityItem.Add<AbilityItemBezierMoveComponent>();
+            moveComp.PositionEntity = abilityItem;
+            moveComp.ctrlPoints = tempPoints;
+            moveComp.DOMove();
+            abilityItem.Add<LifeTimeComponent>(clipData.EndTime - clipData.StartTime);
         }
 
         /// <summary>   固定位置碰撞体     </summary>
-        private void FixedPositionProcess(ExecutionEventEmitter colliderSpawnEmitter)
+        private void FixedPositionProcess(AbilityItem abilityItem)
         {
-            var abilityItem = Entity.Create<AbilityItem>(this);
-            abilityItem.Name = colliderSpawnEmitter.ColliderName;
+            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.Position = InputPoint;
-            CreateAbilityItemObj(abilityItem);
-            abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
+            abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
         }
 
         /// <summary>   固定方向碰撞体     </summary>
-        private void FixedDirectionProcess(ExecutionEventEmitter colliderSpawnEmitter)
+        private void FixedDirectionProcess(AbilityItem abilityItem)
         {
-            var abilityItem = Entity.Create<AbilityItem>(this);
-            abilityItem.Name = colliderSpawnEmitter.ColliderName;
+            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.Position = OwnerEntity.Position;
-            abilityItem.Direction = OwnerEntity.Direction;
-            CreateAbilityItemObj(abilityItem);
-            abilityItem.AddComponent<LifeTimeComponent>(colliderSpawnEmitter.ExistTime);
+            abilityItem.Rotation = OwnerEntity.Rotation;
+            abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
         }
 
         /// <summary>   创建技能碰撞体     </summary>
-        public void CreateAbilityItemObj(AbilityItem abilityItem)
+        public GameObject CreateAbilityItemProxyObj(AbilityItem abilityItem)
         {
-            var abilityItemObj = GameObject.Instantiate(Resources.Load<GameObject>($"AbilityItems/{abilityItem.Name}"), abilityItem.Position, Quaternion.Euler(0, abilityItem.Direction, 0));
-            abilityItemObj.GetComponent<AbilityItemProxyObj>().AbilityItem = abilityItem;
-            abilityItemObj.GetComponent<Collider>().enabled = false;
-            abilityItemObj.GetComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => {
+            var proxyObj = new GameObject("AbilityItemProxy");
+            proxyObj.transform.position = abilityItem.Position;
+            proxyObj.transform.rotation = abilityItem.Rotation;
+            proxyObj.AddComponent<AbilityItemProxyObj>().AbilityItem = abilityItem;
+            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
+
+            if (clipData.Shape == CollisionShape.Sphere)
+            {
+                proxyObj.AddComponent<SphereCollider>().enabled = false;
+                proxyObj.GetComponent<SphereCollider>().radius = clipData.Radius;
+            }
+            if (clipData.Shape == CollisionShape.Box)
+            {
+                proxyObj.AddComponent<BoxCollider>().enabled = false;
+                proxyObj.GetComponent<BoxCollider>().center = clipData.Center;
+                proxyObj.GetComponent<BoxCollider>().size = clipData.Size;
+            }
+
+            proxyObj.AddComponent<OnTriggerEnterCallback>().OnTriggerEnterCallbackAction = (other) => {
                 var combatEntity = CombatContext.Instance.Object2Entities[other.gameObject];
                 abilityItem.OnCollision(combatEntity);
             };
-            abilityItemObj.GetComponent<Collider>().enabled = true;
+
+            proxyObj.GetComponent<Collider>().enabled = true;
+
+            if (clipData.ObjAsset != null)
+            {
+                abilityItem.Name = clipData.ObjAsset.name;
+                var effectObj = GameObject.Instantiate(clipData.ObjAsset, proxyObj.transform);
+                effectObj.transform.localPosition = Vector3.zero;
+                effectObj.transform.localRotation = Quaternion.identity;
+            }
+
+            return proxyObj;
         }
     }
 }

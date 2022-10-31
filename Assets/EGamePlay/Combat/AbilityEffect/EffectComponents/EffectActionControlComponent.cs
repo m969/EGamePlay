@@ -22,26 +22,30 @@ namespace EGamePlay.Combat
 
         public override void OnEnable()
         {
-            var prohibitEffect = ActionControlEffect;
-            ActionControlType = ActionControlType | prohibitEffect.ActionControlType;
-            var parentEntity = Entity.GetParent<StatusAbility>().GetParent<CombatEntity>();
-            parentEntity.ActionControlType = parentEntity.ActionControlType | prohibitEffect.ActionControlType;
-            var moveForbid = parentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid);
-            if (moveForbid)
-            {
-                parentEntity.GetComponent<MotionComponent>().Enable = false;
-            }
+            Entity.Parent.Parent.GetComponent<StatusComponent>().OnStatusesChanged(Entity.GetParent<StatusAbility>());
+
+            //var prohibitEffect = ActionControlEffect;
+            //ActionControlType = ActionControlType | prohibitEffect.ActionControlType;
+            //var parentEntity = Entity.GetParent<StatusAbility>().GetParent<CombatEntity>();
+            //parentEntity.ActionControlType = parentEntity.ActionControlType | prohibitEffect.ActionControlType;
+            //var moveForbid = parentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid);
+            //if (moveForbid)
+            //{
+            //    parentEntity.GetComponent<MotionComponent>().Enable = false;
+            //}
         }
 
         public override void OnDisable()
         {
-            var parentEntity = Entity.GetParent<StatusAbility>().GetParent<CombatEntity>();
-            parentEntity.ActionControlType = parentEntity.ActionControlType & (~ActionControlType);
-            var moveForbid = parentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid);
-            if (!moveForbid)
-            {
-                parentEntity.GetComponent<MotionComponent>().Enable = true;
-            }
+            Entity.Parent.Parent.GetComponent<StatusComponent>().OnStatusesChanged(Entity.GetParent<StatusAbility>());
+
+            //var parentEntity = Entity.GetParent<StatusAbility>().GetParent<CombatEntity>();
+            //parentEntity.ActionControlType = parentEntity.ActionControlType & (~ActionControlType);
+            //var moveForbid = parentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid);
+            //if (!moveForbid)
+            //{
+            //    parentEntity.GetComponent<MotionComponent>().Enable = true;
+            //}
         }
     }
 }

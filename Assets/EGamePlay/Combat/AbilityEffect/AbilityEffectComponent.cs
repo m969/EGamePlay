@@ -68,6 +68,7 @@ namespace EGamePlay.Combat
         /// <summary>   尝试将所有效果赋给目标   </summary>
         public void TryAssignAllEffectsToTargetWithExecution(CombatEntity targetEntity, IAbilityExecution execution)
         {
+            Log.Debug($"TryAssignAllEffectsToTargetWithExecution {targetEntity} {AbilityEffects.Count}");
             if (AbilityEffects.Count > 0)
             {
                 foreach (var abilityEffect in AbilityEffects)

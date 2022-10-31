@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
     {
         public override bool DefaultEnable { get; set; } = true;
         public Vector3 Position { get => GetEntity<CombatEntity>().Position; set => GetEntity<CombatEntity>().Position = value; }
-        public float Direction { get => GetEntity<CombatEntity>().Direction; set => GetEntity<CombatEntity>().Direction = value; }
+        public Quaternion Rotation { get => GetEntity<CombatEntity>().Rotation; set => GetEntity<CombatEntity>().Rotation = value; }
         public bool CanMove { get; set; }
         public GameTimer IdleTimer { get; set; }
         public GameTimer MoveTimer { get; set; }
@@ -24,6 +24,11 @@ namespace EGamePlay.Combat
 
         public override void Awake()
         {
+
+        }
+
+        public void RunAI()
+        {
             IdleTimer = new GameTimer(RandomHelper.RandomNumber(20, 30) / 10f);
             MoveTimer = new GameTimer(RandomHelper.RandomNumber(20, 40) / 10f);
             IdleTimer.Reset();
@@ -32,6 +37,11 @@ namespace EGamePlay.Combat
 
         public override void Update()
         {
+            if (IdleTimer == null)
+            {
+                return;
+            }
+
             if (IdleTimer.IsRunning)
             {
                 IdleTimer.UpdateAsFinish(Time.deltaTime, IdleFinish);
@@ -58,7 +68,8 @@ namespace EGamePlay.Combat
             }
             vec2.Normalize();
             var right = new Vector2(1, 0);
-            Direction = VectorAngle(right, vec2);
+            var y = VectorAngle(right, vec2);
+            Rotation = Quaternion.Euler(0, y, 0);
 
             MoveVector = new Vector3(vec2.x, 0, vec2.y) / 100f;
             MoveTimer.Reset();

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using ET;
 using DG.Tweening;
+using System.Net.PeerToPeer.Collaboration;
 
 namespace EGamePlay.Combat
 {
@@ -13,8 +14,17 @@ namespace EGamePlay.Combat
         PathMove,
     }
 
+    public enum SpeedType
+    {
+        Speed,
+        Duration,
+    }
+
     public class MoveWithDotweenComponent : Component
     {
+        public SpeedType SpeedType { get; set; }
+        public float Speed { get; set; }
+        public float Duration { get; set; }
         public IPosition PositionEntity { get; set; }
         public IPosition TargetPositionEntity { get; set; }
         public Vector3 Destination { get; set; }
@@ -31,7 +41,8 @@ namespace EGamePlay.Combat
         {
             if (TargetPositionEntity != null)
             {
-                DoMoveTo(TargetPositionEntity);
+                if (SpeedType == SpeedType.Speed) DoMoveToWithSpeed(TargetPositionEntity, Speed);
+                if (SpeedType == SpeedType.Duration) DoMoveToWithTime(TargetPositionEntity, Duration);
             }
         }
 
@@ -42,14 +53,34 @@ namespace EGamePlay.Combat
             return this;
         }
 
-        public void DoMoveTo(IPosition targetPositionEntity)
+        public void DoMoveToWithSpeed(IPosition targetPositionEntity, float speed = 1f)
         {
+            Speed = speed;
+            SpeedType = SpeedType.Speed;
             TargetPositionEntity = targetPositionEntity;
             MoveTweener?.Kill();
             var dist = Vector3.Distance(PositionEntity.Position, TargetPositionEntity.Position);
-            var duration = dist / 10;
+            var duration = dist / speed;
             MoveTweener = DOTween.To(() => { return PositionEntity.Position; }, (x) => PositionEntity.Position = x, TargetPositionEntity.Position, duration);
         }
+
+        public void DoMoveToWithTime(IPosition targetPositionEntity, float time = 1f)
+        {
+            Duration = time;
+            SpeedType = SpeedType.Duration;
+            TargetPositionEntity = targetPositionEntity;
+            MoveTweener?.Kill();
+            MoveTweener = DOTween.To(() => { return PositionEntity.Position; }, (x) => PositionEntity.Position = x, TargetPositionEntity.Position, time);
+        }
+
+        //public void DoMovePath(List<Vector3> points)
+        //{
+        //    TargetPositionEntity = targetPositionEntity;
+        //    MoveTweener?.Kill();
+        //    var dist = Vector3.Distance(PositionEntity.Position, TargetPositionEntity.Position);
+        //    var duration = dist / 10;
+        //    MoveTweener = DOTween.To(() => { return PositionEntity.Position; }, (x) => PositionEntity.Position = x, TargetPositionEntity.Position, duration);
+        //}
 
         public void OnMoveFinish(System.Action action)
         {

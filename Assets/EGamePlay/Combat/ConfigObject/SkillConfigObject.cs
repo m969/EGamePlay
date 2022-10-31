@@ -27,13 +27,13 @@ namespace EGamePlay.Combat
         public SkillSpellType SkillSpellType;
         [LabelText("技能目标检测方式"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillTargetSelectType TargetSelectType;
-        [LabelText("区域场类型"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
-        public SkillAffectAreaType AffectAreaType;
-        [LabelText("圆形区域场半径"), ShowIf("ShowCircleAreaRadius")]
-        public float CircleAreaRadius;
-        public bool ShowCircleAreaRadius { get { return AffectAreaType == SkillAffectAreaType.Circle && TargetSelectType == SkillTargetSelectType.AreaSelect; } }
-        [LabelText("区域场配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
-        public GameObject AreaCollider;
+        //[LabelText("区域场类型"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
+        //public SkillAffectAreaType AffectAreaType;
+        //[LabelText("圆形区域场半径"), ShowIf("ShowCircleAreaRadius")]
+        //public float CircleAreaRadius;
+        //public bool ShowCircleAreaRadius { get { return AffectAreaType == SkillAffectAreaType.Circle && TargetSelectType == SkillTargetSelectType.AreaSelect; } }
+        //[LabelText("区域场配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
+        //public GameObject AreaCollider;
         [LabelText("技能作用对象"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillAffectTargetType AffectTargetType;
         [LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
@@ -41,7 +41,7 @@ namespace EGamePlay.Combat
 
         [LabelText("附加状态效果")]
         public bool EnableChildrenStatuses;
-        [OnInspectorGUI("DrawSpace", append: true)]
+        //[OnInspectorGUI("DrawSpace", append: true)]
         [HideReferenceObjectPicker]
         [LabelText("附加状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false, CustomAddFunction = "AddChildStatus")]
         public List<ChildStatus> ChildrenStatuses = new List<ChildStatus>();
@@ -50,6 +50,19 @@ namespace EGamePlay.Combat
             ChildrenStatuses.Add(new ChildStatus());
         }
 
+#if !NOT_UNITY
+        //[OnInspectorGUI("BeginBox", append: false)]
+        //[LabelText("技能执行")]
+        //public GameObject SkillExecutionAsset;
+        //[LabelText("技能音效")]
+        //[OnInspectorGUI("EndBox", append: true)]
+        //public AudioClip SkillAudio;
+
+        [TextArea, LabelText("技能描述")/*, Space(30)*/]
+        public string SkillDescription;
+#endif
+
+        [OnInspectorGUI("BeginBox", append: false)]
         [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
@@ -58,6 +71,8 @@ namespace EGamePlay.Combat
         //[ShowInInspector]
         //public static bool Draggable;
 
+        //[OnInspectorGUI("DrawSpace", append: true)]
+        [OnInspectorGUI("EndBox", append: true)]
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect")]
         public string EffectTypeName = "(添加效果)";
@@ -95,19 +110,11 @@ namespace EGamePlay.Combat
             }
         }
 
-#if !NOT_UNITY
-        [OnInspectorGUI("BeginBox", append: false)]
-        [LabelText("技能执行")]
-        public GameObject SkillExecutionAsset;
-        [LabelText("技能音效")]
-        [OnInspectorGUI("EndBox", append: true)]
-        public AudioClip SkillAudio;
-
-        [TextArea, LabelText("技能描述")]
-        public string SkillDescription;
-#endif
-
 #if UNITY_EDITOR
+        //[ShowInInspector, LabelText("自动重命名")]
+        //public static bool AutoRename;
+
+        [OnInspectorGUI("BeginBox", append: false)]
         [SerializeField, LabelText("自动重命名")]
         public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
 
@@ -128,28 +135,23 @@ namespace EGamePlay.Combat
 
         private void BeginBox()
         {
-            GUILayout.Space(30);
+            //GUILayout.Space(30);
             SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
-            SirenixEditorGUI.BeginBox("技能表现");
+            //SirenixEditorGUI.BeginBox("技能表现");
         }
 
         private void EndBox()
         {
-            SirenixEditorGUI.EndBox();
+            //SirenixEditorGUI.EndBox();
             GUILayout.Space(30);
-            SirenixEditorGUI.DrawThickHorizontalSeparator();
-            GUILayout.Space(10);
+            //SirenixEditorGUI.DrawThickHorizontalSeparator();
+            //GUILayout.Space(10);
         }
 
         [OnInspectorGUI]
         private void OnInspectorGUI()
         {
-            //foreach (var item in this.Effects)
-            //{
-            //    item.IsSkillEffect = true;
-            //}
-
             if (!AutoRename)
             {
                 return;

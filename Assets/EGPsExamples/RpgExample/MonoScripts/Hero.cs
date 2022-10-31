@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 using DG.Tweening;
 using ET;
 using GameUtils;
+using Sirenix.Utilities.Editor.Expressions;
+//using System.Drawing;
 
 public sealed class Hero : MonoBehaviour
 {
@@ -42,7 +44,12 @@ public sealed class Hero : MonoBehaviour
     {
         Instance = this;
         CombatEntity = CombatContext.Instance.AddChild<CombatEntity>();
-        CombatEntity.AddComponent<SpellPreviewComponent>();
+        CombatEntity.HeroObject = gameObject;
+        CombatEntity.ModelTrans = gameObject.transform.GetChild(0);
+        if (TargetSelectManager.Instance != null)
+        {
+            CombatEntity.AddComponent<SpellPreviewComponent>();
+        }
         CombatEntity.AddComponent<EquipmentComponent>();
         CombatEntity.ListenActionPoint(ActionPointType.PreSpell, OnPreSpell);
         CombatEntity.ListenActionPoint(ActionPointType.PostSpell, OnPostSpell);
@@ -70,86 +77,85 @@ public sealed class Hero : MonoBehaviour
         SkillSlotsTrm.Find("SkillButtonE").gameObject.SetActive(false);
         SkillSlotsTrm.Find("SkillButtonF").gameObject.SetActive(false);
 #else
-        SkillConfigObject config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1001_黑火球术");
-        SkillAbility ability = CombatEntity.AttachSkill<SkillAbility>(config);
-        CombatEntity.BindSkillInput(ability, KeyCode.Q);
-
-        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1002_炎爆");
-        ability = CombatEntity.AttachSkill<SkillAbility>(config);
-        CombatEntity.BindSkillInput(ability, KeyCode.W);
-
-        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1004_血红激光炮");
-        ability = CombatEntity.AttachSkill<SkillAbility>(config);
-        CombatEntity.BindSkillInput(ability, KeyCode.E);
-
-        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1005_火弹");
-        ability = CombatEntity.AttachSkill<SkillAbility>(config);
-        CombatEntity.BindSkillInput(ability, KeyCode.R);
-
-        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1006_灵魂镣铐");
-        ability = CombatEntity.AttachSkill<SkillAbility>(config);
-        ability.AddComponent<Skill1006Component>();
-        CombatEntity.BindSkillInput(ability, KeyCode.T);
-
-        config = Resources.Load<SkillConfigObject>("SkillConfigs/Skill_1003_治愈");
-        ability = CombatEntity.AttachSkill<SkillAbility>(config);
-        CombatEntity.BindSkillInput(ability, KeyCode.Y);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1001_黑火球术", KeyCode.Q);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1002_炎爆", KeyCode.W);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1003_治愈", KeyCode.Y);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1004_血红激光炮", KeyCode.E);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1005_火弹", KeyCode.R);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1006_灵魂镣铐", KeyCode.T).AddComponent<Skill1006Component>();
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1008_火焰箭", KeyCode.A);
 #endif
 
-        HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        CombatEntity.Get<SpellComponent>().LoadExecutionObjects();
 
-        for (int i = InventoryPanelTrm.childCount; i > 0; i--)
+        HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        AnimTimer.MaxTime = AnimTime;
+        InitInventory();
+    }
+
+    private SkillAbility LoadSkillWithCodeBind(string path, KeyCode bindCode)
+    {
+        var config = AssetUtils.Load<SkillConfigObject>(path);
+        var ability = CombatEntity.AttachSkill(config);
+        CombatEntity.BindSkillInput(ability, bindCode);
+        return ability;
+    }
+
+    private void InitInventory()
+    {
+        if (InventoryPanelTrm != null)
         {
-            GameObject.Destroy(InventoryPanelTrm.GetChild(i - 1).gameObject);
-        }
-        var allItemConfigs = ConfigHelper.GetAll<EquipmentConfig>();
-        foreach (var item in allItemConfigs)
-        {
-            var itemObj = GameObject.Instantiate(ItemPrefab);
-            itemObj.transform.parent = InventoryPanelTrm;
-            itemObj.transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>($"Icons/{item.Value.Name}");
-            var text = itemObj.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
-            text.text = $"+{item.Value.Value}";
-            if (item.Value.Attribute == "AttackPower")
+            for (int i = InventoryPanelTrm.childCount; i > 0; i--)
             {
-                text.color = Color.red;
+                GameObject.Destroy(InventoryPanelTrm.GetChild(i - 1).gameObject);
             }
-            itemObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
-                if (EquipmentPanelTrm.childCount >= 4)
-                {
-                    return;
-                }
-                var equipObj = GameObject.Instantiate(ItemPrefab);
-                equipObj.transform.parent = EquipmentPanelTrm;
-                equipObj.transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>($"Icons/{item.Value.Name}");
-                var equipText = equipObj.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
-                equipText.text = $"+{item.Value.Value}";
+            var allItemConfigs = ConfigHelper.GetAll<EquipmentConfig>();
+            foreach (var item in allItemConfigs)
+            {
+                var itemObj = GameObject.Instantiate(ItemPrefab);
+                itemObj.transform.parent = InventoryPanelTrm;
+                itemObj.transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>($"Icons/{item.Value.Name}");
+                var text = itemObj.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
+                text.text = $"+{item.Value.Value}";
                 if (item.Value.Attribute == "AttackPower")
                 {
-                    equipText.color = Color.red;
+                    text.color = Color.red;
                 }
-                var itemData = CombatEntity.AddChild<ItemData>();
-                equipObj.name = $"{itemData.Id}";
-                itemData.ConfigId = (short)item.Value.Id;
-                CombatEntity.GetComponent<EquipmentComponent>().AddItemData(itemData);
-                equipObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
-                    var id = long.Parse(equipObj.name);
-                    CombatEntity.GetComponent<EquipmentComponent>().RemoveItemData(id);
-                    GameObject.Destroy(equipObj);
+                itemObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
+                    if (EquipmentPanelTrm.childCount >= 4)
+                    {
+                        return;
+                    }
+                    var equipObj = GameObject.Instantiate(ItemPrefab);
+                    equipObj.transform.parent = EquipmentPanelTrm;
+                    equipObj.transform.Find("Icon").GetComponent<UnityEngine.UI.Image>().sprite = Resources.Load<Sprite>($"Icons/{item.Value.Name}");
+                    var equipText = equipObj.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
+                    equipText.text = $"+{item.Value.Value}";
+                    if (item.Value.Attribute == "AttackPower")
+                    {
+                        equipText.color = Color.red;
+                    }
+                    var itemData = CombatEntity.AddChild<ItemData>();
+                    equipObj.name = $"{itemData.Id}";
+                    itemData.ConfigId = (short)item.Value.Id;
+                    CombatEntity.GetComponent<EquipmentComponent>().AddItemData(itemData);
+                    equipObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
+                        var id = long.Parse(equipObj.name);
+                        CombatEntity.GetComponent<EquipmentComponent>().RemoveItemData(id);
+                        GameObject.Destroy(equipObj);
+                    });
                 });
-            });
+            }
         }
-
-        AnimTimer.MaxTime = AnimTime;
     }
 
     // Update is called once per frame
     void Update()
     {
         CombatEntity.Position = transform.position;
-        CombatEntity.Direction = transform.GetChild(0).localEulerAngles.y;
+        CombatEntity.Rotation = transform.GetChild(0).localRotation;
 
-        if (CombatEntity.CurrentSkillExecution != null && CombatEntity.CurrentSkillExecution.ActionOccupy)
+        if (CombatEntity.SpellingExecution != null && CombatEntity.SpellingExecution.ActionOccupy)
             return;
 
         if (Input.GetMouseButtonDown((int)MouseButton.RightMouse))
@@ -168,10 +174,18 @@ public sealed class Hero : MonoBehaviour
     private void OnPreSpell(Entity combatAction)
     {
         var spellAction = combatAction as SpellAction;
+        if (spellAction.InputTarget != null)
+        {
+            CombatEntity.ModelTrans.localRotation = Quaternion.LookRotation(spellAction.InputTarget.Position - CombatEntity.ModelTrans.position);
+        }
+        else
+        {
+            CombatEntity.ModelTrans.localRotation = Quaternion.LookRotation(spellAction.InputPoint - CombatEntity.ModelTrans.position);
+        }
+        DisableMove();
+
         if (spellAction.SkillExecution != null)
         {
-            StopMove();
-
             if (spellAction.SkillAbility.HasComponent<Skill1006Component>())
             {
                 return;
@@ -185,7 +199,7 @@ public sealed class Hero : MonoBehaviour
                 transform.GetChild(0).localEulerAngles = new Vector3(0, spellAction.SkillExecution.InputDirection, 0);
 
             CombatEntity.Position = transform.position;
-            CombatEntity.Direction = transform.GetChild(0).localEulerAngles.y;
+            CombatEntity.Rotation = transform.GetChild(0).localRotation;
         }
     }
 
@@ -291,6 +305,7 @@ public sealed class Hero : MonoBehaviour
 
     private void OnPlayAnimation(AnimationClip animationClip)
     {
+        //ET.Log.Debug($"OnPlayAnimation {animationClip.name}");
         AnimationComponent.PlayFade(animationClip);
     }
 
@@ -298,6 +313,13 @@ public sealed class Hero : MonoBehaviour
     {
         MoveTweener?.Kill();
         LookAtTweener?.Kill();
+    }
+
+    public void DisableMove()
+    {
+        MoveTweener?.Kill();
+        LookAtTweener?.Kill();
+        CombatEntity.Get<MotionComponent>().Enable = false;
     }
 
     private void SpawnLineEffect(GameObject lineEffectPrefab, Vector3 p1, Vector3 p2)
@@ -350,6 +372,7 @@ public sealed class Hero : MonoBehaviour
         var isTimeout = await TimerManager.Instance.WaitAsync((int)(animation.length * 1000), token);
         if (isTimeout)
         {
+            token = null;
             AnimationComponent.PlayFade(AnimationComponent.IdleAnimation);
         }
     }

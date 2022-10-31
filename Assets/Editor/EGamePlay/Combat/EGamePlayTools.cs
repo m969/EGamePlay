@@ -21,7 +21,7 @@ namespace EGamePlay
             return !dedfine.Contains("EGAMEPLAY_EXCEL");
         }
 
-        [MenuItem("Tools/EGamePlay/使用技能ScripableObj配置")]
+        [MenuItem("Tools/EGamePlay/使用技能ScriptableObj配置")]
         public static void UseScripableObj()
         {
             var dedfine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);
@@ -30,7 +30,7 @@ namespace EGamePlay
             PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, dedfine);
         }
 
-        [MenuItem("Tools/EGamePlay/使用技能ScripableObj配置", true)]
+        [MenuItem("Tools/EGamePlay/使用技能ScriptableObj配置", true)]
         public static bool IsUseScripableObj()
         {
             var dedfine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);

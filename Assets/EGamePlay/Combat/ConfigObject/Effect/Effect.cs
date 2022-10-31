@@ -129,9 +129,9 @@ namespace EGamePlay.Combat
             }
         }
 
-        public override string ToString()
-        {
-            return ET.JsonHelper.ToJson(this);
-        }
+        //public override string ToString()
+        //{
+        //    return ET.JsonHelper.ToJson(this);
+        //}
     }
 }

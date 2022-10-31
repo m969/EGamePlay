@@ -12,36 +12,47 @@ namespace EGamePlay.Combat
     public class ExecutionTimeTriggerComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
-        public float TriggerTime { get; set; }
+        public float StartTime { get; set; }
+        public float EndTime { get; set; }
         public string TimeValueExpression { get; set; }
-        public GameTimer TriggerTimer { get; set; }
+        public GameTimer StartTimer { get; set; }
+        public GameTimer EndTimer { get; set; }
 
 
         public override void Update()
         {
-            if (TriggerTimer != null && TriggerTimer.IsFinished == false)
+            if (StartTimer != null && StartTimer.IsFinished == false)
             {
-                TriggerTimer.UpdateAsFinish(Time.deltaTime, GetEntity<ExecutionEffect>().ApplyEffect);
+                StartTimer.UpdateAsFinish(Time.deltaTime, GetEntity<ExecutionEffect>().TriggerEffect);
+            }
+            if (EndTimer != null && EndTimer.IsFinished == false)
+            {
+                EndTimer.UpdateAsFinish(Time.deltaTime, GetEntity<ExecutionEffect>().EndEffect);
             }
         }
 
         public override void OnEnable()
         {
-            //Log.Debug(GetEntity<LogicEntity>().Effect.Interval);
+            //Log.Debug($"ExecutionTimeTriggerComponent OnEnable {TimeValueExpression} {StartTime} {EndTime}");
 
             if (!string.IsNullOrEmpty(TimeValueExpression))
             {
                 var expression = ExpressionHelper.TryEvaluate(TimeValueExpression);
-                TriggerTime = (int)expression.Value / 1000f;
-                TriggerTimer = new GameTimer(TriggerTime);
+                StartTime = (int)expression.Value / 1000f;
+                StartTimer = new GameTimer(StartTime);
             }
-            else if (TriggerTime > 0)
+            else if (StartTime > 0)
             {
-                TriggerTimer = new GameTimer(TriggerTime);
+                StartTimer = new GameTimer(StartTime);
             }
             else
             {
+                GetEntity<ExecutionEffect>().TriggerEffect();
+            }
 
+            if (EndTime > 0)
+            {
+                EndTimer = new GameTimer(EndTime);
             }
         }
     }

@@ -57,7 +57,11 @@ namespace EGamePlay
             {
                 actionList.Remove(action);
             }
-            Entity.Find<SubscribeSubject>(action.GetHashCode().ToString())?.Dispose();
+            var e = Entity.Find<SubscribeSubject>(action.GetHashCode().ToString());
+            if (e != null)
+            {
+                Entity.Destroy(e);
+            }
         }
 
         public void FireEvent<T>(string eventType, T entity) where T : Entity

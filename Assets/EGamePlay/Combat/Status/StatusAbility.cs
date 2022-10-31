@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
         public override void Awake(object initData)
         {
             base.Awake(initData);
-            var statusConfig = StatusConfig = initData as StatusConfigObject;
+            StatusConfig = initData as StatusConfigObject;
             Name = StatusConfig.ID;
 
             /// 逻辑触发
@@ -45,16 +45,17 @@ namespace EGamePlay.Combat
             {
                 foreach (var childStatusData in StatusConfig.ChildrenStatuses)
                 {
-                    var status = ParentEntity.AttachStatus<StatusAbility>(childStatusData.StatusConfigObject);
+                    var status = ParentEntity.AttachStatus(childStatusData.StatusConfigObject);
                     status.OwnerEntity = OwnerEntity;
                     status.IsChildStatus = true;
                     status.ChildStatusData = childStatusData;
-                    status.ProccessInputKVParams(childStatusData.Params);
+                    status.ProcessInputKVParams(childStatusData.Params);
                     status.TryActivateAbility();
                     ChildrenStatuses.Add(status);
                 }
             }
 
+            Enable = true;
             Get<AbilityEffectComponent>().Enable = true;
         }
 
@@ -101,13 +102,18 @@ namespace EGamePlay.Combat
             this.ActivateAbility();
         }
 
+        public override void OnDestroy()
+        {
+            DeactivateAbility();
+        }
+
         public void DeactivateAbility()
         {
             Enable = false;
         }
 
         /// 这里处理技能传入的参数数值替换
-        public void ProccessInputKVParams(Dictionary<string, string> Params)
+        public void ProcessInputKVParams(Dictionary<string, string> Params)
         {
             foreach (var abilityEffect in Get<AbilityEffectComponent>().AbilityEffects)
             {
@@ -115,59 +121,38 @@ namespace EGamePlay.Combat
 
                 if (abilityEffect.TryGet(out EffectIntervalTriggerComponent intervalTriggerComponent))
                 {
-                    intervalTriggerComponent.IntervalValue = effect.Interval;
-                    foreach (var aInputKVItem in Params)
-                    {
-                        intervalTriggerComponent.IntervalValue = intervalTriggerComponent.IntervalValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                    }
+                    intervalTriggerComponent.IntervalValue = ProcessReplaceKV(effect.Interval, Params);
                 }
                 if (abilityEffect.TryGet(out EffectConditionTriggerComponent conditionTriggerComponent))
                 {
-                    conditionTriggerComponent.ConditionParamValue = effect.ConditionParam;
-                    foreach (var aInputKVItem in Params)
-                    {
-                        conditionTriggerComponent.ConditionParamValue = conditionTriggerComponent.ConditionParamValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                    }
+                    conditionTriggerComponent.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
                 }
 
-                if (effect is AttributeModifyEffect attributeModify)
+                if (effect is AttributeModifyEffect attributeModify && abilityEffect.TryGet(out EffectAttributeModifyComponent attributeModifyComponent))
                 {
-                    var attributeModifyComponent = abilityEffect.GetComponent<EffectAttributeModifyComponent>();
-                    attributeModifyComponent.ModifyValueFormula = attributeModify.NumericValue;
-                    //Log.Debug($"ProccessInputKVParams {attributeModify} {attributeModifyComponent.ModifyValueFormula}");
-                    foreach (var aInputKVItem in Params)
-                    {
-                        if (!string.IsNullOrEmpty(attributeModifyComponent.ModifyValueFormula))
-                        {
-                            attributeModifyComponent.ModifyValueFormula = attributeModifyComponent.ModifyValueFormula.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                        }
-                    }
+                    attributeModifyComponent.ModifyValueFormula = ProcessReplaceKV(attributeModify.NumericValue, Params);
                 }
-                if (effect is DamageEffect damage)
+                if (effect is DamageEffect damage && abilityEffect.TryGet(out EffectDamageComponent damageComponent))
                 {
-                    var damageComponent = abilityEffect.GetComponent<EffectDamageComponent>();
-                    damageComponent.DamageValueFormula = damage.DamageValueFormula;
-                    foreach (var aInputKVItem in Params)
-                    {
-                        if (!string.IsNullOrEmpty(damageComponent.DamageValueFormula))
-                        {
-                            damageComponent.DamageValueFormula = damageComponent.DamageValueFormula.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                        }
-                    }
+                    damageComponent.DamageValueFormula = ProcessReplaceKV(damage.DamageValueFormula, Params);
                 }
-                if (effect is CureEffect cure)
+                if (effect is CureEffect cure && abilityEffect.TryGet(out EffectCureComponent cureComponent))
                 {
-                    var cureComponent = abilityEffect.GetComponent<EffectCureComponent>();
-                    cureComponent.CureValueProperty = cure.CureValueFormula;
-                    foreach (var aInputKVItem in Params)
-                    {
-                        if (!string.IsNullOrEmpty(cureComponent.CureValueProperty))
-                        {
-                            cureComponent.CureValueProperty = cureComponent.CureValueProperty.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                        }
-                    }
+                    cureComponent.CureValueProperty = ProcessReplaceKV(cure.CureValueFormula, Params);
                 }
             }
+        }
+
+        private string ProcessReplaceKV(string originValue, Dictionary<string, string> Params)
+        {
+            foreach (var aInputKVItem in Params)
+            {
+                if (!string.IsNullOrEmpty(originValue))
+                {
+                    originValue = originValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
+                }
+            }
+            return originValue;
         }
     }
 }

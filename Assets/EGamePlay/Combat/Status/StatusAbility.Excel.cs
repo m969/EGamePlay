@@ -50,19 +50,20 @@ namespace EGamePlay.Combat
                 var childrenStatuses = StatusConfig.ParseChildStatus();
                 foreach (var childStatusData in childrenStatuses)
                 {
-                    var status = ParentEntity.AttachStatus<StatusAbility>(childStatusData.StatusConfig);
+                    var status = ParentEntity.AttachStatus(childStatusData.StatusConfig);
                     status.OwnerEntity = OwnerEntity;
                     status.IsChildStatus = true;
                     status.ChildStatusData = childStatusData;
                     if (status.StatusConfig.EnabledLogicTrigger())
                     {
-                        status.ProccessInputKVParams(childStatusData.Params);
+                        status.ProcessInputKVParams(childStatusData.Params);
                     }
                     status.TryActivateAbility();
                     ChildrenStatuses.Add(status);
                 }
             }
 
+            Enable = true;
             Get<AbilityEffectComponent>().Enable = true;
         }
 

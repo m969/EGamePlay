@@ -6,7 +6,7 @@ using GameUtils;
 
 namespace EGamePlay
 {
-    public abstract partial class Entity : IDisposable
+    public abstract partial class Entity
     {
         public long Id { get; set; }
         private string name;
@@ -80,29 +80,23 @@ namespace EGamePlay
 
         }
 
-        public void Dispose()
+        private void Dispose()
         {
             if (EnableLog) Log.Debug($"{GetType().Name}->Dispose");
-            //var childrenComponent = GetComponent<ChildrenComponent>();
-            //if (childrenComponent != null)
-            //{
-            //    var Children = childrenComponent.Children;
-            //    var Type2Children = childrenComponent.Type2Children;
-                if (Children.Count > 0)
+            if (Children.Count > 0)
+            {
+                for (int i = Children.Count - 1; i >= 0; i--)
                 {
-                    for (int i = Children.Count - 1; i >= 0; i--)
-                    {
-                        Destroy(Children[i]);
-                    }
-                    Children.Clear();
-                    Type2Children.Clear();
+                    Destroy(Children[i]);
                 }
-            //}
+                Children.Clear();
+                Type2Children.Clear();
+            }
 
             Parent?.RemoveChild(this);
-            foreach (Component component in Components.Values)
+            foreach (var component in Components.Values)
             {
-                Destroy(component);
+                Component.Destroy(component);
             }
             Components.Clear();
             InstanceId = 0;
@@ -165,11 +159,21 @@ namespace EGamePlay
             return component;
         }
 
+        public T Add<T>() where T : Component
+        {
+            return AddComponent<T>();
+        }
+
+        public T Add<T>(object initData) where T : Component
+        {
+            return AddComponent<T>(initData);
+        }
+
         public void RemoveComponent<T>() where T : Component
         {
             var component = Components[typeof(T)];
             if (component.Enable) component.Enable = false;
-            Destroy(component);
+            Component.Destroy(component);
             Components.Remove(typeof(T));
 #if !NOT_UNITY
             GetComponent<GameObjectComponent>().OnRemoveComponent(component);
@@ -267,28 +271,17 @@ namespace EGamePlay
 
         public void SetChild(Entity child)
         {
-            //var childrenComponent = GetComponent<ChildrenComponent>();
-            //if (childrenComponent == null) childrenComponent = AddComponent<ChildrenComponent>();
-            //childrenComponent.SetChild(child);
-
             Children.Add(child);
             Id2Children.Add(child.Id, child);
             if (!Type2Children.ContainsKey(child.GetType())) Type2Children.Add(child.GetType(), new List<Entity>());
             Type2Children[child.GetType()].Add(child);
             child.SetParent(this);
-            //GetComponent<GameObjectComponent>().OnAddChild(child);
-            //Fire("OnSetChildEvent", child);
         }
 
         public void RemoveChild(Entity child)
         {
-            //var childrenComponent = GetComponent<ChildrenComponent>();
-            //childrenComponent.RemoveChild(child);
-
             Children.Remove(child);
             if (Type2Children.ContainsKey(child.GetType())) Type2Children[child.GetType()].Remove(child);
-            //child.SetParent(Master);
-            //Fire("OnRemoveChildEvent", child);
         }
 
         public Entity AddChild(Type entityType)
@@ -356,25 +349,15 @@ namespace EGamePlay
             return Type2Children[typeof(T)][index] as T;
         }
 
-        //public Entity[] GetChildren()
-        //{
-        //    var childrenComponent = GetComponent<ChildrenComponent>();
-        //    if (childrenComponent == null)
-        //    {
-        //        return new Entity[0];
-        //    }
-        //    return childrenComponent.GetChildren();
-        //}
+        public Entity[] GetChildren()
+        {
+            return Children.ToArray();
+        }
 
-        //public T[] GetTypeChildren<T>() where T : Entity
-        //{
-        //    var childrenComponent = GetComponent<ChildrenComponent>();
-        //    if (childrenComponent == null)
-        //    {
-        //        return new T[0];
-        //    }
-        //    return childrenComponent.GetTypeChildren<T>();
-        //}
+        public T[] GetTypeChildren<T>() where T : Entity
+        {
+            return Type2Children[typeof(T)].ConvertAll(x => x.As<T>()).ToArray();
+        }
 
         public Entity Find(string name)
         {

@@ -9,27 +9,33 @@ using UnityEngine.Timeline;
 #endif
 
 [LabelText("碰撞体形状")]
-public enum ColliderShape
+public enum CollisionShape
 {
+    [LabelText("圆形")]
+    Sphere,
     [LabelText("矩形")]
     Box,
-    [LabelText("圆形")]
-    Circle,
     [LabelText("扇形")]
     Sector,
+    [LabelText("自定义")]
+    Custom,
 }
 
-[LabelText("碰撞体类型")]
-public enum ColliderType
+[LabelText("碰撞体执行类型")]
+public enum CollisionMoveType
 {
-    [LabelText("固定位置碰撞体")]
-    FixedPosition,
-    [LabelText("固定朝向碰撞体")]
-    FixedDirection,
+    [LabelText("可选位置碰撞体")]
+    SelectedPosition,
+    [LabelText("可选朝向碰撞体")]
+    SelectedDirection,
     [LabelText("目标飞行碰撞体")]
     TargetFly,
     [LabelText("朝向飞行碰撞体")]
     ForwardFly,
+    [LabelText("路径飞行碰撞体")]
+    PathFly,
+    [LabelText("可选朝向路径飞行")]
+    SelectedDirectionPathFly,
 }
 
 [LabelText("应用效果")]
@@ -63,7 +69,7 @@ public class ExecutionEventEmitter : SignalEmitter
     public ExecutionEventType ExecutionEventType;
     [LabelText("碰撞体名称")]
     public string ColliderName;
-    public ColliderType ColliderType;
+    public CollisionMoveType ColliderType;
     [LabelText("存活时间")]
     public float ExistTime;
     public EffectApplyType EffectApplyType;
@@ -125,10 +131,10 @@ public class ExecutionEventEmitterInspector : OdinEditor
         if (emitter.ExecutionEventType == ExecutionEventType.TriggerSpawnCollider)
         {
             emitter.ColliderName = EditorGUILayout.TextField("碰撞体名称", emitter.ColliderName);
-            emitter.ColliderType = (ColliderType)SirenixEditorFields.EnumDropdown("碰撞体类型", emitter.ColliderType);
-            if (emitter.ColliderType == ColliderType.FixedDirection
-                || emitter.ColliderType == ColliderType.FixedPosition
-                || emitter.ColliderType == ColliderType.ForwardFly
+            emitter.ColliderType = (CollisionMoveType)SirenixEditorFields.EnumDropdown("碰撞体类型", emitter.ColliderType);
+            if (emitter.ColliderType == CollisionMoveType.SelectedDirection
+                || emitter.ColliderType == CollisionMoveType.SelectedPosition
+                || emitter.ColliderType == CollisionMoveType.ForwardFly
                 )
             {
                 //emitter.ColliderShape = (ColliderShape)SirenixEditorFields.EnumDropdown("碰撞体形状", emitter.ColliderShape);

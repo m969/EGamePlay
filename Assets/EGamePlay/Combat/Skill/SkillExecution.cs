@@ -14,6 +14,7 @@ namespace EGamePlay.Combat
 #if !NOT_UNITY
         public GameObject SkillExecutionAsset { get; set; }
         public TimelineAsset TimelineAsset { get; set; }
+        public ExecutionObject ExecutionObject { get; set; }
 #endif
         public float SkillExecuteTime { get; set; }
         public List<Effect> ExecutionEffects { get; set; } = new List<Effect>();
@@ -28,6 +29,7 @@ namespace EGamePlay.Combat
         public Entity AbilityEntity { get; set; }
         public CombatEntity OwnerEntity { get; set; }
         public SkillAbility SkillAbility { get { return AbilityEntity as SkillAbility; } }
+        public ExecutionObject ExecutionObject { get; set; }
         public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
         public CombatEntity InputTarget { get; set; }
         public Vector3 InputPoint { get; set; }

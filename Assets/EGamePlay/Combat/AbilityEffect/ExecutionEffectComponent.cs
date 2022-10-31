@@ -12,10 +12,13 @@ namespace EGamePlay.Combat
         public List<ExecutionEffect> ExecutionEffects { get; private set; } = new List<ExecutionEffect>();
 
 
-        public override void Awake(object initData)
+        public override void Awake()
         {
-            var abilityEffects = initData as List<AbilityEffect>;
-            foreach (var effect in GetEntity<SkillExecution>().SkillExecutionData.ExecutionEffects)
+            if (GetEntity<SkillExecution>().ExecutionObject == null)
+            {
+                return;
+            }
+            foreach (var effect in GetEntity<SkillExecution>().ExecutionObject.ExecuteClips)
             {
                 var executionEffect = Entity.AddChild<ExecutionEffect>(effect);
                 AddEffect(executionEffect);
@@ -27,26 +30,12 @@ namespace EGamePlay.Combat
             ExecutionEffects.Add(executionEffect);
         }
 
-        public void FillEffects(List<ExecutionEffect> executionEffects)
+        public void BeginExecute()
         {
-            this.ExecutionEffects.Clear();
-            this.ExecutionEffects.AddRange(executionEffects);
-        }
-
-        public void ApplyAllEffectsTo(CombatEntity targetEntity)
-        {
-            if (ExecutionEffects.Count > 0)
+            foreach (var item in ExecutionEffects)
             {
-                foreach (var executionEffect in ExecutionEffects)
-                {
-                    executionEffect.ExecuteEffectAssignWithTarget(targetEntity);
-                }
+                item.BeginExecute();
             }
-        }
-
-        public void ApplyEffectByIndex(CombatEntity targetEntity, int index)
-        {
-            ExecutionEffects[index].ExecuteEffectAssignWithTarget(targetEntity);
         }
     }
 }

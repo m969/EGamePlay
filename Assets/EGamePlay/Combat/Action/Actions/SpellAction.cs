@@ -37,6 +37,7 @@ namespace EGamePlay.Combat
         public SkillAbility SkillAbility { get; set; }
         public SkillExecution SkillExecution { get; set; }
         public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
+        public CombatEntity InputTarget { get; set; }
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
 
@@ -58,17 +59,23 @@ namespace EGamePlay.Combat
         //前置处理
         private void PreProcess()
         {
+            //Creator.Get<MotionComponent>().Enable = false;
             Creator.TriggerActionPoint(ActionPointType.PreSpell, this);
         }
 
-        public void SpellSkill()
+        public void SpellSkill(bool actionOccupy = true)
         {
             PreProcess();
+            SkillExecution = SkillAbility.CreateExecution() as SkillExecution;
+            SkillExecution.Name = SkillAbility.Name;
             if (SkillTargets.Count > 0)
             {
                 SkillExecution.SkillTargets.AddRange(SkillTargets);
             }
-            SkillExecution.Name = SkillAbility.Name;
+            SkillExecution.ActionOccupy = actionOccupy;
+            SkillExecution.InputTarget = InputTarget;
+            SkillExecution.InputPoint = InputPoint;
+            SkillExecution.InputDirection = InputDirection;
             SkillExecution.BeginExecute();
             AddComponent<UpdateComponent>();
         }

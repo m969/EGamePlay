@@ -19,7 +19,7 @@ namespace EGamePlay
         public static MasterEntity Master => MasterEntity.Instance;
         public static bool EnableLog { get; set; } = false;
 
-        private static Entity NewEntity(Type entityType, long id = 0)
+        public static Entity NewEntity(Type entityType, long id = 0)
         {
             var entity = Activator.CreateInstance(entityType) as Entity;
             entity.InstanceId = IdFactory.NewInstanceId();
@@ -82,19 +82,6 @@ namespace EGamePlay
         }
 
         public static void Destroy(Entity entity)
-        {
-            try
-            {
-                entity.OnDestroy();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-            entity.Dispose();
-        }
-
-        public static void Destroy(Component entity)
         {
             try
             {

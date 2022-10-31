@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
+using DG.Tweening;
 
 /// <summary>
 /// 主动技能的预览组件，预览功能不是所有游戏都会有，moba类游戏一般会有技能预览的功能，部分mmorpg游戏也可能有，回合制、卡牌、arpg动作游戏一般没有
 /// </summary>
 public class SpellPreviewComponent : EGamePlay.Component
 {
-    private CombatEntity CombatEntity => GetEntity<CombatEntity>();
+    private CombatEntity OwnerEntity => GetEntity<CombatEntity>();
     private SpellComponent SpellComponent => Entity.GetComponent<SpellComponent>();
     public override bool DefaultEnable { get; set; } = true;
     private bool Previewing { get; set; }
@@ -21,39 +22,45 @@ public class SpellPreviewComponent : EGamePlay.Component
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            UnityEngine.Cursor.visible = false;
-            PreviewingSkill = CombatEntity.InputSkills[KeyCode.Q];
+            Cursor.visible = false;
+            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.Q];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            UnityEngine.Cursor.visible = false;
-            PreviewingSkill = CombatEntity.InputSkills[KeyCode.W];
+            Cursor.visible = false;
+            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.W];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            UnityEngine.Cursor.visible = false;
-            PreviewingSkill = CombatEntity.InputSkills[KeyCode.E];
+            Cursor.visible = false;
+            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.E];
             EnterPreview();
         }
 #if !EGAMEPLAY_EXCEL
         if (Input.GetKeyDown(KeyCode.R))
         {
-            UnityEngine.Cursor.visible = false;
-            PreviewingSkill = CombatEntity.InputSkills[KeyCode.R];
+            Cursor.visible = false;
+            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.R];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-            UnityEngine.Cursor.visible = false;
-            PreviewingSkill = CombatEntity.InputSkills[KeyCode.T];
+            Cursor.visible = false;
+            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.T];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            PreviewingSkill = CombatEntity.InputSkills[KeyCode.Y];
+            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.Y];
             //SpellComp.SpellWithTarget(PreviewingSkill, PreviewingSkill.OwnerEntity);
+            EnterPreview();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Cursor.visible = false;
+            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.A];
             EnterPreview();
         }
 #endif
@@ -109,9 +116,9 @@ public class SpellPreviewComponent : EGamePlay.Component
     public void CancelPreview()
     {
         Previewing = false;
-        TargetSelectManager.Instance.Hide();
-        PointSelectManager.Instance.Hide();
-        DirectRectSelectManager.Instance.Hide();
+        TargetSelectManager.Instance?.Hide();
+        PointSelectManager.Instance?.Hide();
+        DirectRectSelectManager.Instance?.Hide();
     }
 
     private void OnSelectedTarget(GameObject selectObject)
@@ -120,22 +127,26 @@ public class SpellPreviewComponent : EGamePlay.Component
         CombatEntity combatEntity = null;
         if (selectObject.GetComponent<Monster>() != null) combatEntity = selectObject.GetComponent<Monster>().CombatEntity;
         if (selectObject.GetComponent<Hero>() != null) combatEntity = selectObject.GetComponent<Hero>().CombatEntity;
+        //OwnerEntity.ModelTrans.LookAt(selectObject.transform);
+        //Hero.Instance.DisableMove();
         SpellComponent.SpellWithTarget(PreviewingSkill, combatEntity);
     }
     
     private void OnInputPoint(Vector3 point)
     {
+        //OwnerEntity.ModelTrans.localRotation = Quaternion.LookRotation(point - OwnerEntity.ModelTrans.position);
+        //Hero.Instance.DisableMove();
         SpellComponent.SpellWithPoint(PreviewingSkill, point);
     }
 
     private void OnInputDirect(float direction, Vector3 point)
     {
-        SpellComponent.SpellWithDirect(PreviewingSkill, direction, point);
+        OnInputPoint(point);
     }
 
     public void SelectTargetsWithDistance(SkillAbility SpellSkill, float distance)
     {
-        if (CombatEntity.SpellAbility.TryMakeAction(out var action))
+        if (OwnerEntity.SpellAbility.TryMakeAction(out var action))
         {
             var enemiesRoot = GameObject.Find("Enemies");
             foreach (Transform item in enemiesRoot.transform)
@@ -152,9 +163,11 @@ public class SpellPreviewComponent : EGamePlay.Component
                 return;
             }
 
+            //OwnerEntity.ModelTrans.localRotation = Quaternion.LookRotation(point - OwnerEntity.ModelTrans.position);
+            //Hero.Instance.DisableMove();
             action.SkillAbility = SpellSkill;
             action.SkillExecution = SpellSkill.CreateExecution() as SkillExecution;
-            action.SpellSkill();
+            action.SpellSkill(false);
         }
     }
 }
