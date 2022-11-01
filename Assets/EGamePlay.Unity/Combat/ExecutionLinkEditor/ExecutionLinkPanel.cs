@@ -430,26 +430,23 @@ namespace EGamePlay
 			SkillTimeImage.fillAmount = 0;
             CurrentTime = 0;
             IsPlaying = true;
-			if (int.TryParse(CurrentExecutionObject.Id, out var skillId))
+			if (int.TryParse(CurrentExecutionObject.Id, out var skillId) && HeroEntity.IdSkills.TryGetValue(skillId, out var skillAbility))
 			{
-                if (HeroEntity.IdSkills.TryGetValue(skillId, out var skillAbility))
+                skillAbility.LoadExecution();
+                if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
                 {
-                    skillAbility.LoadExecution();
-                    if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
-                    {
-						if (skillAbility.SkillConfig.AffectTargetType == SkillAffectTargetType.EnemyTeam)
-						{
-                            HeroEntity.Get<SpellComponent>().SpellWithTarget(skillAbility, BossEntity);
-                        }
-						else
-						{
-                            HeroEntity.Get<SpellComponent>().SpellWithTarget(skillAbility, HeroEntity);
-                        }
+					if (skillAbility.SkillConfig.AffectTargetType == SkillAffectTargetType.EnemyTeam)
+					{
+                        HeroEntity.Get<SpellComponent>().SpellWithTarget(skillAbility, BossEntity);
                     }
-                    if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Point)
-                    {
-                        HeroEntity.Get<SpellComponent>().SpellWithPoint(skillAbility, BossEntity.Position);
+					else
+					{
+                        HeroEntity.Get<SpellComponent>().SpellWithTarget(skillAbility, HeroEntity);
                     }
+                }
+                if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Point)
+                {
+                    HeroEntity.Get<SpellComponent>().SpellWithPoint(skillAbility, BossEntity.Position);
                 }
             }
 			else

@@ -51,6 +51,11 @@ namespace EGamePlay.Combat
             Destroy(this);
         }
 
+        public override void OnDestroy()
+        {
+            //Log.Debug("AbilityItem OnDestroy");
+        }
+
         public void OnCollision(CombatEntity otherCombatEntity)
         {
             if (TargetEntity != null)

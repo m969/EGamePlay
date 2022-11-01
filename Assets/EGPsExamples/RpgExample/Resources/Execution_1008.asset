@@ -41,6 +41,10 @@ MonoBehaviour:
       position: {x: 10, y: 0, z: 0}
       inTangent: {x: 0, y: 0, z: 0}
       outTangent: {x: 0, y: 0, z: 0}
+    - type: 0
+      position: {x: 15, y: 0, z: 0}
+      inTangent: {x: 0, y: 0, z: 0}
+      outTangent: {x: 0, y: 0, z: 0}
   AnimationData:
     AnimationClip: {fileID: 0}
   AudioData:
@@ -84,10 +88,14 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: -1}
       inTangent: {x: 0, y: 0, z: 0}
       outTangent: {x: 0, y: 0, z: 0}
-    - type: 0
+    - type: 1
       position: {x: 10, y: 0, z: -3}
-      inTangent: {x: 0, y: 0, z: 0}
-      outTangent: {x: 0, y: 0, z: 0}
+      inTangent: {x: -5, y: 0, z: -1}
+      outTangent: {x: 0, y: -0, z: 0}
+    - type: 1
+      position: {x: 15, y: 0, z: -1}
+      inTangent: {x: -2.1969604, y: 0, z: -1.2825296}
+      outTangent: {x: 0, y: -0, z: 0}
   AnimationData:
     AnimationClip: {fileID: 0}
   AudioData:
@@ -193,10 +201,14 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 1}
       inTangent: {x: 0, y: 0, z: 0}
       outTangent: {x: 0, y: 0, z: 0}
-    - type: 0
+    - type: 1
       position: {x: 10, y: 0, z: 3}
-      inTangent: {x: 0, y: 0, z: 0}
+      inTangent: {x: -5, y: 0, z: 1}
       outTangent: {x: 0, y: 0, z: 0}
+    - type: 1
+      position: {x: 15, y: 0, z: 1}
+      inTangent: {x: -2.202468, y: 0, z: 1.3763483}
+      outTangent: {x: 0, y: -0, z: -0}
   AnimationData:
     AnimationClip: {fileID: 0}
   AudioData:
