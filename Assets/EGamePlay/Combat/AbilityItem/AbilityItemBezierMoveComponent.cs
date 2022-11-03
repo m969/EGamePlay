@@ -54,7 +54,18 @@ namespace EGamePlay.Combat
             t = t * ctrlPoints.Count;
             int segment_index = (int)t;
             //Log.Debug($"{Progress} {segment_index} {tempT}");
-            if (segment_index + 1 >= ctrlPoints.Count) return ctrlPoints[segment_index].position;//segment_index -= 1;
+            if (segment_index + 1 >= ctrlPoints.Count)
+            {
+                var v = ctrlPoints[segment_index].position;
+                var a = RotateAgree;
+                var x = v.x;
+                var y = v.z;
+                var x1 = x * Mathf.Cos(a) - y * Mathf.Sin(a);
+                var y1 = -(y * Mathf.Cos(a) + x * Mathf.Sin(a));
+                //Log.Debug($"x={x},y={y} x1={x1},y={y1}");
+                v = OriginPosition + new Vector3(x1, v.y, y1);
+                return v;//segment_index -= 1;
+            }
             Vector3[] p = new Vector3[4];
             p[0] = ctrlPoints[segment_index].position;
             p[1] = ctrlPoints[segment_index].OutTangent + p[0];
@@ -73,7 +84,7 @@ namespace EGamePlay.Combat
                 var x = v.x;
                 var y = v.z;
                 var x1 = x * Mathf.Cos(a) - y * Mathf.Sin(a);
-                var y1 = (y * Mathf.Cos(a) + x * Mathf.Sin(a));
+                var y1 = -(y * Mathf.Cos(a) + x * Mathf.Sin(a));
                 //Log.Debug($"x={x},y={y} x1={x1},y={y1}");
                 v = OriginPosition + new Vector3(x1, v.y, y1);
                 return v;
