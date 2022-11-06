@@ -51,6 +51,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: true
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -75,6 +78,12 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Decorators
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 6
+      Data: 
     - Name: DamageType
       Entry: 3
       Data: 0
@@ -93,6 +102,9 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: true
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -117,6 +129,12 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: Decorators
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 6
+      Data: 
     - Name: AddStatus
       Entry: 10
       Data: 0
@@ -154,16 +172,9 @@ MonoBehaviour:
   Id: 1002
   Name: "\u708E\u7206"
   SkillSpellType: 0
-  TargetSelectType: 3
-  AffectAreaType: 0
-  CircleAreaRadius: 1
-  AreaCollider: {fileID: 4659930441604555287, guid: e04cf34d12876b249b8a764625ced6f6,
-    type: 3}
+  TargetSelectType: 1
   AffectTargetType: 2
   ColdTime: 0
   EnableChildrenStatuses: 0
-  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillExecutionAsset: {fileID: 2060818933365669134, guid: a42697d393a95e742a4b5a989ce9dc32,
-    type: 3}
-  SkillAudio: {fileID: 0}
   SkillDescription: 
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

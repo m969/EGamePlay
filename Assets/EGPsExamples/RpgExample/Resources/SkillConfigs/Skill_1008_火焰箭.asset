@@ -114,11 +114,8 @@ MonoBehaviour:
   Id: 1008
   Name: "\u706B\u7130\u7BAD"
   SkillSpellType: 0
-  TargetSelectType: 2
-  AffectAreaType: 0
-  CircleAreaRadius: 0
-  AreaCollider: {fileID: 0}
   AffectTargetType: 2
+  TargetSelectType: 1
   ColdTime: 0
   EnableChildrenStatuses: 0
   SkillDescription: 

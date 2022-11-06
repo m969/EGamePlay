@@ -77,8 +77,9 @@ public class SpellPreviewComponent : EGamePlay.Component
     {
         CancelPreview();
         Previewing = true;
-        var targetSelectType = SkillTargetSelectType.Auto;
+        var targetSelectType = SkillTargetSelectType.Custom;
         var affectTargetType = SkillAffectTargetType.EnemyTeam;
+        var skillId = PreviewingSkill.SkillConfig.Id;
 #if EGAMEPLAY_EXCEL
         if (PreviewingSkill.SkillConfig.TargetSelect == "手动指定") targetSelectType = SkillTargetSelectType.PlayerSelect;
         if (PreviewingSkill.SkillConfig.TargetSelect == "固定区域场检测") targetSelectType = SkillTargetSelectType.AreaSelect;
@@ -92,24 +93,19 @@ public class SpellPreviewComponent : EGamePlay.Component
             if (affectTargetType == SkillAffectTargetType.SelfTeam) TargetSelectManager.Instance.TargetLimitType = TargetLimitType.SelfTeam;
             TargetSelectManager.Instance.Show(OnSelectedTarget);
         }
-        if (targetSelectType == SkillTargetSelectType.AreaSelect)
+        if (targetSelectType == SkillTargetSelectType.CollisionSelect)
         {
-            if (PreviewingSkill.SkillConfig.Id == 1002)
-            {
-                PointSelectManager.Instance.Show(OnInputPoint);
-            }
-            if (PreviewingSkill.SkillConfig.Id == 1004)
-            {
-                DirectRectSelectManager.Instance.Show(OnInputDirect);
-            }
-        }
-        if (targetSelectType == SkillTargetSelectType.BodyCollideSelect)
-        {
-            DirectRectSelectManager.Instance.Show(OnInputDirect);
+            if (skillId == 1004) DirectRectSelectManager.Instance.Show(OnInputDirect);
+            else if (skillId == 1005) DirectRectSelectManager.Instance.Show(OnInputDirect);
+            else if (skillId == 1008) DirectRectSelectManager.Instance.Show(OnInputDirect);
+            else PointSelectManager.Instance.Show(OnInputPoint);
         }
         if (targetSelectType == SkillTargetSelectType.ConditionSelect)
         {
-            SelectTargetsWithDistance(PreviewingSkill, 5);
+            if (skillId == 1006)
+            {
+                SelectTargetsWithDistance(PreviewingSkill, 5);
+            }
         }
     }
 

@@ -13,33 +13,33 @@
         Passive,
     }
 
-    [LabelText("技能目标检测方式")]
+    [LabelText("效果应用目标选择方式")]
     public enum SkillTargetSelectType
     {
-        [LabelText("自动")]
-        Auto,
+        //[LabelText("自动")]
+        //Auto,
         [LabelText("手动指定")]
         PlayerSelect,
-        [LabelText("弹体碰撞检测")]
-        BodyCollideSelect,
-        [LabelText("固定区域场检测")]
-        AreaSelect,
+        [LabelText("碰撞检测")]
+        CollisionSelect,
+        //[LabelText("固定区域场检测")]
+        //AreaSelect,
         [LabelText("条件指定")]
         ConditionSelect,
-        [LabelText("其他")]
-        Other,
+        [LabelText("自定义")]
+        Custom,
     }
 
-    [LabelText("区域场类型")]
-    public enum SkillAffectAreaType
-    {
-        [LabelText("圆形")]
-        Circle = 0,
-        [LabelText("矩形")]
-        Rect = 1,
-        [LabelText("组合")]
-        Compose = 2,
-    }
+    //[LabelText("区域场类型")]
+    //public enum SkillAffectAreaType
+    //{
+    //    [LabelText("圆形")]
+    //    Circle = 0,
+    //    [LabelText("矩形")]
+    //    Rect = 1,
+    //    [LabelText("组合")]
+    //    Compose = 2,
+    //}
 
     [LabelText("技能作用对象")]
     public enum SkillAffectTargetType

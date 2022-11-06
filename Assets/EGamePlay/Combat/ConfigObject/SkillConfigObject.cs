@@ -25,6 +25,8 @@ namespace EGamePlay.Combat
         [LabelText("技能名称"), DelayedProperty]
         public string Name = "技能1";
         public SkillSpellType SkillSpellType;
+        [LabelText("技能作用对象"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
+        public SkillAffectTargetType AffectTargetType;
         [LabelText("技能目标检测方式"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillTargetSelectType TargetSelectType;
         //[LabelText("区域场类型"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
@@ -34,8 +36,6 @@ namespace EGamePlay.Combat
         //public bool ShowCircleAreaRadius { get { return AffectAreaType == SkillAffectAreaType.Circle && TargetSelectType == SkillTargetSelectType.AreaSelect; } }
         //[LabelText("区域场配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         //public GameObject AreaCollider;
-        [LabelText("技能作用对象"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
-        public SkillAffectTargetType AffectTargetType;
         [LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public uint ColdTime;
 

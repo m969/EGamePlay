@@ -38,6 +38,7 @@
 
 <img src="Readme/EGamePlay.gif" width="60%">
 <img src="Readme/EGamePlayTurn.gif" width="60%">
+<img src="Readme/EGamePlayExecutionLink2.gif" width="90%">
 
 ***
 
@@ -89,6 +90,13 @@ AbilityEffect
 ExpressionParser
 </summary>
 ExpressionParser
+</details>
+
+<details>
+<summary>
+ExecutionLink
+</summary>
+ExecutionLink
 </details>
 
 ---

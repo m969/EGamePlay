@@ -129,15 +129,9 @@ MonoBehaviour:
   Id: 1005
   Name: "\u706B\u5F39"
   SkillSpellType: 0
-  TargetSelectType: 2
-  AffectAreaType: 0
-  CircleAreaRadius: 0
-  AreaCollider: {fileID: 0}
+  TargetSelectType: 1
   AffectTargetType: 2
   ColdTime: 3000
   EnableChildrenStatuses: 0
-  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillExecutionAsset: {fileID: 7402701643467124463, guid: 05f4fb3e37c0e0944addfdbd803cd7e3,
-    type: 3}
-  SkillAudio: {fileID: 0}
   SkillDescription: "\u6BCF\u547D\u4E2D\u4E00\u4E2A\u76EE\u6807\u540E\u4E0B\u4E00\u6B21\u4F24\u5BB3\u4F1A\u51CF\u5C1120%\uFF0C\u6700\u4F4E\u51CF\u523040%"
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

@@ -53,7 +53,7 @@ MonoBehaviour:
   Id: 1007
   Name: "\u9B54\u7130\u4E4B\u57DF"
   SkillSpellType: 0
-  TargetSelectType: 3
+  TargetSelectType: 1
   AffectTargetType: 2
   ColdTime: 0
   EnableChildrenStatuses: 0

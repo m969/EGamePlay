@@ -78,7 +78,7 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
-    - Name: Components
+    - Name: Decorators
       Entry: 6
       Data: 
     - Name: EffectTypeName
@@ -129,7 +129,7 @@ MonoBehaviour:
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
-    - Name: Components
+    - Name: Decorators
       Entry: 6
       Data: 
     - Name: EffectTypeName
@@ -173,15 +173,9 @@ MonoBehaviour:
   Id: 1001
   Name: "\u9ED1\u706B\u7403\u672F"
   SkillSpellType: 0
-  TargetSelectType: 1
-  AffectAreaType: 0
-  CircleAreaRadius: 0
-  AreaCollider: {fileID: 0}
+  TargetSelectType: 0
   AffectTargetType: 2
   ColdTime: 0
   EnableChildrenStatuses: 0
-  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  SkillExecutionAsset: {fileID: 7402701643467124463, guid: f22d3af00c2c6594181152008cd0b3c8,
-    type: 3}
-  SkillAudio: {fileID: 0}
   SkillDescription: 
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

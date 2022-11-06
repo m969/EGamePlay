@@ -26,6 +26,9 @@ namespace EGamePlay.Combat
         [LabelText("范围指示器")]
         public GameObject RangeIndicatorObjAsset;
         [ShowIf("TargetInputType", ExecutionTargetInputType.Point)]
+        [LabelText("目标点指示器")]
+        public GameObject PointIndicatorObjAsset;
+        [ShowIf("TargetInputType", ExecutionTargetInputType.Point)]
         [LabelText("朝向指示器")]
         public GameObject DirectionIndicatorObjAsset;
         //public string BindSkillName;
