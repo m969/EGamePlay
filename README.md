@@ -6,6 +6,10 @@
 [![Unity Version: 2021.3.1f1](https://img.shields.io/badge/Unity-2021.3.1f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
 
 ---
+## 文档：
+- [EGamePlay文档(wiki)](https://github.com/m969/EGamePlay/wiki)
+
+---
 ## 知乎文章：
 
 - [0、如何实现一个灵活、通用的战斗（技能）系统——序章](https://zhuanlan.zhihu.com/p/272216809)
