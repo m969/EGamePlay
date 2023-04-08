@@ -19,7 +19,7 @@ namespace EGamePlay.Combat
 
         //效果赋给行动能力
         public EffectAssignAbility EffectAssignAbility { get; private set; }
-        //施法技能行动能力
+        //施法行动能力
         public SpellActionAbility SpellAbility { get; private set; }
         //移动行动能力
         public MotionActionAbility MotionAbility { get; private set; }
@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
         //施加状态行动能力
         public AddStatusActionAbility AddStatusAbility { get; private set; }
         //施法普攻行动能力
-        public AttackActionAbility SpellAttackAbility { get; private set; }
+        public AttackActionAbility AttackSpellAbility { get; private set; }
         //回合行动能力
         public RoundActionAbility RoundAbility { get; private set; }
         //起跳行动能力
@@ -38,6 +38,7 @@ namespace EGamePlay.Combat
 
         //普攻能力
         public AttackAbility AttackAbility { get; set; }
+        //普攻格挡能力
         public AttackBlockActionAbility AttackBlockAbility { get; set; }
 
         //执行中的执行体
@@ -46,7 +47,6 @@ namespace EGamePlay.Combat
         public Dictionary<int, SkillAbility> IdSkills { get; set; } = new Dictionary<int, SkillAbility>();
         public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
         public Dictionary<string, List<StatusAbility>> TypeIdStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
-        //public Dictionary<Type, List<StatusAbility>> TypeStatuses { get; set; } = new Dictionary<Type, List<StatusAbility>>();
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
         /// 行为禁制
@@ -59,7 +59,7 @@ namespace EGamePlay.Combat
         {
             AddComponent<AttributeComponent>();
             AddComponent<ActionPointComponent>();
-            AddComponent<ConditionComponent>();
+            AddComponent<ConditionEventComponent>();
             AddComponent<StatusComponent>();
             AddComponent<SkillComponent>();
             AddComponent<SpellComponent>();
@@ -78,7 +78,7 @@ namespace EGamePlay.Combat
             DamageAbility = AttachAction<DamageActionAbility>();
             CureAbility = AttachAction<CureActionAbility>();
             AddStatusAbility = AttachAction<AddStatusActionAbility>();
-            SpellAttackAbility = AttachAction<AttackActionAbility>();
+            AttackSpellAbility = AttachAction<AttackActionAbility>();
             RoundAbility = AttachAction<RoundActionAbility>();
             JumpToAbility = AttachAction<JumpToActionAbility>();
         }
@@ -101,14 +101,14 @@ namespace EGamePlay.Combat
         #endregion
 
         #region 条件事件
-        public void ListenerCondition(ConditionType conditionType, Action action, object paramObj = null)
+        public void ListenerCondition(ConditionEventType conditionType, Action action, object paramObj = null)
         {
-            GetComponent<ConditionComponent>().AddListener(conditionType, action, paramObj);
+            GetComponent<ConditionEventComponent>().AddListener(conditionType, action, paramObj);
         }
 
-        public void UnListenCondition(ConditionType conditionType, Action action)
+        public void UnListenCondition(ConditionEventType conditionType, Action action)
         {
-            GetComponent<ConditionComponent>().RemoveListener(conditionType, action);
+            GetComponent<ConditionEventComponent>().RemoveListener(conditionType, action);
         }
         #endregion
 

@@ -39,7 +39,7 @@ namespace EGamePlay.Combat
 
         public float GetDamagePercent(int TargetCounter)
         {
-            return Mathf.Max(MinPercent, 1 - ReducePercent * TargetCounter);
+            return System.Math.Max(MinPercent, 1 - ReducePercent * TargetCounter);
         }
     }
 }

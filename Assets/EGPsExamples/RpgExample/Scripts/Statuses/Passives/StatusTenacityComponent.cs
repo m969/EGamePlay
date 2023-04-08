@@ -28,7 +28,7 @@ public class StatusTenacityComponent : EGamePlay.Component
         var OwnerEntity = statusAbility.OwnerEntity;
         CureAbilityEffect = statusAbility.GetComponent<AbilityEffectComponent>().CureAbilityEffect;
         OwnerEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
-        OwnerEntity.ListenerCondition(ConditionType.WhenInTimeNoDamage, StartReplyHealth, 4f);
+        OwnerEntity.ListenerCondition(ConditionEventType.WhenInTimeNoDamage, StartReplyHealth, "4");
         statusAbility.AddComponent<UpdateComponent>();
     }
 
@@ -67,12 +67,7 @@ public class StatusTenacityComponent : EGamePlay.Component
         {
             return;
         }
-        Entity.Get<AbilityEffectComponent>().TryAssignEffectByIndex(OwnerEntity, 0);
-        //if (OwnerEntity.CureAbility.TryMakeAction(out var action))
-        //{
-        //    action.Target = OwnerEntity;
-        //    //action.AbilityEffect = CureAbilityEffect;
-        //    action.ApplyCure();
-        //}
+        var effectAssign = Entity.Get<AbilityEffectComponent>().CreateAssignActionByIndex(OwnerEntity, 0);
+        effectAssign.AssignEffect();
     }
 }

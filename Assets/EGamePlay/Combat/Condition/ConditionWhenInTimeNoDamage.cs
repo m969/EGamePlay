@@ -4,24 +4,22 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public sealed class ConditionWhenInTimeNoDamageComponent : Component 
+    public sealed class ConditionWhenInTimeNoDamage : Entity
     {
         private GameTimer NoDamageTimer { get; set; }
-        public override bool DefaultEnable => false;
 
 
         public override void Awake(object initData)
         {
             var time = (float)initData;
             NoDamageTimer = new GameTimer(time);
-            Entity.GetParent<CombatEntity>().ListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
+            GetParent<CombatEntity>().ListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
         public void StartListen(Action whenNoDamageInTimeCallback)
         {
             NoDamageTimer.OnFinish(whenNoDamageInTimeCallback);
-            Enable = true;
-            //Entity.AddComponent<UpdateComponent>();
+            AddComponent<UpdateComponent>();
         }
 
         public override void Update()

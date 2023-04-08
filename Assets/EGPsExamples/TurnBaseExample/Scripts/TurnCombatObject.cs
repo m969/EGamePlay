@@ -132,7 +132,7 @@ public class TurnCombatObject : MonoBehaviour
         if (statusConfig.ID == "Vertigo")
         {
             CombatEntity.GetComponent<MotionComponent>().Enable = false;
-            CombatObjectData.AnimationComponent.AnimancerComponent.Play(CombatObjectData.AnimationComponent.StunAnimation);
+            CombatObjectData.AnimationComponent.Play(CombatObjectData.AnimationComponent.StunAnimation);
             var vertigoParticle = CombatObjectData.vertigoParticle;
             if (vertigoParticle == null)
             {
@@ -168,7 +168,7 @@ public class TurnCombatObject : MonoBehaviour
         if (statusConfig.ID == "Vertigo")
         {
             CombatEntity.GetComponent<MotionComponent>().Enable = true;
-            CombatObjectData.AnimationComponent.AnimancerComponent.Play(CombatObjectData.AnimationComponent.IdleAnimation);
+            CombatObjectData.AnimationComponent.Play(CombatObjectData.AnimationComponent.IdleAnimation);
             if (CombatObjectData.vertigoParticle != null)
             {
                 GameObject.Destroy(CombatObjectData.vertigoParticle);
@@ -184,7 +184,7 @@ public class TurnCombatObject : MonoBehaviour
     }
 
     private ETCancellationToken token;
-    public async ETVoid PlayThenIdleAsync(AnimationClip animation)
+    public async ETTask PlayThenIdleAsync(AnimationClip animation)
     {
         AnimationComponent.Play(AnimationComponent.IdleAnimation);
         AnimationComponent.PlayFade(animation);

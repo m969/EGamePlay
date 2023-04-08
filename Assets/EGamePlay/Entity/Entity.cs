@@ -96,6 +96,7 @@ namespace EGamePlay
             Parent?.RemoveChild(this);
             foreach (var component in Components.Values)
             {
+                component.Enable = false;
                 Component.Destroy(component);
             }
             Components.Clear();
@@ -112,7 +113,7 @@ namespace EGamePlay
             return parent as T;
         }
 
-        public T As<T>() where T : Entity
+        public T As<T>() where T : class
         {
             return this as T;
         }
@@ -213,14 +214,14 @@ namespace EGamePlay
             return null;
         }
 
-        public Component Get(Type componentType)
-        {
-            if (this.Components.TryGetValue(componentType, out var component))
-            {
-                return component;
-            }
-            return null;
-        }
+        //public Component Get(Type componentType)
+        //{
+        //    if (this.Components.TryGetValue(componentType, out var component))
+        //    {
+        //        return component;
+        //    }
+        //    return null;
+        //}
 
         public bool TryGet<T>(out T component) where T : Component
         {

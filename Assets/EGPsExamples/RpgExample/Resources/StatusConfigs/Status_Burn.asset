@@ -61,10 +61,10 @@ MonoBehaviour:
       Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 4
+      Data: 2
     - Name: ConditionType
       Entry: 3
-      Data: 0
+      Data: 4
     - Name: ActionPointType
       Entry: 3
       Data: 16
@@ -72,23 +72,13 @@ MonoBehaviour:
       Entry: 1
       Data: "\u95F4\u9694\u65F6\u95F4"
     - Name: ConditionParam
-      Entry: 6
-      Data: 
+      Entry: 1
+      Data: "\u95F4\u9694\u65F6\u95F4"
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
-    - Name: Components
-      Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Component, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
+    - Name: Decorators
+      Entry: 6
       Data: 
     - Name: EffectTypeName
       Entry: 1

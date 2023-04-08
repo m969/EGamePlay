@@ -65,34 +65,26 @@ namespace EGamePlay.Combat
             return AbilityEffects[index];
         }
 
-        /// <summary>   尝试将所有效果赋给目标   </summary>
-        public void TryAssignAllEffectsToTargetWithExecution(CombatEntity targetEntity, IAbilityExecution execution)
+        public EffectAssignAction CreateAssignActionByIndex(Entity targetEntity, int index)
         {
-            Log.Debug($"TryAssignAllEffectsToTargetWithExecution {targetEntity} {AbilityEffects.Count}");
-            if (AbilityEffects.Count > 0)
-            {
-                foreach (var abilityEffect in AbilityEffects)
-                {
-                    abilityEffect.TryAssignEffectTo(targetEntity);
-                }
-            }
+            return GetEffect(index).CreateAssignAction(targetEntity);
         }
 
-        /// <summary>   尝试将所有效果赋给目标   </summary>
-        public void TryAssignAllEffectsToTargetWithAbilityItem(CombatEntity targetEntity, AbilityItem abilityItem)
+        public List<EffectAssignAction> CreateAssignActions(Entity targetEntity)
         {
-            if (AbilityEffects.Count > 0)
+            //Log.Debug($"TryAssignAllEffectsToTargetWithExecution {targetEntity} {AbilityEffects.Count}");
+            var ability = Entity as IAbilityEntity;
+            var OwnerEntity = ability.OwnerEntity;
+            var list = new List<EffectAssignAction>();
+            foreach (var abilityEffect in AbilityEffects)
             {
-                foreach (var abilityEffect in AbilityEffects)
+                var effectAssign = abilityEffect.CreateAssignAction(targetEntity);
+                if (effectAssign != null)
                 {
-                    abilityEffect.TryAssignEffectToTargetWithAbilityItem(targetEntity, abilityItem);
+                    list.Add(effectAssign);
                 }
             }
-        }
-
-        public void TryAssignEffectByIndex(CombatEntity targetEntity, int index)
-        {
-            AbilityEffects[index].TryAssignEffectTo(targetEntity);
+            return list;
         }
     }
 }

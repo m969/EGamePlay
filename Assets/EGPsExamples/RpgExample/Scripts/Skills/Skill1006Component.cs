@@ -36,7 +36,6 @@ public class SkillExecution1006Component : EGamePlay.Component
     {
         GetEntity<SkillExecution>().ActionOccupy = false;
         var channelPrefab = AssetUtils.Load<GameObject>("AbilityItems/Channel");
-        //var channelPrefab = GetEntity<SkillExecution>().ExecutionObject.ExecutionClips[0].CollisionExecuteData.ObjAsset;
         channelPrefab.gameObject.SetActive(false);
         for (int i = GetEntity<SkillExecution>().SkillTargets.Count - 1; i >= 0; i--)
         {
@@ -50,7 +49,8 @@ public class SkillExecution1006Component : EGamePlay.Component
         foreach (var item in EntityChannels)
         {
 #if !EGAMEPLAY_EXCEL
-            GetEntity<SkillExecution>().SkillAbility.Get<AbilityEffectComponent>().TryAssignEffectByIndex(item.Key, 2);
+            var effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 2);
+            effectAssign.AssignEffect();
 #endif
         }
         Enable = true;
@@ -78,8 +78,10 @@ public class SkillExecution1006Component : EGamePlay.Component
 #if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
-            GetEntity<SkillExecution>().SkillAbility.Get<AbilityEffectComponent>().TryAssignEffectByIndex(item.Key, 0);
-            GetEntity<SkillExecution>().SkillAbility.Get<AbilityEffectComponent>().TryAssignEffectByIndex(item.Key, 1);
+            var effectAssign = GetEntity<SkillExecution>().SkillAbility.Get<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 0);
+            effectAssign.AssignEffect();
+            effectAssign = GetEntity<SkillExecution>().SkillAbility.Get<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 1);
+            effectAssign.AssignEffect();
         }
 #endif
         EndExecute();

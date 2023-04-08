@@ -111,29 +111,18 @@ namespace EGamePlay.Combat
         /// <summary>   路径飞行     </summary>
         private void PathFlyProcess(AbilityItem abilityItem)
         {
-            //abilityItem.Position = OwnerEntity.Position;
             var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             var tempPoints = clipData.CollisionExecuteData.GetCtrlPoints();
 
             var angle = OwnerEntity.Rotation.eulerAngles.y - 90;
-            var a = angle * MathF.PI / 180;
-            //Log.Debug($"agree={agree}");
-            //foreach (var item in tempPoints)
-            //{
-            //    var x = item.position.x;
-            //    var y = item.position.z;
-            //    var x1 = x * Mathf.Cos(a) - y * Mathf.Sin(a);
-            //    var y1 = -(y * Mathf.Cos(a) + x * Mathf.Sin(a));
-            //    Log.Debug($"x={x},y={y} x1={x1},y={y1}");
-            //    item.position = OwnerEntity.Position + new Vector3(x1, item.position.y, y1);
-            //}
+            var agree = angle * MathF.PI / 180;
 
-            abilityItem.Position = tempPoints[0].position;
+            abilityItem.Position = OwnerEntity.Position + tempPoints[0].position;
             var moveComp = abilityItem.Add<AbilityItemBezierMoveComponent>();
             moveComp.PositionEntity = abilityItem;
             moveComp.ctrlPoints = tempPoints;
             moveComp.OriginPosition = OwnerEntity.Position;
-            moveComp.RotateAgree = a;
+            moveComp.RotateAgree = agree;
             moveComp.Speed = clipData.Duration / 10;
             moveComp.DOMove();
             abilityItem.Add<LifeTimeComponent>(clipData.Duration);

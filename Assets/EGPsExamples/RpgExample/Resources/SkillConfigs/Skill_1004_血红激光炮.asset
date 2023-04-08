@@ -175,7 +175,7 @@ MonoBehaviour:
       Data: "\u95F4\u9694\u65F6\u95F4"
     - Name: $v
       Entry: 1
-      Data: 300
+      Data: 0.3
     - Name: 
       Entry: 8
       Data: 
@@ -197,8 +197,8 @@ MonoBehaviour:
   Id: 1004
   Name: "\u8840\u7EA2\u6FC0\u5149\u70AE"
   SkillSpellType: 0
-  TargetSelectType: 1
   AffectTargetType: 2
+  TargetSelectType: 1
   ColdTime: 0
   EnableChildrenStatuses: 0
   SkillDescription: 

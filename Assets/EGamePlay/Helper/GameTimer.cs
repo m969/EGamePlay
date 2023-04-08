@@ -79,7 +79,7 @@ namespace GameUtils
                 throw new Exception($"_maxTime too small, delta:{delta} > _maxTime:{_maxTime}");
             }
             _time += delta;
-            if (onRepeat != _onFinish)
+            if (onRepeat != null && onRepeat != _onFinish)
             {
                 _onFinish = onRepeat;
             }

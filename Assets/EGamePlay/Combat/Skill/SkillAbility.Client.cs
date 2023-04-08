@@ -16,7 +16,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public partial class SkillAbility
     {
-        public SkillExecutionData SkillExecutionData { get; set; }
+        //public SkillExecutionData SkillExecutionData { get; set; }
         public ExecutionObject ExecutionObject { get; set; }
 
 

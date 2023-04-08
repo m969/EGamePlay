@@ -56,7 +56,7 @@ namespace EGamePlay.Combat
             }
 
             Enable = true;
-            Get<AbilityEffectComponent>().Enable = true;
+            GetComponent<AbilityEffectComponent>().Enable = true;
         }
 
         /// 结束
@@ -115,15 +115,15 @@ namespace EGamePlay.Combat
         /// 这里处理技能传入的参数数值替换
         public void ProcessInputKVParams(Dictionary<string, string> Params)
         {
-            foreach (var abilityEffect in Get<AbilityEffectComponent>().AbilityEffects)
+            foreach (var abilityEffect in GetComponent<AbilityEffectComponent>().AbilityEffects)
             {
                 var effect = abilityEffect.EffectConfig;
 
-                if (abilityEffect.TryGet(out EffectIntervalTriggerComponent intervalTriggerComponent))
-                {
-                    intervalTriggerComponent.IntervalValue = ProcessReplaceKV(effect.Interval, Params);
-                }
-                if (abilityEffect.TryGet(out EffectConditionTriggerComponent conditionTriggerComponent))
+                //if (abilityEffect.TryGet(out EffectIntervalTriggerComponent intervalTriggerComponent))
+                //{
+                //    intervalTriggerComponent.IntervalValue = ProcessReplaceKV(effect.Interval, Params);
+                //}
+                if (abilityEffect.TriggerEventBind.TryGet(out EffectConditionEventTriggerComponent conditionTriggerComponent))
                 {
                     conditionTriggerComponent.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
                 }
@@ -149,6 +149,7 @@ namespace EGamePlay.Combat
             {
                 if (!string.IsNullOrEmpty(originValue))
                 {
+                    //Log.Error($"{originValue} {aInputKVItem.Key} {aInputKVItem.Value}");
                     originValue = originValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
                 }
             }

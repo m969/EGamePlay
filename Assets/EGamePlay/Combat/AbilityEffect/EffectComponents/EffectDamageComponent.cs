@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class EffectDamageComponent : Component
+    public class EffectDamageComponent : Component, IEffectTriggerSystem
     {
         public DamageEffect DamageEffect { get; set; }
         public string DamageValueFormula { get; set; }
@@ -19,7 +20,6 @@ namespace EGamePlay.Combat
             //Log.Debug($"EffectDamageComponent Setup");
             DamageEffect = GetEntity<AbilityEffect>().EffectConfig as DamageEffect;
             DamageValueFormula = DamageEffect.DamageValueFormula;
-            Entity.OnEvent(nameof(AbilityEffect.StartAssignEffect), OnAssignEffect);
         }
 
         public int GetDamageValue()
@@ -34,16 +34,16 @@ namespace EGamePlay.Combat
             {
                 expression.Parameters["自身攻击力"].Value = GetEntity<AbilityEffect>().OwnerEntity.GetComponent<AttributeComponent>().Attack.Value;
             }
-            return Mathf.CeilToInt((float)expression.Value);
+            return (int)System.Math.Ceiling((float)expression.Value);
         }
 
-        private void OnAssignEffect(Entity entity)
+        public void OnTriggerApplyEffect(Entity effectAssign)
         {
-            //Log.Debug($"EffectDamageComponent OnAssignEffect");
-            var effectAssignAction = entity.As<EffectAssignAction>();
+            var effectAssignAction = effectAssign.As<EffectAssignAction>();
             if (GetEntity<AbilityEffect>().OwnerEntity.DamageAbility.TryMakeAction(out var damageAction))
             {
-                effectAssignAction.FillDatasToAction(damageAction);
+                damageAction.SourceAssignAction = effectAssignAction;
+                damageAction.Target = effectAssignAction.Target;
                 damageAction.DamageSource = DamageSource.Skill;
                 damageAction.ApplyDamage();
             }

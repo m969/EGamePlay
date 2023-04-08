@@ -64,7 +64,7 @@ namespace EGamePlay.Combat
 
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Condition), HideLabel]
-        public ConditionType ConditionType;
+        public ConditionEventType ConditionType;
 
         [HorizontalGroup("Enabled/Hor")]
         [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Action), HideLabel]

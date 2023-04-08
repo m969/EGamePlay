@@ -48,30 +48,34 @@ namespace EGamePlay.Combat
         public CombatEntity Creator { get; set; }
         /// 目标对象
         public CombatEntity Target { get; set; }
+        public Entity AssignTarget { get; set; }
 
 
         /// 前置处理
         private void PreProcess()
         {
-
+            if (AssignTarget is CombatEntity combatEntity)
+            {
+                Target = combatEntity;
+            }
         }
 
-        public void ApplyEffectAssign()
+        public void AssignEffect()
         {
             //Log.Debug($"ApplyEffectAssign {EffectConfig}");
             PreProcess();
 
-            AbilityEffect.StartAssignEffect(this);
+            foreach (var item in AbilityEffect.Components.Values)
+            {
+                if (item is IEffectTriggerSystem effectTriggerSystem)
+                {
+                    effectTriggerSystem.OnTriggerApplyEffect(this);
+                }
+            }
 
             PostProcess();
 
             FinishAction();
-        }
-
-        public void FillDatasToAction(IActionExecution action)
-        {
-            action.SourceAssignAction = this;
-            action.Target = Target;
         }
 
         /// 后置处理

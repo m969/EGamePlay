@@ -70,15 +70,25 @@ namespace EGamePlay.Combat
 
             if (AbilityEntity != null)
             {
+                //Log.Debug($"AbilityItem OnCollision {collisionExecuteData.ActionData.ActionEventType}");
                 if (collisionExecuteData.ActionData.ActionEventType == FireEventType.AssignEffect)
                 {
                     if (EffectApplyType == EffectApplyType.AllEffects)
                     {
-                        AbilityEntity.Get<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
+                        //AbilityEntity.GetComponent<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
+                        var effectAssigns = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActions(otherCombatEntity);
+                        foreach (var item in effectAssigns)
+                        {
+                            item.AbilityItem = this;
+                            item.AssignEffect();
+                        }
                     }
                     else
                     {
-                        AbilityEntity.Get<AbilityEffectComponent>().TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                        //AbilityEntity.GetComponent<AbilityEffectComponent>().TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                        var effectAssign = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                        effectAssign.AbilityItem = this;
+                        effectAssign.AssignEffect();
                     }
                 }
             }

@@ -70,7 +70,7 @@ namespace EGamePlay
 
         public virtual void OnDestroy()
         {
-            Enable = false;
+            
         }
 
         private void Dispose()

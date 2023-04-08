@@ -91,6 +91,12 @@ public sealed class Hero : MonoBehaviour
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
         AnimTimer.MaxTime = AnimTime;
         InitInventory();
+
+        var ExecutionLinkPanelObj = GameObject.Find("ExecutionLinkPanel");
+        if (ExecutionLinkPanelObj != null)
+        {
+            ExecutionLinkPanelObj.GetComponent<ExecutionLinkPanel>().HeroEntity = CombatEntity;
+        }
     }
 
     private SkillAbility LoadSkillWithCodeBind(string path, KeyCode bindCode)
@@ -345,7 +351,7 @@ public sealed class Hero : MonoBehaviour
     {
         //PlayThenIdleAsync(AnimationComponent.AttackAnimation).Coroutine();
 
-        if (CombatEntity.SpellAttackAbility.TryMakeAction(out var action))
+        if (CombatEntity.AttackSpellAbility.TryMakeAction(out var action))
         {
             var monster = GameObject.Find("Monster");
             SpawnLineEffect(AttackPrefab, transform.position, monster.transform.position);
@@ -360,7 +366,7 @@ public sealed class Hero : MonoBehaviour
     }
 
     private ETCancellationToken token;
-    public async ETVoid PlayThenIdleAsync(AnimationClip animation)
+    public async ETTask PlayThenIdleAsync(AnimationClip animation)
     {
         AnimationComponent.Play(AnimationComponent.IdleAnimation);
         AnimationComponent.PlayFade(animation);

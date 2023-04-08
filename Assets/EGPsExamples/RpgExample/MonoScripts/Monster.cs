@@ -48,6 +48,11 @@ public sealed class Monster : MonoBehaviour
         if (name == "Monster")
         {
             Boss = this;
+            var ExecutionLinkPanelObj = GameObject.Find("ExecutionLinkPanel");
+            if (ExecutionLinkPanelObj != null)
+            {
+                ExecutionLinkPanelObj.GetComponent<ExecutionLinkPanel>().BossEntity = Boss.CombatEntity;
+            }
 #if !EGAMEPLAY_EXCEL
             config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_QiangTi");
             Status = CombatEntity.AttachStatus(config);
@@ -132,7 +137,7 @@ public sealed class Monster : MonoBehaviour
 
         if (statusConfig.ID == "Vertigo")
         {
-            AnimationComponent.AnimancerComponent.Play(AnimationComponent.StunAnimation);
+            AnimationComponent.Play(AnimationComponent.StunAnimation);
             if (vertigoParticle == null)
             {
                 vertigoParticle = GameObject.Instantiate(statusConfig.GetParticleEffect());
@@ -168,7 +173,7 @@ public sealed class Monster : MonoBehaviour
         var statusConfig = eventData.Status.StatusConfig;
         if (statusConfig.ID == "Vertigo")
         {
-            AnimationComponent.AnimancerComponent.Play(AnimationComponent.IdleAnimation);
+            AnimationComponent.Play(AnimationComponent.IdleAnimation);
             if (vertigoParticle != null)
             {
                 GameObject.Destroy(vertigoParticle);

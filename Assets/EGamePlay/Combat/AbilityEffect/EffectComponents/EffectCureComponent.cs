@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace EGamePlay.Combat
 {
     /// <summary>
     /// 
     /// </summary>
-    public class EffectCureComponent : Component
+    public class EffectCureComponent : Component, IEffectTriggerSystem
     {
         public CureEffect CureEffect { get; set; }
         public string CureValueProperty { get; set; }
@@ -18,7 +19,7 @@ namespace EGamePlay.Combat
         {
             CureEffect = GetEntity<AbilityEffect>().EffectConfig as CureEffect;
             CureValueProperty = CureEffect.CureValueFormula;
-            Entity.OnEvent(nameof(AbilityEffect.StartAssignEffect), OnAssignEffect);
+            //Log.Debug($"EffectCureComponent {CureValueProperty}");
         }
 
         public int GetCureValue()
@@ -33,16 +34,18 @@ namespace EGamePlay.Combat
             {
                 expression.Parameters["生命值上限"].Value = GetEntity<AbilityEffect>().OwnerEntity.GetComponent<AttributeComponent>().HealthPoint.Value;
             }
-            return Mathf.CeilToInt((float)expression.Value);
+            var v1 = (int)System.Math.Ceiling((float)expression.Value);
+            return v1;
         }
 
-        private void OnAssignEffect(Entity entity)
+        public void OnTriggerApplyEffect(Entity effectAssign)
         {
-            //Log.Debug($"EffectCureComponent OnAssignEffect");
-            var effectAssignAction = entity.As<EffectAssignAction>();
+            //Log.Debug($"EffectCureComponent OnTriggerApplyEffect");
+            var effectAssignAction = effectAssign.As<EffectAssignAction>();
             if (GetEntity<AbilityEffect>().OwnerEntity.CureAbility.TryMakeAction(out var action))
             {
-                effectAssignAction.FillDatasToAction(action);
+                action.SourceAssignAction = effectAssignAction;
+                action.Target = effectAssignAction.Target;
                 action.ApplyCure();
             }
         }

@@ -8,14 +8,14 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class EffectCustomComponent : Component
+    public class EffectCustomComponent : Component, IEffectTriggerSystem
     {
         public override bool DefaultEnable => false;
 
 
         public override void Awake()
         {
-            Entity.OnEvent(nameof(AbilityEffect.StartAssignEffect), OnAssignEffect);
+            //Entity.OnEvent(nameof(AbilityEffect.StartAssignEffect), OnAssignEffect);
         }
 
         public override void OnEnable()
@@ -31,7 +31,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        private void OnAssignEffect(Entity entity)
+        public void OnTriggerApplyEffect(Entity effectAssign)
         {
 
         }

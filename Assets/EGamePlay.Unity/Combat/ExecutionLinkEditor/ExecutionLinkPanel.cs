@@ -49,8 +49,8 @@ namespace EGamePlay
         public string CurrentExecutionAssetPath { get; set; }
 		public ExecutionObject CurrentExecutionObject { get; set; }
 		public ExecuteClipData CurrentExecutionClip { get; set; }
-		public CombatEntity HeroEntity { get => Hero.Instance.CombatEntity; }
-		public CombatEntity BossEntity { get => Monster.Boss.CombatEntity; }
+		public CombatEntity HeroEntity { get; set; }
+        public CombatEntity BossEntity { get; set; }
 
 
         // Start is called before the first frame update
@@ -96,21 +96,6 @@ namespace EGamePlay
 			if (IsPlaying)
 			{
 				CurrentTime += Time.deltaTime;
-
-				//if (CurrentExecutionObject != null)
-				//{
-				//	foreach (var item in CurrentExecutionObject.ExecutionClips)
-				//	{
-				//		if (item.TrackClipType == TrackClipType.Animation && item.AnimationData.AnimationClip != null)
-				//		{
-				//			Hero.Instance.PlayThenIdleAsync(item.AnimationData.AnimationClip).Coroutine();
-				//		}
-				//		if (item.TrackClipType == TrackClipType.ExecutionClip)
-				//		{
-
-				//		}
-				//	}
-				//}
 
 				var perc = Time.deltaTime / TotalTime;
 				SkillTimeImage.fillAmount += perc;

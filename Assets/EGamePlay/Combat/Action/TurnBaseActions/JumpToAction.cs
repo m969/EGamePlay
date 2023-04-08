@@ -88,7 +88,7 @@ namespace EGamePlay.Combat
 
             PostProcess();
 
-            if (Creator.SpellAttackAbility.TryMakeAction(out var attackAction))
+            if (Creator.AttackSpellAbility.TryMakeAction(out var attackAction))
             {
                 attackAction.Target = Target;
                 await attackAction.ApplyAttackAwait();

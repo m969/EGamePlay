@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class EffectAttributeModifyComponent : Component
+    public class EffectAttributeModifyComponent : Component, IEffectTriggerSystem
     {
         public override bool DefaultEnable => false;
         public AttributeModifyEffect AttributeModifyEffect { get; set; }
@@ -57,6 +57,11 @@ namespace EGamePlay.Combat
             {
                 parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalPctAddModifier(AttributeModifier);
             }
+        }
+
+        public void OnTriggerApplyEffect(Entity effectAssign)
+        {
+
         }
     }
 }
