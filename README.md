@@ -120,12 +120,12 @@ ExecutionLink
 ![SkillConfigImage.png](Readme/SkillEffectsExcel.png)
 
 ---
-EGamePlay战斗框架技术讨论交流qq群：763696367
-===
+## EGamePlay战斗框架技术讨论交流qq群：763696367
 对战斗感兴趣的同学可以进群一起探讨更合适、高效的战斗框架实现
+<br>对EGamePlay有任何疑问或建议可以进群反馈，或是提在[Discussions](https://github.com/m969/EGamePlay/discussions)
 
 ---
-对EGamePlay有任何疑问或建议可以进群反馈，或是提在[Discussions](https://github.com/m969/EGamePlay/discussions)
+联网同步demo在这里 https://github.com/m969/AOGame
 
 ---
 ## 其他类似项目
