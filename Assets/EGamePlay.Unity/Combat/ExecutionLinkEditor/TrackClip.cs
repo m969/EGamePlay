@@ -1,7 +1,6 @@
 using ET;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -186,6 +185,7 @@ namespace EGamePlay
 
         private void PointerClick(BaseEventData data)
         {
+#if UNITY_EDITOR
             ExecutionLinkPanel.Instance.CurrentExecutionClip = TrackClipData;
 
             var pEventData = (PointerEventData)data;
@@ -198,19 +198,19 @@ namespace EGamePlay
                     var executeType = TrackClipData.CollisionExecuteData.MoveType;
                     if (executeType == CollisionMoveType.PathFly || executeType == CollisionMoveType.SelectedDirectionPathFly)
                     {
-                        Selection.activeObject = this;
-                        EditorGUIUtility.PingObject(TrackClipData);
+                        UnityEditor.Selection.activeObject = this;
+                        UnityEditor.EditorGUIUtility.PingObject(TrackClipData);
                     }
                     else
                     {
-                        Selection.activeObject = TrackClipData;
-                        EditorGUIUtility.PingObject(Selection.activeObject);
+                        UnityEditor.Selection.activeObject = TrackClipData;
+                        UnityEditor.EditorGUIUtility.PingObject(UnityEditor.Selection.activeObject);
                     }
                 }
                 else
                 {
-                    Selection.activeObject = TrackClipData;
-                    EditorGUIUtility.PingObject(Selection.activeObject);
+                    UnityEditor.Selection.activeObject = TrackClipData;
+                    UnityEditor.EditorGUIUtility.PingObject(UnityEditor.Selection.activeObject);
                 }
             }
             if (pEventData.button == PointerEventData.InputButton.Right)
@@ -218,6 +218,7 @@ namespace EGamePlay
                 ExecutionLinkPanel.Instance.RightContextTrm.gameObject.SetActive(true);
                 ExecutionLinkPanel.Instance.RightContextTrm.rectTransform().anchoredPosition = new Vector2(pEventData.position.x, pEventData.position.y - Screen.height);
             }
+#endif
         }
 
         private void BeginDrag(BaseEventData data)

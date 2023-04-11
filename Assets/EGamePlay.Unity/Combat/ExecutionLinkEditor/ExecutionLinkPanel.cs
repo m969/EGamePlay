@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 using System.IO;
 using EGamePlay.Combat;
+using System.Diagnostics;
 
 namespace EGamePlay
 {
@@ -116,8 +116,9 @@ namespace EGamePlay
 
 		public void NewExecutionAsset()
 		{
+#if UNITY_EDITOR
 			var assetName = "Execution_";
-			var i = 0;
+            var i = 0;
 			while (true)
 			{
 				var newAssetName = assetName;
@@ -125,7 +126,7 @@ namespace EGamePlay
 				{
 					newAssetName = assetName + i;
                 }
-				var asset = AssetDatabase.LoadAssetAtPath<ExecutionObject>($"Assets/{newAssetName}.asset");
+				var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<ExecutionObject>($"Assets/{newAssetName}.asset");
 				if (asset == null)
 				{
                     assetName = newAssetName;
@@ -138,61 +139,68 @@ namespace EGamePlay
 			var excObj = ScriptableObject.CreateInstance<ExecutionObject>();
 			excObj.TotalTime = 1.5f;
 			excObj.Id = i.ToString();
-            AssetDatabase.CreateAsset(excObj, CurrentExecutionAssetPath);
+            UnityEditor.AssetDatabase.CreateAsset(excObj, CurrentExecutionAssetPath);
 			SkillListPanel.Instance.RefreshList();
 			LoadCurrentSkill();
+#endif
         }
 
         public void AddClipAsset()
 		{
+#if UNITY_EDITOR
 			if (string.IsNullOrEmpty(CurrentExecutionAssetPath))
-			{
+            {
 				return;
 			}
-			var excObj = AssetDatabase.LoadAssetAtPath<ExecutionObject>(CurrentExecutionAssetPath);
+			var excObj = UnityEditor.AssetDatabase.LoadAssetAtPath<ExecutionObject>(CurrentExecutionAssetPath);
 			var excClipObj = ScriptableObject.CreateInstance<ExecuteClipData>();
 			excClipObj.name = "ExecuteClip";
 			excClipObj.ExecuteClipType = ExecuteClipType.CollisionExecute;
 			excClipObj.CollisionExecuteData = new CollisionExecuteData();
 			excClipObj.GetClipTime().EndTime = 0.1f;
             excObj.ExecuteClips.Add(excClipObj);
-			AssetDatabase.AddObjectToAsset(excClipObj, excObj);
-			EditorUtility.SetDirty(excObj);
-            AssetDatabase.SaveAssetIfDirty(excObj);
+			UnityEditor.AssetDatabase.AddObjectToAsset(excClipObj, excObj);
+			UnityEditor.EditorUtility.SetDirty(excObj);
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(excObj);
             LoadCurrentSkill();
+#endif
         }
 
         public void DeleteClipAsset()
         {
-			//Log.Debug($"DeleteClipAsset {CurrentExecutionClip} {CurrentExecutionObject.ExecutionClips.Count}");
-			CurrentExecutionObject.ExecuteClips.Remove(CurrentExecutionClip);
-            AssetDatabase.RemoveObjectFromAsset(CurrentExecutionClip);
-            EditorUtility.SetDirty(CurrentExecutionObject);
-            AssetDatabase.SaveAssetIfDirty(CurrentExecutionObject);
+#if UNITY_EDITOR
+            //Log.Debug($"DeleteClipAsset {CurrentExecutionClip} {CurrentExecutionObject.ExecutionClips.Count}");
+            CurrentExecutionObject.ExecuteClips.Remove(CurrentExecutionClip);
+            UnityEditor.AssetDatabase.RemoveObjectFromAsset(CurrentExecutionClip);
+            UnityEditor.EditorUtility.SetDirty(CurrentExecutionObject);
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(CurrentExecutionObject);
             LoadCurrentSkill();
 			RightContextTrm.gameObject.SetActive(false);
-		}
+#endif
+        }
 
         public void SaveAsset()
         {
+#if UNITY_EDITOR
 			if (CurrentExecutionObject == null)
 			{
 				return;
 			}
-            //foreach (var item in CurrentExecutionObject.ExecutionClips)
-            //{
-            //	AssetDatabase.isd
-            //}
-            EditorUtility.SetDirty(CurrentExecutionObject);
-            AssetDatabase.SaveAssetIfDirty(CurrentExecutionObject);
+            UnityEditor.EditorUtility.SetDirty(CurrentExecutionObject);
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(CurrentExecutionObject);
+#endif
         }
 
         T Load<T>(string asset) where T : Object
         {
+#if UNITY_EDITOR
 			return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(asset);
+#else
+			return null;
+#endif
         }
 
-		public static void DestroyChildren(Transform transform)
+        public static void DestroyChildren(Transform transform)
 		{
 			for (int i = transform.childCount - 1; i >= 0; i--)
 			{
@@ -207,26 +215,15 @@ namespace EGamePlay
             LoadCurrentSkill();
         }
 
-		public void LoadCurrentSkill()
+        public void LoadCurrentSkill()
         {
+#if UNITY_EDITOR
 			var self = this;
-			DestroyChildren(self.TrackListTrm);
+            DestroyChildren(self.TrackListTrm);
 
-			CurrentExecutionObject = AssetDatabase.LoadAssetAtPath<ExecutionObject>(CurrentExecutionAssetPath);
+			CurrentExecutionObject = UnityEditor.AssetDatabase.LoadAssetAtPath<ExecutionObject>(CurrentExecutionAssetPath);
 
-			//var cast = CastConfigCategory.Instance.Get(self.CurrentSkillId);
-			//self.CurrentSkillConfig = cast;
-
-			//if (cast == null)
-			//{
-			//	return;
-			//}
-
-			//var time = 1500;
 			self.TotalTime = CurrentExecutionObject.TotalTime;
-
-			//self.SkillNameText.text = $"{cast.Id}_{cast.Name}";
-			//self.SkillTimeImage.GetComponentInChildren<Text>().text = $"{self.TotalTime}√Î";
 
 			foreach (var item in CurrentExecutionObject.ExecuteClips)
             {
@@ -247,9 +244,6 @@ namespace EGamePlay
                     self.LoadCurrentSkillParticleEffect(item);
                 }
             }
-            //self.LoadCurrentSkillAction(cast.HitAction, "action");
-            //self.LoadCurrentSkillAction(new int[] { 500 }, "buff");
-			//self.LoadCurrentSkillSound();
 
 			var trackListSize = self.TrackListTrm.rectTransform().sizeDelta;
 			var space = self.TrackListTrm.GetComponent<VerticalLayoutGroup>().spacing;
@@ -287,9 +281,10 @@ namespace EGamePlay
 					}
 				}
 			}
-		}
+#endif
+        }
 
-		void LoadCurrentSkillCollisionClip(ExecuteClipData trackClipData)
+        void LoadCurrentSkillCollisionClip(ExecuteClipData trackClipData)
 		{
 			var self = this;
 			//var cast = self.CurrentSkillConfig;

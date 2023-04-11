@@ -85,19 +85,19 @@ namespace Sirenix.OdinInspector.Editor
             {
                 var platform = EditorUserBuildSettings.activeBuildTarget;
 
-                if (AssemblyImportSettingsUtilities.IsJITSupported(
-                    platform,
-                    AssemblyImportSettingsUtilities.GetCurrentScriptingBackend(),
-                    AssemblyImportSettingsUtilities.GetCurrentApiCompatibilityLevel()))
-                {
-                    ApplyImportSettings(platform, aotAssemblies.ToArray(), OdinAssemblyImportSettings.ExcludeFromAll);
-                    ApplyImportSettings(platform, jitAssemblies.ToArray(), OdinAssemblyImportSettings.IncludeInBuildOnly);
-                }
-                else
-                {
-                    ApplyImportSettings(platform, aotAssemblies.ToArray(), OdinAssemblyImportSettings.IncludeInBuildOnly);
-                    ApplyImportSettings(platform, jitAssemblies.ToArray(), OdinAssemblyImportSettings.ExcludeFromAll);
-                }
+                //if (AssemblyImportSettingsUtilities.IsJITSupported(
+                //    platform,
+                //    AssemblyImportSettingsUtilities.GetCurrentScriptingBackend(),
+                //    AssemblyImportSettingsUtilities.GetCurrentApiCompatibilityLevel()))
+                //{
+                //    ApplyImportSettings(platform, aotAssemblies.ToArray(), OdinAssemblyImportSettings.ExcludeFromAll);
+                //    ApplyImportSettings(platform, jitAssemblies.ToArray(), OdinAssemblyImportSettings.IncludeInBuildOnly);
+                //}
+                //else
+                //{
+                //    ApplyImportSettings(platform, aotAssemblies.ToArray(), OdinAssemblyImportSettings.IncludeInBuildOnly);
+                //    ApplyImportSettings(platform, jitAssemblies.ToArray(), OdinAssemblyImportSettings.ExcludeFromAll);
+                //}
             }
             finally
             {

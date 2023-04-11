@@ -8,8 +8,6 @@ using UnityEngine.UIElements;
 using DG.Tweening;
 using ET;
 using GameUtils;
-using Sirenix.Utilities.Editor.Expressions;
-//using System.Drawing;
 
 public sealed class Hero : MonoBehaviour
 {

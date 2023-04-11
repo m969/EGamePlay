@@ -119,13 +119,12 @@ namespace EGamePlay.Combat
             {
                 var effect = abilityEffect.EffectConfig;
 
-                //if (abilityEffect.TryGet(out EffectIntervalTriggerComponent intervalTriggerComponent))
-                //{
-                //    intervalTriggerComponent.IntervalValue = ProcessReplaceKV(effect.Interval, Params);
-                //}
-                if (abilityEffect.TriggerEventBind.TryGet(out EffectConditionEventTriggerComponent conditionTriggerComponent))
+                if (abilityEffect.TriggerEventBind != null)
                 {
-                    conditionTriggerComponent.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
+                    if (abilityEffect.TriggerEventBind.TryGet(out EffectConditionEventTriggerComponent conditionTriggerComponent))
+                    {
+                        conditionTriggerComponent.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
+                    }
                 }
 
                 if (effect is AttributeModifyEffect attributeModify && abilityEffect.TryGet(out EffectAttributeModifyComponent attributeModifyComponent))

@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/EGPsExamples/RpgExample/RpgExample Scene.unity
+    guid: 24ce72af458909446a2e47d992c74785
   m_configObjects: {}

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.IO;
@@ -41,11 +40,12 @@ namespace EGamePlay
 
         public void RefreshList()
         {
+#if UNITY_EDITOR
             ContentTrm.DestroyChildren();
-            var guids = AssetDatabase.FindAssets("t:ExecutionObject");
+            var guids = UnityEditor.AssetDatabase.FindAssets("t:ExecutionObject");
             foreach (var item in guids)
             {
-                var path = AssetDatabase.GUIDToAssetPath(item);
+                var path = UnityEditor.AssetDatabase.GUIDToAssetPath(item);
                 //Log.Debug(path);
                 var btn = Instantiate(SkillBtn.gameObject, ContentTrm);
                 btn.GetComponentInChildren<Text>().text = Path.GetFileNameWithoutExtension(path);
@@ -57,6 +57,7 @@ namespace EGamePlay
             var trackListSize = listTrm.rectTransform().sizeDelta;
             var space = listTrm.GetComponent<VerticalLayoutGroup>().spacing;
             listTrm.rectTransform().sizeDelta = new Vector2(trackListSize.x, listTrm.childCount * (itemTrm.rectTransform().sizeDelta.y + space));
+#endif
         }
     }
 }
