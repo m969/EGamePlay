@@ -21,7 +21,7 @@ public class EquipmentComponent : EGamePlay.Component
         var equipmentConfig = ConfigHelper.Get<EquipmentConfig>(itemData.ConfigId);
         var modifier = new FloatModifier();
         modifier.Value = equipmentConfig.Value;
-        Entity.GetComponent<AttributeComponent>().GetNumeric(equipmentConfig.Attribute).AddAddModifier(modifier);
+        Entity.GetComponent<AttributeComponent>().GetNumeric(equipmentConfig.Attribute).AddModifier(ModifierType.Add, modifier);
         EquipmentNumerics.Add(itemData.Id, modifier);
     }
 
@@ -30,7 +30,7 @@ public class EquipmentComponent : EGamePlay.Component
         var itemData = ItemDatas[Id];
         var equipmentConfig = ConfigHelper.Get<EquipmentConfig>(itemData.ConfigId);
         var modifier = EquipmentNumerics[itemData.Id];
-        Entity.GetComponent<AttributeComponent>().GetNumeric(equipmentConfig.Attribute).RemoveAddModifier(modifier);
+        Entity.GetComponent<AttributeComponent>().GetNumeric(equipmentConfig.Attribute).RemoveModifier(ModifierType.Add, modifier);
         ItemDatas.Remove(Id);
     }
 }

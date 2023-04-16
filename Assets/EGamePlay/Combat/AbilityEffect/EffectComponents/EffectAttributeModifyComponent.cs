@@ -35,11 +35,11 @@ namespace EGamePlay.Combat
             //Log.Debug($"EffectAttributeModifyComponent OnEnable {attributeType} {numericValue} {attributeModifyEffect.ModifyType}");
             if (attributeModifyEffect.ModifyType == ModifyType.Add)
             {
-                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalAddModifier(numericModifier);
+                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddModifier(ModifierType.FinalAdd, numericModifier);
             }
             if (attributeModifyEffect.ModifyType == ModifyType.PercentAdd)
             {
-                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddFinalPctAddModifier(numericModifier);
+                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddModifier(ModifierType.FinalPctAdd, numericModifier);
             }
             AttributeModifier = numericModifier;
         }
@@ -51,11 +51,11 @@ namespace EGamePlay.Combat
             //Log.Debug($"EffectAttributeModifyComponent OnDisable {attributeType} {AttributeModifyEffect.NumericValue} {AttributeModifyEffect.ModifyType}");
             if (AttributeModifyEffect.ModifyType == ModifyType.Add)
             {
-                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalAddModifier(AttributeModifier);
+                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveModifier(ModifierType.FinalAdd, AttributeModifier);
             }
             if (AttributeModifyEffect.ModifyType == ModifyType.PercentAdd)
             {
-                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveFinalPctAddModifier(AttributeModifier);
+                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveModifier(ModifierType.FinalPctAdd, AttributeModifier);
             }
         }
 

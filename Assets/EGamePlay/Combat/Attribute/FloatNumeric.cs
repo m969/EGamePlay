@@ -42,6 +42,14 @@ namespace EGamePlay.Combat
         }
     }
 
+    public enum ModifierType : int
+    {
+        Add,
+        PctAdd,
+        FinalAdd,
+        FinalPctAdd,
+    }
+
     /// <summary>
     /// 浮点型数值
     /// </summary>
@@ -53,15 +61,17 @@ namespace EGamePlay.Combat
         public float pctAdd { get; private set; }
         public float finalAdd { get; private set; }
         public float finalPctAdd { get; private set; }
-        private FloatModifierCollection AddCollection { get; } = new FloatModifierCollection();
-        private FloatModifierCollection PctAddCollection { get; } = new FloatModifierCollection();
-        private FloatModifierCollection FinalAddCollection { get; } = new FloatModifierCollection();
-        private FloatModifierCollection FinalPctAddCollection { get; } = new FloatModifierCollection();
+        private Dictionary<int, FloatModifierCollection> TypeModifierCollections { get; } = new Dictionary<int, FloatModifierCollection>();
+        public AttributeType AttributeType { get; set; }
 
 
         public override void Awake()
         {
             baseValue = add = pctAdd = finalAdd = finalPctAdd = 0f;
+            TypeModifierCollections.Add(((int)ModifierType.Add), new FloatModifierCollection());
+            TypeModifierCollections.Add(((int)ModifierType.PctAdd), new FloatModifierCollection());
+            TypeModifierCollections.Add(((int)ModifierType.FinalAdd), new FloatModifierCollection());
+            TypeModifierCollections.Add(((int)ModifierType.FinalPctAdd), new FloatModifierCollection());
         }
 
         public float SetBase(float value)
@@ -86,51 +96,23 @@ namespace EGamePlay.Combat
             return baseValue;
         }
 
-        public void AddAddModifier(FloatModifier modifier)
+        public void AddModifier(ModifierType modifierType, FloatModifier modifier)
         {
-            add = AddCollection.AddModifier(modifier);
+            var value = TypeModifierCollections[((int)modifierType)].AddModifier(modifier);
+            if (modifierType == ModifierType.Add) add = value;
+            if (modifierType == ModifierType.PctAdd) pctAdd = value;
+            if (modifierType == ModifierType.FinalAdd) finalAdd = value;
+            if (modifierType == ModifierType.FinalPctAdd) finalPctAdd = value;
             Update();
         }
 
-        public void AddPctAddModifier(FloatModifier modifier)
+        public void RemoveModifier(ModifierType modifierType, FloatModifier modifier)
         {
-            pctAdd = PctAddCollection.AddModifier(modifier);
-            Update();
-        }
-
-        public void AddFinalAddModifier(FloatModifier modifier)
-        {
-            finalAdd = FinalAddCollection.AddModifier(modifier);
-            Update();
-        }
-
-        public void AddFinalPctAddModifier(FloatModifier modifier)
-        {
-            finalPctAdd = FinalPctAddCollection.AddModifier(modifier);
-            Update();
-        }
-
-        public void RemoveAddModifier(FloatModifier modifier)
-        {
-            add = AddCollection.RemoveModifier(modifier);
-            Update();
-        }
-
-        public void RemovePctAddModifier(FloatModifier modifier)
-        {
-            pctAdd = PctAddCollection.RemoveModifier(modifier);
-            Update();
-        }
-
-        public void RemoveFinalAddModifier(FloatModifier modifier)
-        {
-            finalAdd = FinalAddCollection.RemoveModifier(modifier);
-            Update();
-        }
-
-        public void RemoveFinalPctAddModifier(FloatModifier modifier)
-        {
-            finalPctAdd = FinalPctAddCollection.RemoveModifier(modifier);
+            var value = TypeModifierCollections[((int)modifierType)].RemoveModifier(modifier);
+            if (modifierType == ModifierType.Add) add = value;
+            if (modifierType == ModifierType.PctAdd) pctAdd = value;
+            if (modifierType == ModifierType.FinalAdd) finalAdd = value;
+            if (modifierType == ModifierType.FinalPctAdd) finalPctAdd = value;
             Update();
         }
 
