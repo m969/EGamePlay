@@ -8,7 +8,8 @@ public class WorkFlowSource : Entity
 
     public WorkFlow ToEnter<T>() where T : WorkFlow
     {
-        var workflow = PostWorkFlow = Parent.AddChild<T>();
+        var workflow = AddChild<T>();
+        PostWorkFlow = workflow;
         workflow.FlowSource = this;
         return workflow;
     }

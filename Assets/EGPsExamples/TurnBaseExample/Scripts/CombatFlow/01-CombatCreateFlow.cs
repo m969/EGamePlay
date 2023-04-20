@@ -33,7 +33,7 @@ public class CombatCreateFlow : WorkFlow
             var hero = heroRoot.GetChild(i);
             var turnHero = hero.gameObject.AddComponent<TurnCombatObject>();
             turnHero.Setup(i);
-            turnHero.CombatEntity.JumpToTime = GetParent<CombatFlow>().JumpToTime;
+            turnHero.CombatEntity.JumpToTime = FlowSource.GetParent<CombatFlow>().JumpToTime;
         }
         var monsterRoot = GameObject.Find("CombatRoot/MonsterRoot").transform;
         for (int i = 0; i < monsterRoot.childCount; i++)
@@ -41,7 +41,7 @@ public class CombatCreateFlow : WorkFlow
             var hero = monsterRoot.GetChild(i);
             var turnMonster = hero.gameObject.AddComponent<TurnCombatObject>();
             turnMonster.Setup(i);
-            turnMonster.CombatEntity.JumpToTime = GetParent<CombatFlow>().JumpToTime;
+            turnMonster.CombatEntity.JumpToTime = FlowSource.GetParent<CombatFlow>().JumpToTime;
         }
 
         Finish();
