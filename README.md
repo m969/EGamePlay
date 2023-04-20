@@ -137,5 +137,5 @@ ExecutionLink
 技能描述文件如下 skill(1000) //技能1 { FaceToTarget(0) PlayAnimation(1,Skill_1) Bullet(1.3,Bullet,7) PlayEffect(0,Explode8,3) })
 
 ---
-## 参考引用
+## 参考
 - https://github.com/egametang/ET
