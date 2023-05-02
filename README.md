@@ -24,6 +24,13 @@
 - [9、如何实现一个灵活、通用的战斗（技能）系统——Entity-Component模式](https://zhuanlan.zhihu.com/p/343624199)
 ---
 
+## demo运行
+- rpg demo运行RpgExample Scene场景
+- 回合制demo运行TurnBaseExample Scene场景
+- 技能编辑器运行ExecutionLinkScene场景
+
+---
+
 ## 该项目使用了以下收费插件：
 - [DOTween Pro](https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416) （简单易用强大的动画插件）
 - [Odin Inspector](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041) （编辑器扩展、工作流改善）

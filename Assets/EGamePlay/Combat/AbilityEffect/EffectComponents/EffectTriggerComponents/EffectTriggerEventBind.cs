@@ -137,7 +137,8 @@ namespace EGamePlay.Combat
                 //}
                 //else
                 {
-                    GetParent<AbilityEffect>().TriggerEffect(target);
+                    var effectAssign = GetParent<AbilityEffect>().CreateAssignAction(target);
+                    effectAssign.AssignEffect();
                 }
             }
         }
