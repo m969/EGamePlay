@@ -60,15 +60,15 @@ public sealed class Hero : MonoBehaviour
 
 #if EGAMEPLAY_EXCEL
         var config = ConfigHelper.Get<SkillConfig>(1001);
-        SkillAbility ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        SkillAbility ability = CombatEntity.AttachSkill(config);
         CombatEntity.BindSkillInput(ability, KeyCode.Q);
 
         config = ConfigHelper.Get<SkillConfig>(1002);
-        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        ability = CombatEntity.AttachSkill(config);
         CombatEntity.BindSkillInput(ability, KeyCode.W);
 
         config = ConfigHelper.Get<SkillConfig>(1004);
-        ability = CombatEntity.AttachSkill<SkillAbility>(config);
+        ability = CombatEntity.AttachSkill(config);
         CombatEntity.BindSkillInput(ability, KeyCode.E);
 
         SkillSlotsTrm.Find("SkillButtonD").gameObject.SetActive(false);

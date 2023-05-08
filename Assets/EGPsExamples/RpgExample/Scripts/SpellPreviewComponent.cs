@@ -82,7 +82,7 @@ public class SpellPreviewComponent : EGamePlay.Component
         var skillId = PreviewingSkill.SkillConfig.Id;
 #if EGAMEPLAY_EXCEL
         if (PreviewingSkill.SkillConfig.TargetSelect == "手动指定") targetSelectType = SkillTargetSelectType.PlayerSelect;
-        if (PreviewingSkill.SkillConfig.TargetSelect == "固定区域场检测") targetSelectType = SkillTargetSelectType.AreaSelect;
+        if (PreviewingSkill.SkillConfig.TargetSelect == "固定区域场检测") targetSelectType = SkillTargetSelectType.CollisionSelect;
 #else
         targetSelectType = PreviewingSkill.SkillConfig.TargetSelectType;
         affectTargetType = PreviewingSkill.SkillConfig.AffectTargetType;

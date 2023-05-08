@@ -117,7 +117,8 @@ ExecutionLink
 
 ---
 ## 技能ScriptableObject配置和Excel配置流程切换命令
-<img src="Readme/Tools_Excel.png" width="60%">
+之前的命令新版unity用不了了，需要手动到PlayerSettings面板添加 EGAMEPLAY_EXCEL 条件编译
+<img src="Readme/Define_Excel.png" width="">
 
 ### 技能Excel配置
 ![SkillConfigImage.png](Readme/SkillExcel.png)

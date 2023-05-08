@@ -33,8 +33,8 @@ namespace EGamePlay.Combat
             effect = ParseEffect(SkillConfig, SkillConfig.Effect3);
             if (effect != null) Effects.Add(effect);
             AddComponent<AbilityEffectComponent>(Effects);
-#if !NOT_UNITY
-            ParseAbilityEffects();
+#if !SERVER
+            Awake_Client();
 #endif
             if (SkillConfig.Type == "被动")
             {
@@ -65,8 +65,13 @@ namespace EGamePlay.Combat
         public Entity CreateExecution()
         {
             var execution = OwnerEntity.AddChild<SkillExecution>(this);
+            execution.ExecutionObject = ExecutionObject;
+            execution.LoadExecutionEffects();
             this.FireEvent(nameof(CreateExecution), execution);
-            execution.AddComponent<UpdateComponent>();
+            if (ExecutionObject != null)
+            {
+                execution.AddComponent<UpdateComponent>();
+            }
             return execution;
         }
 

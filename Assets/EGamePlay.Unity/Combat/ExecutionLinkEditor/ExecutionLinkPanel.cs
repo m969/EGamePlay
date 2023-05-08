@@ -407,6 +407,7 @@ namespace EGamePlay
 				return;
 			}
 
+#if !EGAMEPLAY_EXCEL
 			SkillTimeImage.fillAmount = 0;
             CurrentTime = 0;
             IsPlaying = true;
@@ -417,16 +418,16 @@ namespace EGamePlay
                 {
 					if (skillAbility.SkillConfig.AffectTargetType == SkillAffectTargetType.EnemyTeam)
 					{
-                        HeroEntity.Get<SpellComponent>().SpellWithTarget(skillAbility, BossEntity);
+                        HeroEntity.GetComponent<SpellComponent>().SpellWithTarget(skillAbility, BossEntity);
                     }
 					else
 					{
-                        HeroEntity.Get<SpellComponent>().SpellWithTarget(skillAbility, HeroEntity);
+                        HeroEntity.GetComponent<SpellComponent>().SpellWithTarget(skillAbility, HeroEntity);
                     }
                 }
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Point)
                 {
-                    HeroEntity.Get<SpellComponent>().SpellWithPoint(skillAbility, BossEntity.Position);
+                    HeroEntity.GetComponent<SpellComponent>().SpellWithPoint(skillAbility, BossEntity.Position);
                 }
             }
 			else
@@ -452,8 +453,9 @@ namespace EGamePlay
                     execution.AddComponent<UpdateComponent>();
                 }
             }
+#endif
         }
-	}
+    }
 
     public static class ExecutionLinkPanelEx
     {

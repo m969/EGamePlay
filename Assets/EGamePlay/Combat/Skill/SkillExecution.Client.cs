@@ -53,7 +53,7 @@ namespace EGamePlay.Combat
                 SkillAbility.Spelling = true;
             }
 
-            Get<ExecutionEffectComponent>().BeginExecute();
+            GetComponent<ExecutionEffectComponent>().BeginExecute();
 
             FireEvent(nameof(BeginExecute));
         }
