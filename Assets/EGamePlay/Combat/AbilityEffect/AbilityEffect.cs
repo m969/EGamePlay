@@ -50,16 +50,7 @@ namespace EGamePlay.Combat
             var triggable = !(this.EffectConfig is ActionControlEffect) && !(this.EffectConfig is AttributeModifyEffect);
             if (triggable)
             {
-                /// 立即触发
-                if (EffectConfig.EffectTriggerType == EffectTriggerType.Instant)
-                {
-                    var effectAssign = CreateAssignAction((OwnerAbility as IAbilityEntity).ParentEntity);
-                    effectAssign.AssignEffect();
-                }
-                else
-                {
-                    TriggerEventBind = AddChild<EffectTriggerEventBind>();
-                }
+                TriggerEventBind = AddChild<EffectTriggerEventBind>();
             }
         }
 

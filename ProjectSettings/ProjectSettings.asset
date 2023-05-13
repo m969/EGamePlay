@@ -700,7 +700,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    Android: ODIN_INSPECTOR;EGAMEPLAY_EXCEL
+    Android: ODIN_INSPECTOR
     Standalone: ODIN_INSPECTOR;EGAMEPLAY_EXCEL
   additionalCompilerArguments: {}
   platformArchitecture: {}

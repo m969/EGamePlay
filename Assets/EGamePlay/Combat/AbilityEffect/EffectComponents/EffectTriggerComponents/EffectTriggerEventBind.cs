@@ -80,6 +80,13 @@ namespace EGamePlay.Combat
             {
                 item.Enable = true;
             }
+            /// 立即触发
+            var effectConfig = GetParent<AbilityEffect>().EffectConfig;
+            if (effectConfig.EffectTriggerType == EffectTriggerType.Instant)
+            {
+                var effectAssign = GetParent<AbilityEffect>().CreateAssignAction((OwnerAbility as IAbilityEntity).ParentEntity);
+                effectAssign.AssignEffect();
+            }
         }
 
         public void TriggerEffectCheck(SkillExecution skillExecution)
