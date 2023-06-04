@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class ExecutionParticleEffectComponent : Component
+    public class ExecuteClipParticleEffectComponent : Component
     {
         public GameObject ParticleEffectPrefab { get; set; }
         public GameObject ParticleEffectObj { get; set; }
@@ -16,8 +16,8 @@ namespace EGamePlay.Combat
 
         public override void Awake()
         {
-            Entity.OnEvent(nameof(ExecutionEffect.TriggerEffect), OnTriggerStart);
-            Entity.OnEvent(nameof(ExecutionEffect.EndEffect), OnTriggerEnd);
+            Entity.OnEvent(nameof(ExecuteClip.TriggerEffect), OnTriggerStart);
+            Entity.OnEvent(nameof(ExecuteClip.EndEffect), OnTriggerEnd);
         }
 
         public void OnTriggerStart(Entity entity)

@@ -29,7 +29,7 @@ public sealed class Monster : MonoBehaviour
         CombatEntity = CombatContext.Instance.AddChild<CombatEntity>();
         CombatContext.Instance.Object2Entities.Add(gameObject, CombatEntity);
         CombatEntity.Position = transform.position;
-        MotionComponent = CombatEntity.Get<MotionComponent>();
+        MotionComponent = CombatEntity.GetComponent<MotionComponent>();
         MotionComponent.RunAI();
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);

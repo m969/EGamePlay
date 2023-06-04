@@ -28,7 +28,7 @@ namespace EGamePlay.Combat
             {
                 return;
             }
-            var abilityEffects = AbilityEntity.Get<AbilityEffectComponent>().AbilityEffects;
+            var abilityEffects = AbilityEntity.GetComponent<AbilityEffectComponent>().AbilityEffects;
             foreach (var abilityEffect in abilityEffects)
             {
                 if (abilityEffect.EffectConfig.Decorators != null)
@@ -66,7 +66,7 @@ namespace EGamePlay.Combat
                 }
             }
 
-            var collisionExecuteData = Get<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
+            var collisionExecuteData = GetComponent<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
 
             if (AbilityEntity != null)
             {

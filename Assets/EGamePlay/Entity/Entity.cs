@@ -205,14 +205,14 @@ namespace EGamePlay
             return null;
         }
 
-        public T Get<T>() where T : Component
-        {
-            if (Components.TryGetValue(typeof(T), out var component))
-            {
-                return component as T;
-            }
-            return null;
-        }
+        //public T GetComponent<T>() where T : Component
+        //{
+        //    if (Components.TryGetValue(typeof(T), out var component))
+        //    {
+        //        return component as T;
+        //    }
+        //    return null;
+        //}
 
         //public Component Get(Type componentType)
         //{

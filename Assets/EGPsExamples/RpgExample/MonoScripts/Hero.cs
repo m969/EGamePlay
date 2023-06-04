@@ -84,7 +84,7 @@ public sealed class Hero : MonoBehaviour
         LoadSkillWithCodeBind("SkillConfigs/Skill_1008_火焰箭", KeyCode.A);
 #endif
 
-        CombatEntity.Get<SpellComponent>().LoadExecutionObjects();
+        CombatEntity.GetComponent<SpellComponent>().LoadExecutionObjects();
 
         HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
         AnimTimer.MaxTime = AnimTime;
@@ -125,7 +125,7 @@ public sealed class Hero : MonoBehaviour
                 {
                     text.color = Color.red;
                 }
-                itemObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
+                itemObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener((UnityEngine.Events.UnityAction)(() => {
                     if (EquipmentPanelTrm.childCount >= 4)
                     {
                         return;
@@ -143,12 +143,12 @@ public sealed class Hero : MonoBehaviour
                     equipObj.name = $"{itemData.Id}";
                     itemData.ConfigId = (short)item.Value.Id;
                     CombatEntity.GetComponent<EquipmentComponent>().AddItemData(itemData);
-                    equipObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
+                    equipObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener((UnityEngine.Events.UnityAction)(() => {
                         var id = long.Parse(equipObj.name);
                         CombatEntity.GetComponent<EquipmentComponent>().RemoveItemData(id);
                         GameObject.Destroy(equipObj);
-                    });
-                });
+                    }));
+                }));
             }
         }
     }
@@ -323,7 +323,7 @@ public sealed class Hero : MonoBehaviour
     {
         MoveTweener?.Kill();
         LookAtTweener?.Kill();
-        CombatEntity.Get<MotionComponent>().Enable = false;
+        CombatEntity.GetComponent<MotionComponent>().Enable = false;
     }
 
     private void SpawnLineEffect(GameObject lineEffectPrefab, Vector3 p1, Vector3 p2)

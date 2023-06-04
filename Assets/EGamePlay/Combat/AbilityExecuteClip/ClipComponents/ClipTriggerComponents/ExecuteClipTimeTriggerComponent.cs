@@ -9,7 +9,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 时间触发组件
     /// </summary>
-    public class ExecutionTimeTriggerComponent : Component
+    public class ExecuteClipTimeTriggerComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
         public float StartTime { get; set; }
@@ -23,11 +23,11 @@ namespace EGamePlay.Combat
         {
             if (StartTimer != null && StartTimer.IsFinished == false)
             {
-                StartTimer.UpdateAsFinish(Time.deltaTime, GetEntity<ExecutionEffect>().TriggerEffect);
+                StartTimer.UpdateAsFinish(Time.deltaTime, GetEntity<ExecuteClip>().TriggerEffect);
             }
             if (EndTimer != null && EndTimer.IsFinished == false)
             {
-                EndTimer.UpdateAsFinish(Time.deltaTime, GetEntity<ExecutionEffect>().EndEffect);
+                EndTimer.UpdateAsFinish(Time.deltaTime, GetEntity<ExecuteClip>().EndEffect);
             }
         }
 
@@ -47,7 +47,7 @@ namespace EGamePlay.Combat
             }
             else
             {
-                GetEntity<ExecutionEffect>().TriggerEffect();
+                GetEntity<ExecuteClip>().TriggerEffect();
             }
 
             if (EndTime > 0)

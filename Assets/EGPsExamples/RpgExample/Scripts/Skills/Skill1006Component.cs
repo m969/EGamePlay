@@ -77,9 +77,9 @@ public class SkillExecution1006Component : EGamePlay.Component
 #if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
-            var effectAssign = GetEntity<SkillExecution>().SkillAbility.Get<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 0);
+            var effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 0);
             effectAssign.AssignEffect();
-            effectAssign = GetEntity<SkillExecution>().SkillAbility.Get<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 1);
+            effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 1);
             effectAssign.AssignEffect();
         }
 #endif

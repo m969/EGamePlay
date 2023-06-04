@@ -27,7 +27,7 @@ namespace EGamePlay.Combat
 
         public void LoadExecutionEffects()
         {
-            AddComponent<ExecutionEffectComponent>();
+            AddComponent<ExecuteClipComponent>();
         }
 
         public override void Update()
@@ -53,7 +53,7 @@ namespace EGamePlay.Combat
                 SkillAbility.Spelling = true;
             }
 
-            GetComponent<ExecutionEffectComponent>().BeginExecute();
+            GetComponent<ExecuteClipComponent>().BeginExecute();
 
             FireEvent(nameof(BeginExecute));
         }
@@ -92,7 +92,7 @@ namespace EGamePlay.Combat
         /// <summary>   目标飞行碰撞体     </summary>
         private void TargetFlyProcess(AbilityItem abilityItem)
         {
-            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
+            var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.TargetEntity = InputTarget;
             abilityItem.Position = OwnerEntity.Position;
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveToWithTime(InputTarget, clipData.Duration);
@@ -111,7 +111,7 @@ namespace EGamePlay.Combat
         /// <summary>   路径飞行     </summary>
         private void PathFlyProcess(AbilityItem abilityItem)
         {
-            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
+            var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             var tempPoints = clipData.CollisionExecuteData.GetCtrlPoints();
 
             var angle = OwnerEntity.Rotation.eulerAngles.y - 90;
@@ -131,7 +131,7 @@ namespace EGamePlay.Combat
         /// <summary>   固定位置碰撞体     </summary>
         private void FixedPositionProcess(AbilityItem abilityItem)
         {
-            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
+            var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.Position = InputPoint;
             abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
         }
@@ -139,7 +139,7 @@ namespace EGamePlay.Combat
         /// <summary>   固定方向碰撞体     </summary>
         private void FixedDirectionProcess(AbilityItem abilityItem)
         {
-            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
+            var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.Position = OwnerEntity.Position;
             abilityItem.Rotation = OwnerEntity.Rotation;
             abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
@@ -152,7 +152,7 @@ namespace EGamePlay.Combat
             proxyObj.transform.position = abilityItem.Position;
             proxyObj.transform.rotation = abilityItem.Rotation;
             proxyObj.AddComponent<AbilityItemProxyObj>().AbilityItem = abilityItem;
-            var clipData = abilityItem.Get<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
+            var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
 
             if (clipData.Shape == CollisionShape.Sphere)
             {

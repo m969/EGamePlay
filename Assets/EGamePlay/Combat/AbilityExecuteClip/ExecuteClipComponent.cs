@@ -7,9 +7,9 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class ExecutionEffectComponent : Component
+    public class ExecuteClipComponent : Component
     {
-        public List<ExecutionEffect> ExecutionEffects { get; private set; } = new List<ExecutionEffect>();
+        public List<ExecuteClip> ExecuteClips { get; private set; } = new List<ExecuteClip>();
 
 
         public override void Awake()
@@ -20,19 +20,19 @@ namespace EGamePlay.Combat
             }
             foreach (var effect in GetEntity<SkillExecution>().ExecutionObject.ExecuteClips)
             {
-                var executionEffect = Entity.AddChild<ExecutionEffect>(effect);
+                var executionEffect = Entity.AddChild<ExecuteClip>(effect);
                 AddEffect(executionEffect);
             }
         }
 
-        public void AddEffect(ExecutionEffect executionEffect)
+        public void AddEffect(ExecuteClip executionEffect)
         {
-            ExecutionEffects.Add(executionEffect);
+            ExecuteClips.Add(executionEffect);
         }
 
         public void BeginExecute()
         {
-            foreach (var item in ExecutionEffects)
+            foreach (var item in ExecuteClips)
             {
                 item.BeginExecute();
             }

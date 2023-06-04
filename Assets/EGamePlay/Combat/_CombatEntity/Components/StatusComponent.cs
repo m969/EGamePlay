@@ -58,7 +58,7 @@ namespace EGamePlay.Combat
                 {
                     continue;
                 }
-                foreach (var effect in item.Get<AbilityEffectComponent>().AbilityEffects)
+                foreach (var effect in item.GetComponent<AbilityEffectComponent>().AbilityEffects)
                 {
                     if (effect.Enable && effect.TryGet(out EffectActionControlComponent actionControlComponent))
                     {

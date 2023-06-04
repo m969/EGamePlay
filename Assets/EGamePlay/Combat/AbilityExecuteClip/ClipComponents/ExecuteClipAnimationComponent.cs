@@ -8,14 +8,14 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class ExecutionAnimationComponent : Component
+    public class ExecuteClipAnimationComponent : Component
     {
         public AnimationClip AnimationClip { get; set; }
 
 
         public override void Awake()
         {
-            Entity.OnEvent(nameof(ExecutionEffect.TriggerEffect), OnTriggerExecutionEffect);
+            Entity.OnEvent(nameof(ExecuteClip.TriggerEffect), OnTriggerExecutionEffect);
         }
 
         public void OnTriggerExecutionEffect(Entity entity)
