@@ -64,7 +64,7 @@ namespace EGamePlay.Combat
             }
 
             Enable = true;
-            Get<AbilityEffectComponent>().Enable = true;
+            GetComponent<AbilityEffectComponent>().Enable = true;
         }
 
         /// 结束
