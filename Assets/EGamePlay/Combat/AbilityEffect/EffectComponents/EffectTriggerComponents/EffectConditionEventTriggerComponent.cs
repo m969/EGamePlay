@@ -19,14 +19,14 @@ namespace EGamePlay.Combat
             var conditionType = Entity.GetParent<AbilityEffect>().EffectConfig.ConditionType;
             var conditionParam = ConditionParamValue;
             //Log.Error($"EffectConditionEventTriggerComponent {conditionType} {conditionParam}");
-            Entity.GetParent<AbilityEffect>().Parent.As<IAbilityEntity>().OwnerEntity.ListenerCondition(conditionType, OnConditionTrigger, conditionParam);
+            Entity.GetParent<AbilityEffect>().Parent.As<IAbilityEntity>().ParentEntity.ListenerCondition(conditionType, OnConditionTrigger, conditionParam);
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
             var conditionType = Entity.GetParent<AbilityEffect>().EffectConfig.ConditionType;
-            Entity.GetParent<AbilityEffect>().Parent.As<IAbilityEntity>().OwnerEntity.UnListenCondition(conditionType, OnConditionTrigger);
+            Entity.GetParent<AbilityEffect>().Parent.As<IAbilityEntity>().ParentEntity.UnListenCondition(conditionType, OnConditionTrigger);
         }
 
         private void OnConditionTrigger()
