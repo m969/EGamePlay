@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
-  m_Name: "Skill_1005_\u706B\u5F39"
+  m_Name: Skill_1003
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -46,7 +46,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 2|EGamePlay.Combat.DamageEffect, Assembly-CSharp
+      Data: 2|EGamePlay.Combat.CureEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -78,45 +78,14 @@ MonoBehaviour:
       Entry: 1
       Data: 100%
     - Name: Decorators
-      Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 4|EGamePlay.Combat.DamageReduceWithTargetCountDecorator, Assembly-CSharp
-    - Name: Enabled
-      Entry: 5
-      Data: true
-    - Name: ReducePercent
-      Entry: 4
-      Data: 20
-    - Name: MinPercent
-      Entry: 4
-      Data: 40
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
     - Name: EffectTypeName
       Entry: 1
       Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
-    - Name: DamageType
-      Entry: 3
-      Data: 1
-    - Name: DamageValueFormula
+    - Name: CureValueFormula
       Entry: 1
-      Data: 500
-    - Name: CanCrit
-      Entry: 5
-      Data: false
+      Data: 2000
     - Name: 
       Entry: 8
       Data: 
@@ -126,12 +95,12 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  Id: 1005
-  Name: "\u706B\u5F39"
+  Id: 1003
+  Name: "\u6CBB\u6108"
   SkillSpellType: 0
-  TargetSelectType: 1
-  AffectTargetType: 2
+  TargetSelectType: 0
+  AffectTargetType: 1
   ColdTime: 3000
-  EnableChildrenStatuses: 0
-  SkillDescription: "\u6BCF\u547D\u4E2D\u4E00\u4E2A\u76EE\u6807\u540E\u4E0B\u4E00\u6B21\u4F24\u5BB3\u4F1A\u51CF\u5C1120%\uFF0C\u6700\u4F4E\u51CF\u523040%"
+  EnableChildrenStatuses: 1
+  SkillDescription: 
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

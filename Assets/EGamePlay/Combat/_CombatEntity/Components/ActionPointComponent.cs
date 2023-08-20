@@ -134,9 +134,12 @@ namespace EGamePlay.Combat
 
         public void TriggerActionPoint(ActionPointType actionPointType, Entity actionExecution)
         {
-            if (ActionPoints.TryGetValue(actionPointType, out var actionPoint))
+            foreach (var item in ActionPoints)
             {
-                actionPoint.TriggerAllActions(actionExecution);
+                if (item.Key.HasFlag(actionPointType))
+                {
+                    item.Value.TriggerAllActions(actionExecution);
+                }
             }
         }
     }

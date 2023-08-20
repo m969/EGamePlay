@@ -75,13 +75,13 @@ public sealed class Hero : MonoBehaviour
         SkillSlotsTrm.Find("SkillButtonE").gameObject.SetActive(false);
         SkillSlotsTrm.Find("SkillButtonF").gameObject.SetActive(false);
 #else
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1001_黑火球术", KeyCode.Q);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1002_炎爆", KeyCode.W);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1003_治愈", KeyCode.Y);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1004_血红激光炮", KeyCode.E);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1005_火弹", KeyCode.R);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1006_灵魂镣铐", KeyCode.T).AddComponent<Skill1006Component>();
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1008_火焰箭", KeyCode.A);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1001", KeyCode.Q);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1002", KeyCode.W);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1003", KeyCode.Y);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1004", KeyCode.E);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1005", KeyCode.R);
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1006", KeyCode.T).AddComponent<Skill1006Component>();
+        LoadSkillWithCodeBind("SkillConfigs/Skill_1008", KeyCode.A);
 #endif
 
         CombatEntity.GetComponent<SpellComponent>().LoadExecutionObjects();

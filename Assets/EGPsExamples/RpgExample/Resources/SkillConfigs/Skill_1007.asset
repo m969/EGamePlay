@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
-  m_Name: "Skill_1003_\u6CBB\u6108"
+  m_Name: Skill_1007
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -43,64 +43,19 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 2|EGamePlay.Combat.CureEffect, Assembly-CSharp
-    - Name: IsSkillEffect
-      Entry: 5
-      Data: true
-    - Name: IsExecutionEffect
-      Entry: 5
-      Data: false
-    - Name: Enabled
-      Entry: 5
-      Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
       Data: 0
-    - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: ConditionType
-      Entry: 3
-      Data: 0
-    - Name: ActionPointType
-      Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
-    - Name: ConditionParam
-      Entry: 6
-      Data: 
-    - Name: TriggerProbability
-      Entry: 1
-      Data: 100%
-    - Name: Decorators
-      Entry: 6
-      Data: 
-    - Name: EffectTypeName
-      Entry: 1
-      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
-    - Name: CureValueFormula
-      Entry: 1
-      Data: 2000
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
-  Id: 1003
-  Name: "\u6CBB\u6108"
+  Id: 1007
+  Name: "\u9B54\u7130\u4E4B\u57DF"
   SkillSpellType: 0
-  TargetSelectType: 0
-  AffectTargetType: 1
-  ColdTime: 3000
-  EnableChildrenStatuses: 1
+  TargetSelectType: 1
+  AffectTargetType: 2
+  ColdTime: 0
+  EnableChildrenStatuses: 0
   SkillDescription: 
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

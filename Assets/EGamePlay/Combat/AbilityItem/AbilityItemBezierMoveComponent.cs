@@ -49,11 +49,9 @@ namespace EGamePlay.Combat
         {
             if (ctrlPoints.Count == 0) return PositionEntity.Position;
             if (ctrlPoints.Count == 1) return ctrlPoints[0].position;
-            //var tempT = t;
             t = Mathf.Clamp(t, 0, 1f);
             t = t * ctrlPoints.Count;
             int segment_index = (int)t;
-            //Log.Debug($"{Progress} {segment_index} {tempT}");
             if (segment_index + 1 >= ctrlPoints.Count)
             {
                 var v = ctrlPoints[segment_index].position;
@@ -62,9 +60,8 @@ namespace EGamePlay.Combat
                 var y = v.z;
                 var x1 = x * Mathf.Cos(a) - y * Mathf.Sin(a);
                 var y1 = -(y * Mathf.Cos(a) + x * Mathf.Sin(a));
-                //Log.Debug($"x={x},y={y} x1={x1},y={y1}");
                 v = OriginPosition + new Vector3(x1, v.y, y1);
-                return v;//segment_index -= 1;
+                return v;
             }
             Vector3[] p = new Vector3[4];
             p[0] = ctrlPoints[segment_index].position;
@@ -79,52 +76,14 @@ namespace EGamePlay.Combat
             if (derivativeOrder == 0)
             {
                 var v = p[0] * u * u * u + 3 * p[1] * u * u * t + 3 * p[2] * u * t * t + p[3] * t * t * t;
-                //Debug.Log($"Evaluate {t} {v}");
                 var a = RotateAgree;
                 var x = v.x;
                 var y = v.z;
                 var x1 = x * Mathf.Cos(a) - y * Mathf.Sin(a);
                 var y1 = -(y * Mathf.Cos(a) + x * Mathf.Sin(a));
-                //Log.Debug($"x={x},y={y} x1={x1},y={y1}");
                 v = OriginPosition + new Vector3(x1, v.y, y1);
                 return v;
             }
-            //else if (derivativeOrder > 0)
-            //{
-            //    Vector3[] q = new Vector3[3];
-            //    q[0] = 3 * (p[1] - p[0]);
-            //    q[1] = 3 * (p[2] - p[1]);
-            //    q[2] = 3 * (p[3] - p[2]);
-            //    //一阶导
-            //    if (derivativeOrder == 1)
-            //    {
-            //        return q[0] * u * u + 2 * q[1] * t * u + q[2] * t * t;
-            //    }
-            //    else if (derivativeOrder > 1)
-            //    {
-            //        Vector3[] r = new Vector3[2];
-            //        r[0] = 2 * (q[1] - q[0]);
-            //        r[1] = 2 * (q[2] - q[1]);
-            //        //二阶导
-            //        if (derivativeOrder == 2)
-            //        {
-            //            return r[0] * u + r[1] * t;
-            //        }
-            //        else if (derivativeOrder > 2)
-            //        {
-            //            //三阶导
-            //            if (derivativeOrder == 3)
-            //            {
-            //                return r[1] - r[0];
-            //            }
-            //            //其他阶导
-            //            else if (derivativeOrder > 3)
-            //            {
-            //                return Vector3.zero;
-            //            }
-            //        }
-            //    }
-            //}
             return Vector3.zero;
         }
     }

@@ -175,7 +175,7 @@ namespace EGamePlay.Combat
                     return;
                 }
                 var fileName = Path.GetFileName(assetPath);
-                var newName = $"Skill_{this.Id}_{this.Name}";
+                var newName = $"Skill_{this.Id}";
                 if (!fileName.StartsWith(newName))
                 {
                     //Debug.Log(assetPath);

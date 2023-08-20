@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
-  m_Name: "Skill_1008_\u706B\u7130\u7BAD"
+  m_Name: Skill_1001
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: d5298db8f38dc4b47b0d708b7b8d8218, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -43,7 +44,7 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 2|EGamePlay.Combat.DamageEffect, Assembly-CSharp
@@ -58,7 +59,7 @@ MonoBehaviour:
       Data: true
     - Name: AddSkillEffectTargetType
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: EffectTriggerType
       Entry: 3
       Data: 0
@@ -78,9 +79,79 @@ MonoBehaviour:
       Entry: 1
       Data: 100%
     - Name: Decorators
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+    - Name: DamageType
+      Entry: 3
+      Data: 1
+    - Name: DamageValueFormula
+      Entry: 1
+      Data: "300+\u81EA\u8EAB\u653B\u51FB\u529B*0.4"
+    - Name: CanCrit
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
-        Assembly-CSharp]], mscorlib
+      Data: 3|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: Interval
+      Entry: 6
+      Data: 
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: Decorators
+      Entry: 6
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+    - Name: AddStatus
+      Entry: 10
+      Data: 0
+    - Name: Duration
+      Entry: 3
+      Data: 6000
+    - Name: Params
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 12
       Data: 0
@@ -90,18 +161,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: EffectTypeName
-      Entry: 1
-      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
-    - Name: DamageType
-      Entry: 3
-      Data: 0
-    - Name: DamageValueFormula
-      Entry: 1
-      Data: 100
-    - Name: CanCrit
-      Entry: 5
-      Data: true
     - Name: 
       Entry: 8
       Data: 
@@ -111,11 +170,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  Id: 1008
-  Name: "\u706B\u7130\u7BAD"
+  Id: 1001
+  Name: "\u9ED1\u706B\u7403\u672F"
   SkillSpellType: 0
+  TargetSelectType: 0
   AffectTargetType: 2
-  TargetSelectType: 1
   ColdTime: 0
   EnableChildrenStatuses: 0
   SkillDescription: 

@@ -282,6 +282,7 @@ namespace EGamePlay
         public void RemoveChild(Entity child)
         {
             Children.Remove(child);
+            Id2Children.Remove(child.Id);
             if (Type2Children.ContainsKey(child.GetType())) Type2Children[child.GetType()].Remove(child);
         }
 

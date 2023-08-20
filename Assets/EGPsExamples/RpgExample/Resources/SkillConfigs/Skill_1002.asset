@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21c81b993b3f0f243a50c243abdb6ef9, type: 3}
-  m_Name: "Skill_1001_\u9ED1\u706B\u7403\u672F"
+  m_Name: Skill_1002
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 11400000, guid: d5298db8f38dc4b47b0d708b7b8d8218, type: 2}
+    - {fileID: 11400000, guid: 9383d0f7e8876b645a24428c72a85108, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -82,17 +82,17 @@ MonoBehaviour:
       Entry: 6
       Data: 
     - Name: EffectTypeName
-      Entry: 1
-      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+      Entry: 6
+      Data: 
     - Name: DamageType
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: DamageValueFormula
       Entry: 1
-      Data: "300+\u81EA\u8EAB\u653B\u51FB\u529B*0.4"
+      Data: 800
     - Name: CanCrit
       Entry: 5
-      Data: false
+      Data: true
     - Name: 
       Entry: 8
       Data: 
@@ -133,18 +133,17 @@ MonoBehaviour:
       Entry: 6
       Data: 
     - Name: EffectTypeName
-      Entry: 1
-      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+      Entry: 6
+      Data: 
     - Name: AddStatus
       Entry: 10
       Data: 0
     - Name: Duration
       Entry: 3
-      Data: 6000
+      Data: 5000
     - Name: Params
       Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
+      Data: 4|NUnit.Framework.Interfaces.AttributeDictionary, nunit.framework
     - Name: comparer
       Entry: 7
       Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
@@ -170,10 +169,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  Id: 1001
-  Name: "\u9ED1\u706B\u7403\u672F"
+  Id: 1002
+  Name: "\u708E\u7206"
   SkillSpellType: 0
-  TargetSelectType: 0
+  TargetSelectType: 1
   AffectTargetType: 2
   ColdTime: 0
   EnableChildrenStatuses: 0
