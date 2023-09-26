@@ -57,6 +57,10 @@ namespace EGamePlay.Combat
             if (SourceAssignAction != null && SourceAssignAction.AbilityEffect != null)
             {
                 CureValue = SourceAssignAction.AbilityEffect.GetComponent<EffectCureComponent>().GetCureValue();
+                if (CureValue + Target.CurrentHealth.Value > Target.CurrentHealth.MaxValue)
+                {
+                    CureValue = Target.CurrentHealth.MaxValue - Target.CurrentHealth.Value;
+                }
             }
         }
 

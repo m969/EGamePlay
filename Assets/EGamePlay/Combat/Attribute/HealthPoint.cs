@@ -28,6 +28,11 @@ namespace EGamePlay.Combat
 
         public void Add(int value)
         {
+            if (value + Value > MaxValue)
+            {
+                HealthPointNumeric.SetBase(MaxValue);
+                return;
+            }
             HealthPointNumeric.AddBase(value);
         }
 
