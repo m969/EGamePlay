@@ -62,7 +62,7 @@ namespace EGamePlay.Combat
 
         //[ToggleGroup("EnabledLogicTrigger")]
         [LabelText("效果列表"), Space(30)]
-        [ListDrawerSettings(Expanded = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
+        [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
 
