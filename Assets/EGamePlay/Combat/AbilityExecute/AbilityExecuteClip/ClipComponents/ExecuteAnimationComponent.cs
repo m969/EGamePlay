@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class ExecuteClipAnimationComponent : Component
+    public class ExecuteAnimationComponent : Component
     {
         public AnimationClip AnimationClip { get; set; }
 

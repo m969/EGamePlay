@@ -60,7 +60,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 回合行动
     /// </summary>
-    public class RoundAction : Entity, IActionExecution
+    public class RoundAction : Entity, IActionExecute
     {
         public int RoundActionType { get; set; }
 

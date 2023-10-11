@@ -30,42 +30,42 @@ namespace EGamePlay.Combat
                 //应用效果给目标效果
                 if (spawnItemEffect.ActionEventType == FireEventType.AssignEffect)
                 {
-                    AddComponent<ExecuteClipAssignToTargetComponent>().EffectApplyType = spawnItemEffect.EffectApply;
+                    AddComponent<ExecuteAssignEffectToTargetComponent>().EffectApplyType = spawnItemEffect.EffectApply;
                 }
                 //触发新的执行体效果
                 if (spawnItemEffect.ActionEventType == FireEventType.TriggerNewExecution)
                 {
-                    AddComponent<ExecuteClipTriggerNewExecutionComponent>().ActionEventData = spawnItemEffect;
+                    AddComponent<ExecuteTriggerNewExecutionComponent>().ActionEventData = spawnItemEffect;
                 }
             }
             //生成碰撞体效果，碰撞体再触发应用能力效果
             if (clipType == ExecuteClipType.CollisionExecute)
             {
                 var spawnItemEffect = ExecutionEffectConfig.CollisionExecuteData;
-                AddComponent<ExecuteClipSpawnCollisionComponent>().CollisionExecuteData = spawnItemEffect;
+                AddComponent<ExecuteCollisionItemComponent>().CollisionExecuteData = spawnItemEffect;
             }
             //播放动作效果
             if (clipType == ExecuteClipType.Animation)
             {
                 var animationEffect = ExecutionEffectConfig.AnimationData;
-                AddComponent<ExecuteClipAnimationComponent>().AnimationClip = animationEffect.AnimationClip;
+                AddComponent<ExecuteAnimationComponent>().AnimationClip = animationEffect.AnimationClip;
             }
             //播放特效效果
             if (clipType == ExecuteClipType.ParticleEffect)
             {
                 var animationEffect = ExecutionEffectConfig.ParticleEffectData;
-                AddComponent<ExecuteClipParticleEffectComponent>().ParticleEffectPrefab = animationEffect.ParticleEffect;
+                AddComponent<ExecuteParticleEffectComponent>().ParticleEffectPrefab = animationEffect.ParticleEffect;
             }
 
             //时间到触发执行效果
             if (clipType == ExecuteClipType.ActionEvent)
             {
-                Add<ExecuteClipTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
+                Add<ExecuteTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
             }
             else if (ExecutionEffectConfig.Duration > 0)
             {
-                Add<ExecuteClipTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
-                GetComponent<ExecuteClipTimeTriggerComponent>().EndTime = ExecutionEffectConfig.EndTime;
+                Add<ExecuteTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
+                GetComponent<ExecuteTimeTriggerComponent>().EndTime = ExecutionEffectConfig.EndTime;
             }
 
             //if (ExecutionEffectConfig.Decorators != null)
@@ -82,7 +82,7 @@ namespace EGamePlay.Combat
 
         public void BeginExecute()
         {
-            if (!TryGet(out ExecuteClipTimeTriggerComponent timeTriggerComponent))
+            if (!TryGet(out ExecuteTimeTriggerComponent timeTriggerComponent))
             {
                 TriggerEffect();
             }

@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 动作行动
     /// </summary>
-    public class MotionAction : Entity, IActionExecution
+    public class MotionAction : Entity, IActionExecute
     {
         public int MotionType { get; set; }
 

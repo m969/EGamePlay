@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 治疗行动
     /// </summary>
-    public class CureAction : Entity, IActionExecution
+    public class CureAction : Entity, IActionExecute
     {
         public CureEffect CureEffect => SourceAssignAction.AbilityEffect.EffectConfig as CureEffect;
         /// 治疗数值

@@ -32,7 +32,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 施法行动
     /// </summary>
-    public class SpellAction : Entity, IActionExecution
+    public class SpellAction : Entity, IActionExecute
     {
         public SkillAbility SkillAbility { get; set; }
         public SkillExecution SkillExecution { get; set; }

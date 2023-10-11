@@ -12,7 +12,7 @@ namespace EGamePlay.Combat
         private List<Entity> CombatActions = new List<Entity>();
 
 
-        public T CreateAction<T>(CombatEntity combatEntity) where T : Entity, IActionExecution
+        public T CreateAction<T>(CombatEntity combatEntity) where T : Entity, IActionExecute
         {
             var action = combatEntity.AddChild<T>();
             action.Creator = combatEntity;

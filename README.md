@@ -5,6 +5,11 @@
 ---
 [![Unity Version: 2021.3.1f1](https://img.shields.io/badge/Unity-2021.3.1f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
 
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/m969/EGamePlay.svg)](https://starchart.cc/m969/EGamePlay)
+
 ---
 ## 文档：
 - [EGamePlay文档(wiki)](https://github.com/m969/EGamePlay/wiki)
@@ -25,9 +30,16 @@
 ---
 
 ## demo运行
-- rpg demo运行RpgExample Scene场景
-- 回合制demo运行TurnBaseExample Scene场景
-- 技能编辑器运行ExecutionLinkScene场景
+- rpg demo，运行RpgExample Scene场景
+- 回合制demo，运行TurnBaseExample Scene场景
+- 技能调试编辑，运行ExecutionLinkScene场景
+
+---
+## 如何制作一个简单的技能
+- 首先在SkillConfig表里添加一个技能，给定技能id，配置参数
+- 然后右键选择 ```技能|状态/技能配置``` 创建对应id的技能配置，配置效果
+- 然后右键选择 ```技能|状态/Execution``` 创建对应id的技能执行体，配置片段表现
+- 最后就是运行时将技能挂载到CombatEntity上，再通过施法组件释放技能即可
 
 ---
 

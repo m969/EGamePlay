@@ -9,7 +9,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 执行体应用目标效果组件
     /// </summary>
-    public class ExecuteClipAssignToTargetComponent : Component
+    public class ExecuteAssignEffectToTargetComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
         public EffectApplyType EffectApplyType { get; set; }

@@ -32,7 +32,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 普攻行动
     /// </summary>
-    public class AttackAction : Entity, IActionExecution
+    public class AttackAction : Entity, IActionExecute
     {
         /// 行动能力
         public Entity ActionAbility { get; set; }

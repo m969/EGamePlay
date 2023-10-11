@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class ExecuteClipParticleEffectComponent : Component
+    public class ExecuteParticleEffectComponent : Component
     {
         public GameObject ParticleEffectPrefab { get; set; }
         public GameObject ParticleEffectObj { get; set; }

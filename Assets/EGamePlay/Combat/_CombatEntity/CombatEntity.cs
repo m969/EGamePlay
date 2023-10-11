@@ -112,13 +112,13 @@ namespace EGamePlay.Combat
         }
         #endregion
 
-        public void ReceiveDamage(IActionExecution combatAction)
+        public void ReceiveDamage(IActionExecute combatAction)
         {
             var damageAction = combatAction as DamageAction;
             CurrentHealth.Minus(damageAction.DamageValue);
         }
 
-        public void ReceiveCure(IActionExecution combatAction)
+        public void ReceiveCure(IActionExecute combatAction)
         {
             var cureAction = combatAction as CureAction;
             CurrentHealth.Add(cureAction.CureValue);

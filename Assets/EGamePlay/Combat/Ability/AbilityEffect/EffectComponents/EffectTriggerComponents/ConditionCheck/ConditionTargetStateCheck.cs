@@ -20,7 +20,7 @@ namespace EGamePlay.Combat
 
         public bool CheckCondition(Entity target)
         {
-            if (target is IActionExecution combatAction)
+            if (target is IActionExecute combatAction)
             {
                 target = combatAction.Target;
             }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using EGamePlay.Combat;
+using ET;
 
 namespace EGamePlay.Combat
 {
@@ -31,7 +32,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 施加状态行动
     /// </summary>
-    public class AddStatusAction : Entity, IActionExecution
+    public class AddStatusAction : Entity, IActionExecute
     {
         public Entity SourceAbility { get; set; }
         public AddStatusEffect AddStatusEffect => SourceAssignAction.AbilityEffect.EffectConfig as AddStatusEffect;
@@ -68,7 +69,8 @@ namespace EGamePlay.Combat
             var enabledLogicTrigger = statusConfig.EnabledLogicTrigger();
 #else
             var statusConfig = AddStatusEffect.AddStatus;
-            var canStack = statusConfig.CanStack;
+            var config = StatusConfigCategory.Instance.GetWithIDType(statusConfig.ID);
+            var canStack = config.CanStack == "是";
             //var enabledLogicTrigger = statusConfig.EnabledLogicTrigger;
 #endif
             if (canStack == false)

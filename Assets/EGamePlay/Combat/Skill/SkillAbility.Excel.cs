@@ -16,6 +16,7 @@ namespace EGamePlay.Combat
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
         private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
+        public ExecutionObject ExecutionObject { get; set; }
 
 
         public override void Awake(object initData)
@@ -33,9 +34,7 @@ namespace EGamePlay.Combat
             effect = ParseEffect(SkillConfig, SkillConfig.Effect3);
             if (effect != null) Effects.Add(effect);
             AddComponent<AbilityEffectComponent>(Effects);
-#if !SERVER
-            Awake_Client();
-#endif
+
             if (SkillConfig.Type == "被动")
             {
                 TryActivateAbility();

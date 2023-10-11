@@ -171,11 +171,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
   Id: 1001
-  Name: "\u9ED1\u706B\u7403\u672F"
   SkillSpellType: 0
-  TargetSelectType: 0
   AffectTargetType: 2
-  ColdTime: 0
+  TargetSelectType: 0
   EnableChildrenStatuses: 0
-  SkillDescription: 
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

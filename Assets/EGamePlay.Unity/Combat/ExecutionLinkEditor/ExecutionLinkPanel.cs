@@ -416,7 +416,7 @@ namespace EGamePlay
                 skillAbility.LoadExecution();
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
                 {
-					if (skillAbility.SkillConfig.AffectTargetType == SkillAffectTargetType.EnemyTeam)
+					if (skillAbility.SkillEffectsConfig.AffectTargetType == SkillAffectTargetType.EnemyTeam)
 					{
                         HeroEntity.GetComponent<SpellComponent>().SpellWithTarget(skillAbility, BossEntity);
                     }

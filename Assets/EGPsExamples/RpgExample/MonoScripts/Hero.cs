@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 using DG.Tweening;
 using ET;
 using GameUtils;
+using System.Linq;
 
 public sealed class Hero : MonoBehaviour
 {
@@ -75,13 +76,32 @@ public sealed class Hero : MonoBehaviour
         SkillSlotsTrm.Find("SkillButtonE").gameObject.SetActive(false);
         SkillSlotsTrm.Find("SkillButtonF").gameObject.SetActive(false);
 #else
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1001", KeyCode.Q);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1002", KeyCode.W);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1003", KeyCode.Y);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1004", KeyCode.E);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1005", KeyCode.R);
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1006", KeyCode.T).AddComponent<Skill1006Component>();
-        LoadSkillWithCodeBind("SkillConfigs/Skill_1008", KeyCode.A);
+        var allConfigs = ConfigHelper.GetAll<SkillConfig>().Values.ToArray();
+        for (int i = 0; i < allConfigs.Length; i++)
+        {
+            var skillConfig = allConfigs[i];
+            var skilld = skillConfig.Id;
+            var config = AssetUtils.Load<SkillConfigObject>($"SkillConfigs/Skill_{skilld}");
+            var ability = CombatEntity.AttachSkill(config);
+            if (skilld == 1001) CombatEntity.BindSkillInput(ability, KeyCode.Q);
+            if (skilld == 1002) CombatEntity.BindSkillInput(ability, KeyCode.W);
+            if (skilld == 1003) CombatEntity.BindSkillInput(ability, KeyCode.Y);
+            if (skilld == 1004) CombatEntity.BindSkillInput(ability, KeyCode.E);
+            if (skilld == 1005) CombatEntity.BindSkillInput(ability, KeyCode.R);
+            if (skilld == 1006)
+            {
+                CombatEntity.BindSkillInput(ability, KeyCode.T);
+                ability.AddComponent<Skill1006Component>();
+            }
+            if (skilld == 1008) CombatEntity.BindSkillInput(ability, KeyCode.A);
+        }
+        //LoadSkillWithCodeBind("SkillConfigs/Skill_1001", KeyCode.Q);
+        //LoadSkillWithCodeBind("SkillConfigs/Skill_1002", KeyCode.W);
+        //LoadSkillWithCodeBind("SkillConfigs/Skill_1003", KeyCode.Y);
+        //LoadSkillWithCodeBind("SkillConfigs/Skill_1004", KeyCode.E);
+        //LoadSkillWithCodeBind("SkillConfigs/Skill_1005", KeyCode.R);
+        //LoadSkillWithCodeBind("SkillConfigs/Skill_1006", KeyCode.T).AddComponent<Skill1006Component>();
+        //LoadSkillWithCodeBind("SkillConfigs/Skill_1008", KeyCode.A);
 #endif
 
         CombatEntity.GetComponent<SpellComponent>().LoadExecutionObjects();
@@ -97,13 +117,13 @@ public sealed class Hero : MonoBehaviour
         }
     }
 
-    private SkillAbility LoadSkillWithCodeBind(string path, KeyCode bindCode)
-    {
-        var config = AssetUtils.Load<SkillConfigObject>(path);
-        var ability = CombatEntity.AttachSkill(config);
-        CombatEntity.BindSkillInput(ability, bindCode);
-        return ability;
-    }
+    //private SkillAbility LoadSkillWithCodeBind(string path, KeyCode bindCode)
+    //{
+    //    var config = AssetUtils.Load<SkillConfigObject>(path);
+    //    var ability = CombatEntity.AttachSkill(config);
+    //    CombatEntity.BindSkillInput(ability, bindCode);
+    //    return ability;
+    //}
 
     private void InitInventory()
     {

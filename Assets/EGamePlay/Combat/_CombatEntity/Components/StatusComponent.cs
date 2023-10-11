@@ -14,22 +14,24 @@ namespace EGamePlay.Combat
 
         public StatusAbility AttachStatus(object configObject)
         {
-            var status = CombatEntity.AttachAbility<StatusAbility>(configObject);
-            if (!TypeIdStatuses.ContainsKey(status.StatusConfig.ID))
+            var statusAbility = CombatEntity.AttachAbility<StatusAbility>(configObject);
+            var statusConfigID = statusAbility.StatusEffectsConfig.ID;
+            if (!TypeIdStatuses.ContainsKey(statusConfigID))
             {
-                TypeIdStatuses.Add(status.StatusConfig.ID, new List<StatusAbility>());
+                TypeIdStatuses.Add(statusConfigID, new List<StatusAbility>());
             }
-            TypeIdStatuses[status.StatusConfig.ID].Add(status);
-            Statuses.Add(status);
-            return status;
+            TypeIdStatuses[statusConfigID].Add(statusAbility);
+            Statuses.Add(statusAbility);
+            return statusAbility;
         }
 
         public void OnStatusRemove(StatusAbility statusAbility)
         {
-            TypeIdStatuses[statusAbility.StatusConfig.ID].Remove(statusAbility);
-            if (TypeIdStatuses[statusAbility.StatusConfig.ID].Count == 0)
+            var statusConfigID = statusAbility.StatusConfig.ID;
+            TypeIdStatuses[statusConfigID].Remove(statusAbility);
+            if (TypeIdStatuses[statusConfigID].Count == 0)
             {
-                TypeIdStatuses.Remove(statusAbility.StatusConfig.ID);
+                TypeIdStatuses.Remove(statusConfigID);
             }
             Statuses.Remove(statusAbility);
             this.Publish(new RemoveStatusEvent() { CombatEntity = CombatEntity, Status = statusAbility, StatusId = statusAbility.Id });

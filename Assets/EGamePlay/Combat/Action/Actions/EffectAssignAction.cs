@@ -31,12 +31,12 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 赋给效果行动
     /// </summary>
-    public class EffectAssignAction : Entity, IActionExecution
+    public class EffectAssignAction : Entity, IActionExecute
     {
         /// 创建这个效果赋给行动的源能力
         public Entity SourceAbility { get; set; }
         /// 目标行动
-        public IActionExecution TargetAction { get; set; }
+        public IActionExecute TargetAction { get; set; }
         public AbilityEffect AbilityEffect { get; set; }
         public AbilityItem AbilityItem { get; set; }
         public Effect EffectConfig => AbilityEffect.EffectConfig;

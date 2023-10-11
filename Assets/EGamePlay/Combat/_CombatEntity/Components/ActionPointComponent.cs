@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 行动点，一次战斗行动<see cref="IActionExecution"/>会触发战斗实体一系列的行动点<see cref="ActionPoint"/>
+    /// 行动点，一次战斗行动<see cref="IActionExecute"/>会触发战斗实体一系列的行动点<see cref="ActionPoint"/>
     /// </summary>
     public sealed class ActionPoint
     {

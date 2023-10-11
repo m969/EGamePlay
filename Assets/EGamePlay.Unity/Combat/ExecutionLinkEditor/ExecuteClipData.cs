@@ -63,7 +63,7 @@ namespace EGamePlay
         ParticleEffect = 4,
     }
 
-    [LabelText("执行体目标传入类型")]
+    [LabelText("目标传入类型")]
     public enum ExecutionTargetInputType
     {
         [LabelText("None")]

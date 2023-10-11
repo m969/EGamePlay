@@ -38,7 +38,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 伤害行动
     /// </summary>
-    public class DamageAction : Entity, IActionExecution
+    public class DamageAction : Entity, IActionExecute
     {
         public DamageActionAbility DamageAbility => ActionAbility as DamageActionAbility;
         public DamageEffect DamageEffect => SourceAssignAction.AbilityEffect.EffectConfig as DamageEffect;

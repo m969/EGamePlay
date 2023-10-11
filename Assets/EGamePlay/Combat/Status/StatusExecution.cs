@@ -9,7 +9,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 状态能力执行体
     /// </summary>
-    public abstract class StatusExecution : Entity, IAbilityExecution
+    public abstract class StatusExecution : Entity, IAbilityExecute
     {
         public CombatEntity InputCombatEntity { get; set; }
         public Vector3 InputPoint { get; set; }

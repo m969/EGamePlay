@@ -22,13 +22,22 @@ namespace EGamePlay.Combat
     {
         [LabelText("技能ID"), DelayedProperty]
         public int Id;
-        [LabelText("技能名称"), DelayedProperty]
-        public string Name = "技能1";
+
+        //[HideInInspector]
+        //[LabelText("技能名称"), DelayedProperty]
+        //public string Name = "技能1";
+
+        [HideInInspector]
         public SkillSpellType SkillSpellType;
-        [LabelText("技能作用对象"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
+
+        [HideInInspector]
+        [ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillAffectTargetType AffectTargetType;
-        [LabelText("技能目标检测方式"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
+
+        [HideInInspector]
+        [LabelText("目标选取类型"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillTargetSelectType TargetSelectType;
+
         //[LabelText("区域场类型"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         //public SkillAffectAreaType AffectAreaType;
         //[LabelText("圆形区域场半径"), ShowIf("ShowCircleAreaRadius")]
@@ -36,8 +45,10 @@ namespace EGamePlay.Combat
         //public bool ShowCircleAreaRadius { get { return AffectAreaType == SkillAffectAreaType.Circle && TargetSelectType == SkillTargetSelectType.AreaSelect; } }
         //[LabelText("区域场配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
         //public GameObject AreaCollider;
-        [LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
-        public uint ColdTime;
+
+        //[HideInInspector]
+        //[LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
+        //public uint ColdTime;
 
         [LabelText("附加状态效果")]
         public bool EnableChildrenStatuses;
@@ -58,8 +69,9 @@ namespace EGamePlay.Combat
         //[OnInspectorGUI("EndBox", append: true)]
         //public AudioClip SkillAudio;
 
-        [TextArea, LabelText("技能描述")/*, Space(30)*/]
-        public string SkillDescription;
+        //[HideInInspector]
+        //[TextArea, LabelText("技能描述")/*, Space(30)*/]
+        //public string SkillDescription;
 #endif
 
         [OnInspectorGUI("BeginBox", append: false)]

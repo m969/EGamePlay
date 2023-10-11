@@ -4,6 +4,10 @@
 "3":{"Id":3,"ID":"CauseDamagePctModify","Name":"造成伤害百分比修饰","Type":"其他","StatusSlot":"是","CanStack":"否","AttributeType":"造成伤害","AttributeParams":"PercentAdd=变动数值"},
 "4":{"Id":4,"ID":"MoveSpeedPctModify","Name":"移动速度百分比修饰","Type":"其他","StatusSlot":"是","CanStack":"否","AttributeType":"移动速度","AttributeParams":"PercentAdd=变动数值"},
 "100":{"Id":100,"ID":"Vertigo","Name":"眩晕","Type":"Debuff","StatusSlot":"是","CanStack":"否","ActionControl":"移动禁止|施法禁止|攻击禁止"},
+"101":{"Id":101,"ID":"HealthRecovery","Name":"生命回复","Type":"Buff","StatusSlot":"是","CanStack":"否"},
+"102":{"Id":102,"ID":"Mute","Name":"沉默","Type":"Debuff","StatusSlot":"是","CanStack":"否"},
+"103":{"Id":103,"ID":"Scare","Name":"恐惧","Type":"Debuff","StatusSlot":"是","CanStack":"否"},
+"104":{"Id":104,"ID":"Shield","Name":"护盾","Type":"Buff","StatusSlot":"是","CanStack":"否"},
 "200":{"Id":200,"ID":"Weak","Name":"虚弱","Type":"Debuff","StatusSlot":"是","CanStack":"否","Effect1":"203","Effect2":"204"},
 "201":{"Id":201,"ID":"Tenacity","Name":"坚韧","Type":"Buff","StatusSlot":"是","CanStack":"否","Effect1":"Id"},
 "202":{"Id":202,"ID":"Burn","Name":"普通灼烧","Type":"Debuff","StatusSlot":"是","CanStack":"否","Effect1":"Id"}

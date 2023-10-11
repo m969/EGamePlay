@@ -15,6 +15,7 @@ namespace ET
 		public int Id { get; set; }
 		public string Name;
 		public string Type;
+		public string TargetGroup;
 		public string TargetSelect;
 		public float Cooldown;
 		public string Description;

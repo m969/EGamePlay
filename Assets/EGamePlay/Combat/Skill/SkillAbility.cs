@@ -12,27 +12,86 @@ namespace EGamePlay.Combat
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
         public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
-        public SkillConfigObject SkillConfig { get; set; }
+        public SkillConfigObject SkillEffectsConfig { get; set; }
+        public SkillConfig SkillConfig { get; set; }
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
         private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
+        public ExecutionObject ExecutionObject { get; set; }
 
 
         public override void Awake(object initData)
         {
             base.Awake(initData);
-            SkillConfig = initData as SkillConfigObject;
-            Name = SkillConfig.Name;
-            AddComponent<AbilityEffectComponent>(SkillConfig.Effects);
-#if !SERVER
-            Awake_Client();
-#endif
-            if (SkillConfig.SkillSpellType == SkillSpellType.Passive)
+            SkillEffectsConfig = initData as SkillConfigObject;
+
+            SkillConfig = ConfigHelper.Get<SkillConfig>(SkillEffectsConfig.Id);
+
+            if (SkillConfig.Type == "主动")
+            {
+                SkillEffectsConfig.SkillSpellType = SkillSpellType.Initiative;
+            }
+            else if (SkillConfig.Type == "被动")
+            {
+                SkillEffectsConfig.SkillSpellType = SkillSpellType.Passive;
+            }
+            else
+            {
+                Log.Error($"技能类型错误 {SkillConfig.Type}");
+            }
+
+            if (SkillConfig.TargetGroup == "己方")
+            {
+                SkillEffectsConfig.AffectTargetType = SkillAffectTargetType.SelfTeam;
+            }
+            else if (SkillConfig.TargetGroup == "敌方")
+            {
+                SkillEffectsConfig.AffectTargetType = SkillAffectTargetType.EnemyTeam;
+            }
+            else if (SkillConfig.TargetGroup == "自身")
+            {
+                SkillEffectsConfig.AffectTargetType = SkillAffectTargetType.Self;
+            }
+            else
+            {
+                Log.Error($"技能目标阵营错误 {SkillConfig.TargetGroup}");
+            }
+
+            if (SkillConfig.TargetSelect == "碰撞检测")
+            {
+                SkillEffectsConfig.TargetSelectType = SkillTargetSelectType.CollisionSelect;
+            }
+            else if (SkillConfig.TargetSelect == "条件指定")
+            {
+                SkillEffectsConfig.TargetSelectType = SkillTargetSelectType.ConditionSelect;
+            }
+            else if (SkillConfig.TargetSelect == "手动指定")
+            {
+                SkillEffectsConfig.TargetSelectType = SkillTargetSelectType.PlayerSelect;
+            }
+            else
+            {
+                Log.Error($"目标选取类型错误 {SkillConfig.TargetSelect}");
+            }
+
+            Name = this.SkillConfig.Name;
+            AddComponent<AbilityEffectComponent>(SkillEffectsConfig.Effects);
+            LoadExecution();
+            if (SkillEffectsConfig.SkillSpellType == SkillSpellType.Passive)
             {
                 TryActivateAbility();
             }
         }
-        
+
+        public void LoadExecution()
+        {
+            ExecutionObject = AssetUtils.Load<ExecutionObject>($"Execution_{SkillEffectsConfig.Id}");
+            if (ExecutionObject == null)
+            {
+                return;
+            }
+        }
+
         public void TryActivateAbility()
         {
             this.ActivateAbility();
@@ -48,9 +107,9 @@ namespace EGamePlay.Combat
             //base.ActivateAbility();
             FireEvent(nameof(ActivateAbility));
             //子状态效果
-            if (SkillConfig.EnableChildrenStatuses)
+            if (SkillEffectsConfig.EnableChildrenStatuses)
             {
-                foreach (var item in SkillConfig.ChildrenStatuses)
+                foreach (var item in SkillEffectsConfig.ChildrenStatuses)
                 {
                     var status = OwnerEntity.AttachStatus(item.StatusConfigObject);
                     status.OwnerEntity = OwnerEntity;
@@ -66,7 +125,7 @@ namespace EGamePlay.Combat
         public void EndAbility()
         {
             //子状态效果
-            if (SkillConfig.EnableChildrenStatuses)
+            if (SkillEffectsConfig.EnableChildrenStatuses)
             {
                 foreach (var item in ChildrenStatuses)
                 {

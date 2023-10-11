@@ -16,18 +16,46 @@ namespace EGamePlay.Combat
     {
         [LabelText(StatusIdLabel), DelayedProperty]
         public string ID = "Status1";
+
+        //[HideInInspector]
         [LabelText(StatusNameLabel), DelayedProperty]
         public string Name = "状态1";
-        [LabelText(StatusTypeLabel)]
-        public StatusType StatusType;
-        [HideInInspector]
-        public uint Duration;
-        [LabelText("是否在状态栏显示"), UnityEngine.Serialization.FormerlySerializedAs("ShowInStatusIconList")]
-        public bool ShowInStatusSlots;
-        [LabelText("能否叠加")]
-        public bool CanStack;
-        [LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
-        public int MaxStack = 0;
+
+        //[HideInInspector]
+        //[LabelText(StatusTypeLabel)]
+        //public StatusType StatusType;
+
+        //[HideInInspector]
+        //public uint Duration;
+
+        //[HideInInspector]
+        //[LabelText("是否在状态栏显示"), UnityEngine.Serialization.FormerlySerializedAs("ShowInStatusIconList")]
+        //public bool ShowInStatusSlots;
+
+        //[HideInInspector]
+        //[LabelText("能否叠加")]
+        //public bool CanStack;
+
+        //[HideInInspector]
+        //[LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
+        //public int MaxStack = 0;
+
+
+#if !NOT_UNITY
+        //[OnInspectorGUI("BeginBox", append: false)]
+        [LabelText("状态特效")]
+        public GameObject ParticleEffect;
+
+        public GameObject GetParticleEffect() => ParticleEffect;
+
+        //[LabelText("状态音效")]
+        //[OnInspectorGUI("EndBox", append:true)]
+        //public AudioClip Audio;
+
+        //[TextArea, LabelText("状态描述")]
+        //public string StatusDescription;
+#endif
+
 
         [LabelText("子状态效果")]
         public bool EnableChildrenStatuses;
@@ -41,32 +69,11 @@ namespace EGamePlay.Combat
             ChildrenStatuses.Add(new ChildStatus());
         }
 
-        //[ToggleGroup("EnabledStateModify", "行为禁制")]
-        //public bool EnabledStateModify;
-        //[ToggleGroup("EnabledStateModify")]
-        //public ActionControlType ActionControlType;
-
-        //[ToggleGroup("EnabledAttributeModify", "属性修饰")]
-        //public bool EnabledAttributeModify;
-        //[ToggleGroup("EnabledAttributeModify")]
-        //public AttributeType AttributeType;
-        //[ToggleGroup("EnabledAttributeModify"), LabelText("数值参数")]
-        //public string NumericValue;
-        //public string NumericValueProperty { get; set; }
-        //[ToggleGroup("EnabledAttributeModify")]
-        //public ModifyType ModifyType;
-
-        //[HideInInspector]
-        ////[ToggleGroup("EnabledLogicTrigger", "逻辑触发")]
-        //public bool EnabledLogicTrigger;
-
-        //[ToggleGroup("EnabledLogicTrigger")]
         [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
 
-        //[HorizontalGroup("EnabledLogicTrigger/Hor2")]
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect")]
         public string EffectTypeName = "(添加效果)";
@@ -104,21 +111,6 @@ namespace EGamePlay.Combat
             }
         }
 
-#if !NOT_UNITY
-        [LabelText("状态特效")]
-        [OnInspectorGUI("BeginBox", append:false)]
-        public GameObject ParticleEffect;
-
-        public GameObject GetParticleEffect() => ParticleEffect;
-
-        [LabelText("状态音效")]
-        [OnInspectorGUI("EndBox", append:true)]
-        public AudioClip Audio;
-
-        [TextArea, LabelText("状态描述")]
-        public string StatusDescription;
-#endif
-        
 #if UNITY_EDITOR
         [SerializeField, LabelText("自动重命名")]
         public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }

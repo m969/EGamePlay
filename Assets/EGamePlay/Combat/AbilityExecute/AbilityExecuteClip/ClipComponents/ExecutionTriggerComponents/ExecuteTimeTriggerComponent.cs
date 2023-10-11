@@ -9,7 +9,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 时间触发组件
     /// </summary>
-    public class ExecuteClipTimeTriggerComponent : Component
+    public class ExecuteTimeTriggerComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
         public float StartTime { get; set; }

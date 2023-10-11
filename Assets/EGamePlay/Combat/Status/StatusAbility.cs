@@ -2,8 +2,27 @@
 using System.Collections.Generic;
 using ET;
 
+namespace ET
+{
+    public partial class StatusConfigCategory
+    {
+        public StatusConfig GetWithIDType(string id)
+        {
+            foreach (var item in this.GetAll().Values)
+            {
+                if (item.ID == id)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+    }
+}
+
 namespace EGamePlay.Combat
 {
+
     public partial class StatusAbility : Entity, IAbilityEntity
     {
 #if !EGAMEPLAY_EXCEL
@@ -11,7 +30,8 @@ namespace EGamePlay.Combat
         public CombatEntity OwnerEntity { get; set; }
         public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
-        public StatusConfigObject StatusConfig { get; set; }
+        public StatusConfigObject StatusEffectsConfig { get; set; }
+        public StatusConfig StatusConfig { get; set; }
         public ActionControlType ActionControlType { get; set; }
         public Dictionary<string, FloatModifier> AddModifiers { get; set; } = new Dictionary<string, FloatModifier>();
         public Dictionary<string, FloatModifier> PctAddModifiers { get; set; } = new Dictionary<string, FloatModifier>();
@@ -24,13 +44,14 @@ namespace EGamePlay.Combat
         public override void Awake(object initData)
         {
             base.Awake(initData);
-            StatusConfig = initData as StatusConfigObject;
-            Name = StatusConfig.ID;
+            StatusEffectsConfig = initData as StatusConfigObject;
+            Name = StatusEffectsConfig.ID;
+            StatusConfig = StatusConfigCategory.Instance.GetWithIDType(StatusEffectsConfig.ID);
 
             /// 逻辑触发
-            if (StatusConfig.Effects.Count > 0)
+            if (StatusEffectsConfig.Effects.Count > 0)
             {
-                AddComponent<AbilityEffectComponent>(StatusConfig.Effects);
+                AddComponent<AbilityEffectComponent>(StatusEffectsConfig.Effects);
             }
         }
 
@@ -41,9 +62,9 @@ namespace EGamePlay.Combat
             FireEvent(nameof(ActivateAbility), this);
 
             /// 子状态效果
-            if (StatusConfig.EnableChildrenStatuses)
+            if (StatusEffectsConfig.EnableChildrenStatuses)
             {
-                foreach (var childStatusData in StatusConfig.ChildrenStatuses)
+                foreach (var childStatusData in StatusEffectsConfig.ChildrenStatuses)
                 {
                     var status = ParentEntity.AttachStatus(childStatusData.StatusConfigObject);
                     status.OwnerEntity = OwnerEntity;
@@ -63,7 +84,7 @@ namespace EGamePlay.Combat
         public void EndAbility()
         {
             /// 子状态效果
-            if (StatusConfig.EnableChildrenStatuses)
+            if (StatusEffectsConfig.EnableChildrenStatuses)
             {
                 foreach (var item in ChildrenStatuses)
                 {
@@ -72,7 +93,7 @@ namespace EGamePlay.Combat
                 ChildrenStatuses.Clear();
             }
 
-            foreach (var effect in StatusConfig.Effects)
+            foreach (var effect in StatusEffectsConfig.Effects)
             {
                 if (!effect.Enabled)
                 {

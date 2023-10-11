@@ -60,7 +60,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 格挡行动
     /// </summary>
-    public class AttackBlockAction : Entity, IActionExecution
+    public class AttackBlockAction : Entity, IActionExecute
     {
         /// 行动能力
         public Entity ActionAbility { get; set; }

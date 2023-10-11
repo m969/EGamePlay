@@ -5,7 +5,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 普攻执行体
     /// </summary>
-    public class AttackExecution : Entity, IAbilityExecution
+    public class AttackExecution : Entity, IAbilityExecute
     {
         public AttackAction AttackAction { get; set; }
         public Entity AbilityEntity { get; set; }
