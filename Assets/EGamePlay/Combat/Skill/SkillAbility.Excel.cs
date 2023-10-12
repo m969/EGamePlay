@@ -12,6 +12,7 @@ namespace EGamePlay.Combat
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
         public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
         public bool Enable { get; set; }
+        public SkillConfigObject SkillEffectsConfig { get; set; }
         public SkillConfig SkillConfig { get; set; }
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
@@ -24,7 +25,21 @@ namespace EGamePlay.Combat
             base.Awake(initData);
             SkillConfig = initData as SkillConfig;
             Name = SkillConfig.Name;
+            SkillEffectsConfig = new SkillConfigObject();
+            SkillEffectsConfig.Id = SkillConfig.Id;
+            var targetSelectType = SkillTargetSelectType.Custom;
+            var affectTargetType = SkillAffectTargetType.EnemyTeam;
+            if (SkillConfig.TargetSelect == "手动指定") targetSelectType = SkillTargetSelectType.PlayerSelect;
+            if (SkillConfig.TargetSelect == "碰撞检测") targetSelectType = SkillTargetSelectType.CollisionSelect;
+            if (SkillConfig.TargetSelect == "条件指定") targetSelectType = SkillTargetSelectType.ConditionSelect;
+            if (SkillConfig.TargetGroup == "自身") affectTargetType = SkillAffectTargetType.Self;
+            if (SkillConfig.TargetGroup == "己方") affectTargetType = SkillAffectTargetType.SelfTeam;
+            if (SkillConfig.TargetGroup == "敌方") affectTargetType = SkillAffectTargetType.EnemyTeam;
+            SkillEffectsConfig.TargetSelectType = targetSelectType;
+            SkillEffectsConfig.AffectTargetType = affectTargetType;
+
             var Effects = new List<Effect>();
+            SkillEffectsConfig.Effects = Effects;
             var effect = ParseSkillDamage(SkillConfig);
             if (effect != null) Effects.Add(effect);
             effect = ParseEffect(SkillConfig, SkillConfig.Effect1);
@@ -38,6 +53,15 @@ namespace EGamePlay.Combat
             if (SkillConfig.Type == "被动")
             {
                 TryActivateAbility();
+            }
+        }
+
+        public void LoadExecution()
+        {
+            ExecutionObject = AssetUtils.Load<ExecutionObject>($"Execution_{SkillEffectsConfig.Id}");
+            if (ExecutionObject == null)
+            {
+                return;
             }
         }
 

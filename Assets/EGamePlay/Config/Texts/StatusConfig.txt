@@ -10,5 +10,8 @@
 "104":{"Id":104,"ID":"Shield","Name":"护盾","Type":"Buff","StatusSlot":"是","CanStack":"否"},
 "200":{"Id":200,"ID":"Weak","Name":"虚弱","Type":"Debuff","StatusSlot":"是","CanStack":"否","Effect1":"203","Effect2":"204"},
 "201":{"Id":201,"ID":"Tenacity","Name":"坚韧","Type":"Buff","StatusSlot":"是","CanStack":"否","Effect1":"Id"},
-"202":{"Id":202,"ID":"Burn","Name":"普通灼烧","Type":"Debuff","StatusSlot":"是","CanStack":"否","Effect1":"Id"}
+"202":{"Id":202,"ID":"Burn","Name":"普通灼烧","Type":"Debuff","StatusSlot":"是","CanStack":"否","Effect1":"Id"},
+"203":{"Id":203,"ID":"HellAngel","Name":"HellAngel","Type":"Debuff","StatusSlot":"是","CanStack":"否"},
+"204":{"Id":204,"ID":"Poison","Name":"Poison","Type":"Debuff","StatusSlot":"是","CanStack":"否"},
+"205":{"Id":205,"ID":"QiangTi","Name":"QiangTi","Type":"Buff","StatusSlot":"是","CanStack":"否"}
 }

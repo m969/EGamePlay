@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
         public StatusAbility AttachStatus(object configObject)
         {
             var statusAbility = CombatEntity.AttachAbility<StatusAbility>(configObject);
-            var statusConfigID = statusAbility.StatusEffectsConfig.ID;
+            var statusConfigID = statusAbility.StatusConfig.ID;
             if (!TypeIdStatuses.ContainsKey(statusConfigID))
             {
                 TypeIdStatuses.Add(statusConfigID, new List<StatusAbility>());

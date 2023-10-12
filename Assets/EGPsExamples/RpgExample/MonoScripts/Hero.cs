@@ -72,9 +72,12 @@ public sealed class Hero : MonoBehaviour
         ability = CombatEntity.AttachSkill(config);
         CombatEntity.BindSkillInput(ability, KeyCode.E);
 
-        SkillSlotsTrm.Find("SkillButtonD").gameObject.SetActive(false);
-        SkillSlotsTrm.Find("SkillButtonE").gameObject.SetActive(false);
-        SkillSlotsTrm.Find("SkillButtonF").gameObject.SetActive(false);
+        if (SkillSlotsTrm != null)
+        {
+            SkillSlotsTrm.Find("SkillButtonD").gameObject.SetActive(false);
+            SkillSlotsTrm.Find("SkillButtonE").gameObject.SetActive(false);
+            SkillSlotsTrm.Find("SkillButtonF").gameObject.SetActive(false);
+        }
 #else
         var allConfigs = ConfigHelper.GetAll<SkillConfig>().Values.ToArray();
         for (int i = 0; i < allConfigs.Length; i++)

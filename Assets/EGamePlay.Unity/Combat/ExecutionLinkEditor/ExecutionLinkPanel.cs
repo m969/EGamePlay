@@ -407,7 +407,7 @@ namespace EGamePlay
 				return;
 			}
 
-#if !EGAMEPLAY_EXCEL
+//#if !EGAMEPLAY_EXCEL
 			SkillTimeImage.fillAmount = 0;
             CurrentTime = 0;
             IsPlaying = true;
@@ -453,7 +453,7 @@ namespace EGamePlay
                     execution.AddComponent<UpdateComponent>();
                 }
             }
-#endif
+//#endif
         }
     }
 

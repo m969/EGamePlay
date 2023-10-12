@@ -39,7 +39,7 @@
 - 首先在SkillConfig表里添加一个技能，给定技能id，配置参数
 - 然后右键选择 ```技能|状态/技能配置``` 创建对应id的技能配置，配置效果
 - 然后右键选择 ```技能|状态/Execution``` 创建对应id的技能执行体，配置片段表现
-- 最后就是运行时将技能挂载到CombatEntity上，再通过施法组件释放技能即可
+- 最后就是运行时将技能挂载到CombatEntity上，再通过施法组件SpellComponent释放技能即可
 
 ---
 
@@ -54,8 +54,10 @@
 - EGamePlay/Assets/Editor
 - EGamePlay/Assets/EGamePlay
 - EGamePlay/Assets/EGamePlay.Unity
+- Plugins/Editor/npoi
 
-如果要使用Excel配置流程的话，还需要将 EGamePlay/Excel 目录复制过去，再生成配置
+如果要使用Excel配置流程的话，还需要将以下目录复制过去，再生成配置
+- EGamePlay/Excel
 
 ---
 

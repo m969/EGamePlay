@@ -80,17 +80,12 @@ public class SpellPreviewComponent : EGamePlay.Component
         var targetSelectType = SkillTargetSelectType.Custom;
         var affectTargetType = SkillAffectTargetType.EnemyTeam;
         var skillId = PreviewingSkill.SkillConfig.Id;
-//#if EGAMEPLAY_EXCEL
         if (PreviewingSkill.SkillConfig.TargetSelect == "手动指定") targetSelectType = SkillTargetSelectType.PlayerSelect;
         if (PreviewingSkill.SkillConfig.TargetSelect == "碰撞检测") targetSelectType = SkillTargetSelectType.CollisionSelect;
         if (PreviewingSkill.SkillConfig.TargetSelect == "条件指定") targetSelectType = SkillTargetSelectType.ConditionSelect;
         if (PreviewingSkill.SkillConfig.TargetGroup == "自身") affectTargetType = SkillAffectTargetType.Self;
         if (PreviewingSkill.SkillConfig.TargetGroup == "己方") affectTargetType = SkillAffectTargetType.SelfTeam;
         if (PreviewingSkill.SkillConfig.TargetGroup == "敌方") affectTargetType = SkillAffectTargetType.EnemyTeam;
-        //#else
-        //        targetSelectType = PreviewingSkill.SkillEffectsConfig.TargetSelectType;
-        //        affectTargetType = PreviewingSkill.SkillEffectsConfig.AffectTargetType;
-        //#endif
         if (targetSelectType == SkillTargetSelectType.PlayerSelect)
         {
             TargetSelectManager.Instance.TargetLimitType = TargetLimitType.EnemyTeam;
