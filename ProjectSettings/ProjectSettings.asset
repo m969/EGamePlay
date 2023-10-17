@@ -701,7 +701,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     Android: ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;UNITY
-    Standalone: ODIN_INSPECTOR;EGAMEPLAY_EXCEL
+    Standalone: ODIN_INSPECTOR;UNITY;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
