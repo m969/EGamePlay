@@ -6,6 +6,7 @@ using UnityEngine.Timeline;
 using EGamePlay.Combat;
 using ET;
 using Log = EGamePlay.Log;
+using System;
 
 namespace EGamePlay.Combat
 {
@@ -32,7 +33,6 @@ namespace EGamePlay.Combat
         {
             AbilityEntity = initData as SkillAbility;
             OwnerEntity = GetParent<CombatEntity>();
-            OriginTime = ET.TimeHelper.Now();
         }
 
         public void LoadExecutionEffects()
@@ -47,7 +47,9 @@ namespace EGamePlay.Combat
             //    return;
             //}
 
-            var nowSeconds = (double)(ET.TimeHelper.Now() - OriginTime) / 1000;
+            var nowSeconds = (TimeHelper.Now() / 1000f - OriginTime / 1000f);
+            //Log.Debug($"SkillExecution Update {TimeHelper.Now()} {OriginTime}");
+            //Log.Debug($"SkillExecution Update {(TimeHelper.Now() - OriginTime)} {nowSeconds} > {ExecutionObject.TotalTime}");
 
             if (nowSeconds >= ExecutionObject.TotalTime)
             {
@@ -57,6 +59,7 @@ namespace EGamePlay.Combat
 
         public void BeginExecute()
         {
+            OriginTime = TimeHelper.Now();
             GetParent<CombatEntity>().SpellingExecution = this;
             if (SkillAbility != null)
             {

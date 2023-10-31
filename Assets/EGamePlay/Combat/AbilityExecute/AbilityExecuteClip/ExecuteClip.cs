@@ -60,11 +60,11 @@ namespace EGamePlay.Combat
             //时间到触发执行效果
             if (clipType == ExecuteClipType.ActionEvent)
             {
-                Add<ExecuteTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
+                AddComponent<ExecuteTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
             }
             else if (ExecutionEffectConfig.Duration > 0)
             {
-                Add<ExecuteTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
+                AddComponent<ExecuteTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
                 GetComponent<ExecuteTimeTriggerComponent>().EndTime = ExecutionEffectConfig.EndTime;
             }
 

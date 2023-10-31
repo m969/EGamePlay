@@ -154,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EntityLog: 0
   SkillConfigObject: {fileID: 11400000, guid: 10e92a9794749144c84610589d2d2f84, type: 2}
+  ConfigsCollector: {fileID: 8957007620084665262, guid: 65ef3756840fd9c4bafab58c8af09086,
+    type: 3}
 --- !u!4 &744772367
 Transform:
   m_ObjectHideFlags: 0

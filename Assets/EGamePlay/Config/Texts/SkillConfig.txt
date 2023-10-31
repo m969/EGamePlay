@@ -5,5 +5,6 @@
 "1004":{"Id":1004,"Name":"血红激光炮","Type":"主动","TargetGroup":"敌方","TargetSelect":"碰撞检测","Cooldown":0,"DamageTarget":"技能目标","Probability":"10000","DamageType":"魔法伤害","ValueFormula":"3333","Effect1":"AddStatus=Id"},
 "1005":{"Id":1005,"Name":"火弹","Type":"主动","TargetGroup":"敌方","TargetSelect":"碰撞检测","Cooldown":0,"Description":"每命中一个目标后下一次伤害会减少20%，最低减到40%","DamageTarget":"技能目标","Probability":"10000","DamageType":"魔法伤害","ValueFormula":"3333","Effect1":"AddStatus=Id"},
 "1006":{"Id":1006,"Name":"灵魂锁链","Type":"主动","TargetGroup":"敌方","TargetSelect":"条件指定","Cooldown":0},
-"1008":{"Id":1008,"Name":"火球","Type":"主动","TargetGroup":"敌方","TargetSelect":"碰撞检测","Cooldown":0}
+"1008":{"Id":1008,"Name":"火球","Type":"主动","TargetGroup":"敌方","TargetSelect":"碰撞检测","Cooldown":0},
+"201":{"Id":201,"Name":"mini","Type":"主动","TargetGroup":"敌方","TargetSelect":"手动指定","Cooldown":0}
 }

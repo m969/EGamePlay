@@ -23,7 +23,7 @@ namespace EGamePlay.Combat
         public void OnTriggerExecuteEffect(ExecuteEffectEvent evnt)
         {
             var skillExecution = Entity.GetParent<SkillExecution>();
-            Log.Debug($"ExecutionAssignToTargetComponent OnTriggerExecutionEffect {skillExecution.InputTarget} {EffectApplyType}");
+            //Log.Debug($"ExecutionAssignToTargetComponent OnTriggerExecutionEffect {skillExecution.InputTarget} {EffectApplyType}");
             if (skillExecution.InputTarget != null)
             {
                 var abilityEffectComponent = skillExecution.AbilityEntity.GetComponent<AbilityEffectComponent>();

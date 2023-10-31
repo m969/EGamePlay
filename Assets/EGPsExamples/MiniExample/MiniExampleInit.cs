@@ -10,15 +10,19 @@ public class MiniExampleInit : MonoBehaviour
 {
     public bool EntityLog;
     public SkillConfigObject SkillConfigObject;
+    public ReferenceCollector ConfigsCollector;
 
 
-    private void Awake()
+    private async void Awake()
     {
+        SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
         Entity.EnableLog = EntityLog;
         MasterEntity.Create();
         Entity.Create<TimerManager>();
         Entity.Create<CombatContext>();
+        MasterEntity.Instance.AddComponent<ConfigManageComponent>(ConfigsCollector);
 
+        await TimerManager.Instance.WaitAsync(2000);
         //创建怪物战斗实体
         var monster = CombatContext.Instance.AddChild<CombatEntity>();
         //创建英雄战斗实体
@@ -28,14 +32,15 @@ public class MiniExampleInit : MonoBehaviour
         Debug.Log($"1 monster.CurrentHealth={monster.CurrentHealth.Value}");
         //使用英雄技能攻击怪物
         hero.GetComponent<SpellComponent>().SpellWithTarget(heroSkillAbility, monster);
+        await TimerManager.Instance.WaitAsync(2000);
         Debug.Log($"2 monster.CurrentHealth={monster.CurrentHealth.Value}");
         //--示例结束--
     }
 
     private void Update()
     {
-        MasterEntity.Instance.Update();
-        TimerManager.Instance.Update();
+        MasterEntity.Instance?.Update();
+        TimerManager.Instance?.Update();
     }
 
     private void OnApplicationQuit()

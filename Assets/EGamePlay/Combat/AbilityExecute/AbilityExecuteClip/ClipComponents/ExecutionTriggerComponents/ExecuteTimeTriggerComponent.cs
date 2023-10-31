@@ -24,6 +24,7 @@ namespace EGamePlay.Combat
             if (StartTimer != null && StartTimer.IsFinished == false)
             {
                 StartTimer.UpdateAsFinish(Time.deltaTime, GetEntity<ExecuteClip>().TriggerEffect);
+                //Log.Debug($"ExecuteTimeTriggerComponent {StartTimer.Time} {StartTimer.MaxTime}");
             }
             if (EndTimer != null && EndTimer.IsFinished == false)
             {
