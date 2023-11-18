@@ -24,7 +24,14 @@ namespace EGamePlay.Combat
             var effects = initData as List<Effect>;
             foreach (var item in effects)
             {
-                //Log.Debug($"AbilityEffectComponent Setup {item}");
+                //if (Entity is SkillAbility skillAbility)
+                //{
+                //    Log.Debug($"SkillAbility AbilityEffectComponent Setup  {skillAbility.SkillConfig.Name} {item}");
+                //}
+                //if (Entity is StatusAbility statusAbility)
+                //{
+                //    Log.Debug($"StatusAbility AbilityEffectComponent Setup {statusAbility.StatusConfig.Name} {item}");
+                //}
                 var abilityEffect = Entity.AddChild<AbilityEffect>(item);
                 AddEffect(abilityEffect);
 

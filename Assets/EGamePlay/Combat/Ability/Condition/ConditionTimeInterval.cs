@@ -15,9 +15,9 @@ namespace EGamePlay.Combat
             IntervalTimer = new GameTimer(time);
         }
 
-        public void StartListen(Action whenNoDamageInTimeCallback)
+        public void StartListen(Action whenTimeIntervalAction)
         {
-            IntervalTimer.OnRepeat(whenNoDamageInTimeCallback);
+            IntervalTimer.OnRepeat(whenTimeIntervalAction);
             AddComponent<UpdateComponent>();
         }
 

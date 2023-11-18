@@ -1,6 +1,7 @@
 ﻿using EGamePlay.Combat;
 using System.Collections.Generic;
 using ET;
+using UnityEngine;
 
 #if EGAMEPLAY_EXCEL
 namespace EGamePlay.Combat
@@ -337,6 +338,9 @@ namespace EGamePlay.Combat
                 {
                     effect.EffectTriggerType = EffectTriggerType.Condition;
                     effect.ConditionParam = statusEffectConfig.TriggerParam;
+                    if (statusEffectConfig.ConditionType == "自定义条件事件") effect.ConditionType = ConditionEventType.CustomCondition;
+                    if (statusEffectConfig.ConditionType == "当间隔x秒") effect.ConditionType = ConditionEventType.WhenIntervalTime;
+                    if (statusEffectConfig.ConditionType == "当x秒内没有受伤") effect.ConditionType = ConditionEventType.WhenInTimeNoDamage;
                 }
             }
             return effect;

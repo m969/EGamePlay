@@ -267,7 +267,8 @@ namespace ET
 
             for (int i = 5; i <= sheet.LastRowNum; ++i)
             {
-                if (GetCellString(sheet, i, 2) == "")
+                var id = GetCellString(sheet, i, 2);
+                if (string.IsNullOrEmpty(id))
                 {
                     continue;
                 }
@@ -317,7 +318,7 @@ namespace ET
                     sb.Append($"\"{fieldName}\":{Convert(fieldType, fieldValue)}");
                 }
 
-                if (i < sheet.LastRowNum) sb.Append("},");
+                if (i < sheet.LastRowNum && !string.IsNullOrEmpty(GetCellString(sheet, i + 1, 2))) sb.Append("},");
                 else sb.Append("}");
                 sw.WriteLine(sb.ToString());
             }

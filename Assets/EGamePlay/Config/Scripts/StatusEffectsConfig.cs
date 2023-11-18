@@ -17,6 +17,7 @@ namespace ET
 		public string OwnerAbility;
 		public string Target;
 		public string TriggerType;
+		public string ConditionType;
 		public string TriggerParam;
 		public string Probability;
 		public string KV1;

@@ -49,6 +49,7 @@ namespace EGamePlay.Combat
             effect = ParseEffect(SkillConfig, SkillConfig.Effect3);
             if (effect != null) Effects.Add(effect);
             AddComponent<AbilityEffectComponent>(Effects);
+            LoadExecution();
 
             if (SkillConfig.Type == "被动")
             {
@@ -91,10 +92,6 @@ namespace EGamePlay.Combat
             execution.ExecutionObject = ExecutionObject;
             execution.LoadExecutionEffects();
             this.FireEvent(nameof(CreateExecution), execution);
-            if (ExecutionObject != null)
-            {
-                execution.AddComponent<UpdateComponent>();
-            }
             return execution;
         }
 

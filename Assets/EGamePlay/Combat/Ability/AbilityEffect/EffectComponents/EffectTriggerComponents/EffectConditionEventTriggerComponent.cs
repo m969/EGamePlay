@@ -18,7 +18,7 @@ namespace EGamePlay.Combat
         {
             var conditionType = Entity.GetParent<AbilityEffect>().EffectConfig.ConditionType;
             var conditionParam = ConditionParamValue;
-            //Log.Error($"EffectConditionEventTriggerComponent {conditionType} {conditionParam}");
+            //Log.Debug($"EffectConditionEventTriggerComponent {conditionType} {conditionParam}");
             Entity.GetParent<AbilityEffect>().Parent.As<IAbilityEntity>().ParentEntity.ListenerCondition(conditionType, OnConditionTrigger, conditionParam);
         }
 

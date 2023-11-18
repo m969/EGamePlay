@@ -24,6 +24,7 @@ namespace EGamePlay.Combat
 
 #if EGAMEPLAY_EXCEL
             var statusConfig = AddStatusEffect.AddStatusConfig;
+            //Log.Debug($"EffectAddStatusComponent Awake {statusConfig.Name}");
             if (statusConfig.EnabledAttributeModify())
             {
                 if (!string.IsNullOrEmpty(statusConfig.AttributeParams))

@@ -89,7 +89,7 @@ namespace EGamePlay.Combat
             Status.OwnerEntity = Creator;
             Status.GetComponent<AbilityLevelComponent>().Level = SourceAbility.GetComponent<AbilityLevelComponent>().Level;
             Status.Duration = (int)AddStatusEffect.Duration;
-            //Log.Debug($"ApplyEffectAssign AddStatusEffect {Status}");
+            //Log.Debug($"AddStatusAction ApplyAddStatus {statusConfig.Name}");
 
             Status.ProcessInputKVParams(AddStatusEffect.Params);
 

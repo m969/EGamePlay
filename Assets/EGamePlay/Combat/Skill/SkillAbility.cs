@@ -142,10 +142,6 @@ namespace EGamePlay.Combat
             execution.ExecutionObject = ExecutionObject;
             execution.LoadExecutionEffects();
             this.FireEvent(nameof(CreateExecution), execution);
-            if (ExecutionObject != null)
-            {
-                execution.AddComponent<UpdateComponent>();
-            }
             return execution;
         }
     }

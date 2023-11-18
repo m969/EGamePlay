@@ -1,7 +1,7 @@
 {
 "100":{"Id":100,"EffectType":"ActionControl","OwnerAbility":"眩晕","Target":"自身","Probability":"10000","KV1":"移动禁止|施法禁止|攻击禁止"},
 "201":{"Id":201,"EffectType":"Cure","OwnerAbility":"坚韧","Target":"自身","TriggerType":"条件触发","TriggerParam":"自定义","Probability":"10000","KV1":"治疗取值=生命值上限*0.02"},
-"202":{"Id":202,"EffectType":"Damage","OwnerAbility":"普通灼烧","Target":"自身","TriggerType":"间隔触发","TriggerParam":"间隔时间","Probability":"10000","KV1":"伤害取值=伤害取值"},
+"202":{"Id":202,"EffectType":"Damage","OwnerAbility":"普通灼烧","Target":"自身","TriggerType":"条件触发","ConditionType":"当间隔x秒","TriggerParam":"间隔时间","Probability":"10000","KV1":"伤害取值=伤害取值"},
 "203":{"Id":203,"EffectType":"AttributeModify","OwnerAbility":"虚弱","Target":"自身","Probability":"10000","KV1":"造成伤害百分比","KV2":"-60%"},
 "204":{"Id":204,"EffectType":"AttributeModify","OwnerAbility":"虚弱","Target":"自身","Probability":"10000","KV1":"移动速度百分比","KV2":"-60%"}
 }

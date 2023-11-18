@@ -84,6 +84,10 @@ public sealed class Hero : MonoBehaviour
         {
             var skillConfig = allConfigs[i];
             var skilld = skillConfig.Id;
+            if (skilld == 201)
+            {
+                continue;
+            }
             var config = AssetUtils.Load<SkillConfigObject>($"SkillConfigs/Skill_{skilld}");
             var ability = CombatEntity.AttachSkill(config);
             if (skilld == 1001) CombatEntity.BindSkillInput(ability, KeyCode.Q);
