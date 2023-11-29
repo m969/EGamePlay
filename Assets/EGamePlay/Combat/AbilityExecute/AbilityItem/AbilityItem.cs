@@ -160,7 +160,8 @@ namespace EGamePlay.Combat
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.TargetEntity = InputTarget;
             abilityItem.Position = AbilityExecution.OwnerEntity.Position;
-            abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveToWithTime(InputTarget, clipData.Duration);
+            var moveComp = abilityItem.AddComponent<MoveWithDotweenComponent>();
+            moveComp.DoMoveToWithTime(InputTarget, clipData.Duration);
         }
 
         /// <summary>   前向飞行碰撞体     </summary>

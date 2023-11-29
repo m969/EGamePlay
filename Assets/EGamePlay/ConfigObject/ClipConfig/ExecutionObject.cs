@@ -10,6 +10,7 @@ using UnityEngine.UI;
 
 namespace EGamePlay.Combat
 {
+    
     [CreateAssetMenu(fileName = "Execution", menuName = "¼¼ÄÜ|×´Ì¬/Execution")]
     public class ExecutionObject : ScriptableObject
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 
+    /// 能力效果组件，一个能力可以包含多个效果
     /// </summary>
     public class AbilityEffectComponent : Component
     {

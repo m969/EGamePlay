@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using ET;
 using DG.Tweening;
+using System;
 
 namespace EGamePlay.Combat
 {
@@ -24,8 +25,10 @@ namespace EGamePlay.Combat
         public SpeedType SpeedType { get; set; }
         public float Speed { get; set; }
         public float Duration { get; set; }
+        public float ElapsedTime { get; set; }
         public IPosition PositionEntity { get; set; }
         public IPosition TargetPositionEntity { get; set; }
+        public Entity TargetEntity { get; set; }
         public Vector3 Destination { get; set; }
         public Tweener MoveTweener { get; set; }
         private System.Action MoveFinishAction { get; set; }
@@ -34,14 +37,23 @@ namespace EGamePlay.Combat
         public override void Awake()
         {
             PositionEntity = (IPosition)Entity;
+            ElapsedTime = 0;
         }
 
         public override void Update()
         {
             if (TargetPositionEntity != null)
             {
+                if (TargetEntity.IsDisposed)
+                {
+                    TargetEntity = null;
+                    TargetPositionEntity = null;
+                    Entity.Destroy(Entity);
+                    return;
+                }
                 if (SpeedType == SpeedType.Speed) DoMoveToWithSpeed(TargetPositionEntity, Speed);
-                if (SpeedType == SpeedType.Duration) DoMoveToWithTime(TargetPositionEntity, Duration);
+                if (SpeedType == SpeedType.Duration) DoTimeMove(MathF.Max(0, Duration - ElapsedTime));
+                ElapsedTime += Time.deltaTime;
             }
         }
 
@@ -57,6 +69,7 @@ namespace EGamePlay.Combat
             Speed = speed;
             SpeedType = SpeedType.Speed;
             TargetPositionEntity = targetPositionEntity;
+            TargetEntity = targetPositionEntity as Entity;
             MoveTweener?.Kill();
             var dist = Vector3.Distance(PositionEntity.Position, TargetPositionEntity.Position);
             var duration = dist / speed;
@@ -68,8 +81,15 @@ namespace EGamePlay.Combat
             Duration = time;
             SpeedType = SpeedType.Duration;
             TargetPositionEntity = targetPositionEntity;
+            TargetEntity = targetPositionEntity as Entity;
+            DoTimeMove(time);
+        }
+
+        private void DoTimeMove(float time)
+        {
             MoveTweener?.Kill();
             MoveTweener = DOTween.To(() => { return PositionEntity.Position; }, (x) => PositionEntity.Position = x, TargetPositionEntity.Position, time);
+            MoveTweener.SetEase(Ease.Linear);
         }
 
         //public void DoMovePath(List<Vector3> points)

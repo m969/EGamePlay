@@ -13,16 +13,18 @@ MonoBehaviour:
   m_Name: ExecuteClip
   m_EditorClassIdentifier: 
   StartTime: 0.42297292
-  EndTime: 0.91273886
+  EndTime: 1
   ExecuteClipType: 0
   ActionEventData:
-    _StartTime: 0.43433395
-    _EndTime: 0.44233394
     ActionEventType: 1
     EffectApply: 0
     NewExecution: Execution_1001_Ball
   CollisionExecuteData:
     ExecuteType: 0
+    ActionData:
+      ActionEventType: 0
+      EffectApply: 0
+      NewExecution: 
     Shape: 0
     Radius: 1
     Center: {x: 0, y: 0, z: 0}
@@ -53,13 +55,15 @@ MonoBehaviour:
   EndTime: 0.8
   ExecuteClipType: 2
   ActionEventData:
-    _StartTime: 0
-    _EndTime: 0
     ActionEventType: 0
     EffectApply: 0
     NewExecution: 
   CollisionExecuteData:
     ExecuteType: 0
+    ActionData:
+      ActionEventType: 0
+      EffectApply: 0
+      NewExecution: 
     Shape: 0
     Radius: 0
     Center: {x: 0, y: 0, z: 0}
@@ -91,6 +95,7 @@ MonoBehaviour:
   ObjAsset: {fileID: 0}
   TargetInputType: 1
   RangeIndicatorObjAsset: {fileID: 0}
+  PointIndicatorObjAsset: {fileID: 0}
   DirectionIndicatorObjAsset: {fileID: 0}
   ExecuteClips:
   - {fileID: -93905066527900171}

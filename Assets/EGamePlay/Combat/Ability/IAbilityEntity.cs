@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 能力实体，存储着某个英雄某个能力的数据和状态
+    /// 能力实体，存储着角色一个能力的数据和状态
     /// </summary>
     public interface IAbilityEntity
     {

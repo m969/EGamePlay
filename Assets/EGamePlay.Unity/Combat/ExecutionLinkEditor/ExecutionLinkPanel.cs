@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using EGamePlay.Combat;
-using System.Diagnostics;
+using System.Linq;
 
 namespace EGamePlay
 {
@@ -186,6 +186,25 @@ namespace EGamePlay
 			{
 				return;
 			}
+			var dels = new List<UnityEngine.Object>();
+			var assets = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(CurrentExecutionAssetPath);
+			foreach (var item in assets)
+			{
+				if (UnityEditor.AssetDatabase.IsMainAsset(item))
+				{
+					continue;
+				}
+				if (item is ExecuteClipData data && CurrentExecutionObject.ExecuteClips.Contains(data))
+				{
+					continue;
+				}
+				dels.Add(item);
+			}
+			foreach (var item in dels)
+			{
+				UnityEngine.Debug.Log($"RemoveObjectFromAsset {item.name}");
+                UnityEditor.AssetDatabase.RemoveObjectFromAsset(item);
+            }
             UnityEditor.EditorUtility.SetDirty(CurrentExecutionObject);
             UnityEditor.AssetDatabase.SaveAssetIfDirty(CurrentExecutionObject);
 #endif

@@ -27,8 +27,9 @@ public class MiniExampleInit : MonoBehaviour
         var monster = CombatContext.Instance.AddChild<CombatEntity>();
         //创建英雄战斗实体
         var hero = CombatContext.Instance.AddChild<CombatEntity>();
-        //给英雄挂上技能
+        //给英雄挂载技能并加载技能执行体
         var heroSkillAbility = hero.AttachSkill(SkillConfigObject);
+
         Debug.Log($"1 monster.CurrentHealth={monster.CurrentHealth.Value}");
         //使用英雄技能攻击怪物
         hero.GetComponent<SpellComponent>().SpellWithTarget(heroSkillAbility, monster);

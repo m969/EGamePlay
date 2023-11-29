@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 
+    /// 执行片段组件，一个技能执行体可以包含多个执行片段
     /// </summary>
     public class ExecuteClipComponent : Component
     {
@@ -18,16 +18,16 @@ namespace EGamePlay.Combat
             {
                 return;
             }
-            foreach (var effect in GetEntity<SkillExecution>().ExecutionObject.ExecuteClips)
+            foreach (var clip in GetEntity<SkillExecution>().ExecutionObject.ExecuteClips)
             {
-                var executionEffect = Entity.AddChild<ExecuteClip>(effect);
-                AddEffect(executionEffect);
+                var executeClip = Entity.AddChild<ExecuteClip>(clip);
+                AddClip(executeClip);
             }
         }
 
-        public void AddEffect(ExecuteClip executionEffect)
+        public void AddClip(ExecuteClip executeClip)
         {
-            ExecuteClips.Add(executionEffect);
+            ExecuteClips.Add(executeClip);
         }
 
         public void BeginExecute()
