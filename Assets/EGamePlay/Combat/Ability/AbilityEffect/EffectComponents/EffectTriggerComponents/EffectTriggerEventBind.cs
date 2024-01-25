@@ -89,6 +89,9 @@ namespace EGamePlay.Combat
             }
         }
 
+        /// <summary>
+        /// 触发技能效果检测，检测通过则触发该效果
+        /// </summary>
         public void TriggerEffectCheck(SkillExecution skillExecution)
         {
             var affectCheck = GetParent<AbilityEffect>().EffectConfig.ConditionParam;
@@ -106,13 +109,19 @@ namespace EGamePlay.Combat
             }
         }
 
+        /// <summary>
+        /// 触发对目标施加效果检测，检测通过则对目标施加该效果
+        /// </summary>
         public void TriggerEffectCheckWithTarget(Entity target)
         {
             var affectCheck = GetParent<AbilityEffect>().EffectConfig.ConditionParam;
             //Log.Debug($"EffectTriggerEventBind TriggerEffectCheckWithTarget {affectCheck}");
+
+            /// 这里是条件判断，条件判断是判断效果目标的条件是否满足，满足则触发效果
             var conditionCheckResult = true;
             foreach (var item in ConditionChecks)
             {
+                /// 条件取反
                 if (item.IsInvert)
                 {
                     if (item.CheckCondition(target))
@@ -131,6 +140,7 @@ namespace EGamePlay.Combat
                 }
             }
 
+            /// 条件满足则触发效果
             if (conditionCheckResult)
             {
                 //var effectTargetSelection = GetParent<AbilityEffect>().GetComponent<EffectTargetSelection>();

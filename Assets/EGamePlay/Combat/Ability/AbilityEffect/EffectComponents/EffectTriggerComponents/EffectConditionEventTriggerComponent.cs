@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 条件触发组件
+    /// 效果条件事件触发组件，这个组件表示当对应的条件事件触发时，触发对应效果
     /// </summary>
     public class EffectConditionEventTriggerComponent : Component
     {
@@ -29,6 +29,9 @@ namespace EGamePlay.Combat
             Entity.GetParent<AbilityEffect>().Parent.As<IAbilityEntity>().ParentEntity.UnListenCondition(conditionType, OnConditionTrigger);
         }
 
+        /// <summary>
+        /// 条件事件触发效果
+        /// </summary>
         private void OnConditionTrigger()
         {
             var conditionType = Entity.GetParent<AbilityEffect>().EffectConfig.ConditionType;

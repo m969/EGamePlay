@@ -26,6 +26,9 @@ namespace EGamePlay.Combat
             Entity.GetParent<AbilityEffect>().Parent.As<IAbilityEntity>().OwnerEntity.UnListenActionPoint(actionPointType, OnActionPointTrigger);
         }
 
+        /// <summary>
+        /// 通过行动点触发效果
+        /// </summary>
         private void OnActionPointTrigger(Entity combatAction)
         {
             GetEntity<EffectTriggerEventBind>().TriggerEffectCheckWithTarget(combatAction);
