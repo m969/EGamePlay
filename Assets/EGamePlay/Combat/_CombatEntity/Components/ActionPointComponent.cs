@@ -38,6 +38,17 @@ namespace EGamePlay.Combat
         }
     }
 
+    /// <summary>
+    /// 行动点观察者，用于订阅战斗实体的行动点触发
+    /// </summary>
+    public class ActionPointObserver : Entity
+    {
+        public void OnTrigger()
+        {
+
+        }
+    }
+
     [Flags]
     public enum ActionPointType
     {

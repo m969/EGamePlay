@@ -142,7 +142,7 @@ namespace EGamePlay.Combat
 
                 if (abilityEffect.TriggerEventBind != null)
                 {
-                    if (abilityEffect.TriggerEventBind.TryGet(out EffectConditionEventTriggerComponent conditionTriggerComponent))
+                    if (abilityEffect.TriggerEventBind.TryGet(out EffectStateConditionEventTriggerComponent conditionTriggerComponent))
                     {
                         conditionTriggerComponent.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
                     }

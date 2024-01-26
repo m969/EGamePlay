@@ -14,7 +14,6 @@ namespace EGamePlay.Combat
         public IAbilityEntity OwnerAbility => GetParent<AbilityEffect>().OwnerAbility as IAbilityEntity;
         public SkillAbility SkillAbility => (OwnerAbility as SkillAbility);
         public string AffectCheck { get; set; }
-        public List<IConditionCheckSystem> ConditionChecks { get; set; } = new List<IConditionCheckSystem>();
         public List<Entity> ActionPointBinds { get; set; } = new List<Entity>();
 
 
@@ -22,50 +21,22 @@ namespace EGamePlay.Combat
         {
             //Log.Debug($"EffectTriggerEventBind Awake {affectCheck}");
             var effectConfig = GetParent<AbilityEffect>().EffectConfig;
+
             /// 行动点事件触发
             var isAction = effectConfig.EffectTriggerType == EffectTriggerType.Action;
             if (isAction) AddComponent<EffectActionPointTriggerComponent>();
+
             /// 条件事件触发
             var isCondition = effectConfig.EffectTriggerType == EffectTriggerType.Condition && !string.IsNullOrEmpty(effectConfig.ConditionParam);
-            if (isCondition) AddComponent<EffectConditionEventTriggerComponent>();
+            if (isCondition) AddComponent<EffectStateConditionEventTriggerComponent>();
 
-            /// 条件判断检测
-            if (!string.IsNullOrEmpty(effectConfig.ConditionParam) && effectConfig.ConditionParam.Contains('&'))
-            {
-                var arr = effectConfig.ConditionParam.Split('&');
-                //
-                for (int i = 1; i < arr.Length; i++)
-                {
-                    var conditionStr = arr[i];
-                    if (string.IsNullOrEmpty(conditionStr))
-                    {
-                        continue;
-                    }
-                    var condition = conditionStr;
-                    if (conditionStr.StartsWith("!")) condition = conditionStr.TrimStart('!');
-                    var arr2 = condition.Split('<', '=', '≤');
-                    var conditionType = arr2[0];
-                    var scriptType = $"EGamePlay.Combat.Condition{conditionType}Check";
-                    var type = System.Type.GetType(scriptType);
-                    if (type != null)
-                    {
-                        ConditionChecks.Add(this.AddChild(type, conditionStr) as IConditionCheckSystem);
-                    }
-                    else
-                    {
-                        Log.Error($"Condition class not found: {scriptType}");
-                    }
-                }
-            }
+            /// 状态条件判断
+            var haveStateCondition = !string.IsNullOrEmpty(effectConfig.ConditionParam) && effectConfig.ConditionParam.Contains('&');
+            if (haveStateCondition) AddComponent<EffectTargetStateCheckComponent>();
         }
 
         public override void OnDestroy()
         {
-            foreach (var item in ConditionChecks)
-            {
-                Entity.Destroy(item as Entity);
-            }
-            ConditionChecks.Clear();
             foreach (var item in ActionPointBinds)
             {
                 Entity.Destroy(item);
@@ -80,89 +51,46 @@ namespace EGamePlay.Combat
             {
                 item.Enable = true;
             }
+
             /// 立即触发
             var effectConfig = GetParent<AbilityEffect>().EffectConfig;
             if (effectConfig.EffectTriggerType == EffectTriggerType.Instant)
             {
-                var effectAssign = GetParent<AbilityEffect>().CreateAssignAction((OwnerAbility as IAbilityEntity).ParentEntity);
-                effectAssign.AssignEffect();
-            }
-        }
-
-        /// <summary>
-        /// 触发技能效果检测，检测通过则触发该效果
-        /// </summary>
-        public void TriggerEffectCheck(SkillExecution skillExecution)
-        {
-            var affectCheck = GetParent<AbilityEffect>().EffectConfig.ConditionParam;
-            //Log.Debug($"EffectTriggerEventBind TriggerEffectCheck {affectCheck}");
-            //if (GetParent<AbilityEffect>().GetComponent<EffectTargetSelection>() == null && GetParent<AbilityEffect>().IsTargetEffect)
-            //{
-            //    foreach (var target in skillExecution.MainTargetBattlers)
-            //    {
-            //        TriggerEffectCheckWithTarget(target);
-            //    }
-            //}
-            //else
-            {
-                TriggerEffectCheckWithTarget(skillExecution);
-            }
-        }
-
-        /// <summary>
-        /// 触发对目标施加效果检测，检测通过则对目标施加该效果
-        /// </summary>
-        public void TriggerEffectCheckWithTarget(Entity target)
-        {
-            var affectCheck = GetParent<AbilityEffect>().EffectConfig.ConditionParam;
-            //Log.Debug($"EffectTriggerEventBind TriggerEffectCheckWithTarget {affectCheck}");
-
-            /// 这里是条件判断，条件判断是判断效果目标的条件是否满足，满足则触发效果
-            var conditionCheckResult = true;
-            foreach (var item in ConditionChecks)
-            {
-                /// 条件取反
-                if (item.IsInvert)
-                {
-                    if (item.CheckCondition(target))
-                    {
-                        conditionCheckResult = false;
-                        break;
-                    }
-                }
-                else
-                {
-                    if (!item.CheckCondition(target))
-                    {
-                        conditionCheckResult = false;
-                        break;
-                    }
-                }
-            }
-
-            /// 条件满足则触发效果
-            if (conditionCheckResult)
-            {
-                //var effectTargetSelection = GetParent<AbilityEffect>().GetComponent<EffectTargetSelection>();
-                //if (effectTargetSelection != null)
-                //{
-                //    var targets = effectTargetSelection.GetTargets();
-                //    foreach (var battler in targets)
-                //    {
-                //        GetParent<AbilityEffect>().AssignEffectTo(battler);
-                //    }
-                //}
-                //else
-                {
-                    var effectAssign = GetParent<AbilityEffect>().CreateAssignAction(target);
-                    effectAssign.AssignEffect();
-                }
+                TriggerEffectToParent();
             }
         }
 
         public void TriggerEffectToParent()
         {
             TriggerEffectCheckWithTarget(OwnerAbility.ParentEntity);
+        }
+
+        /// <summary>
+        /// 触发技能效果
+        /// </summary>
+        public void TriggerEffectCheck(SkillExecution skillExecution)
+        {
+            TriggerEffectCheckWithTarget(skillExecution);
+        }
+
+        /// <summary>
+        /// 触发对目标施加效果
+        /// </summary>
+        public void TriggerEffectCheckWithTarget(Entity target)
+        {
+            /// 这里是状态条件判断，状态条件判断是判断目标的状态是否满足条件，满足则触发效果
+            var conditionCheckResult = true;
+            if (TryGet(out EffectTargetStateCheckComponent component))
+            {
+                conditionCheckResult = component.CheckTargetState(target);
+            }
+
+            /// 条件满足则触发效果
+            if (conditionCheckResult)
+            {
+                var effectAssign = GetParent<AbilityEffect>().CreateAssignAction(target);
+                effectAssign.AssignEffect();
+            }
         }
     }
 }

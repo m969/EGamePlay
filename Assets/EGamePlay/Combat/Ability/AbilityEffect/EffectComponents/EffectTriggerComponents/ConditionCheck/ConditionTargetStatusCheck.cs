@@ -6,7 +6,10 @@ using System.Text;
 
 namespace EGamePlay.Combat
 {
-    public class ConditionTargetStateCheck : Entity, IConditionCheckSystem
+    /// <summary>
+    /// 目标状态能力条件判断，判断目标是否有某个状态能力
+    /// </summary>
+    public class ConditionTargetStatusCheck : Entity, IConditionCheckSystem
     {
         public CombatEntity OwnerBattler => GetParent<EffectTriggerEventBind>().GetParent<AbilityEffect>().OwnerEntity;
         public string AffectCheck { get; set; }

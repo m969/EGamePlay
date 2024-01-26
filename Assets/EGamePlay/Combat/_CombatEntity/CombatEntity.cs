@@ -101,7 +101,7 @@ namespace EGamePlay.Combat
         #endregion
 
         #region 条件事件
-        public void ListenerCondition(ConditionEventType conditionType, Action action, object paramObj = null)
+        public void ListenCondition(ConditionEventType conditionType, Action action, object paramObj = null)
         {
             GetComponent<ConditionEventComponent>().AddListener(conditionType, action, paramObj);
         }
