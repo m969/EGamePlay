@@ -2,6 +2,7 @@
 
 namespace EGamePlay.Combat
 {
+    [LabelText("条件类型")]
     public enum ConditionEventType
     {
         [LabelText("自定义条件事件")]

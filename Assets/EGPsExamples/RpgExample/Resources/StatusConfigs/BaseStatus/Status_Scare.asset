@@ -56,31 +56,26 @@ MonoBehaviour:
     - Name: Enabled
       Entry: 5
       Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
     - Name: EffectTriggerType
+      Entry: 3
+      Data: 1
+    - Name: ActionPointType
       Entry: 3
       Data: 0
     - Name: ConditionType
       Entry: 3
       Data: 0
-    - Name: ActionPointType
-      Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: TriggerProbability
-      Entry: 1
-      Data: 100%
-    - Name: Components
+    - Name: StateChecks
       Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Component, Assembly-CSharp]],
-        mscorlib
+      Data: 3|System.Collections.Generic.Dictionary`2[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp],[System.String, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 4|System.Collections.Generic.EnumEqualityComparer`1[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -90,9 +85,39 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: Decorators
+      Entry: 6
+      Data: 
     - Name: EffectTypeName
       Entry: 1
-      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+      Data: "(\u6DFB\u52A0\u4FEE\u9970)"
     - Name: ActionControlType
       Entry: 3
       Data: 28
@@ -107,13 +132,6 @@ MonoBehaviour:
       Data: 
   ID: Scare
   Name: "\u6050\u60E7"
-  StatusType: 1
-  Duration: 0
-  ShowInStatusSlots: 1
-  CanStack: 0
-  MaxStack: 1
+  ParticleEffect: {fileID: 0}
   EnableChildrenStatuses: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 0}
-  Audio: {fileID: 0}
-  StatusDescription: "\u6050\u60E7\uFF1A\u4F7F\u82F1\u96C4\u5931\u53BB\u63A7\u5236\uFF0C\u65E0\u76EE\u7684\u7684\u8D70\u52A8\u3002"

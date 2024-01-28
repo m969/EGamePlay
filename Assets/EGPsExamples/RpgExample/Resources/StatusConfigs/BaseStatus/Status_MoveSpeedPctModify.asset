@@ -56,31 +56,26 @@ MonoBehaviour:
     - Name: Enabled
       Entry: 5
       Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
     - Name: EffectTriggerType
+      Entry: 3
+      Data: 1
+    - Name: ActionPointType
       Entry: 3
       Data: 0
     - Name: ConditionType
       Entry: 3
       Data: 0
-    - Name: ActionPointType
-      Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: TriggerProbability
-      Entry: 1
-      Data: 100%
-    - Name: Components
+    - Name: StateChecks
       Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Component, Assembly-CSharp]],
-        mscorlib
+      Data: 3|System.Collections.Generic.Dictionary`2[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp],[System.String, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 4|System.Collections.Generic.EnumEqualityComparer`1[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -89,6 +84,36 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: Decorators
+      Entry: 6
       Data: 
     - Name: EffectTypeName
       Entry: 1
@@ -113,13 +138,6 @@ MonoBehaviour:
       Data: 
   ID: MoveSpeedPctModify
   Name: "\u79FB\u52A8\u901F\u5EA6\u767E\u5206\u6BD4\u4FEE\u9970"
-  StatusType: 2
-  Duration: 3000
-  ShowInStatusSlots: 1
-  CanStack: 0
-  MaxStack: 1
+  ParticleEffect: {fileID: 0}
   EnableChildrenStatuses: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 0}
-  Audio: {fileID: 0}
-  StatusDescription: 

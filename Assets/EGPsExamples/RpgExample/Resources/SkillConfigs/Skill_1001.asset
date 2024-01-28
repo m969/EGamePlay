@@ -57,33 +57,90 @@ MonoBehaviour:
     - Name: Enabled
       Entry: 5
       Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
     - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: ConditionType
       Entry: 3
       Data: 0
     - Name: ActionPointType
       Entry: 3
       Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
     - Name: ConditionParam
       Entry: 6
+      Data: 
+    - Name: StateChecks
+      Entry: 7
+      Data: 3|System.Collections.Generic.Dictionary`2[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp],[System.String, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 4|System.Collections.Generic.EnumEqualityComparer`1[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
     - Name: Decorators
-      Entry: 6
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 7|EGamePlay.Combat.TriggerNewEffectWhenAssignEffectDecorator, Assembly-CSharp
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: EffectApplyType
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: EffectTypeName
       Entry: 1
-      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+      Data: "(\u6DFB\u52A0\u4FEE\u9970)"
     - Name: DamageType
       Entry: 3
       Data: 1
@@ -98,7 +155,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
+      Data: 8|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -108,27 +165,77 @@ MonoBehaviour:
     - Name: Enabled
       Entry: 5
       Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
     - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: ConditionType
       Entry: 3
       Data: 0
     - Name: ActionPointType
       Entry: 3
-      Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
+      Data: 8
+    - Name: ConditionType
+      Entry: 3
+      Data: 3
     - Name: ConditionParam
       Entry: 6
       Data: 
+    - Name: StateChecks
+      Entry: 7
+      Data: 9|System.Collections.Generic.Dictionary`2[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp],[System.String, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 10|System.Collections.Generic.EnumEqualityComparer`1[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 1
+      Data: 30%
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 11|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 1
+      Data: "TargetHP\u226490%*TargetHPMax"
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: TriggerProbability
       Entry: 1
-      Data: 100%
+      Data: 50%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
     - Name: Decorators
       Entry: 6
       Data: 
@@ -143,11 +250,11 @@ MonoBehaviour:
       Data: 6000
     - Name: Params
       Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+      Data: 12|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 13|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8

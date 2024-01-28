@@ -131,6 +131,7 @@ namespace EGamePlay.Combat
         public void DeactivateAbility()
         {
             Enable = false;
+            GetComponent<AbilityEffectComponent>().Enable = false;
         }
 
         /// 这里处理技能传入的参数数值替换
@@ -140,12 +141,16 @@ namespace EGamePlay.Combat
             {
                 var effect = abilityEffect.EffectConfig;
 
-                if (abilityEffect.TriggerEventBind != null)
+                //if (abilityEffect.TriggerEventBind != null)
+                //{
+                //    if (abilityEffect.TriggerEventBind.TryGet(out EffectTimeStateEventTriggerComponent conditionTriggerComponent))
+                //    {
+                //        conditionTriggerComponent.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
+                //    }
+                //}
+                if (!string.IsNullOrEmpty(effect.ConditionParam))
                 {
-                    if (abilityEffect.TriggerEventBind.TryGet(out EffectStateConditionEventTriggerComponent conditionTriggerComponent))
-                    {
-                        conditionTriggerComponent.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
-                    }
+                    abilityEffect.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
                 }
 
                 if (effect is AttributeModifyEffect attributeModify && abilityEffect.TryGet(out EffectAttributeModifyComponent attributeModifyComponent))

@@ -47,4 +47,14 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled"), LabelText("伤害下限百分比")]
         public float MinPercent;
     }
+
+    [Serializable, EffectDecorate("当赋给效果后触发新的效果", 20)]
+    public class TriggerNewEffectWhenAssignEffectDecorator : EffectDecorator
+    {
+        [HideInInspector]
+        public override string Label => "当赋给效果后触发新的效果";
+
+        [ToggleGroup("Enabled")]
+        public EffectApplyType EffectApplyType;
+    }
 }

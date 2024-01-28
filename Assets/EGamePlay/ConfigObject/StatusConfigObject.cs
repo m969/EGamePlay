@@ -112,6 +112,7 @@ namespace EGamePlay.Combat
         }
 
 #if UNITY_EDITOR
+        [OnInspectorGUI("BeginBox", append: false)]
         [SerializeField, LabelText("自动重命名")]
         public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
         public static bool AutoRenameStatic = true;
@@ -133,10 +134,10 @@ namespace EGamePlay.Combat
 
         private void BeginBox()
         {
-            GUILayout.Space(30);
-            Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
+            //GUILayout.Space(30);
+            //Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
-            Sirenix.Utilities.Editor.SirenixEditorGUI.BeginBox("状态表现");
+            //Sirenix.Utilities.Editor.SirenixEditorGUI.BeginBox("状态表现");
         }
 
         private void EndBox()
@@ -237,15 +238,26 @@ namespace EGamePlay.Combat
     {
         [LabelText("（空）")]
         None = 0,
-        [LabelText("立即触发")]
+        [LabelText("能力激活时生效")]
         Instant = 1,
-        [LabelText("条件触发")]
-        Condition = 2,
-        [LabelText("行动点触发")]
-        Action = 3,
-        [LabelText("间隔触发")]
-        Interval = 4,
-        [LabelText("在行动点且满足条件")]
-        ActionCondition = 5,
+        [LabelText("按行动点事件")]
+        Action = 2,
+        [LabelText("按计时状态事件")]
+        Condition = 3,
+        //[LabelText("间隔触发")]
+        //Interval = 4,
+        //[LabelText("在行动点且满足条件")]
+        //ActionCondition = 5,
+    }
+
+    //[LabelText("状态判断")]
+    public enum StateCheckType
+    {
+        [LabelText("（空）")]
+        None = 0,
+        [LabelText("如果目标生命值低于x")]
+        WhenTargetHPLower = 1,
+        [LabelText("如果目标生命值低于百分比x")]
+        WhenTargetHPPctLower = 2,
     }
 }

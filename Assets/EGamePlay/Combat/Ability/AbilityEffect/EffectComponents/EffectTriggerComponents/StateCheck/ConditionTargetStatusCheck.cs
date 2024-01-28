@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class ConditionTargetStatusCheck : Entity, IConditionCheckSystem
     {
-        public CombatEntity OwnerBattler => GetParent<EffectTriggerEventBind>().GetParent<AbilityEffect>().OwnerEntity;
+        public CombatEntity OwnerBattler => Parent.GetParent<AbilityEffect>().OwnerEntity;
         public string AffectCheck { get; set; }
         public bool IsInvert => AffectCheck.StartsWith("!");
 

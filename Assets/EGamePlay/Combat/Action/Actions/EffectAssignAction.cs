@@ -54,9 +54,20 @@ namespace EGamePlay.Combat
         /// «∞÷√¥¶¿Ì
         private void PreProcess()
         {
-            if (AssignTarget is CombatEntity combatEntity)
+            if (Target == null)
             {
-                Target = combatEntity;
+                if (AssignTarget is CombatEntity combatEntity)
+                {
+                    Target = combatEntity;
+                }
+                if (AssignTarget is IActionExecute actionExecute)
+                {
+                    Target = actionExecute.Target;
+                }
+                if (AssignTarget is SkillExecution skillExecution)
+                {
+                    Target = skillExecution.InputTarget;
+                }
             }
         }
 
@@ -67,6 +78,15 @@ namespace EGamePlay.Combat
 
             foreach (var item in AbilityEffect.Components.Values)
             {
+                //if (item is EffectAddStatusComponent addStatusComponent)
+                //{
+                //    var action = addStatusComponent.GetActionExecution();
+                //    action.SourceAssignAction = effectAssignAction;
+                //    action.Target = effectAssignAction.Target;
+                //    action.SourceAbility = effectAssignAction.SourceAbility;
+                //    action.ApplyAddStatus();
+                //    continue;
+                //}
                 if (item is IEffectTriggerSystem effectTriggerSystem)
                 {
                     effectTriggerSystem.OnTriggerApplyEffect(this);
@@ -83,6 +103,15 @@ namespace EGamePlay.Combat
         {
             Creator.TriggerActionPoint(ActionPointType.AssignEffect, this);
             Target.TriggerActionPoint(ActionPointType.ReceiveEffect, this);
+
+            foreach (var item in AbilityEffect.EffectConfig.Decorators)
+            {
+                if (item is TriggerNewEffectWhenAssignEffectDecorator effectDecorator)
+                {
+                    var newEffect = Creator.GetComponent<AbilityEffectComponent>().GetEffect(((int)effectDecorator.EffectApplyType) - 1);
+                    newEffect.TriggerEffectCheckWithTarget(Target);
+                }
+            }
         }
 
         public void FinishAction()

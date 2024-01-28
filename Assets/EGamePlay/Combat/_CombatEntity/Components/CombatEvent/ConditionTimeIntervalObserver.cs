@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public sealed class ConditionTimeInterval : Entity
+    public sealed class ConditionTimeIntervalObserver : Entity, ICombatObserver
     {
         private GameTimer IntervalTimer { get; set; }
+        private Action WhenTimeIntervalAction { get; set; }
 
 
         public override void Awake(object initData)
@@ -17,8 +18,21 @@ namespace EGamePlay.Combat
 
         public void StartListen(Action whenTimeIntervalAction)
         {
-            IntervalTimer.OnRepeat(whenTimeIntervalAction);
+            //WhenTimeIntervalAction = whenTimeIntervalAction;
+            IntervalTimer.OnRepeat(OnRepeat);
             AddComponent<UpdateComponent>();
+        }
+
+        private void OnRepeat()
+        {
+            OnTrigger(this);
+        }
+
+        public void OnTrigger(Entity source)
+        {
+            //WhenTimeIntervalAction?.Invoke();
+            var abilityEffect = GetParent<AbilityEffect>();
+            abilityEffect.OnObserverTrigger(new TriggerContext(this, source));
         }
 
         public override void Update()

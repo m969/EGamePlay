@@ -100,6 +100,7 @@ namespace EGamePlay.Combat
         public void DeactivateAbility()
         {
             Enable = false;
+            GetComponent<AbilityEffectComponent>().Enable = false;
         }
 
         public void ActivateAbility()
@@ -120,6 +121,9 @@ namespace EGamePlay.Combat
                     ChildrenStatuses.Add(status);
                 }
             }
+
+            Enable = true;
+            GetComponent<AbilityEffectComponent>().Enable = true;
         }
 
         public void EndAbility()

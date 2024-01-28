@@ -58,5 +58,14 @@ namespace EGamePlay.Combat
                 action.ApplyAddStatus();
             }
         }
+
+        public IActionExecute GetActionExecution()
+        {
+            if (GetEntity<AbilityEffect>().OwnerEntity.AddStatusAbility.TryMakeAction(out var action))
+            {
+                return action;
+            }
+            return null;
+        }
     }
 }

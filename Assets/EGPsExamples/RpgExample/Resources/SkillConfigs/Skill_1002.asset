@@ -57,27 +57,39 @@ MonoBehaviour:
     - Name: Enabled
       Entry: 5
       Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
     - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: ConditionType
       Entry: 3
       Data: 0
     - Name: ActionPointType
       Entry: 3
       Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
     - Name: ConditionParam
       Entry: 6
+      Data: 
+    - Name: StateChecks
+      Entry: 6
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
     - Name: Decorators
       Entry: 6
       Data: 
@@ -98,7 +110,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
+      Data: 4|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -108,27 +120,39 @@ MonoBehaviour:
     - Name: Enabled
       Entry: 5
       Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
     - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: ConditionType
       Entry: 3
       Data: 0
     - Name: ActionPointType
       Entry: 3
       Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
     - Name: ConditionParam
       Entry: 6
+      Data: 
+    - Name: StateChecks
+      Entry: 6
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
     - Name: Decorators
       Entry: 6
       Data: 
@@ -143,10 +167,10 @@ MonoBehaviour:
       Data: 5000
     - Name: Params
       Entry: 7
-      Data: 4|NUnit.Framework.Interfaces.AttributeDictionary, nunit.framework
+      Data: 6|NUnit.Framework.Interfaces.AttributeDictionary, nunit.framework
     - Name: comparer
       Entry: 7
-      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 7|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -170,11 +194,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
   Id: 1002
-  Name: "\u708E\u7206"
   SkillSpellType: 0
-  TargetSelectType: 1
   AffectTargetType: 2
-  ColdTime: 0
+  TargetSelectType: 1
   EnableChildrenStatuses: 0
-  SkillDescription: 
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

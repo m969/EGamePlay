@@ -20,21 +20,17 @@ namespace EGamePlay.Combat
                     {
                         if (float.TryParse((string)paramObj, out var time))
                         {
-                            var condition = Entity.AddChild<ConditionWhenInTimeNoDamage>(time);
+                            var condition = Entity.AddChild<ConditionWhenInTimeNoDamageObserver>(time);
                             condition.StartListen(action);
                             ConditionEvents.Add(action, condition);
                         }
                         break;
                     }
-                case ConditionEventType.WhenHPLower:
-                    break;
-                case ConditionEventType.WhenHPPctLower:
-                    break;
                 case ConditionEventType.WhenIntervalTime:
                     {
                         if (float.TryParse((string)paramObj, out var time))
                         {
-                            var condition = Entity.AddChild<ConditionTimeInterval>(time);
+                            var condition = Entity.AddChild<ConditionTimeIntervalObserver>(time);
                             condition.StartListen(action);
                             ConditionEvents.Add(action, condition);
                         }

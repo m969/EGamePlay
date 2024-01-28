@@ -12,6 +12,7 @@ namespace EGamePlay.Combat
     public sealed class ActionPoint
     {
         public List<Action<Entity>> Listeners { get; set; } = new List<Action<Entity>>();
+        public List<ActionPointObserver> Observers { get; set; } = new List<ActionPointObserver>();
 
 
         public void AddListener(Action<Entity> action)
@@ -24,32 +25,39 @@ namespace EGamePlay.Combat
             Listeners.Remove(action);
         }
 
-        public void TriggerAllActions(Entity actionExecution)
+        public void AddObserver(ActionPointObserver action)
         {
-            if (Listeners.Count == 0)
-            {
-                return;
-            }
-            for (int i = Listeners.Count - 1; i >= 0; i--)
-            {
-                var item = Listeners[i];
-                item.Invoke(actionExecution);
-            }
+            Observers.Add(action);
         }
-    }
 
-    /// <summary>
-    /// 行动点观察者，用于订阅战斗实体的行动点触发
-    /// </summary>
-    public class ActionPointObserver : Entity
-    {
-        public void OnTrigger()
+        public void RemoveObserver(ActionPointObserver action)
         {
+            Observers.Remove(action);
+        }
 
+        public void TriggerAllObservers(Entity actionExecution)
+        {
+            if (Listeners.Count > 0)
+            {
+                for (int i = Listeners.Count - 1; i >= 0; i--)
+                {
+                    var item = Listeners[i];
+                    item.Invoke(actionExecution);
+                }
+            }
+            if (Observers.Count > 0)
+            {
+                for (int i = Observers.Count - 1; i >= 0; i--)
+                {
+                    var item = Observers[i];
+                    item.OnTrigger(actionExecution);
+                }
+            }
         }
     }
 
     [Flags]
+    [LabelText("行动点类型")]
     public enum ActionPointType
     {
         [LabelText("（空）")]
@@ -137,6 +145,24 @@ namespace EGamePlay.Combat
             }
         }
 
+        public void AddObserver(ActionPointType actionPointType, ActionPointObserver action)
+        {
+            if (!ActionPoints.ContainsKey(actionPointType))
+            {
+                ActionPoints.Add(actionPointType, new ActionPoint());
+            }
+            ActionPoints[actionPointType].AddObserver(action);
+            //Log.Debug($"AddObserver {actionPointType} {ActionPoints[actionPointType].Observers.Count}");
+        }
+
+        public void RemoveObserver(ActionPointType actionPointType, ActionPointObserver action)
+        {
+            if (ActionPoints.ContainsKey(actionPointType))
+            {
+                ActionPoints[actionPointType].RemoveObserver(action);
+            }
+        }
+
         public ActionPoint GetActionPoint(ActionPointType actionPointType)
         {
             if (ActionPoints.TryGetValue(actionPointType, out var actionPoint)) ;
@@ -145,11 +171,13 @@ namespace EGamePlay.Combat
 
         public void TriggerActionPoint(ActionPointType actionPointType, Entity actionExecution)
         {
+            //Log.Debug($"TriggerActionPoint {actionPointType}");
             foreach (var item in ActionPoints)
             {
                 if (item.Key.HasFlag(actionPointType))
                 {
-                    item.Value.TriggerAllActions(actionExecution);
+                    //Log.Debug($"TriggerActionPoint {actionPointType} {item.Value.Observers.Count}");
+                    item.Value.TriggerAllObservers(actionExecution);
                 }
             }
         }

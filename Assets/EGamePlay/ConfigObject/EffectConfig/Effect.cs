@@ -40,9 +40,10 @@ namespace EGamePlay.Combat
         {
             get
             {
-                if (this is ActionControlEffect) return true;
-                if (this is AttributeModifyEffect) return true;
-                return IsSkillEffect;
+                //if (this is ActionControlEffect) return true;
+                //if (this is AttributeModifyEffect) return true;
+                return false;
+                //return IsSkillEffect;
             }
         }
 
@@ -55,30 +56,58 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled", "$Label")]
         public bool Enabled;
 
-        [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
-        public AddSkillEffetTargetType AddSkillEffectTargetType;
-
-        [HorizontalGroup("Enabled/Hor")]
-        [ToggleGroup("Enabled"), HideIf("HideTriggerType", true), HideLabel]
+        //[HorizontalGroup("Enabled/Hor")]
+        [OnInspectorGUI("BeginBox", append: false)]
+        [FoldoutGroup("Enabled/TriggerType", GroupName = "触发机制")]
+        [ToggleGroup("Enabled"), HideIf("HideTriggerType", true), LabelText("触发事件")]
         public EffectTriggerType EffectTriggerType;
 
-        [HorizontalGroup("Enabled/Hor")]
-        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Condition), HideLabel]
-        public ConditionEventType ConditionType;
-
-        [HorizontalGroup("Enabled/Hor")]
-        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Action), HideLabel]
+        //[HorizontalGroup("Enabled/Hor")]
+        [FoldoutGroup("Enabled/TriggerType")]
+        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectTriggerType.Action)]
         public ActionPointType ActionPointType;
 
-        [HorizontalGroup("Enabled/Hor")]
-        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true), HideLabel]
-        public string Interval;
+        //[HorizontalGroup("Enabled/Hor")]
+        [FoldoutGroup("Enabled/TriggerType")]
+        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
+        public ConditionEventType ConditionType;
 
-        [ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), LabelText("条件参数 x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
+        //[HorizontalGroup("Enabled/Hor")]
+        [FoldoutGroup("Enabled/TriggerType")]
+        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, LabelText("x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
         public string ConditionParam;
 
+        //[BoxGroup("Enabled/StateCheckType", showLabel: false)]
+        //[ToggleGroup("Enabled"), LabelText("状态判断")]
+        //public StateCheckType StateCheckType;
+
+        //[BoxGroup("Enabled/StateCheckType")]
+        //[ToggleGroup("Enabled"), LabelText("参数 x="), HideIf("StateCheckType", StateCheckType.None)]
+        //public string StateCheckParam;
+
+        //[BoxGroup("Enabled/StateCheckType", showLabel: false)]
+        //[Space(10)]
+        [FoldoutGroup("Enabled/TriggerType")]
+        [ToggleGroup("Enabled"), LabelText("状态判断"), HideInInspector]
+        public Dictionary<StateCheckType, string> StateChecks = new Dictionary<StateCheckType, string>();
+
+        [FoldoutGroup("Enabled/TriggerType")]
+        [ToggleGroup("Enabled"), LabelText("状态判断")]
+        public List<string> StateCheckList = new List<string>();
+
+        //[HorizontalGroup("Enabled/Hor")]
+        //[ToggleGroup("Enabled"), HideIf("IsSkillEffect", true), ShowIf("EffectTriggerType", EffectTriggerType.Interval), SuffixLabel("毫秒", true), HideLabel]
+        //public string Interval;
+
+        //[OnInspectorGUI("DrawSpace", append: true)]
+        [OnInspectorGUI("EndBox", append: true)]
+        [FoldoutGroup("Enabled/TriggerType")]
         [ToggleGroup("Enabled"), /*HideIf("IsSkillEffect", true), */LabelText("触发概率")]
         public string TriggerProbability = "100%";
+
+        //[Space(10)]
+        [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
+        public AddSkillEffetTargetType AddSkillEffectTargetType;
 
         [ShowIf("@this.Decorators != null && this.Decorators.Count > 0")]
         [ToggleGroup("Enabled"), LabelText("效果修饰"), PropertyOrder(100)]
@@ -91,7 +120,7 @@ namespace EGamePlay.Combat
         [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect"), PropertyOrder(101)]
         public string EffectTypeName = EffectTypeNameStr;
 
-        public const string EffectTypeNameStr = "(添加效果修饰)";
+        public const string EffectTypeNameStr = "(添加修饰)";
 
         public IEnumerable<string> EffectTypeSelect()
         {
@@ -128,6 +157,26 @@ namespace EGamePlay.Combat
                 EffectTypeName = EffectTypeNameStr;
             }
         }
+
+#if UNITY_EDITOR
+        private void DrawSpace()
+        {
+            GUILayout.Space(20);
+        }
+
+        private bool TriggerFoldout;
+        private void BeginBox()
+        {
+            //GUILayout.Space(10);
+            //Sirenix.Utilities.Editor.SirenixEditorGUI.Foldout(TriggerFoldout, "触发机制");
+        }
+
+        private void EndBox()
+        {
+            //Sirenix.Utilities.Editor.SirenixEditorGUI.EndFadeGroup();
+            //GUILayout.Space(10);
+        }
+#endif
 
         //public override string ToString()
         //{

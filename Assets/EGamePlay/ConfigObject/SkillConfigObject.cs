@@ -50,6 +50,7 @@ namespace EGamePlay.Combat
         //[LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         //public uint ColdTime;
 
+        [HideInInspector]
         [LabelText("附加状态效果")]
         public bool EnableChildrenStatuses;
         //[OnInspectorGUI("DrawSpace", append: true)]
@@ -74,9 +75,9 @@ namespace EGamePlay.Combat
         //public string SkillDescription;
 #endif
 
-        [OnInspectorGUI("BeginBox", append: false)]
+        //[OnInspectorGUI("BeginBox", append: false)]
         [LabelText("效果列表"), Space(30)]
-        [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
+        [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = true, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
 
@@ -84,7 +85,7 @@ namespace EGamePlay.Combat
         //public static bool Draggable;
 
         //[OnInspectorGUI("DrawSpace", append: true)]
-        [OnInspectorGUI("EndBox", append: true)]
+        //[OnInspectorGUI("EndBox", append: true)]
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect")]
         public string EffectTypeName = "(添加效果)";
@@ -94,9 +95,10 @@ namespace EGamePlay.Combat
             var types = typeof(Effect).Assembly.GetTypes()
                 .Where(x => !x.IsAbstract)
                 .Where(x => typeof(Effect).IsAssignableFrom(x))
-                .Where(x => x.GetCustomAttribute<EffectAttribute>() != null && x != typeof(ActionControlEffect) && x != typeof(AttributeModifyEffect))
+                .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
                 .OrderBy(x => x.GetCustomAttribute<EffectAttribute>().Order)
                 .Select(x => x.GetCustomAttribute<EffectAttribute>().EffectType);
+            //&& x != typeof(ActionControlEffect) && x != typeof(AttributeModifyEffect)
             var results = types.ToList();
             results.Insert(0, "(添加效果)");
             return results;
@@ -148,7 +150,7 @@ namespace EGamePlay.Combat
         private void BeginBox()
         {
             //GUILayout.Space(30);
-            SirenixEditorGUI.DrawThickHorizontalSeparator();
+            //SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
             //SirenixEditorGUI.BeginBox("技能表现");
         }

@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 效果触发事件绑定
     /// </summary>
-    public class EffectTriggerEventBind : Entity
+    public class TriggerObserver : Entity, ICombatObserver
     {
         public CombatEntity OwnerEntity => GetParent<AbilityEffect>().OwnerEntity;
         public IAbilityEntity OwnerAbility => GetParent<AbilityEffect>().OwnerAbility as IAbilityEntity;
@@ -22,13 +22,13 @@ namespace EGamePlay.Combat
             //Log.Debug($"EffectTriggerEventBind Awake {affectCheck}");
             var effectConfig = GetParent<AbilityEffect>().EffectConfig;
 
-            /// 行动点事件触发
-            var isAction = effectConfig.EffectTriggerType == EffectTriggerType.Action;
-            if (isAction) AddComponent<EffectActionPointTriggerComponent>();
+            ///// 行动点事件触发
+            //var isAction = effectConfig.EffectTriggerType == EffectTriggerType.Action;
+            //if (isAction) AddComponent<EffectActionPointTriggerComponent>();
 
-            /// 条件事件触发
-            var isCondition = effectConfig.EffectTriggerType == EffectTriggerType.Condition && !string.IsNullOrEmpty(effectConfig.ConditionParam);
-            if (isCondition) AddComponent<EffectStateConditionEventTriggerComponent>();
+            ///// 计时状态事件触发
+            //var isCondition = effectConfig.EffectTriggerType == EffectTriggerType.Condition && !string.IsNullOrEmpty(effectConfig.ConditionParam);
+            //if (isCondition) AddComponent<EffectTimeStateEventTriggerComponent>();
 
             /// 状态条件判断
             var haveStateCondition = !string.IsNullOrEmpty(effectConfig.ConditionParam) && effectConfig.ConditionParam.Contains('&');
@@ -91,6 +91,11 @@ namespace EGamePlay.Combat
                 var effectAssign = GetParent<AbilityEffect>().CreateAssignAction(target);
                 effectAssign.AssignEffect();
             }
+        }
+
+        public void OnTrigger(Entity source)
+        {
+            GetParent<AbilityEffect>().OnObserverTrigger(new TriggerContext(this, GetParent<AbilityEffect>().ParentEntity));
         }
     }
 }

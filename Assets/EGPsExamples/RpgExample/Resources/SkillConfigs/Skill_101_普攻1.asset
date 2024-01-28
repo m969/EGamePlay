@@ -56,30 +56,42 @@ MonoBehaviour:
     - Name: Enabled
       Entry: 5
       Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
     - Name: EffectTriggerType
-      Entry: 3
-      Data: 0
-    - Name: ConditionType
       Entry: 3
       Data: 0
     - Name: ActionPointType
       Entry: 3
       Data: 0
-    - Name: Interval
-      Entry: 6
-      Data: 
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
     - Name: ConditionParam
       Entry: 6
+      Data: 
+    - Name: StateChecks
+      Entry: 6
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: TriggerProbability
       Entry: 1
       Data: 100%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
     - Name: Decorators
       Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
+      Data: 4|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -112,11 +124,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
   Id: 101
-  Name: "\u666E\u653B1"
   SkillSpellType: 0
   AffectTargetType: 0
   TargetSelectType: 0
-  ColdTime: 0
   EnableChildrenStatuses: 0
-  SkillDescription: 
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

@@ -71,6 +71,23 @@ namespace EGamePlay.Combat
         /// 前置处理
         private void PreProcess()
         {
+            //Target = SourceAssignAction.Target;
+            //if (Target == null)
+            //{
+            //    if (SourceAssignAction.AssignTarget is CombatEntity combatEntity)
+            //    {
+            //        Target = combatEntity;
+            //    }
+            //    if (SourceAssignAction.AssignTarget is SkillExecution skillExecution)
+            //    {
+            //        Target = skillExecution.InputTarget;
+            //    }
+            //    if (SourceAssignAction.AssignTarget is IActionExecute actionExecute)
+            //    {
+            //        Target = actionExecute.Target;
+            //    }
+            //}
+
             if (DamageSource == DamageSource.Attack)
             {
                 IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;

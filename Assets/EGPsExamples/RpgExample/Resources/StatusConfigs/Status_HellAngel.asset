@@ -57,31 +57,26 @@ MonoBehaviour:
     - Name: Enabled
       Entry: 5
       Data: true
-    - Name: AddSkillEffectTargetType
-      Entry: 3
-      Data: 0
     - Name: EffectTriggerType
       Entry: 3
-      Data: 4
-    - Name: ConditionType
-      Entry: 3
-      Data: 0
+      Data: 1
     - Name: ActionPointType
       Entry: 3
       Data: 0
-    - Name: Interval
-      Entry: 1
-      Data: 3000
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: TriggerProbability
-      Entry: 1
-      Data: 100%
-    - Name: Components
+    - Name: StateChecks
       Entry: 7
-      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Component, Assembly-CSharp]],
-        mscorlib
+      Data: 3|System.Collections.Generic.Dictionary`2[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp],[System.String, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 4|System.Collections.Generic.EnumEqualityComparer`1[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -90,6 +85,36 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: Decorators
+      Entry: 6
       Data: 
     - Name: EffectTypeName
       Entry: 1
@@ -102,11 +127,11 @@ MonoBehaviour:
       Data: 2000
     - Name: Params
       Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+      Data: 6|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 7|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -131,13 +156,6 @@ MonoBehaviour:
       Data: 
   ID: HellAngel
   Name: "\u5730\u72F1\u4F7F\u8005"
-  StatusType: 0
-  Duration: 0
-  ShowInStatusSlots: 0
-  CanStack: 0
-  MaxStack: 1
+  ParticleEffect: {fileID: 0}
   EnableChildrenStatuses: 0
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
-  ParticleEffect: {fileID: 0}
-  Audio: {fileID: 0}
-  StatusDescription: "\u5730\u72F1\u4F7F\u8005\uFF1A\u6BCF\u96943\u79D2\u4F1A\u65BD\u52A0\u4E00\u4E2A\u6301\u7EED2\u79D2\u7684\u6050\u60E7\u72B6\u6001\u3002"

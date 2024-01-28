@@ -17,10 +17,15 @@ namespace EGamePlay.Combat
         public override void Awake()
         {
             var effectConfig = Entity.GetParent<AbilityEffect>().EffectConfig;
-            var arr = effectConfig.ConditionParam.Split('&');
-            for (int i = 1; i < arr.Length; i++)
+            if (effectConfig.StateCheckList == null)
             {
-                var conditionStr = arr[i];
+                return;
+            }
+            foreach (var item in effectConfig.StateCheckList)
+            {
+                //var type = item.Key;
+                //var typeStr = item.Key.ToString();
+                var conditionStr = item;
                 if (string.IsNullOrEmpty(conditionStr))
                 {
                     continue;
@@ -30,10 +35,10 @@ namespace EGamePlay.Combat
                 var arr2 = condition.Split('<', '=', '≤');
                 var conditionType = arr2[0];
                 var scriptType = $"EGamePlay.Combat.Condition{conditionType}Check";
-                var type = System.Type.GetType(scriptType);
-                if (type != null)
+                var typeClass = System.Type.GetType(scriptType);
+                if (typeClass != null)
                 {
-                    ConditionChecks.Add(Entity.AddChild(type, conditionStr) as IConditionCheckSystem);
+                    ConditionChecks.Add(Entity.AddChild(typeClass, conditionStr) as IConditionCheckSystem);
                 }
                 else
                 {
@@ -41,7 +46,6 @@ namespace EGamePlay.Combat
                 }
             }
         }
-
 
         public override void OnDestroy()
         {
@@ -64,10 +68,12 @@ namespace EGamePlay.Combat
 
         public bool CheckTargetState(Entity target)
         {
+            //Log.Debug("EffectTargetStateCheckComponent CheckTargetState");
             /// 这里是状态条件判断，状态条件判断是判断目标的状态是否满足条件，满足则触发效果
             var conditionCheckResult = true;
             foreach (var item in ConditionChecks)
             {
+                //Log.Debug($"ConditionChecks {item.GetType().Name}");
                 /// 条件取反
                 if (item.IsInvert)
                 {
@@ -85,6 +91,7 @@ namespace EGamePlay.Combat
                         break;
                     }
                 }
+                //Log.Debug($"ConditionChecks {item.GetType().Name} true");
             }
             return conditionCheckResult;
         }
