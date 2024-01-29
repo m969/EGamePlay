@@ -38,7 +38,6 @@ namespace EGamePlay.Combat
         /// 目标行动
         public IActionExecute TargetAction { get; set; }
         public AbilityEffect AbilityEffect { get; set; }
-        public AbilityItem AbilityItem { get; set; }
         public Effect EffectConfig => AbilityEffect.EffectConfig;
         /// 行动能力
         public Entity ActionAbility { get; set; }
@@ -48,7 +47,10 @@ namespace EGamePlay.Combat
         public CombatEntity Creator { get; set; }
         /// 目标对象
         public CombatEntity Target { get; set; }
+        /// 赋给目标
         public Entity AssignTarget { get; set; }
+        /// 触发上下文
+        public TriggerContext TriggerContext { get; set; }
 
 
         /// 前置处理
@@ -109,7 +111,7 @@ namespace EGamePlay.Combat
                 if (item is TriggerNewEffectWhenAssignEffectDecorator effectDecorator)
                 {
                     var newEffect = Creator.GetComponent<AbilityEffectComponent>().GetEffect(((int)effectDecorator.EffectApplyType) - 1);
-                    newEffect.TriggerEffectCheckWithTarget(Target);
+                    newEffect.TriggerObserver.OnTrigger(Target);
                 }
             }
         }

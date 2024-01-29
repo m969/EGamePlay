@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public sealed class ConditionTimeIntervalObserver : Entity, ICombatObserver
+    public sealed class TimeIntervalObserver : Entity, ICombatObserver
     {
         private GameTimer IntervalTimer { get; set; }
         private Action WhenTimeIntervalAction { get; set; }

@@ -74,23 +74,33 @@ namespace EGamePlay.Combat
                 //Log.Debug($"AbilityItem OnCollision {collisionExecuteData.ActionData.ActionEventType}");
                 if (collisionExecuteData.ActionData.ActionEventType == FireEventType.AssignEffect)
                 {
-                    if (EffectApplyType == EffectApplyType.AllEffects)
+                    var effects = AbilityEntity.GetComponent<AbilityEffectComponent>().AbilityEffects;
+                    for (int i = 0; i < effects.Count; i++)
                     {
-                        //AbilityEntity.GetComponent<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
-                        var effectAssigns = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActions(otherCombatEntity);
-                        foreach (var item in effectAssigns)
+                        if (i == (int)EffectApplyType - 1 || EffectApplyType == EffectApplyType.AllEffects)
                         {
-                            item.AbilityItem = this;
-                            item.AssignEffect();
+                            var effect = effects[i];
+                            effect.TriggerObserver.OnTriggerWith(this, otherCombatEntity);
                         }
                     }
-                    else
-                    {
-                        //AbilityEntity.GetComponent<AbilityEffectComponent>().TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
-                        var effectAssign = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(otherCombatEntity, (int)EffectApplyType - 1);
-                        effectAssign.AbilityItem = this;
-                        effectAssign.AssignEffect();
-                    }
+
+                    //if (EffectApplyType == EffectApplyType.AllEffects)
+                    //{
+                    //    //AbilityEntity.GetComponent<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
+                    //    var effectAssigns = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActions(otherCombatEntity);
+                    //    foreach (var item in effectAssigns)
+                    //    {
+                    //        item.AbilityItem = this;
+                    //        item.AssignEffect();
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    //AbilityEntity.GetComponent<AbilityEffectComponent>().TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                    //    var effectAssign = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(otherCombatEntity, (int)EffectApplyType - 1);
+                    //    effectAssign.AbilityItem = this;
+                    //    effectAssign.AssignEffect();
+                    //}
                 }
             }
 

@@ -59,7 +59,7 @@ namespace EGamePlay.Combat
         {
             AddComponent<AttributeComponent>();
             AddComponent<ActionPointComponent>();
-            AddComponent<ConditionEventComponent>();
+            //AddComponent<ConditionEventComponent>();
             AddComponent<StatusComponent>();
             AddComponent<SkillComponent>();
             AddComponent<SpellComponent>();
@@ -100,17 +100,17 @@ namespace EGamePlay.Combat
         }
         #endregion
 
-        #region 条件事件
-        public void ListenCondition(ConditionEventType conditionType, Action action, object paramObj = null)
-        {
-            GetComponent<ConditionEventComponent>().AddListener(conditionType, action, paramObj);
-        }
+        //#region 条件事件
+        //public void ListenCondition(TimeStateEventType conditionType, Action action, object paramObj = null)
+        //{
+        //    GetComponent<ConditionEventComponent>().AddListener(conditionType, action, paramObj);
+        //}
 
-        public void UnListenCondition(ConditionEventType conditionType, Action action)
-        {
-            GetComponent<ConditionEventComponent>().RemoveListener(conditionType, action);
-        }
-        #endregion
+        //public void UnListenCondition(TimeStateEventType conditionType, Action action)
+        //{
+        //    GetComponent<ConditionEventComponent>().RemoveListener(conditionType, action);
+        //}
+        //#endregion
 
         public void ReceiveDamage(IActionExecute combatAction)
         {

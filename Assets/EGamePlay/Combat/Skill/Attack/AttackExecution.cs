@@ -62,12 +62,18 @@ namespace EGamePlay.Combat
             }
             else
             {
-                //AbilityEntity.Get<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithExecution(AttackAction.Target, this);
-                var effectAssigns = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActions(AttackAction.Target);
-                foreach (var item in effectAssigns)
+                var effects = AbilityEntity.GetComponent<AbilityEffectComponent>().AbilityEffects;
+                for (int i = 0; i < effects.Count; i++)
                 {
-                    item.AssignEffect();
+                    var effect = effects[i];
+                    effect.TriggerObserver.OnTrigger(AttackAction.Target);
                 }
+
+                //var effectAssigns = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActions(AttackAction.Target);
+                //foreach (var item in effectAssigns)
+                //{
+                //    item.AssignEffect();
+                //}
             }
         }
 

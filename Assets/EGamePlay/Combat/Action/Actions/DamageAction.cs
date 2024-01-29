@@ -123,7 +123,7 @@ namespace EGamePlay.Combat
             var executionDamageReduceWithTargetCountComponent = SourceAssignAction.AbilityEffect.GetComponent<EffectDamageReduceWithTargetCountComponent>();
             if (executionDamageReduceWithTargetCountComponent != null)
             {
-                if (SourceAssignAction.AbilityItem.TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))
+                if (SourceAssignAction.TriggerContext.AbilityItem.TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))
                 {
                     var damagePercent = executionDamageReduceWithTargetCountComponent.GetDamagePercent(targetCounterComponent.TargetCounter);
                     //Log.Debug($"{targetCounterComponent.TargetCounter} {damagePercent}");

@@ -28,20 +28,30 @@ namespace EGamePlay.Combat
             {
                 var abilityEffectComponent = skillExecution.AbilityEntity.GetComponent<AbilityEffectComponent>();
                 var OwnerEntity = skillExecution.OwnerEntity;
-                if (EffectApplyType == EffectApplyType.AllEffects)
+                var effects = abilityEffectComponent.AbilityEffects;
+                for (int i = 0; i < effects.Count; i++)
                 {
-                    var effectAssigns = abilityEffectComponent.CreateAssignActions(skillExecution.InputTarget);
-                    foreach (var item in effectAssigns)
+                    if (i == (int)EffectApplyType - 1 || EffectApplyType == EffectApplyType.AllEffects)
                     {
-                        item.AssignEffect();
+                        var effect = effects[i];
+                        effect.TriggerObserver.OnTrigger(skillExecution.InputTarget);
                     }
                 }
-                else
-                {
-                    var abilityEffect = abilityEffectComponent.GetEffect((int)EffectApplyType - 1);
-                    var effectAssign = abilityEffect.CreateAssignAction(skillExecution.InputTarget);
-                    effectAssign.AssignEffect();
-                }
+
+                //if (EffectApplyType == EffectApplyType.AllEffects)
+                //{
+                //    var effectAssigns = abilityEffectComponent.CreateAssignActions(skillExecution.InputTarget);
+                //    foreach (var item in effectAssigns)
+                //    {
+                //        item.AssignEffect();
+                //    }
+                //}
+                //else
+                //{
+                //    var abilityEffect = abilityEffectComponent.GetEffect((int)EffectApplyType - 1);
+                //    var effectAssign = abilityEffect.CreateAssignAction(skillExecution.InputTarget);
+                //    effectAssign.AssignEffect();
+                //}
             }
         }
     }

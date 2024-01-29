@@ -6,9 +6,9 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 效果目标状态判断组件
+    /// 状态判断组件
     /// </summary>
-    public class EffectTargetStateCheckComponent : Component
+    public class EffectStateCheckComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
         public List<IConditionCheckSystem> ConditionChecks { get; set; } = new List<IConditionCheckSystem>();

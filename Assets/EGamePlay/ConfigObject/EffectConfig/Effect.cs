@@ -70,7 +70,7 @@ namespace EGamePlay.Combat
         //[HorizontalGroup("Enabled/Hor")]
         [FoldoutGroup("Enabled/TriggerType")]
         [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
-        public ConditionEventType ConditionType;
+        public TimeStateEventType ConditionType;
 
         //[HorizontalGroup("Enabled/Hor")]
         [FoldoutGroup("Enabled/TriggerType")]

@@ -67,7 +67,8 @@ public class StatusTenacityComponent : EGamePlay.Component
         {
             return;
         }
-        var effectAssign = Entity.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(OwnerEntity, 0);
-        effectAssign.AssignEffect();
+        CureAbilityEffect.TriggerObserver.OnTrigger(OwnerEntity);
+        //var effectAssign = Entity.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(OwnerEntity, 0);
+        //effectAssign.AssignEffect();
     }
 }

@@ -20,10 +20,14 @@ namespace EGamePlay.Combat
         {
             Observer = observer;
             Source = source;
+            AbilityItem = null;
+            Target = null;
         }
 
         public ICombatObserver Observer;
         public Entity Source;
+        public AbilityItem AbilityItem;
+        public CombatEntity Target;
     }
 
     /// <summary>
@@ -61,7 +65,8 @@ namespace EGamePlay.Combat
             /// 自定义效果
             if (this.EffectConfig is CustomEffect) AddComponent<EffectCustomComponent>();
             /// 效果修饰
-            AddComponent<EffectDecoratosComponent>();
+            var decorators = this.EffectConfig.Decorators;
+            if (decorators != null && decorators.Count > 0) AddComponent<EffectDecoratosComponent>();
         }
 
         public override void OnDestroy()
@@ -95,14 +100,14 @@ namespace EGamePlay.Combat
                 {
                     var conditionType = EffectConfig.ConditionType;
                     var paramObj = ConditionParamValue;
-                    if (conditionType == ConditionEventType.WhenInTimeNoDamage && float.TryParse((string)paramObj, out var time))
+                    if (conditionType == TimeStateEventType.WhenInTimeNoDamage && float.TryParse((string)paramObj, out var time))
                     {
-                        var condition = AddChild<ConditionWhenInTimeNoDamageObserver>(time);
+                        var condition = AddChild<WhenInTimeNoDamageObserver>(time);
                         condition.StartListen(null);
                     }
-                    if (conditionType == ConditionEventType.WhenIntervalTime && float.TryParse((string)paramObj, out var intervalTime))
+                    if (conditionType == TimeStateEventType.WhenIntervalTime && float.TryParse((string)paramObj, out var intervalTime))
                     {
-                        var condition = AddChild<ConditionTimeIntervalObserver>(intervalTime);
+                        var condition = AddChild<TimeIntervalObserver>(intervalTime);
                         condition.StartListen(null);
                     }
                 }
@@ -113,13 +118,9 @@ namespace EGamePlay.Combat
                     {
                         if (item is ICombatObserver)
                         {
-                            item.AddComponent<EffectTargetStateCheckComponent>();
+                            item.AddComponent<EffectStateCheckComponent>();
                         }
                     }
-                    //if (EffectConfig.EffectTriggerType == EffectTriggerType.None || EffectConfig.EffectTriggerType == EffectTriggerType.Instant)
-                    //{
-                    //    EffectTrigger.AddComponent<EffectTargetStateCheckComponent>();
-                    //}
                 }
 
                 /// 立即触发
@@ -155,53 +156,56 @@ namespace EGamePlay.Combat
             return action;
         }
 
-        public void TriggerEffectToParent()
-        {
-            TriggerEffectCheckWithTarget(ParentEntity);
-        }
+        //public void TriggerEffectToParent()
+        //{
+        //    TriggerEffectCheckWithTarget(ParentEntity);
+        //}
 
-        /// <summary>
-        /// 触发技能效果
-        /// </summary>
-        public void TriggerEffectCheck(SkillExecution skillExecution)
-        {
-            TriggerEffectCheckWithTarget(skillExecution);
-        }
+        ///// <summary>
+        ///// 触发技能效果
+        ///// </summary>
+        //public void TriggerEffectCheck(SkillExecution skillExecution)
+        //{
+        //    TriggerEffectCheckWithTarget(skillExecution);
+        //}
 
-        /// <summary>
-        /// 触发对目标施加效果
-        /// </summary>
-        public void TriggerEffectCheckWithTarget(Entity target)
-        {
-            var effectAssign = CreateAssignAction(target);
-            effectAssign.AssignEffect();
-        }
+        ///// <summary>
+        ///// 触发对目标施加效果
+        ///// </summary>
+        //public void TriggerEffectCheckWithTarget(Entity target)
+        //{
+
+        //}
 
         public void OnObserverTrigger(TriggerContext context)
         {
             //Log.Debug("AbilityEffect OnObserverTrigger");
             var observer = context.Observer;
             var source = context.Source;
-            var target = source;
-
-            var conditionCheckResult = true;
-            if (observer != null)
+            Entity target = context.Target;
+            if (target == null)
             {
-                if (!(observer is ActionPointObserver))
-                {
-                    target = ParentEntity;
-                }
-                /// 这里是状态条件判断，状态条件判断是判断目标的状态是否满足条件，满足则触发效果
-                if ((observer as Entity).TryGet(out EffectTargetStateCheckComponent component))
-                {
-                    conditionCheckResult = component.CheckTargetState(target);
-                }
+                target = source;
+            }
+
+            var stateCheckResult = true;
+            if (!(observer is ActionPointObserver) && !(observer is TriggerObserver))
+            {
+                target = ParentEntity;
+            }
+
+            /// 这里是状态判断，状态判断是判断目标的状态是否满足条件，满足才能触发效果
+            if ((observer as Entity).TryGet(out EffectStateCheckComponent component))
+            {
+                stateCheckResult = component.CheckTargetState(target);
             }
 
             /// 条件满足则触发效果
-            if (conditionCheckResult)
+            if (stateCheckResult)
             {
-                TriggerEffectCheckWithTarget(target);
+                var effectAssign = CreateAssignAction(target);
+                effectAssign.TriggerContext = context;
+                effectAssign.AssignEffect();
             }
         }
     }

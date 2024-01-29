@@ -48,8 +48,11 @@ public class SkillExecution1006Component : EGamePlay.Component
         foreach (var item in EntityChannels)
         {
 #if !EGAMEPLAY_EXCEL
-            var effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 2);
-            effectAssign.AssignEffect();
+            var effects = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().AbilityEffects;
+            var effect = effects[2];
+            effect.TriggerObserver.OnTrigger(item.Key);
+            //var effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 2);
+            //effectAssign.AssignEffect();
 #endif
         }
         Enable = true;
@@ -77,10 +80,19 @@ public class SkillExecution1006Component : EGamePlay.Component
 #if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
-            var effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 0);
-            effectAssign.AssignEffect();
-            effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 1);
-            effectAssign.AssignEffect();
+            var effects = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().AbilityEffects;
+            for (int i = 0; i < effects.Count; i++)
+            {
+                if (i == 0 || i == 1)
+                {
+                    var effect = effects[i];
+                    effect.TriggerObserver.OnTrigger(item.Key);
+                }
+            }
+            //var effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 0);
+            //effectAssign.AssignEffect();
+            //effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 1);
+            //effectAssign.AssignEffect();
         }
 #endif
         EndExecute();

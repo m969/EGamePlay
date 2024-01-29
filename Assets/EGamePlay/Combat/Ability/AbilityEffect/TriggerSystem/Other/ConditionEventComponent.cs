@@ -12,25 +12,25 @@ namespace EGamePlay.Combat
         private Dictionary<Action, Entity> ConditionEvents { get; set; } = new Dictionary<Action, Entity>();
 
 
-        public void AddListener(ConditionEventType conditionType, Action action, object paramObj = null)
+        public void AddListener(TimeStateEventType conditionType, Action action, object paramObj = null)
         {
             switch (conditionType)
             {
-                case ConditionEventType.WhenInTimeNoDamage:
+                case TimeStateEventType.WhenInTimeNoDamage:
                     {
                         if (float.TryParse((string)paramObj, out var time))
                         {
-                            var condition = Entity.AddChild<ConditionWhenInTimeNoDamageObserver>(time);
+                            var condition = Entity.AddChild<WhenInTimeNoDamageObserver>(time);
                             condition.StartListen(action);
                             ConditionEvents.Add(action, condition);
                         }
                         break;
                     }
-                case ConditionEventType.WhenIntervalTime:
+                case TimeStateEventType.WhenIntervalTime:
                     {
                         if (float.TryParse((string)paramObj, out var time))
                         {
-                            var condition = Entity.AddChild<ConditionTimeIntervalObserver>(time);
+                            var condition = Entity.AddChild<TimeIntervalObserver>(time);
                             condition.StartListen(action);
                             ConditionEvents.Add(action, condition);
                         }
@@ -41,7 +41,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        public void RemoveListener(ConditionEventType conditionType, Action action)
+        public void RemoveListener(TimeStateEventType conditionType, Action action)
         {
             if (ConditionEvents.ContainsKey(action))
             {

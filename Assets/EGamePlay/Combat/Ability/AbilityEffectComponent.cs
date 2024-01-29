@@ -72,26 +72,23 @@ namespace EGamePlay.Combat
             return AbilityEffects[index];
         }
 
-        public EffectAssignAction CreateAssignActionByIndex(Entity targetEntity, int index)
-        {
-            return GetEffect(index).CreateAssignAction(targetEntity);
-        }
+        //public EffectAssignAction CreateAssignActionByIndex(Entity targetEntity, int index)
+        //{
+        //    return GetEffect(index).CreateAssignAction(targetEntity);
+        //}
 
-        public List<EffectAssignAction> CreateAssignActions(Entity targetEntity)
-        {
-            //Log.Debug($"TryAssignAllEffectsToTargetWithExecution {targetEntity} {AbilityEffects.Count}");
-            var ability = Entity as IAbilityEntity;
-            var OwnerEntity = ability.OwnerEntity;
-            var list = new List<EffectAssignAction>();
-            foreach (var abilityEffect in AbilityEffects)
-            {
-                var effectAssign = abilityEffect.CreateAssignAction(targetEntity);
-                if (effectAssign != null)
-                {
-                    list.Add(effectAssign);
-                }
-            }
-            return list;
-        }
+        //public List<EffectAssignAction> CreateAssignActions(Entity targetEntity)
+        //{
+        //    var list = new List<EffectAssignAction>();
+        //    foreach (var abilityEffect in AbilityEffects)
+        //    {
+        //        var effectAssign = abilityEffect.CreateAssignAction(targetEntity);
+        //        if (effectAssign != null)
+        //        {
+        //            list.Add(effectAssign);
+        //        }
+        //    }
+        //    return list;
+        //}
     }
 }
