@@ -106,12 +106,16 @@ namespace EGamePlay.Combat
             Creator.TriggerActionPoint(ActionPointType.AssignEffect, this);
             Target.TriggerActionPoint(ActionPointType.ReceiveEffect, this);
 
-            foreach (var item in AbilityEffect.EffectConfig.Decorators)
+            var decorators = AbilityEffect.EffectConfig.Decorators;
+            if (decorators != null)
             {
-                if (item is TriggerNewEffectWhenAssignEffectDecorator effectDecorator)
+                foreach (var item in decorators)
                 {
-                    var newEffect = Creator.GetComponent<AbilityEffectComponent>().GetEffect(((int)effectDecorator.EffectApplyType) - 1);
-                    newEffect.TriggerObserver.OnTrigger(Target);
+                    if (item is TriggerNewEffectWhenAssignEffectDecorator effectDecorator)
+                    {
+                        var newEffect = AbilityEffect.OwnerAbility.GetComponent<AbilityEffectComponent>().GetEffect(((int)effectDecorator.EffectApplyType) - 1);
+                        newEffect.TriggerObserver.OnTrigger(Target);
+                    }
                 }
             }
         }
