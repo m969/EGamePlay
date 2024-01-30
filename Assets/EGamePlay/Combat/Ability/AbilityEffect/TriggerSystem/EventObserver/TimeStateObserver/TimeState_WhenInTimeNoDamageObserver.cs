@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public sealed class WhenInTimeNoDamageObserver : Entity, ICombatObserver
+    public sealed class TimeState_WhenInTimeNoDamageObserver : Entity, ICombatObserver
     {
         private GameTimer NoDamageTimer { get; set; }
         private Action WhenNoDamageInTimeCallback { get; set; }

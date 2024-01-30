@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EGamePlay.Combat
 {
-    public interface IConditionCheckSystem
+    public interface IStateCheck
     {
         bool IsInvert { get; }
-        bool CheckCondition(Entity target);
+        bool CheckWith(Entity target);
     }
 }

@@ -102,12 +102,12 @@ namespace EGamePlay.Combat
                     var paramObj = ConditionParamValue;
                     if (conditionType == TimeStateEventType.WhenInTimeNoDamage && float.TryParse((string)paramObj, out var time))
                     {
-                        var condition = AddChild<WhenInTimeNoDamageObserver>(time);
+                        var condition = AddChild<TimeState_WhenInTimeNoDamageObserver>(time);
                         condition.StartListen(null);
                     }
                     if (conditionType == TimeStateEventType.WhenIntervalTime && float.TryParse((string)paramObj, out var intervalTime))
                     {
-                        var condition = AddChild<TimeIntervalObserver>(intervalTime);
+                        var condition = AddChild<TimeState_TimeIntervalObserver>(intervalTime);
                         condition.StartListen(null);
                     }
                 }

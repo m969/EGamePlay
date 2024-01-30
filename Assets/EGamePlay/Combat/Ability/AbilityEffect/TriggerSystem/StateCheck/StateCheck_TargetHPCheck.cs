@@ -9,7 +9,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 
     /// </summary>
-    public class ConditionTargetHPCheck : Entity, IConditionCheckSystem
+    public class StateCheck_TargetHPCheck : Entity, IStateCheck
     {
         public CombatEntity OwnerBattler => Parent.GetParent<AbilityEffect>().OwnerEntity;
         public string AffectCheck { get; set; }
@@ -21,7 +21,7 @@ namespace EGamePlay.Combat
             AffectCheck = initData.ToString().ToLower();
         }
 
-        public bool CheckCondition(Entity target)
+        public bool CheckWith(Entity target)
         {
             //Log.Debug($"ConditionTargetHPCheck CheckCondition");
             if (target is IActionExecute combatAction)

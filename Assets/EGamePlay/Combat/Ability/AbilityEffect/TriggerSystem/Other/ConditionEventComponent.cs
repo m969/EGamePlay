@@ -20,7 +20,7 @@ namespace EGamePlay.Combat
                     {
                         if (float.TryParse((string)paramObj, out var time))
                         {
-                            var condition = Entity.AddChild<WhenInTimeNoDamageObserver>(time);
+                            var condition = Entity.AddChild<TimeState_WhenInTimeNoDamageObserver>(time);
                             condition.StartListen(action);
                             ConditionEvents.Add(action, condition);
                         }
@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
                     {
                         if (float.TryParse((string)paramObj, out var time))
                         {
-                            var condition = Entity.AddChild<TimeIntervalObserver>(time);
+                            var condition = Entity.AddChild<TimeState_TimeIntervalObserver>(time);
                             condition.StartListen(action);
                             ConditionEvents.Add(action, condition);
                         }

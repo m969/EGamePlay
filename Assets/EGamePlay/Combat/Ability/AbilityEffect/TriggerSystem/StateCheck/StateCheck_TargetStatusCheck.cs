@@ -9,7 +9,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 目标状态能力条件判断，判断目标是否有某个状态能力
     /// </summary>
-    public class ConditionTargetStatusCheck : Entity, IConditionCheckSystem
+    public class StateCheck_TargetStatusCheck : Entity, IStateCheck
     {
         public CombatEntity OwnerBattler => Parent.GetParent<AbilityEffect>().OwnerEntity;
         public string AffectCheck { get; set; }
@@ -21,7 +21,7 @@ namespace EGamePlay.Combat
             AffectCheck = initData.ToString().ToLower();
         }
 
-        public bool CheckCondition(Entity target)
+        public bool CheckWith(Entity target)
         {
             if (target is IActionExecute combatAction)
             {

@@ -2,10 +2,10 @@
 
 namespace EGamePlay.Combat
 {
-    [LabelText("条件类型")]
+    [LabelText("计时状态事件")]
     public enum TimeStateEventType
     {
-        [LabelText("自定义条件事件")]
+        [LabelText("自定义计时状态事件")]
         CustomCondition = 0,
         [LabelText("当x秒内没有受伤")]
         WhenInTimeNoDamage = 3,

@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
     public class EffectStateCheckComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
-        public List<IConditionCheckSystem> ConditionChecks { get; set; } = new List<IConditionCheckSystem>();
+        public List<IStateCheck> ConditionChecks { get; set; } = new List<IStateCheck>();
 
 
         public override void Awake()
@@ -34,11 +34,11 @@ namespace EGamePlay.Combat
                 if (conditionStr.StartsWith("!")) condition = conditionStr.TrimStart('!');
                 var arr2 = condition.Split('<', '=', '≤');
                 var conditionType = arr2[0];
-                var scriptType = $"EGamePlay.Combat.Condition{conditionType}Check";
+                var scriptType = $"EGamePlay.Combat.StateCheck_{conditionType}Check";
                 var typeClass = System.Type.GetType(scriptType);
                 if (typeClass != null)
                 {
-                    ConditionChecks.Add(Entity.AddChild(typeClass, conditionStr) as IConditionCheckSystem);
+                    ConditionChecks.Add(Entity.AddChild(typeClass, conditionStr) as IStateCheck);
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace EGamePlay.Combat
                 /// 条件取反
                 if (item.IsInvert)
                 {
-                    if (item.CheckCondition(target))
+                    if (item.CheckWith(target))
                     {
                         conditionCheckResult = false;
                         break;
@@ -85,7 +85,7 @@ namespace EGamePlay.Combat
                 }
                 else
                 {
-                    if (!item.CheckCondition(target))
+                    if (!item.CheckWith(target))
                     {
                         conditionCheckResult = false;
                         break;
