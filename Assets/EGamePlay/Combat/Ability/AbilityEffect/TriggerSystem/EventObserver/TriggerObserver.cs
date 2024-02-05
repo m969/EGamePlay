@@ -15,13 +15,24 @@ namespace EGamePlay.Combat
             GetParent<AbilityEffect>().OnObserverTrigger(new TriggerContext(this, source));
         }
 
-        public void OnTriggerWith(AbilityItem abilityItem, CombatEntity target)
+        public void OnTriggerWithAbilityItem(AbilityItem abilityItem, CombatEntity target)
         {
             var context = new TriggerContext()
             {
                 Observer = this,
                 Source = abilityItem,
                 AbilityItem = abilityItem,
+                Target = target,
+            };
+            GetParent<AbilityEffect>().OnObserverTrigger(context);
+        }
+
+        public void OnTriggerWithSkillExecution(SkillExecution skillExecution, CombatEntity target)
+        {
+            var context = new TriggerContext()
+            {
+                Observer = this,
+                Source = skillExecution,
                 Target = target,
             };
             GetParent<AbilityEffect>().OnObserverTrigger(context);

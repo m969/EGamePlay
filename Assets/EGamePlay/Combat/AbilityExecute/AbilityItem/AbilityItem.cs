@@ -80,7 +80,7 @@ namespace EGamePlay.Combat
                         if (i == (int)EffectApplyType - 1 || EffectApplyType == EffectApplyType.AllEffects)
                         {
                             var effect = effects[i];
-                            effect.TriggerObserver.OnTriggerWith(this, otherCombatEntity);
+                            effect.TriggerObserver.OnTriggerWithAbilityItem(this, otherCombatEntity);
                         }
                     }
 

@@ -34,7 +34,7 @@ namespace EGamePlay.Combat
                     if (i == (int)EffectApplyType - 1 || EffectApplyType == EffectApplyType.AllEffects)
                     {
                         var effect = effects[i];
-                        effect.TriggerObserver.OnTrigger(skillExecution.InputTarget);
+                        effect.TriggerObserver.OnTriggerWithSkillExecution(skillExecution, skillExecution.InputTarget);
                     }
                 }
 

@@ -7,7 +7,7 @@ using System.Text;
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 
+    /// 判断目标当前生命值是否满足条件
     /// </summary>
     public class StateCheck_TargetHPCheck : Entity, IStateCheck
     {

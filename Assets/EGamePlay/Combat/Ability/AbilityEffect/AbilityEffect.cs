@@ -6,8 +6,8 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace EGamePlay.Combat
 {
-    public class ApplyEffectEvent { public AbilityEffect AbilityEffect; }
-    public enum EffectSourceType { Ability, Execution }
+    //public class ApplyEffectEvent { public AbilityEffect AbilityEffect; }
+    //public enum EffectSourceType { Ability, Execution }
 
     public interface IEffectTriggerSystem
     {
@@ -41,7 +41,7 @@ namespace EGamePlay.Combat
         public CombatEntity ParentEntity => (OwnerAbility as IAbilityEntity).ParentEntity;
         public Effect EffectConfig { get; set; }
         public string ConditionParamValue { get; set; }
-        public EffectSourceType EffectSourceType { get; set; }
+        //public EffectSourceType EffectSourceType { get; set; }
         public TriggerObserver TriggerObserver { get; set; }
 
 
