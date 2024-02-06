@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
     public class EffectStateCheckComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
-        public List<IStateCheck> ConditionChecks { get; set; } = new List<IStateCheck>();
+        public List<IStateCheck> StateChecks { get; set; } = new List<IStateCheck>();
 
 
         public override void Awake()
@@ -38,7 +38,7 @@ namespace EGamePlay.Combat
                 var typeClass = System.Type.GetType(scriptType);
                 if (typeClass != null)
                 {
-                    ConditionChecks.Add(Entity.AddChild(typeClass, conditionStr) as IStateCheck);
+                    StateChecks.Add(Entity.AddChild(typeClass, conditionStr) as IStateCheck);
                 }
                 else
                 {
@@ -49,11 +49,11 @@ namespace EGamePlay.Combat
 
         public override void OnDestroy()
         {
-            foreach (var item in ConditionChecks)
+            foreach (var item in StateChecks)
             {
                 Entity.Destroy(item as Entity);
             }
-            ConditionChecks.Clear();
+            StateChecks.Clear();
         }
 
         public override void OnEnable()
@@ -69,9 +69,9 @@ namespace EGamePlay.Combat
         public bool CheckTargetState(Entity target)
         {
             //Log.Debug("EffectTargetStateCheckComponent CheckTargetState");
-            /// 这里是状态条件判断，状态条件判断是判断目标的状态是否满足条件，满足则触发效果
+            /// 这里是状态判断，状态判断是判断目标的状态是否满足条件，满足则触发效果
             var conditionCheckResult = true;
-            foreach (var item in ConditionChecks)
+            foreach (var item in StateChecks)
             {
                 //Log.Debug($"ConditionChecks {item.GetType().Name}");
                 /// 条件取反
