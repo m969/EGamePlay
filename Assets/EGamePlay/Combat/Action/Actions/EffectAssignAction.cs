@@ -80,15 +80,6 @@ namespace EGamePlay.Combat
 
             foreach (var item in AbilityEffect.Components.Values)
             {
-                //if (item is EffectAddStatusComponent addStatusComponent)
-                //{
-                //    var action = addStatusComponent.GetActionExecution();
-                //    action.SourceAssignAction = effectAssignAction;
-                //    action.Target = effectAssignAction.Target;
-                //    action.SourceAbility = effectAssignAction.SourceAbility;
-                //    action.ApplyAddStatus();
-                //    continue;
-                //}
                 if (item is IEffectTriggerSystem effectTriggerSystem)
                 {
                     effectTriggerSystem.OnTriggerApplyEffect(this);

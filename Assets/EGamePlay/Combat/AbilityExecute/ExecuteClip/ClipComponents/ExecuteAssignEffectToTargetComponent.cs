@@ -37,21 +37,6 @@ namespace EGamePlay.Combat
                         effect.TriggerObserver.OnTriggerWithSkillExecution(skillExecution, skillExecution.InputTarget);
                     }
                 }
-
-                //if (EffectApplyType == EffectApplyType.AllEffects)
-                //{
-                //    var effectAssigns = abilityEffectComponent.CreateAssignActions(skillExecution.InputTarget);
-                //    foreach (var item in effectAssigns)
-                //    {
-                //        item.AssignEffect();
-                //    }
-                //}
-                //else
-                //{
-                //    var abilityEffect = abilityEffectComponent.GetEffect((int)EffectApplyType - 1);
-                //    var effectAssign = abilityEffect.CreateAssignAction(skillExecution.InputTarget);
-                //    effectAssign.AssignEffect();
-                //}
             }
         }
     }

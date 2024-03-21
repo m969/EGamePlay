@@ -143,40 +143,6 @@ namespace EGamePlay.Combat
             }
         }
 
-        public EffectAssignAction CreateAssignAction(Entity targetEntity)
-        {
-            //Log.Debug($"TryAssignAllEffectsToTargetWithExecution {targetEntity} {AbilityEffects.Count}");
-            if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var action))
-            {
-                //Log.Debug($"AbilityEffect TryAssignEffectTo {targetEntity} {EffectConfig}");
-                action.AssignTarget = targetEntity;
-                action.SourceAbility = OwnerAbility;
-                action.AbilityEffect = this;
-            }
-            return action;
-        }
-
-        //public void TriggerEffectToParent()
-        //{
-        //    TriggerEffectCheckWithTarget(ParentEntity);
-        //}
-
-        ///// <summary>
-        ///// 触发技能效果
-        ///// </summary>
-        //public void TriggerEffectCheck(SkillExecution skillExecution)
-        //{
-        //    TriggerEffectCheckWithTarget(skillExecution);
-        //}
-
-        ///// <summary>
-        ///// 触发对目标施加效果
-        ///// </summary>
-        //public void TriggerEffectCheckWithTarget(Entity target)
-        //{
-
-        //}
-
         public void OnObserverTrigger(TriggerContext context)
         {
             //Log.Debug("AbilityEffect OnObserverTrigger");
@@ -203,9 +169,14 @@ namespace EGamePlay.Combat
             /// 条件满足则触发效果
             if (stateCheckResult)
             {
-                var effectAssign = CreateAssignAction(target);
-                effectAssign.TriggerContext = context;
-                effectAssign.AssignEffect();
+                if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var effectAssign))
+                {
+                    effectAssign.AssignTarget = target;
+                    effectAssign.SourceAbility = OwnerAbility;
+                    effectAssign.AbilityEffect = this;
+                    effectAssign.TriggerContext = context;
+                    effectAssign.AssignEffect();
+                }
             }
         }
     }

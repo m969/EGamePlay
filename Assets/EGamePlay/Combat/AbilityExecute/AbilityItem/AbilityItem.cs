@@ -83,24 +83,6 @@ namespace EGamePlay.Combat
                             effect.TriggerObserver.OnTriggerWithAbilityItem(this, otherCombatEntity);
                         }
                     }
-
-                    //if (EffectApplyType == EffectApplyType.AllEffects)
-                    //{
-                    //    //AbilityEntity.GetComponent<AbilityEffectComponent>().TryAssignAllEffectsToTargetWithAbilityItem(otherCombatEntity, this);
-                    //    var effectAssigns = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActions(otherCombatEntity);
-                    //    foreach (var item in effectAssigns)
-                    //    {
-                    //        item.AbilityItem = this;
-                    //        item.AssignEffect();
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    //AbilityEntity.GetComponent<AbilityEffectComponent>().TryAssignEffectByIndex(otherCombatEntity, (int)EffectApplyType - 1);
-                    //    var effectAssign = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(otherCombatEntity, (int)EffectApplyType - 1);
-                    //    effectAssign.AbilityItem = this;
-                    //    effectAssign.AssignEffect();
-                    //}
                 }
             }
 
@@ -144,24 +126,6 @@ namespace EGamePlay.Combat
                 execution.AddComponent<UpdateComponent>();
             }
         }
-
-        ///// <summary>   技能碰撞体生成事件   </summary>
-        //public void SpawnCollisionItem(ExecuteClipData clipData)
-        //{
-        //    //Log.Debug($"SkillExecution SpawnCollisionItem {clipData.StartTime} {clipData.Duration}");
-
-        //    var abilityItem = Entity.Create<AbilityItem>(this);
-        //    abilityItem.AddComponent<AbilityItemCollisionExecuteComponent>(clipData);
-
-        //    if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.PathFly) PathFlyProcess(abilityItem);
-        //    if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirectionPathFly) PathFlyProcess(abilityItem);
-        //    if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.TargetFly) TargetFlyProcess(abilityItem);
-        //    if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.ForwardFly) ForwardFlyProcess(abilityItem);
-        //    if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedPosition) FixedPositionProcess(abilityItem);
-        //    if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirection) FixedDirectionProcess(abilityItem);
-
-        //    CreateAbilityItemProxyObj(abilityItem);
-        //}
 
         /// <summary>   目标飞行碰撞体     </summary>
         public void TargetFlyProcess(CombatEntity InputTarget)
