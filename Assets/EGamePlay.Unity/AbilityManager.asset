@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 057e800051bf9e446bba531dc935dd06, type: 3}
+  m_Script: {fileID: 11500000, guid: 3bab4d7e88406aa459b1eaa39b56a8ab, type: 3}
   m_Name: AbilityManager
   m_EditorClassIdentifier: 
   serializationData:
@@ -20,7 +20,43 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: EffectClasses
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectTypes
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[EGamePlay.Combat.EffectDescription,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 1
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   SkillAssetFolder: Assets/EGPsExamples/RpgExample/Resources/SkillConfigs
   StatusAssetFolder: Assets/EGPsExamples/RpgExample/Resources/StatusConfigs
   SkillExecutionAssetFolder: Assets/EGPsExamples/RpgExample/Resources

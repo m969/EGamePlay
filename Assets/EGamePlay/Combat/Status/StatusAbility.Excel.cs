@@ -329,18 +329,30 @@ namespace EGamePlay.Combat
                 {
                     effect = new CustomEffect() { CustomEffectType = effectConfig };
                 }
-                if (statusEffectConfig.TriggerType == "间隔触发")
+
+                if (statusEffectConfig.TriggerType == "能力激活时生效")
                 {
-                    effect.EffectTriggerType = EffectTriggerType.Interval;
-                    effect.Interval = statusEffectConfig.TriggerParam;
+                    effect.EffectTriggerType = EffectTriggerType.Instant;
+                    effect.ConditionParam = statusEffectConfig.TriggerParam;
                 }
-                if (statusEffectConfig.TriggerType == "条件触发")
+                else if (statusEffectConfig.TriggerType == "按行动点事件")
+                {
+                    effect.EffectTriggerType = EffectTriggerType.Action;
+                    effect.ActionPointType = ActionPointType.None;
+                    effect.ConditionParam = statusEffectConfig.TriggerParam;
+                }
+                else if (statusEffectConfig.TriggerType == "按计时状态事件")
                 {
                     effect.EffectTriggerType = EffectTriggerType.Condition;
                     effect.ConditionParam = statusEffectConfig.TriggerParam;
-                    if (statusEffectConfig.ConditionType == "自定义条件事件") effect.ConditionType = ConditionEventType.CustomCondition;
-                    if (statusEffectConfig.ConditionType == "当间隔x秒") effect.ConditionType = ConditionEventType.WhenIntervalTime;
-                    if (statusEffectConfig.ConditionType == "当x秒内没有受伤") effect.ConditionType = ConditionEventType.WhenInTimeNoDamage;
+                    if (statusEffectConfig.ConditionType == "自定义条件事件") effect.ConditionType = TimeStateEventType.CustomCondition;
+                    if (statusEffectConfig.ConditionType == "当间隔x秒") effect.ConditionType = TimeStateEventType.WhenIntervalTime;
+                    if (statusEffectConfig.ConditionType == "当x秒内没有受伤") effect.ConditionType = TimeStateEventType.WhenInTimeNoDamage;
+                }
+                else
+                {
+                    effect.EffectTriggerType = EffectTriggerType.None;
+                    effect.ConditionParam = statusEffectConfig.TriggerParam;
                 }
             }
             return effect;

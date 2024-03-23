@@ -23,7 +23,7 @@ MonoBehaviour:
     ExecuteType: 0
     ActionData:
       ActionEventType: 0
-      EffectApply: 1
+      EffectApply: 0
       NewExecution: 
     Shape: 0
     Radius: 1
