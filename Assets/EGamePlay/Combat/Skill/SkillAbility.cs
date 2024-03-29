@@ -77,7 +77,7 @@ namespace EGamePlay.Combat
             Name = this.SkillConfig.Name;
             AddComponent<AbilityEffectComponent>(SkillEffectsConfig.Effects);
             LoadExecution();
-            if (SkillEffectsConfig.SkillSpellType == SkillSpellType.Passive)
+            //if (SkillEffectsConfig.SkillSpellType == SkillSpellType.Passive)
             {
                 TryActivateAbility();
             }

@@ -51,7 +51,7 @@ namespace EGamePlay.Combat
             AddComponent<AbilityEffectComponent>(Effects);
             LoadExecution();
 
-            if (SkillConfig.Type == "被动")
+            //if (SkillConfig.Type == "被动")
             {
                 TryActivateAbility();
             }
@@ -79,6 +79,9 @@ namespace EGamePlay.Combat
         public void ActivateAbility()
         {
             FireEvent(nameof(ActivateAbility));
+
+            Enable = true;
+            GetComponent<AbilityEffectComponent>().Enable = true;
         }
 
         public void EndAbility()
