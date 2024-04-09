@@ -81,6 +81,7 @@ namespace EGamePlay.Combat
                     var statusLifeTimer = status.GetComponent<StatusLifeTimeComponent>().LifeTimer;
                     statusLifeTimer.MaxTime = AddStatusEffect.Duration / 1000f;
                     statusLifeTimer.Reset();
+                    FinishAction();
                     return;
                 }
             }
