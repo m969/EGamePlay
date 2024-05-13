@@ -88,7 +88,7 @@ public sealed class Hero : MonoBehaviour
             {
                 continue;
             }
-            var config = AssetUtils.Load<SkillConfigObject>($"SkillConfigs/Skill_{skilld}");
+            var config = GameUtils.AssetUtils.LoadObject<SkillConfigObject>($"SkillConfigs/Skill_{skilld}");
             var ability = CombatEntity.AttachSkill(config);
             if (skilld == 1001) CombatEntity.BindSkillInput(ability, KeyCode.Q);
             if (skilld == 1002) CombatEntity.BindSkillInput(ability, KeyCode.W);
@@ -102,13 +102,6 @@ public sealed class Hero : MonoBehaviour
             }
             if (skilld == 1008) CombatEntity.BindSkillInput(ability, KeyCode.A);
         }
-        //LoadSkillWithCodeBind("SkillConfigs/Skill_1001", KeyCode.Q);
-        //LoadSkillWithCodeBind("SkillConfigs/Skill_1002", KeyCode.W);
-        //LoadSkillWithCodeBind("SkillConfigs/Skill_1003", KeyCode.Y);
-        //LoadSkillWithCodeBind("SkillConfigs/Skill_1004", KeyCode.E);
-        //LoadSkillWithCodeBind("SkillConfigs/Skill_1005", KeyCode.R);
-        //LoadSkillWithCodeBind("SkillConfigs/Skill_1006", KeyCode.T).AddComponent<Skill1006Component>();
-        //LoadSkillWithCodeBind("SkillConfigs/Skill_1008", KeyCode.A);
 #endif
 
         CombatEntity.GetComponent<SpellComponent>().LoadExecutionObjects();
@@ -123,14 +116,6 @@ public sealed class Hero : MonoBehaviour
             ExecutionLinkPanelObj.GetComponent<ExecutionLinkPanel>().HeroEntity = CombatEntity;
         }
     }
-
-    //private SkillAbility LoadSkillWithCodeBind(string path, KeyCode bindCode)
-    //{
-    //    var config = AssetUtils.Load<SkillConfigObject>(path);
-    //    var ability = CombatEntity.AttachSkill(config);
-    //    CombatEntity.BindSkillInput(ability, bindCode);
-    //    return ability;
-    //}
 
     private void InitInventory()
     {

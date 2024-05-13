@@ -85,7 +85,7 @@ namespace EGamePlay.Combat
 
         public void LoadExecution()
         {
-            ExecutionObject = AssetUtils.Load<ExecutionObject>($"Execution_{SkillEffectsConfig.Id}");
+            ExecutionObject = AssetUtils.LoadObject<ExecutionObject>($"Execution_{SkillEffectsConfig.Id}");
             if (ExecutionObject == null)
             {
                 return;

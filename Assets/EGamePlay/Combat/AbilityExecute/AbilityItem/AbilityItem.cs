@@ -5,6 +5,7 @@ using UnityEngine;
 using ET;
 using GameUtils;
 using System;
+using float3 = UnityEngine.Vector3;
 
 namespace EGamePlay.Combat
 {
@@ -111,7 +112,7 @@ namespace EGamePlay.Combat
         public void OnTriggerNewExecution(ActionEventData ActionEventData)
         {
             Log.Debug($"AbilityItem OnTriggerNewExecution");
-            var executionObject = AssetUtils.Load<ExecutionObject>(ActionEventData.NewExecution);
+            var executionObject = AssetUtils.LoadObject<ExecutionObject>(ActionEventData.NewExecution);
             if (executionObject == null)
             {
                 Log.Error($"Can not find {ActionEventData.NewExecution}");
@@ -124,10 +125,10 @@ namespace EGamePlay.Combat
             execution.InputPoint = Position;
             execution.LoadExecutionEffects();
             execution.BeginExecute();
-            if (executionObject != null)
-            {
-                execution.AddComponent<UpdateComponent>();
-            }
+            //if (executionObject != null)
+            //{
+            //    execution.AddComponent<UpdateComponent>();
+            //}
         }
 
         /// <summary>   目标飞行碰撞体     </summary>
@@ -155,19 +156,37 @@ namespace EGamePlay.Combat
         /// <summary>   路径飞行     </summary>
         public void PathFlyProcess()
         {
+            var skillExecution = (AbilityExecution as SkillExecution);
             var abilityItem = this;
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
+            abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
             var tempPoints = clipData.CollisionExecuteData.GetCtrlPoints();
 
-            abilityItem.Position = AbilityExecution.OwnerEntity.Position + tempPoints[0].position;
-            var moveComp = abilityItem.AddComponent<AbilityItemBezierMoveComponent>();
+            if (tempPoints.Count == 0)
+            {
+                return;
+            }
+            abilityItem.Position = AbilityExecution.OwnerEntity.Position + (float3)tempPoints[0].Position;
+            var moveComp = abilityItem.AddComponent<AbilityItemPathMoveComponent>();
             moveComp.PositionEntity = abilityItem;
-            moveComp.ctrlPoints = tempPoints;
-            moveComp.OriginPosition = AbilityExecution.OwnerEntity.Position;
+            moveComp.BezierCurve = new NaughtyBezierCurves.BezierCurve3D();
+            moveComp.BezierCurve.Position = AbilityExecution.OwnerEntity.Position;
+            moveComp.BezierCurve.Sampling = clipData.CollisionExecuteData.BezierCurve.Sampling;
+            moveComp.BezierCurve.KeyPoints = tempPoints;
+            foreach (var item in tempPoints)
+            {
+                item.Curve = moveComp.BezierCurve;
+            }
+            if (skillExecution.ExecutionObject.TargetInputType == ExecutionTargetInputType.Point)
+            {
+                abilityItem.Position = (float3)skillExecution.InputPoint + (float3)tempPoints[0].Position;
+                //Log.Debug($"InputPoint={InputPoint} {tempPoints[0].Position}");
+                moveComp.BezierCurve.Position = skillExecution.InputPoint;
+            }
             moveComp.RotateAgree = 0;
-            moveComp.Speed = clipData.Duration / 10;
+            moveComp.Duration = clipData.Duration;
+            moveComp.GetPathPoints();
             moveComp.DOMove();
-            abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
         }
 
         /// <summary>   朝向路径飞行     </summary>
@@ -175,20 +194,31 @@ namespace EGamePlay.Combat
         {
             var abilityItem = this;
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
+            abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
             var tempPoints = clipData.CollisionExecuteData.GetCtrlPoints();
 
-            var angle = AbilityExecution.OwnerEntity.Rotation.eulerAngles.y - 90;
+            var angle = AbilityExecution.OwnerEntity.Rotation.y - 90;
             var agree = angle * MathF.PI / 180;
 
-            abilityItem.Position = AbilityExecution.OwnerEntity.Position + tempPoints[0].position;
-            var moveComp = abilityItem.AddComponent<AbilityItemBezierMoveComponent>();
+            if (tempPoints.Count == 0)
+            {
+                return;
+            }
+            abilityItem.Position = AbilityExecution.OwnerEntity.Position + (float3)tempPoints[0].Position;
+            var moveComp = abilityItem.AddComponent<AbilityItemPathMoveComponent>();
             moveComp.PositionEntity = abilityItem;
-            moveComp.ctrlPoints = tempPoints;
-            moveComp.OriginPosition = AbilityExecution.OwnerEntity.Position;
+            moveComp.BezierCurve = new NaughtyBezierCurves.BezierCurve3D();
+            moveComp.BezierCurve.Position = AbilityExecution.OwnerEntity.Position;
+            moveComp.BezierCurve.Sampling = clipData.CollisionExecuteData.BezierCurve.Sampling;
+            moveComp.BezierCurve.KeyPoints = tempPoints;
+            foreach (var item in tempPoints)
+            {
+                item.Curve = moveComp.BezierCurve;
+            }
             moveComp.RotateAgree = agree;
-            moveComp.Speed = clipData.Duration / 10;
+            moveComp.Duration = clipData.Duration;
+            moveComp.GetPathPoints();
             moveComp.DOMove();
-            abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
         }
 
         /// <summary>   固定位置碰撞体     </summary>

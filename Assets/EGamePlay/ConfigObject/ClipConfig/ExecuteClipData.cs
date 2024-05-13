@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using EGamePlay.Combat;
+using NaughtyBezierCurves;
 
 namespace EGamePlay
 {
@@ -83,9 +84,20 @@ namespace EGamePlay
         TriggerNewExecution = 1,
     }
 
+    [LabelText("触发类型"), Flags]
+    public enum FireType
+    {
+        None = 0,
+        [LabelText("碰撞触发")]
+        CollisionTrigger = 1 << 1,
+        [LabelText("结束触发")]
+        EndTrigger = 1 << 2,
+    }
+
     [Serializable]
     public class ActionEventData
     {
+        public FireType FireType;
         public FireEventType ActionEventType;
         [ShowIf("ActionEventType", FireEventType.AssignEffect)]
         public EffectApplyType EffectApply;
@@ -93,15 +105,6 @@ namespace EGamePlay
         [LabelText("新执行体")]
         public string NewExecution;
     }
-
-    //[LabelText("执行类型")]
-    //public enum ExecuteType
-    //{
-    //    [LabelText("抛出事件")]
-    //    FireOutEvent = 0,
-    //    [LabelText("持续执行")]
-    //    ContinuousExecute = 1,
-    //}
 
     [LabelText("碰撞体执行类型")]
     public enum CollisionExecuteType
@@ -138,19 +141,22 @@ namespace EGamePlay
         public bool ShowSpeed { get => MoveType != CollisionMoveType.SelectedPosition && MoveType != CollisionMoveType.SelectedDirection; }
         public bool ShowPoints { get => MoveType == CollisionMoveType.PathFly || MoveType == CollisionMoveType.SelectedDirectionPathFly; }
         [ShowIf("ShowPoints")]
-        public List<CtrlPoint> Points;
+        public BezierCurve3D BezierCurve;
 
-        public List<CtrlPoint> GetCtrlPoints()
+        public List<BezierPoint3D> GetCtrlPoints()
         {
-            var list = new List<CtrlPoint>();
-            foreach (var item in Points)
+            var list = new List<BezierPoint3D>();
+            if (BezierCurve != null)
             {
-                var newPoint = new CtrlPoint();
-                newPoint.position = item.position;
-                newPoint.type = item.type;
-                newPoint.InTangent = item.InTangent;
-                newPoint.OutTangent = item.OutTangent;
-                list.Add(newPoint);
+                foreach (var item in BezierCurve.KeyPoints)
+                {
+                    var newPoint = new BezierPoint3D();
+                    newPoint.LocalPosition = item.LocalPosition;
+                    newPoint.HandleStyle = item.HandleStyle;
+                    newPoint.LeftHandleLocalPosition = item.LeftHandleLocalPosition;
+                    newPoint.RightHandleLocalPosition = item.RightHandleLocalPosition;
+                    list.Add(newPoint);
+                }
             }
             return list;
         }

@@ -5,6 +5,7 @@ using System.Threading;
 using Sirenix.OdinInspector;
 
 
+#if UNITY
 public class EGamePlayInit : SerializedMonoBehaviour
 {
     public static EGamePlayInit Instance { get; private set; }
@@ -35,3 +36,4 @@ public class EGamePlayInit : SerializedMonoBehaviour
         MasterEntity.Destroy();
     }
 }
+#endif

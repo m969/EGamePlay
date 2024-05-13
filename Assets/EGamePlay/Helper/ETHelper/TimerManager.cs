@@ -60,7 +60,7 @@ namespace ET
 		public override void Awake(object initData)
 		{
 			var awakeData = initData as RepeatedTimerAwakeData;
-			this.StartTime = TimeHelper.Now();
+			this.StartTime = TimeHelper.ClientNow();
 			this.RepeatedTime = awakeData.RepeatedTime;
 			this.Callback = awakeData.Callback;
 			this.Count = 1;
@@ -147,7 +147,7 @@ namespace ET
 				return;
 			}
 
-			long timeNow = TimeHelper.Now();
+			long timeNow = TimeHelper.ClientNow();
 
 			if (timeNow < this.minTime)
 			{
@@ -190,7 +190,7 @@ namespace ET
 
 		public async ETTask<bool> WaitTillAsync(long tillTime, ETCancellationToken cancellationToken)
 		{
-			if (TimeHelper.Now() > tillTime)
+			if (TimeHelper.ClientNow() > tillTime)
 			{
 				return true;
 			}
@@ -216,7 +216,7 @@ namespace ET
 
 		public async ETTask<bool> WaitTillAsync(long tillTime)
 		{
-			if (TimeHelper.Now() > tillTime)
+			if (TimeHelper.ClientNow() > tillTime)
 			{
 				return true;
 			}
@@ -229,9 +229,9 @@ namespace ET
 
 		public async ETTask<bool> WaitAsync(long time, ETCancellationToken cancellationToken)
 		{
-			long tillTime = TimeHelper.Now() + time;
+			long tillTime = TimeHelper.ClientNow() + time;
 
-            if (TimeHelper.Now() > tillTime)
+            if (TimeHelper.ClientNow() > tillTime)
             {
                 return true;
             }
@@ -257,7 +257,7 @@ namespace ET
 
 		public async ETTask<bool> WaitAsync(long time)
 		{
-			long tillTime = TimeHelper.Now() + time;
+			long tillTime = TimeHelper.ClientNow() + time;
 			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
 			OnceWaitTimer timer = this.AddChild<OnceWaitTimer>(tcs);
 			this.timers[timer.Id] = timer;
@@ -277,7 +277,7 @@ namespace ET
 			{
 				throw new Exception($"repeated time < 30");
 			}
-			long tillTime = TimeHelper.Now() + time;
+			long tillTime = TimeHelper.ClientNow() + time;
 			RepeatedTimer timer = this.AddChild<RepeatedTimer>(new RepeatedTimerAwakeData() { Callback = action, RepeatedTime = time });
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);

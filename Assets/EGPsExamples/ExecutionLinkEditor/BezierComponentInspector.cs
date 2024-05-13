@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +31,7 @@ namespace EGamePlay
 
         private void OnSceneGUI()
         {
-            BezierComponent bezierComponent = target as BezierComponent;
+            var bezierComponent = target as BezierComponent;
             if (bezierComponent.ctrlPoints == null)
             {
                 return;
@@ -46,27 +45,27 @@ namespace EGamePlay
             if (pickedIndex != -1)
             {
                 //得到正在操作的控制点
-                CtrlPoint pickedCtrlPoint = bezierComponent.ctrlPoints[pickedIndex];
+                var pickedCtrlPoint = bezierComponent.ctrlPoints[pickedIndex];
                 //角点只能编辑位置不能编辑Tangent
-                if (pickedCtrlPoint.type == BezierPointType.corner) pickedType = CtrlPointPickedType.position;
+                if (pickedCtrlPoint.HandleStyle == NaughtyBezierCurves.BezierPoint3D.HandleType.Broken) pickedType = CtrlPointPickedType.position;
                 if (pickedType == CtrlPointPickedType.position)
                 {
                     //使用PositionHandle操作它的位置
-                    Vector3 newPosition = Handles.PositionHandle(pickedCtrlPoint.position, Quaternion.identity);
-                    pickedCtrlPoint.position = newPosition;
+                    Vector3 newPosition = Handles.PositionHandle(pickedCtrlPoint.Position, Quaternion.identity);
+                    pickedCtrlPoint.Position = newPosition;
                 }
                 else if (pickedType == CtrlPointPickedType.inTangent)
                 {
                     //使用PositionHandle操作InTangent
-                    Vector3 position = pickedCtrlPoint.position;
-                    Vector3 newInTangent = Handles.PositionHandle(pickedCtrlPoint.InTangent + position, Quaternion.identity) - position;
+                    Vector3 position = pickedCtrlPoint.Position;
+                    Vector3 newInTangent = Handles.PositionHandle((Vector3)pickedCtrlPoint.InTangent + position, Quaternion.identity) - position;
                     pickedCtrlPoint.InTangent = newInTangent;
                 }
                 else if (pickedType == CtrlPointPickedType.outTangent)
                 {
                     //跟上一个差不多
-                    Vector3 position = pickedCtrlPoint.position;
-                    Vector3 newOutTangent = Handles.PositionHandle(pickedCtrlPoint.OutTangent + position, Quaternion.identity) - position;
+                    Vector3 position = pickedCtrlPoint.Position;
+                    Vector3 newOutTangent = Handles.PositionHandle((Vector3)pickedCtrlPoint.OutTangent + position, Quaternion.identity) - position;
                     pickedCtrlPoint.OutTangent = newOutTangent;
                 }
             }
@@ -75,11 +74,11 @@ namespace EGamePlay
             for (int i = 0; i < bezierComponent.ctrlPoints.Count; i++)
             {
                 //一个个地把控制点渲染出来
-                CtrlPoint ctrlPoint = bezierComponent.ctrlPoints[i];
-                BezierPointType type = ctrlPoint.type;
-                Vector3 position = ctrlPoint.position;
-                Vector3 inTangentPoint = ctrlPoint.InTangent + position;
-                Vector3 outTangentPoint = ctrlPoint.OutTangent + position;
+                var ctrlPoint = bezierComponent.ctrlPoints[i];
+                var type = ctrlPoint.HandleStyle;
+                var position = ctrlPoint.Position;
+                var inTangentPoint = ctrlPoint.InTangent + position;
+                var outTangentPoint = ctrlPoint.OutTangent + position;
                 bool button_picked = Handles.Button(position, Quaternion.identity, 0.1f, 0.1f, Handles.CubeHandleCap);
                 if (button_picked)
                 {
@@ -89,7 +88,7 @@ namespace EGamePlay
                     //to-do:
                 }
 
-                if (type != BezierPointType.corner)
+                if (type != NaughtyBezierCurves.BezierPoint3D.HandleType.Broken)
                 {
                     //画InTangent
                     Handles.DrawLine(position, inTangentPoint);
@@ -122,4 +121,3 @@ namespace EGamePlay
         }
     }
 }
-#endif

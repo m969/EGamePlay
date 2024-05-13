@@ -4,11 +4,11 @@ using ET;
 
 namespace ET
 {
-    public partial class StatusConfigCategory
+    public static class StatusConfigCategoryExtension
     {
-        public StatusConfig GetWithIDType(string id)
+        public static StatusConfig GetWithIDType(this StatusConfigCategory instance, string id)
         {
-            foreach (var item in this.GetAll().Values)
+            foreach (var item in instance.GetAll().Values)
             {
                 if (item.ID == id)
                 {

@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
         {
             foreach (var item in CombatEntity.IdSkills)
             {
-                var executionObj = AssetUtils.Load<ExecutionObject>($"Execution_{item.Key}");
+                var executionObj = AssetUtils.LoadObject<ExecutionObject>($"Execution_{item.Key}");
                 if (executionObj != null)
                 {
                     ExecutionObjects.Add(item.Key, executionObj);

@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Timeline;
 using EGamePlay.Combat;
 using ET;
 using Log = EGamePlay.Log;
 using System;
-using static UnityEditor.Sprites.Packer;
 
 namespace EGamePlay.Combat
 {
@@ -48,7 +46,7 @@ namespace EGamePlay.Combat
             //    return;
             //}
 
-            var nowTicks = TimeHelper.Now() - OriginTime;
+            var nowTicks = TimeHelper.ClientNow() - OriginTime;
             var nowSeconds = nowTicks / 1000f;
             //Log.Debug($"SkillExecution Update {TimeHelper.Now()} {OriginTime}");
             //Log.Debug($"SkillExecution Update {nowTicks} {nowSeconds} > {ExecutionObject.TotalTime}");
@@ -62,7 +60,7 @@ namespace EGamePlay.Combat
         public void BeginExecute()
         {
             //Log.Debug("SkillExecution BeginExecute");
-            OriginTime = TimeHelper.Now();
+            OriginTime = TimeHelper.ClientNow();
             GetParent<CombatEntity>().SpellingExecution = this;
             if (SkillAbility != null)
             {

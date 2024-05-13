@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using ET;
 
 namespace EGamePlay.Combat
 {
@@ -24,7 +25,7 @@ namespace EGamePlay.Combat
         [LabelText("状态配置")]
         public StatusConfigObject AddStatus;
 
-        public ET.StatusConfig AddStatusConfig { get; set; }
+        public StatusConfig AddStatusConfig { get; set; }
 
         [ToggleGroup("Enabled"), LabelText("持续时间"), SuffixLabel("毫秒", true)]
         public uint Duration;

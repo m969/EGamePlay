@@ -35,7 +35,7 @@ namespace EGamePlay.Combat
         {
             if (TryGet(out AbilityProbabilityTriggerComponent probabilityTriggerComponent))
             {
-                var r = ET.RandomHelper.RandomNumber(0, 10000);
+                var r = GameUtils.RandomHelper.RandomNumber(0, 10000);
                 //Log.Debug($"IsAbilityEffectTrigger {r} < {probabilityTriggerComponent.Probability}");
                 return r < probabilityTriggerComponent.Probability;
             }

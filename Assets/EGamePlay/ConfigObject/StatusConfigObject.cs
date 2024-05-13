@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using ET;
 
 namespace EGamePlay.Combat
 {
@@ -218,7 +219,7 @@ namespace EGamePlay.Combat
         [LabelText("状态效果")]
         public StatusConfigObject StatusConfigObject;
 
-        public ET.StatusConfig StatusConfig { get; set; }
+        public StatusConfig StatusConfig { get; set; }
 
         [LabelText("参数列表"), HideReferenceObjectPicker]
         public Dictionary<string, string> Params = new Dictionary<string, string>();
