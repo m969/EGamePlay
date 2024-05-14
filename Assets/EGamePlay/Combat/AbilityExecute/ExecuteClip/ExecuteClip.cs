@@ -44,6 +44,7 @@ namespace EGamePlay.Combat
                 var spawnItemEffect = ExecutionEffectConfig.CollisionExecuteData;
                 AddComponent<ExecuteCollisionItemComponent>().CollisionExecuteData = spawnItemEffect;
             }
+#if UNITY
             /// 播放动作效果
             if (clipType == ExecuteClipType.Animation)
             {
@@ -56,6 +57,7 @@ namespace EGamePlay.Combat
                 var animationEffect = ExecutionEffectConfig.ParticleEffectData;
                 AddComponent<ExecuteParticleEffectComponent>().ParticleEffectPrefab = animationEffect.ParticleEffect;
             }
+#endif
 
             /// 时间到触发执行效果
             if (clipType == ExecuteClipType.ActionEvent)

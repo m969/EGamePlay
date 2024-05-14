@@ -1,18 +1,27 @@
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using UnityEditor;
 using UnityEngine;
+using LitJson.Extensions;
+//using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
+using System.IO;
+using ET;
+
+#if UNITY_EDITOR
+using Sirenix.Serialization;
+using Sirenix.Utilities.Editor;
+using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+#endif
 
 namespace EGamePlay.Combat
 {
-    
     [CreateAssetMenu(fileName = "Execution", menuName = "¼¼ÄÜ|×´Ì¬/Execution")]
-    public class ExecutionObject : ScriptableObject
+    public class ExecutionObject
+#if UNITY
+ : ScriptableObject
+#endif
     {
         [DelayedProperty]
         public string Id;

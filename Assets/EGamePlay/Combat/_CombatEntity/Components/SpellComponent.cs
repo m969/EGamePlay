@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
-using UnityEditor;
-using UnityEngine.UI;
 using GameUtils;
-using System.Drawing;
+//using Unity.Mathematics;
+//using Vector3 = Unity.Mathematics.float3;
+//using Quaternion = Unity.Mathematics.quaternion;
 
 namespace EGamePlay.Combat
 {

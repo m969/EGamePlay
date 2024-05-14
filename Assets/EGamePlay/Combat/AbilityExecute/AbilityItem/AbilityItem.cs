@@ -147,8 +147,8 @@ namespace EGamePlay.Combat
         {
             var abilityItem = this;
             abilityItem.Position = AbilityExecution.OwnerEntity.Position;
-            var x = Mathf.Sin(Mathf.Deg2Rad * InputDirection);
-            var z = Mathf.Cos(Mathf.Deg2Rad * InputDirection);
+            var x = MathF.Sin(MathF.PI / 180 * InputDirection);
+            var z = MathF.Cos(MathF.PI / 180 * InputDirection);
             var destination = abilityItem.Position + new Vector3(x, 0, z) * 30;
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(destination, 1f).OnMoveFinish(() => { Entity.Destroy(abilityItem); });
         }

@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using EGamePlay.Combat;
 using NaughtyBezierCurves;
 
 namespace EGamePlay
 {
-    public class ExecuteClipData : ScriptableObject
+    public class ExecuteClipData
+#if UNITY
+         : ScriptableObject
+#endif
     {
         public float TotalTime { get; set; }
         public float StartTime;
@@ -24,6 +24,10 @@ namespace EGamePlay
             get { return name; }
             set { name = value; /*AssetDatabase.ForceReserializeAssets(new string[] { AssetDatabase.GetAssetPath(this) }); AssetDatabase.SaveAssets(); AssetDatabase.Refresh();*/ }
         }
+
+#if NOT_UNITY
+        private string name;
+#endif
 
         public ExecuteClipType ExecuteClipType;
 
@@ -165,18 +169,24 @@ namespace EGamePlay
     [Serializable]
     public class ParticleEffectData
     {
+#if UNITY
         public GameObject ParticleEffect;
+#endif
     }
 
     [Serializable]
     public class AnimationData
     {
+#if UNITY
         public AnimationClip AnimationClip;
+#endif
     }
 
     [Serializable]
     public class AudioData
     {
+#if UNITY
         public AudioClip AudioClip;
+#endif
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+#if UNITY
 using UnityEditor;
+#endif
 
 namespace EGamePlay.Combat
 {

@@ -3,6 +3,35 @@ using System.Diagnostics;
 using Sirenix.OdinInspector;
 
 #if NOT_UNITY
+namespace UnityEngine
+{
+    public class Time
+    {
+        public static long FrameEndTime;
+        public static long FrameTime;
+        public static float deltaTime { get; set; } = FrameTime / 1000f;
+
+        public static long GameTime;
+        public static long DeltaTime;
+        public static float unscaledDeltaTime => deltaTime;
+    }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+    public class TooltipAttribute : Attribute
+    {
+        public TooltipAttribute(string tip) { }
+    }
+}
+
+namespace Unity.Plastic.Newtonsoft.Json
+{
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+    public class JsonIgnoreAttribute : Attribute
+    {
+
+    }
+}
+
 namespace Sirenix.OdinInspector
 {
     public class SerializedMonoBehaviour
@@ -143,6 +172,7 @@ namespace Sirenix.OdinInspector
     [Conditional("UNITY_EDITOR")]
     public sealed class ListDrawerSettingsAttribute : Attribute
     {
+        public bool DefaultExpandedState;
         /// <summary>
         /// If true, the add button will not be rendered in the title toolbar. You can use OnTitleBarGUI to implement your own add button.
         /// </summary>
@@ -856,6 +886,22 @@ namespace UnityEngine
     {
     }
 
+    public sealed class ReadOnlyAttribute : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+    public sealed class FoldoutGroupAttribute : PropertyAttribute
+    {
+        public readonly string tooltip;
+        public string GroupName;
+
+        public FoldoutGroupAttribute(string tooltip)
+        {
+            this.tooltip = tooltip;
+        }
+    }
+
     /// <summary>
     ///   <para>Base class to derive custom property attributes from. Use this to create custom attributes for script variables.</para>
     /// </summary>
@@ -866,6 +912,20 @@ namespace UnityEngine
         ///   <para>Optional field to specify the order that multiple DecorationDrawers should be drawn in.</para>
         /// </summary>
         public int order { get; set; }
+    }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+    public class PropertyOrderAttribute : Attribute
+    {
+        /// <summary>
+        ///   <para>Optional field to specify the order that multiple DecorationDrawers should be drawn in.</para>
+        /// </summary>
+        public int order { get; set; }
+
+        public PropertyOrderAttribute(int order)
+        {
+            this.order = order;
+        }
     }
 
     /// <summary>

@@ -15,11 +15,6 @@ namespace EGamePlay
             var view = GameObject.AddComponent<ComponentView>();
             view.Type = GameObject.name;
             view.Component = this;
-            //Entity.OnNameChangedAction = OnNameChanged;
-            //Entity.OnAddComponentAction = OnAddComponent;
-            //Entity.OnRemoveComponentAction = OnRemoveComponent;
-            //Entity.Subscribe<SetChildEventAfter>(OnAddChild);
-            //Entity.Subscribe<RemoveChildEventAfter>(OnRemoveChild);
         }
 
         public override void OnDestroy()
@@ -59,13 +54,5 @@ namespace EGamePlay
                 child.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(GameObject.transform);
             }
         }
-
-        //public void OnRemoveChild(Entity child)
-        //{
-        //    if (child.GetComponent<GameObjectComponent>() != null)
-        //    {
-        //        child.GetComponent<GameObjectComponent>().GameObject.transform.SetParent(GameObject.transform);
-        //    }
-        //}
     }
 }

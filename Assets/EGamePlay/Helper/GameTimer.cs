@@ -2,14 +2,6 @@
 
 namespace GameUtils
 {
-#if NOT_UNITY
-    public static class Time
-    {
-        public static long FrameEndTime;
-        public static long FrameTime;
-        public static float deltaTime { get; set; } = FrameTime / 1000f;
-    }
-#endif
     public class GameTimer
     {
         private float _maxTime;
