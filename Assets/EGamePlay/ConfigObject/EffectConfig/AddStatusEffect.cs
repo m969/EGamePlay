@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using ET;
 
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.quaternion;
+using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
+#endif
+
+
 namespace EGamePlay.Combat
 {
     [Effect("施加状态效果", 30)]
@@ -22,16 +30,13 @@ namespace EGamePlay.Combat
         }
 
         [ToggleGroup("Enabled")]
-        [LabelText("状态配置")]
+        [LabelText("状态配置"), JsonIgnore]
         public StatusConfigObject AddStatus;
 
         public StatusConfig AddStatusConfig { get; set; }
 
         [ToggleGroup("Enabled"), LabelText("持续时间"), SuffixLabel("毫秒", true)]
         public uint Duration;
-
-        //[ToggleGroup("Enabled"), LabelText("参数")]
-        //public string ParamValue;
 
         [HideReferenceObjectPicker]
         [ToggleGroup("Enabled")]

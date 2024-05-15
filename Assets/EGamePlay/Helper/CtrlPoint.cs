@@ -1,8 +1,14 @@
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
-//using Unity.Mathematics;
 using UnityEngine;
+
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.quaternion;
+using JsonIgnore = System.Runtime.Serialization.IgnoreDataMemberAttribute;
+#endif
 
 namespace EGamePlay
 {

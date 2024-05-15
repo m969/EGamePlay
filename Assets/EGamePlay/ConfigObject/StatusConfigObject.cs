@@ -7,54 +7,31 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using ET;
 
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.quaternion;
+using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
+#endif
+
 namespace EGamePlay.Combat
 {
     [CreateAssetMenu(fileName = "状态配置", menuName = "技能|状态/状态配置")]
     public class StatusConfigObject
-#if !NOT_UNITY
+#if UNITY
         : SerializedScriptableObject
 #endif
     {
         [LabelText(StatusIdLabel), DelayedProperty]
         public string ID = "Status1";
 
-        //[HideInInspector]
         [LabelText(StatusNameLabel), DelayedProperty]
         public string Name = "状态1";
 
-        //[HideInInspector]
-        //[LabelText(StatusTypeLabel)]
-        //public StatusType StatusType;
-
-        //[HideInInspector]
-        //public uint Duration;
-
-        //[HideInInspector]
-        //[LabelText("是否在状态栏显示"), UnityEngine.Serialization.FormerlySerializedAs("ShowInStatusIconList")]
-        //public bool ShowInStatusSlots;
-
-        //[HideInInspector]
-        //[LabelText("能否叠加")]
-        //public bool CanStack;
-
-        //[HideInInspector]
-        //[LabelText("最高叠加层数"), ShowIf("CanStack"), Range(0, 99)]
-        //public int MaxStack = 0;
-
-
-#if !NOT_UNITY
-        //[OnInspectorGUI("BeginBox", append: false)]
+#if UNITY && !EGAMEPLAY_ET
         [LabelText("状态特效")]
         public GameObject ParticleEffect;
-
         public GameObject GetParticleEffect() => ParticleEffect;
-
-        //[LabelText("状态音效")]
-        //[OnInspectorGUI("EndBox", append:true)]
-        //public AudioClip Audio;
-
-        //[TextArea, LabelText("状态描述")]
-        //public string StatusDescription;
 #endif
 
 
@@ -76,7 +53,7 @@ namespace EGamePlay.Combat
         public List<Effect> Effects = new List<Effect>();
 
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
-        [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect")]
+        [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect"), JsonIgnore]
         public string EffectTypeName = "(添加效果)";
 
         public IEnumerable<string> EffectTypeSelect()
@@ -105,8 +82,6 @@ namespace EGamePlay.Combat
                     .FirstOrDefault();
                 var effect = Activator.CreateInstance(effectType) as Effect;
                 effect.Enabled = true;
-                //if (effect is ActionProhibitEffect) effect.IsSkillEffect = true;
-                //if (effect is AttributeModifyEffect) effect.IsSkillEffect = true;
                 Effects.Add(effect);
                 EffectTypeName = "(添加效果)";
             }
@@ -114,7 +89,7 @@ namespace EGamePlay.Combat
 
 #if UNITY_EDITOR
         [OnInspectorGUI("BeginBox", append: false)]
-        [SerializeField, LabelText("自动重命名")]
+        [SerializeField, LabelText("自动重命名"), JsonIgnore]
         public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
         public static bool AutoRenameStatic = true;
 
@@ -135,10 +110,19 @@ namespace EGamePlay.Combat
 
         private void BeginBox()
         {
-            //GUILayout.Space(30);
-            //Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
-            //Sirenix.Utilities.Editor.SirenixEditorGUI.BeginBox("状态表现");
+            //if (GUILayout.Button("Save Json"))
+            //{
+            //    SaveJson();
+            //}
+        }
+
+        private void SaveJson()
+        {
+            var skillConfigFolder = Application.dataPath + "/../../../StatusConfigs";
+            var filePath = skillConfigFolder + $"/Status_{ID}.json";
+            Debug.Log("SaveJson" + filePath);
+            File.WriteAllText(filePath, JsonHelper.ToJson(this));
         }
 
         private void EndBox()
@@ -149,26 +133,9 @@ namespace EGamePlay.Combat
             GUILayout.Space(10);
         }
 
-        //private bool NeedClearLog;
         [OnInspectorGUI]
         private void OnInspectorGUI()
         {
-            //if (NeedClearLog)
-            //{
-            //    var assembly = Assembly.GetAssembly(typeof(UnityEditor.SceneView));
-            //    var type = assembly.GetType("UnityEditor.LogEntries");
-            //    var method = type.GetMethod("Clear");
-            //    method.Invoke(new object(), null);
-            //    NeedClearLog = false;
-            //}
-            //if (EffectType != SkillEffectType.None)
-            //{
-            //    if (EffectType == SkillEffectType.AddStatus) MyToggleObjects.Add(new StateToggleGroup());
-            //    if (EffectType == SkillEffectType.NumericModify) MyToggleObjects.Add(new DurationToggleGroup());
-            //    EffectType = SkillEffectType.None;
-            //    NeedClearLog = true;
-            //}
-
             if (!AutoRename)
             {
                 return;
@@ -195,7 +162,6 @@ namespace EGamePlay.Combat
                 var newName = $"Status_{this.ID}";
                 if (fileName != newName)
                 {
-                    //Debug.Log(assetPath);
                     UnityEditor.AssetDatabase.RenameAsset(assetPath, newName);
                 }
             }
@@ -245,13 +211,8 @@ namespace EGamePlay.Combat
         Action = 2,
         [LabelText("按计时状态事件")]
         Condition = 3,
-        //[LabelText("间隔触发")]
-        //Interval = 4,
-        //[LabelText("在行动点且满足条件")]
-        //ActionCondition = 5,
     }
 
-    //[LabelText("状态判断")]
     public enum StateCheckType
     {
         [LabelText("（空）")]

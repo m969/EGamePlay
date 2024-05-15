@@ -5,6 +5,13 @@ using Sirenix.OdinInspector;
 using EGamePlay.Combat;
 using NaughtyBezierCurves;
 
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.quaternion;
+using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
+#endif
+
 namespace EGamePlay
 {
     public class ExecuteClipData
@@ -39,17 +46,19 @@ namespace EGamePlay
         [ShowIf("ExecuteClipType", ExecuteClipType.CollisionExecute)]
         public CollisionExecuteData CollisionExecuteData;
 
+#if UNITY
         [Space(10)]
-        [ShowIf("ExecuteClipType", ExecuteClipType.Animation)]
+        [ShowIf("ExecuteClipType", ExecuteClipType.Animation), JsonIgnore]
         public AnimationData AnimationData;
 
         [Space(10)]
-        [ShowIf("ExecuteClipType", ExecuteClipType.Audio)]
+        [ShowIf("ExecuteClipType", ExecuteClipType.Audio), JsonIgnore]
         public AudioData AudioData;
 
         [Space(10)]
-        [ShowIf("ExecuteClipType", ExecuteClipType.ParticleEffect)]
+        [ShowIf("ExecuteClipType", ExecuteClipType.ParticleEffect), JsonIgnore]
         public ParticleEffectData ParticleEffectData;
+#endif
 
         public float Duration { get => (EndTime - StartTime); }
 
@@ -137,7 +146,7 @@ namespace EGamePlay
 
         [Space(10)]
         public CollisionMoveType MoveType;
-        [DelayedProperty]
+        [DelayedProperty, JsonIgnore]
         public GameObject ObjAsset;
 
         [ShowIf("ShowSpeed")]

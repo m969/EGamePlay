@@ -5,6 +5,15 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using ET;
+
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.quaternion;
+using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
+#endif
+
 #if !NOT_UNITY
 #if UNITY_EDITOR
 using Sirenix.Utilities.Editor;
@@ -23,10 +32,6 @@ namespace EGamePlay.Combat
         [LabelText("技能ID"), DelayedProperty]
         public int Id;
 
-        //[HideInInspector]
-        //[LabelText("技能名称"), DelayedProperty]
-        //public string Name = "技能1";
-
         [HideInInspector]
         public SkillSpellType SkillSpellType;
 
@@ -38,22 +43,9 @@ namespace EGamePlay.Combat
         [LabelText("目标选取类型"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillTargetSelectType TargetSelectType;
 
-        //[LabelText("区域场类型"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
-        //public SkillAffectAreaType AffectAreaType;
-        //[LabelText("圆形区域场半径"), ShowIf("ShowCircleAreaRadius")]
-        //public float CircleAreaRadius;
-        //public bool ShowCircleAreaRadius { get { return AffectAreaType == SkillAffectAreaType.Circle && TargetSelectType == SkillTargetSelectType.AreaSelect; } }
-        //[LabelText("区域场配置"), ShowIf("TargetSelectType", SkillTargetSelectType.AreaSelect)]
-        //public GameObject AreaCollider;
-
-        //[HideInInspector]
-        //[LabelText("冷却时间"), SuffixLabel("毫秒", true), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
-        //public uint ColdTime;
-
         [HideInInspector]
         [LabelText("附加状态效果")]
         public bool EnableChildrenStatuses;
-        //[OnInspectorGUI("DrawSpace", append: true)]
         [HideReferenceObjectPicker]
         [LabelText("附加状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false, CustomAddFunction = "AddChildStatus")]
         public List<ChildStatus> ChildrenStatuses = new List<ChildStatus>();
@@ -62,32 +54,13 @@ namespace EGamePlay.Combat
             ChildrenStatuses.Add(new ChildStatus());
         }
 
-#if !NOT_UNITY
-        //[OnInspectorGUI("BeginBox", append: false)]
-        //[LabelText("技能执行")]
-        //public GameObject SkillExecutionAsset;
-        //[LabelText("技能音效")]
-        //[OnInspectorGUI("EndBox", append: true)]
-        //public AudioClip SkillAudio;
-
-        //[HideInInspector]
-        //[TextArea, LabelText("技能描述")/*, Space(30)*/]
-        //public string SkillDescription;
-#endif
-
-        //[OnInspectorGUI("BeginBox", append: false)]
         [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = true, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
 
-        //[ShowInInspector]
-        //public static bool Draggable;
-
-        //[OnInspectorGUI("DrawSpace", append: true)]
-        //[OnInspectorGUI("EndBox", append: true)]
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
-        [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect")]
+        [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect"), JsonIgnore]
         public string EffectTypeName = "(添加效果)";
 
         public IEnumerable<string> EffectTypeSelect()
@@ -98,7 +71,6 @@ namespace EGamePlay.Combat
                 .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
                 .OrderBy(x => x.GetCustomAttribute<EffectAttribute>().Order)
                 .Select(x => x.GetCustomAttribute<EffectAttribute>().EffectType);
-            //&& x != typeof(ActionControlEffect) && x != typeof(AttributeModifyEffect)
             var results = types.ToList();
             results.Insert(0, "(添加效果)");
             return results;
@@ -125,11 +97,8 @@ namespace EGamePlay.Combat
         }
 
 #if UNITY_EDITOR
-        //[ShowInInspector, LabelText("自动重命名")]
-        //public static bool AutoRename;
-
         [OnInspectorGUI("BeginBox", append: false)]
-        [SerializeField, LabelText("自动重命名")]
+        [SerializeField, LabelText("自动重命名"), JsonIgnore]
         public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
 
         private void OnEnable()
@@ -149,18 +118,24 @@ namespace EGamePlay.Combat
 
         private void BeginBox()
         {
-            //GUILayout.Space(30);
-            //SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);
-            //SirenixEditorGUI.BeginBox("技能表现");
+            //if (GUILayout.Button("Save Json"))
+            //{
+            //    SaveJson();
+            //}
+        }
+
+        private void SaveJson()
+        {
+            var skillConfigFolder = Application.dataPath + "/../../../SkillConfigs";
+            var filePath = skillConfigFolder + $"/Skill_{Id}.json";
+            Debug.Log("SaveJson" + filePath);
+            File.WriteAllText(filePath, JsonHelper.ToJson(this));
         }
 
         private void EndBox()
         {
-            //SirenixEditorGUI.EndBox();
             GUILayout.Space(30);
-            //SirenixEditorGUI.DrawThickHorizontalSeparator();
-            //GUILayout.Space(10);
         }
 
         [OnInspectorGUI]
@@ -192,7 +167,6 @@ namespace EGamePlay.Combat
                 var newName = $"Skill_{this.Id}";
                 if (!fileName.StartsWith(newName))
                 {
-                    //Debug.Log(assetPath);
                     UnityEditor.AssetDatabase.RenameAsset(assetPath, newName);
                 }
             }

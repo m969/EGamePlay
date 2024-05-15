@@ -2,10 +2,15 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using LitJson.Extensions;
-//using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
 using System.IO;
 using ET;
+
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.quaternion;
+using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
+#endif
 
 #if UNITY_EDITOR
 using Sirenix.Serialization;
@@ -26,42 +31,34 @@ namespace EGamePlay.Combat
         [DelayedProperty]
         public string Id;
         public float TotalTime;
-        //public string ObjAssetName;
-        //[OnValueChanged("OnValueChanged")]
-        [DelayedProperty]
+        [DelayedProperty, JsonIgnore]
         public GameObject ObjAsset;
         public ExecutionTargetInputType TargetInputType;
         [ShowIf("TargetInputType", ExecutionTargetInputType.Point)]
-        [LabelText("范围指示器")]
+        [LabelText("范围指示器"), JsonIgnore]
         public GameObject RangeIndicatorObjAsset;
         [ShowIf("TargetInputType", ExecutionTargetInputType.Point)]
-        [LabelText("目标点指示器")]
+        [LabelText("目标点指示器"), JsonIgnore]
         public GameObject PointIndicatorObjAsset;
         [ShowIf("TargetInputType", ExecutionTargetInputType.Point)]
-        [LabelText("朝向指示器")]
+        [LabelText("朝向指示器"), JsonIgnore]
         public GameObject DirectionIndicatorObjAsset;
-        //public string BindSkillName;
-        //public SkillConfigObject BindSkill;
-        //public ExecutionItem ExecutionItem;
-        //[PreviouslySerializedAs("ExecutionClips")]
         [ReadOnly, Space(10)]
         public List<ExecuteClipData> ExecuteClips = new List<ExecuteClipData>();
 
 #if UNITY_EDITOR
-        //private void OnValueChanged()
-        //{
-        //    if (ObjAsset != null)
-        //    {
-        //        ObjAssetName = ObjAsset.name;
-        //    }
-        //}
-
-        //[Button("Save Clips")]
         private void SaveClips()
         {
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssetIfDirty(this);
-            //Log.Debug("SaveObject");
+        }
+
+        private void SaveJson()
+        {
+            var skillConfigFolder = Application.dataPath + "/../../../SkillConfigs/ExecutionConfigs";
+            var filePath = skillConfigFolder + $"/{name}.json";
+            Debug.Log(filePath);
+            File.WriteAllText(filePath, JsonHelper.ToJson(this));
         }
 
         private void BeginBox()
@@ -71,6 +68,10 @@ namespace EGamePlay.Combat
             {
                 SaveClips();
             }
+            //if (GUILayout.Button("Save Json"))
+            //{
+            //    SaveJson();
+            //}
             GUILayout.Space(10);
             Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
             GUILayout.Space(10);

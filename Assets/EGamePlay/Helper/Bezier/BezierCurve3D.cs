@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
-using LitJson.Extensions;
-//using Unity.Mathematics;
-//using Vector3 = Unity.Mathematics.float3;
-//using Quaternion = Unity.Mathematics.quaternion;
-//using JsonIgnore = System.Runtime.Serialization.IgnoreDataMemberAttribute;
+
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.quaternion;
+using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
+#endif
 
 public static class math
 {

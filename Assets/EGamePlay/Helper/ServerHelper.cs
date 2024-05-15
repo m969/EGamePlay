@@ -2,6 +2,15 @@
 using System.Diagnostics;
 using Sirenix.OdinInspector;
 
+#if EGAMEPLAY_ET
+
+#else
+public class JsonIgnoreAttribute : Attribute
+{
+
+}
+#endif
+
 #if NOT_UNITY
 namespace UnityEngine
 {
