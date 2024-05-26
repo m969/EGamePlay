@@ -101,8 +101,8 @@ namespace EGamePlay
                 }
             }
 
-            SliderRight.value = TrackClipData.GetClipTime().EndTime / TrackClipData.TotalTime;
-            SliderLeft.value = TrackClipData.GetClipTime().StartTime / TrackClipData.TotalTime;
+            SliderRight.value = (float)TrackClipData.GetClipTime().EndTime / (float)TrackClipData.TotalTime;
+            SliderLeft.value = (float)TrackClipData.GetClipTime().StartTime / (float)TrackClipData.TotalTime;
             SetDragEvent();
         }
 

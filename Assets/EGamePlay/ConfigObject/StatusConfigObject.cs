@@ -52,6 +52,7 @@ namespace EGamePlay.Combat
         [HideReferenceObjectPicker]
         public List<Effect> Effects = new List<Effect>();
 
+        [OnInspectorGUI("BeginBox", append: false)]
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect"), JsonIgnore]
         public string EffectTypeName = "(添加效果)";
@@ -88,20 +89,20 @@ namespace EGamePlay.Combat
         }
 
 #if UNITY_EDITOR
-        [OnInspectorGUI("BeginBox", append: false)]
-        [SerializeField, LabelText("自动重命名"), JsonIgnore]
-        public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
-        public static bool AutoRenameStatic = true;
+        //[OnInspectorGUI("BeginBox", append: false)]
+        //[SerializeField, LabelText("自动重命名"), JsonIgnore]
+        //public bool AutoRename { get { return AutoRenameStatic; } set { AutoRenameStatic = value; } }
+        //public static bool AutoRenameStatic { get { return UnityEditor.EditorPrefs.GetBool("AutoRename", true); } set { UnityEditor.EditorPrefs.SetBool("AutoRename", value); } }
 
-        private void OnEnable()
-        {
-            AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
-        }
+        //private void OnEnable()
+        //{
+        //    AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
+        //}
 
-        private void OnDisable()
-        {
-            UnityEditor.EditorPrefs.SetBool("AutoRename", AutoRenameStatic);
-        }
+        //private void OnDisable()
+        //{
+        //    UnityEditor.EditorPrefs.SetBool("AutoRename", AutoRenameStatic);
+        //}
 
         private void DrawSpace()
         {
@@ -117,6 +118,8 @@ namespace EGamePlay.Combat
             //}
         }
 
+#if EGAMEPLAY_ET
+        [Button("Save Json")]
         private void SaveJson()
         {
             var skillConfigFolder = Application.dataPath + "/../../../StatusConfigs";
@@ -124,6 +127,7 @@ namespace EGamePlay.Combat
             Debug.Log("SaveJson" + filePath);
             File.WriteAllText(filePath, JsonHelper.ToJson(this));
         }
+#endif
 
         private void EndBox()
         {
@@ -133,18 +137,18 @@ namespace EGamePlay.Combat
             GUILayout.Space(10);
         }
 
-        [OnInspectorGUI]
-        private void OnInspectorGUI()
-        {
-            if (!AutoRename)
-            {
-                return;
-            }
+        //[OnInspectorGUI]
+        //private void OnInspectorGUI()
+        //{
+        //    if (!AutoRename)
+        //    {
+        //        return;
+        //    }
 
-            RenameFile();
-        }
+        //    RenameFile();
+        //}
 
-        [Button("重命名配置文件"), HideIf("AutoRename")]
+        //[Button("重命名配置文件"), HideIf("AutoRename")]
         private void RenameFile()
         {
             string[] guids = UnityEditor.Selection.assetGUIDs;

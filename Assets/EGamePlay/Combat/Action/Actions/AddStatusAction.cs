@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System;
 using EGamePlay.Combat;
 using ET;
+using GameUtils;
 
 namespace EGamePlay.Combat
 {
@@ -69,6 +70,11 @@ namespace EGamePlay.Combat
             var enabledLogicTrigger = statusConfig.EnabledLogicTrigger();
 #else
             var statusConfig = AddStatusEffect.AddStatus;
+            if (statusConfig == null)
+            {
+                var statusId = AddStatusEffect.AddStatusId;
+                statusConfig = AssetUtils.LoadObject<StatusConfigObject>($"StatusConfigs/Status_{statusId}");
+            }
             var config = StatusConfigCategory.Instance.GetWithIDType(statusConfig.ID);
             var canStack = config.CanStack == "ÊÇ";
             //var enabledLogicTrigger = statusConfig.EnabledLogicTrigger;

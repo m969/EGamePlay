@@ -5,6 +5,11 @@ namespace EGamePlay
 #if !NOT_UNITY
     public static class Log
     {
+        public static void Console(string log)
+        {
+            ET.Log.Debug(log);
+        }
+
         public static void Debug(string log)
         {
             if (log.Contains("OnceWaitTimer")) return;
@@ -27,9 +32,14 @@ namespace EGamePlay
 #else
     public static class Log
     {
+        public static void Console(string log)
+        {
+            ET.Log.Console(log);
+        }
+
         public static void Debug(string log)
         {
-            ET.Log.Debug(log);
+            ET.Log.Console(log);
         }
 
         public static void Error(string log)

@@ -138,7 +138,7 @@ namespace EGamePlay
             CurrentExecutionAssetPath = $"Assets/{assetName}.asset";
 			var excObj = ScriptableObject.CreateInstance<ExecutionObject>();
 			excObj.TotalTime = 1.5f;
-			excObj.Id = i.ToString();
+			excObj.AbilityId = i;
             UnityEditor.AssetDatabase.CreateAsset(excObj, CurrentExecutionAssetPath);
 			SkillListPanel.Instance.RefreshList();
 			LoadCurrentSkill();
@@ -242,7 +242,7 @@ namespace EGamePlay
 
 			CurrentExecutionObject = UnityEditor.AssetDatabase.LoadAssetAtPath<ExecutionObject>(CurrentExecutionAssetPath);
 
-			self.TotalTime = CurrentExecutionObject.TotalTime;
+			self.TotalTime = (float)CurrentExecutionObject.TotalTime;
 
 			foreach (var item in CurrentExecutionObject.ExecuteClips)
             {
@@ -270,58 +270,49 @@ namespace EGamePlay
 
 			DestroyChildren(self.FrameInfosContentTrm);
 
-			var frameCount = (int)(self.TotalTime * 100);
-			for (int i = 0; i < frameCount; i++)
+			if (self.TotalTime > 0)
 			{
-				var frameObj = GameObject.Instantiate(self.FrameTrm, self.FrameInfosContentTrm);
-				if (i % 5 != 0)
-				{
-					var c = frameObj.GetComponent<Image>().color;
-					frameObj.GetComponent<Image>().color = new Color(c.r, c.g, c.b, .5f);
-					var r = frameObj.rectTransform();
-					r.sizeDelta = new Vector2(r.sizeDelta.x, r.sizeDelta.y * 0.4f);
-				}
-				else
-				{
-					if (i % 10 != 0)
-					{
-						var c = frameObj.GetComponent<Image>().color;
-						var r = frameObj.rectTransform();
-						r.sizeDelta = new Vector2(r.sizeDelta.x, r.sizeDelta.y * 0.8f);
-					}
-					else
-					{
-						var textObj = GameObject.Instantiate(self.FrameTextTrm, frameObj.transform);
-						textObj.rectTransform().localPosition = self.FrameTextPos;
-						var milis = i * 10;
-						var secs = milis / 1000;
-						var secs2 = milis % 1000 / 10;
-						textObj.GetComponent<Text>().text = $"{secs}:{secs2.ToString().PadLeft(2, '0')}";
-					}
-				}
-			}
+                var frameCount = (int)(self.TotalTime * 100);
+                for (int i = 0; i < frameCount; i++)
+                {
+                    var frameObj = GameObject.Instantiate(self.FrameTrm, self.FrameInfosContentTrm);
+                    if (i % 5 != 0)
+                    {
+                        var c = frameObj.GetComponent<Image>().color;
+                        frameObj.GetComponent<Image>().color = new Color(c.r, c.g, c.b, .5f);
+                        var r = frameObj.rectTransform();
+                        r.sizeDelta = new Vector2(r.sizeDelta.x, r.sizeDelta.y * 0.4f);
+                    }
+                    else
+                    {
+                        if (i % 10 != 0)
+                        {
+                            var c = frameObj.GetComponent<Image>().color;
+                            var r = frameObj.rectTransform();
+                            r.sizeDelta = new Vector2(r.sizeDelta.x, r.sizeDelta.y * 0.8f);
+                        }
+                        else
+                        {
+                            var textObj = GameObject.Instantiate(self.FrameTextTrm, frameObj.transform);
+                            textObj.rectTransform().localPosition = self.FrameTextPos;
+                            var milis = i * 10;
+                            var secs = milis / 1000;
+                            var secs2 = milis % 1000 / 10;
+                            textObj.GetComponent<Text>().text = $"{secs}:{secs2.ToString().PadLeft(2, '0')}";
+                        }
+                    }
+                }
+            }
 #endif
         }
 
         void LoadCurrentSkillCollisionClip(ExecuteClipData trackClipData)
 		{
 			var self = this;
-			//var cast = self.CurrentSkillConfig;
-			//var execution = "execution";
-			//if (string.IsNullOrEmpty(execution))
-			//{
-			//	return;
-			//}
 			var animTrack = GameObject.Instantiate(self.TrackTrm);
 			animTrack.SetParent(self.TrackListTrm);
 			animTrack.GetComponentInChildren<Text>().text = "collision execute";
-			//var animLength = trackClipData.ExecutionClipData.EndTime;
 
-			//var trackClipData = new TrackClipData();
-			//trackClipData.TrackClipType = TrackClipType.ExecutionClip;
-			//trackClipData.ExecutionClipData = new ExecutionClipData();
-			//trackClipData.ExecutionClipData._StartTime = 0;
-			//trackClipData.ExecutionClipData._EndTime = animLength;
 			trackClipData.TotalTime = self.TotalTime;
 
 			var trackClip = animTrack.GetComponentInChildren<TrackClip>();
@@ -372,7 +363,6 @@ namespace EGamePlay
         void LoadCurrentSkillSound()
 		{
 			var self = this;
-			//var cast = self.CurrentSkillConfig;
 			var sound = "sound";
 			if (string.IsNullOrEmpty(sound))
 			{
@@ -412,8 +402,8 @@ namespace EGamePlay
 
             var trackClip = actionTrack.GetComponentInChildren<TrackClip>();
 
-            trackClip.SliderLeft.value = startTime / self.TotalTime;
-            trackClip.SliderRight.value = startTime / self.TotalTime + 0.01f;
+            trackClip.SliderLeft.value = (float)startTime / self.TotalTime;
+            trackClip.SliderRight.value = (float)startTime / self.TotalTime + 0.01f;
             trackClipData.TotalTime = self.TotalTime;
             trackClip.DisableSlider();
             trackClip.SetClipType(trackClipData);
@@ -430,7 +420,7 @@ namespace EGamePlay
 			SkillTimeImage.fillAmount = 0;
             CurrentTime = 0;
             IsPlaying = true;
-			if (int.TryParse(CurrentExecutionObject.Id, out var skillId) && HeroEntity.IdSkills.TryGetValue(skillId, out var skillAbility))
+			if (CurrentExecutionObject.AbilityId > 0 && HeroEntity.IdSkills.TryGetValue(CurrentExecutionObject.AbilityId, out var skillAbility))
 			{
                 skillAbility.LoadExecution();
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)

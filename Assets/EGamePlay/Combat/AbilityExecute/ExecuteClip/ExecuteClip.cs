@@ -62,12 +62,12 @@ namespace EGamePlay.Combat
             /// 时间到触发执行效果
             if (clipType == ExecuteClipType.ActionEvent)
             {
-                AddComponent<ExecuteTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
+                AddComponent<ExecuteTimeTriggerComponent>().StartTime = (float)ExecutionEffectConfig.StartTime;
             }
             else if (ExecutionEffectConfig.Duration > 0)
             {
-                AddComponent<ExecuteTimeTriggerComponent>().StartTime = ExecutionEffectConfig.StartTime;
-                GetComponent<ExecuteTimeTriggerComponent>().EndTime = ExecutionEffectConfig.EndTime;
+                AddComponent<ExecuteTimeTriggerComponent>().StartTime = (float)ExecutionEffectConfig.StartTime;
+                GetComponent<ExecuteTimeTriggerComponent>().EndTime = (float)ExecutionEffectConfig.EndTime;
             }
         }
 

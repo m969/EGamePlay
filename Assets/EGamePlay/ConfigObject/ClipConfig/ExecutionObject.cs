@@ -28,9 +28,22 @@ namespace EGamePlay.Combat
  : ScriptableObject
 #endif
     {
+        //[DelayedProperty]
+        public int AbilityId;
+
+        [ShowInInspector]
         [DelayedProperty]
-        public string Id;
-        public float TotalTime;
+        [PropertyOrder(-1)]
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+#if !UNITY
+        string name;
+#endif
+
+        public double TotalTime;
         [DelayedProperty, JsonIgnore]
         public GameObject ObjAsset;
         public ExecutionTargetInputType TargetInputType;
@@ -47,12 +60,15 @@ namespace EGamePlay.Combat
         public List<ExecuteClipData> ExecuteClips = new List<ExecuteClipData>();
 
 #if UNITY_EDITOR
+        [Button("Save Clips")]
         private void SaveClips()
         {
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssetIfDirty(this);
         }
 
+#if EGAMEPLAY_ET
+        [Button("Save Json")]
         private void SaveJson()
         {
             var skillConfigFolder = Application.dataPath + "/../../../SkillConfigs/ExecutionConfigs";
@@ -60,6 +76,7 @@ namespace EGamePlay.Combat
             Debug.Log(filePath);
             File.WriteAllText(filePath, JsonHelper.ToJson(this));
         }
+#endif
 
         private void BeginBox()
         {
@@ -68,41 +85,43 @@ namespace EGamePlay.Combat
             {
                 SaveClips();
             }
-            //if (GUILayout.Button("Save Json"))
-            //{
-            //    SaveJson();
-            //}
-            GUILayout.Space(10);
-            Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
-            GUILayout.Space(10);
-        }
-
-        [OnInspectorGUI("BeginBox", append: false)]
-        [SerializeField, LabelText("自动重命名")]
-        public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
-
-        private void OnEnable()
-        {
-            StatusConfigObject.AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
-        }
-
-        private void OnDisable()
-        {
-            UnityEditor.EditorPrefs.SetBool("AutoRename", StatusConfigObject.AutoRenameStatic);
-        }
-
-        [OnInspectorGUI]
-        private void OnInspectorGUI()
-        {
-            if (!AutoRename)
+#if EGAMEPLAY_ET
+            if (GUILayout.Button("Save Json"))
             {
-                return;
+                SaveJson();
             }
-
-            RenameFile();
+#endif
+            //GUILayout.Space(10);
+            //Sirenix.Utilities.Editor.SirenixEditorGUI.DrawThickHorizontalSeparator();
+            //GUILayout.Space(10);
         }
 
-        [Button("重命名配置文件"), HideIf("AutoRename")]
+        //[OnInspectorGUI("BeginBox", append: false)]
+        //[SerializeField, LabelText("自动重命名")]
+        //public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
+
+        //private void OnEnable()
+        //{
+        //    StatusConfigObject.AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
+        //}
+
+        //private void OnDisable()
+        //{
+        //    UnityEditor.EditorPrefs.SetBool("AutoRename", StatusConfigObject.AutoRenameStatic);
+        //}
+
+        //[OnInspectorGUI]
+        //private void OnInspectorGUI()
+        //{
+        //    if (!AutoRename)
+        //    {
+        //        return;
+        //    }
+
+        //    RenameFile();
+        //}
+
+        //[Button("重命名配置文件"), HideIf("AutoRename")]
         private void RenameFile()
         {
             string[] guids = UnityEditor.Selection.assetGUIDs;
@@ -117,7 +136,7 @@ namespace EGamePlay.Combat
                     return;
                 }
                 var fileName = System.IO.Path.GetFileName(assetPath);
-                var newName = $"Execution_{this.Id}";
+                var newName = $"Execution_{this.AbilityId}";
                 if (!fileName.StartsWith(newName))
                 {
                     UnityEditor.AssetDatabase.RenameAsset(assetPath, newName);

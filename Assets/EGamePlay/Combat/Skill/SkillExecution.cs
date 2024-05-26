@@ -46,14 +46,14 @@ namespace EGamePlay.Combat
             //    return;
             //}
 
-            var nowTicks = TimeHelper.ClientNow() - OriginTime;
-            var nowSeconds = nowTicks / 1000f;
-            //Log.Debug($"SkillExecution Update {TimeHelper.Now()} {OriginTime}");
-            //Log.Debug($"SkillExecution Update {nowTicks} {nowSeconds} > {ExecutionObject.TotalTime}");
-
-            if (nowSeconds >= ExecutionObject.TotalTime)
+            if (ExecutionObject.TotalTime > 0)
             {
-                EndExecute();
+                var nowTicks = TimeHelper.ClientNow() - OriginTime;
+                var nowSeconds = nowTicks / 1000f;
+                if (nowSeconds >= ExecutionObject.TotalTime)
+                {
+                    EndExecute();
+                }
             }
         }
 

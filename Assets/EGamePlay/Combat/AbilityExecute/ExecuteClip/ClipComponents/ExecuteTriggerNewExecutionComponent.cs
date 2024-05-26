@@ -22,7 +22,7 @@ namespace EGamePlay.Combat
 
         public void OnTriggerExecutionEffect(ExecuteEffectEvent evnt)
         {
-            var executionObject = AssetUtils.LoadObject<ExecutionObject>(ActionEventData.NewExecution);
+            var executionObject = AssetUtils.LoadObject<ExecutionObject>("SkillConfigs/ExecutionConfigs/" + ActionEventData.NewExecution);
             if (executionObject == null)
             {
                 return;

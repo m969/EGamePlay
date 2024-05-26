@@ -33,6 +33,20 @@ namespace EGamePlay.Combat
         [LabelText("状态配置"), JsonIgnore]
         public StatusConfigObject AddStatus;
 
+        private string addStatusId;
+        public string AddStatusId
+        {
+            get
+            {
+                if (this.AddStatus != null) return AddStatus.ID;
+                return addStatusId;
+            }
+            set
+            {
+                addStatusId = value;
+            }
+        }
+
         public StatusConfig AddStatusConfig { get; set; }
 
         [ToggleGroup("Enabled"), LabelText("持续时间"), SuffixLabel("毫秒", true)]

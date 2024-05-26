@@ -43,6 +43,7 @@ namespace EGamePlay.Combat
         {
             var numeric = Entity.AddChild<FloatNumeric>();
             numeric.Name = attributeType.ToString();
+            numeric.AttributeType = attributeType;
             numeric.SetBase(baseValue);
             attributeNameNumerics.Add(attributeType.ToString(), numeric);
             return numeric;
@@ -57,6 +58,12 @@ namespace EGamePlay.Combat
         {
             attributeUpdateEvent.Numeric = numeric;
             Entity.Publish(attributeUpdateEvent);
+#if EGAMEPLAY_ET
+            if (GetEntity<CombatEntity>().Unit != null)
+            {
+                AOGame.PublishServer(new UnitAttributeNumericChanged() { Unit = GetEntity<CombatEntity>().Unit, AttributeNumeric = numeric });
+            }
+#endif
         }
-	}
+    }
 }

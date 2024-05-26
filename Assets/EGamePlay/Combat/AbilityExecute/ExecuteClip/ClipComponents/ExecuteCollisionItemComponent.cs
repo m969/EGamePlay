@@ -39,7 +39,9 @@ namespace EGamePlay.Combat
             if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.ForwardFly) abilityItem.ForwardFlyProcess(Entity.GetParent<SkillExecution>().InputDirection);
             if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedPosition) abilityItem.FixedPositionProcess(Entity.GetParent<SkillExecution>().InputPoint);
             if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirection) abilityItem.FixedDirectionProcess();
-            //abilityItem.AddCollisionComponent();
+#if EGAMEPLAY_ET
+            abilityItem.AddCollisionComponent();
+#endif
 
 #if UNITY
             abilityItem.CreateAbilityItemProxyObj();

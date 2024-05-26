@@ -56,6 +56,11 @@ namespace EGamePlay.Combat
         public override void OnDestroy()
         {
             //Log.Debug("AbilityItem OnDestroy");
+            var clipData = GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
+            if (clipData.ExecuteClipType == ExecuteClipType.CollisionExecute && clipData.CollisionExecuteData.ActionData.FireType == FireType.EndTrigger)
+            {
+                OnCollision(null);
+            }
         }
 
         public void OnCollision(CombatEntity otherCombatEntity)
@@ -112,7 +117,7 @@ namespace EGamePlay.Combat
         public void OnTriggerNewExecution(ActionEventData ActionEventData)
         {
             Log.Debug($"AbilityItem OnTriggerNewExecution");
-            var executionObject = AssetUtils.LoadObject<ExecutionObject>(ActionEventData.NewExecution);
+            var executionObject = AssetUtils.LoadObject<ExecutionObject>("SkillConfigs/ExecutionConfigs/" + ActionEventData.NewExecution);
             if (executionObject == null)
             {
                 Log.Error($"Can not find {ActionEventData.NewExecution}");
@@ -125,10 +130,6 @@ namespace EGamePlay.Combat
             execution.InputPoint = Position;
             execution.LoadExecutionEffects();
             execution.BeginExecute();
-            //if (executionObject != null)
-            //{
-            //    execution.AddComponent<UpdateComponent>();
-            //}
         }
 
         /// <summary>   目标飞行碰撞体     </summary>
@@ -240,6 +241,52 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
         }
 
+#if EGAMEPLAY_ET
+        /// <summary>   创建技能碰撞体     </summary>
+        public ItemUnit AddCollisionComponent()
+        {
+            var abilityItem = this;
+            var scene = AbilityExecution.OwnerEntity.Unit.GetParent<Scene>();
+            var itemUnit = scene.AddChild<ItemUnit>();
+            itemUnit.OwnerUnit = AbilityExecution.OwnerEntity.Unit;
+            itemUnit.AbilityItem = abilityItem;
+            itemUnit.Position = abilityItem.Position;
+            itemUnit.Name = (abilityItem.AbilityExecution as SkillExecution).ExecutionObject.Name;
+            //ET.Log.Console($"AddCollisionComponent itemUnit={itemUnit.Name}");
+            itemUnit.AddComponent<UnitLifeTimeComponent, float>(abilityItem.GetComponent<LifeTimeComponent>().LifeTimer.MaxTime);
+            abilityItem.ItemUnit = itemUnit;
+            if (AbilityEntity != null && AbilityEntity.As<SkillAbility>().SkillConfig != null)
+            {
+                itemUnit.ConfigId = AbilityEntity.As<SkillAbility>().SkillConfig.Id;
+            }
+            itemUnit.AddComponent<UnitCollisionComponent>().Radius = 2;
+            var moveComp = abilityItem.GetComponent<AbilityItemPathMoveComponent>();
+            if (moveComp != null)
+            {
+                itemUnit.AddComponent<UnitTranslateComponent>();
+                itemUnit.AddComponent<UnitPathMoveComponent>();
+                var points = moveComp.GetPathPoints();
+                itemUnit.GetComponent<UnitPathMoveComponent>().Speed = moveComp.Speed;
+                itemUnit.GetComponent<UnitPathMoveComponent>().PathPoints = points.ToList();
+                var lifeTime = abilityItem.GetComponent<LifeTimeComponent>().LifeTimer.MaxTime * 1000;
+                AOGame.PublishServer(new PublishNewUnitEvent() { Unit = itemUnit.MapUnit() });
+#if UNITY
+                AOGame.Publish(new CreateUnit() { MapUnit = itemUnit, IsMainAvatar = false });
+#endif
+                AOGame.Publish(new UnitPathMoveEvent() { Unit = itemUnit.MapUnit(), PathPoints = points, ArriveTime = (long)(TimeHelper.ServerNow() + lifeTime) });
+            }
+            else
+            {
+#if UNITY
+                AOGame.Publish(new CreateUnit() { MapUnit = itemUnit, IsMainAvatar = false });
+#endif
+                AOGame.PublishServer(new PublishNewUnitEvent() { Unit = itemUnit.MapUnit() });
+            }
+            return itemUnit;
+        }
+#endif
+
+#if UNITY
         /// <summary>   创建技能碰撞体     </summary>
         public GameObject CreateAbilityItemProxyObj()
         {
@@ -253,7 +300,7 @@ namespace EGamePlay.Combat
             if (clipData.Shape == CollisionShape.Sphere)
             {
                 proxyObj.AddComponent<SphereCollider>().enabled = false;
-                proxyObj.GetComponent<SphereCollider>().radius = clipData.Radius;
+                proxyObj.GetComponent<SphereCollider>().radius = (float)clipData.Radius;
             }
             if (clipData.Shape == CollisionShape.Box)
             {
@@ -279,5 +326,6 @@ namespace EGamePlay.Combat
 
             return proxyObj;
         }
+#endif
     }
 }

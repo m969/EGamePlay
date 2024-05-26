@@ -19,9 +19,9 @@ namespace EGamePlay
          : ScriptableObject
 #endif
     {
-        public float TotalTime { get; set; }
-        public float StartTime;
-        public float EndTime;
+        public double TotalTime { get; set; }
+        public double StartTime;
+        public double EndTime;
 
         [ShowInInspector]
         [DelayedProperty]
@@ -60,7 +60,7 @@ namespace EGamePlay
         public ParticleEffectData ParticleEffectData;
 #endif
 
-        public float Duration { get => (EndTime - StartTime); }
+        public float Duration { get => (float)(EndTime - StartTime); }
 
         public ExecuteClipData GetClipTime()
         {
@@ -137,7 +137,7 @@ namespace EGamePlay
         [Space(10)]
         public CollisionShape Shape;
         [ShowIf("Shape", CollisionShape.Sphere), LabelText("°ë¾¶")]
-        public float Radius;
+        public double Radius;
 
         [ShowIf("Shape", CollisionShape.Box)]
         public Vector3 Center;
@@ -150,7 +150,7 @@ namespace EGamePlay
         public GameObject ObjAsset;
 
         [ShowIf("ShowSpeed")]
-        public float Speed = 1;
+        public double Speed = 1;
         public bool ShowSpeed { get => MoveType != CollisionMoveType.SelectedPosition && MoveType != CollisionMoveType.SelectedDirection; }
         public bool ShowPoints { get => MoveType == CollisionMoveType.PathFly || MoveType == CollisionMoveType.SelectedDirectionPathFly; }
         [ShowIf("ShowPoints")]
