@@ -450,7 +450,7 @@ namespace EGamePlay
                     execution.InputTarget = BossEntity;
                     execution.LoadExecutionEffects();
                     execution.BeginExecute();
-                    execution.AddComponent<UpdateComponent>();
+                    //execution.AddComponent<UpdateComponent>();
                 }
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Point)
                 {
@@ -459,7 +459,7 @@ namespace EGamePlay
                     execution.InputPoint = BossEntity.Position;
                     execution.LoadExecutionEffects();
                     execution.BeginExecute();
-                    execution.AddComponent<UpdateComponent>();
+                    //execution.AddComponent<UpdateComponent>();
                 }
             }
 //#endif
