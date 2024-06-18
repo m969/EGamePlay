@@ -26,7 +26,7 @@ namespace EGamePlay.Combat
         public ICombatObserver Observer;
         public Entity Source;
         public AbilityItem AbilityItem;
-        public CombatEntity Target;
+        public Entity Target;
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ namespace EGamePlay.Combat
         public bool Enable { get; set; }
         public Entity OwnerAbility => Parent;
         public CombatEntity OwnerEntity => (OwnerAbility as IAbilityEntity).OwnerEntity;
-        public CombatEntity ParentEntity => (OwnerAbility as IAbilityEntity).ParentEntity;
+        public Entity ParentEntity => (OwnerAbility as IAbilityEntity).ParentEntity;
         public Effect EffectConfig { get; set; }
         public string ConditionParamValue { get; set; }
         //public EffectSourceType EffectSourceType { get; set; }
@@ -59,6 +59,8 @@ namespace EGamePlay.Combat
             if (this.EffectConfig is DamageEffect) AddComponent<EffectDamageComponent>();
             /// 治疗效果
             if (this.EffectConfig is CureEffect) AddComponent<EffectCureComponent>();
+            /// 光盾防御效果
+            if (this.EffectConfig is ShieldDefenseEffect) AddComponent<EffectShieldDefenseComponent>();
             /// 施加状态效果
             if (this.EffectConfig is AddStatusEffect) AddComponent<EffectAddStatusComponent>();
             /// 自定义效果
@@ -77,9 +79,12 @@ namespace EGamePlay.Combat
         {
             //Log.Debug("EnableEffect");
             Enable = true;
-            foreach (var item in Components.Values)
+            if (EffectConfig.EffectTriggerType != EffectTriggerType.None)
             {
-                item.Enable = true;
+                foreach (var item in Components.Values)
+                {
+                    item.Enable = true;
+                }
             }
 
             //var triggable = !(this.EffectConfig is ActionControlEffect) && !(this.EffectConfig is AttributeModifyEffect);

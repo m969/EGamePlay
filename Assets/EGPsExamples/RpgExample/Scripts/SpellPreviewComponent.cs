@@ -20,48 +20,54 @@ public class SpellPreviewComponent : EGamePlay.Component
 
     public override void Update()
     {
+        var abilityComp = OwnerEntity.GetComponent<AbilityComponent>();
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Cursor.visible = false;
-            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.Q];
+            PreviewingSkill = abilityComp.InputSkills[KeyCode.Q];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             Cursor.visible = false;
-            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.W];
+            PreviewingSkill = abilityComp.InputSkills[KeyCode.W];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             Cursor.visible = false;
-            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.E];
+            PreviewingSkill = abilityComp.InputSkills[KeyCode.E];
             EnterPreview();
         }
 #if !EGAMEPLAY_EXCEL
         if (Input.GetKeyDown(KeyCode.R))
         {
             Cursor.visible = false;
-            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.R];
+            PreviewingSkill = abilityComp.InputSkills[KeyCode.R];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
             Cursor.visible = false;
-            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.T];
+            PreviewingSkill = abilityComp.InputSkills[KeyCode.T];
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.Y];
+            PreviewingSkill = abilityComp.InputSkills[KeyCode.Y];
             //SpellComp.SpellWithTarget(PreviewingSkill, PreviewingSkill.OwnerEntity);
             EnterPreview();
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
             Cursor.visible = false;
-            PreviewingSkill = OwnerEntity.InputSkills[KeyCode.A];
+            PreviewingSkill = abilityComp.InputSkills[KeyCode.A];
             EnterPreview();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            PreviewingSkill = abilityComp.InputSkills[KeyCode.S];
+            OnSelectedSelf();
         }
 #endif
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
@@ -116,6 +122,12 @@ public class SpellPreviewComponent : EGamePlay.Component
         DirectRectSelectManager.Instance?.Hide();
     }
 
+    private void OnSelectedSelf()
+    {
+        CombatEntity combatEntity = Hero.Instance.CombatEntity; ;
+        SpellComponent.SpellWithTarget(PreviewingSkill, combatEntity);
+    }
+
     private void OnSelectedTarget(GameObject selectObject)
     {
         CancelPreview();
@@ -126,7 +138,7 @@ public class SpellPreviewComponent : EGamePlay.Component
         //Hero.Instance.DisableMove();
         SpellComponent.SpellWithTarget(PreviewingSkill, combatEntity);
     }
-    
+
     private void OnInputPoint(Vector3 point)
     {
         //OwnerEntity.ModelTrans.localRotation = Quaternion.LookRotation(point - OwnerEntity.ModelTrans.position);

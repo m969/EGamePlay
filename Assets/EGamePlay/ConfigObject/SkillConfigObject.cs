@@ -43,16 +43,16 @@ namespace EGamePlay.Combat
         [LabelText("目标选取类型"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillTargetSelectType TargetSelectType;
 
-        [HideInInspector]
-        [LabelText("附加状态效果")]
-        public bool EnableChildrenStatuses;
-        [HideReferenceObjectPicker]
-        [LabelText("附加状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false, CustomAddFunction = "AddChildStatus")]
-        public List<ChildStatus> ChildrenStatuses = new List<ChildStatus>();
-        private void AddChildStatus()
-        {
-            ChildrenStatuses.Add(new ChildStatus());
-        }
+        //[HideInInspector]
+        //[LabelText("附加状态效果")]
+        //public bool EnableChildrenStatuses;
+        //[HideReferenceObjectPicker]
+        //[LabelText("附加状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false, CustomAddFunction = "AddChildStatus")]
+        //public List<ChildStatus> ChildrenStatuses = new List<ChildStatus>();
+        //private void AddChildStatus()
+        //{
+        //    ChildrenStatuses.Add(new ChildStatus());
+        //}
 
         [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = true, ShowItemCount = false, HideAddButton = true)]
@@ -98,20 +98,6 @@ namespace EGamePlay.Combat
         }
 
 #if UNITY_EDITOR
-        //[OnInspectorGUI("BeginBox", append: false)]
-        //[SerializeField, LabelText("自动重命名"), JsonIgnore]
-        //public bool AutoRename { get { return StatusConfigObject.AutoRenameStatic; } set { StatusConfigObject.AutoRenameStatic = value; } }
-
-        //private void OnEnable()
-        //{
-        //    StatusConfigObject.AutoRenameStatic = UnityEditor.EditorPrefs.GetBool("AutoRename", true);
-        //}
-          
-        //private void OnDisable()
-        //{
-        //    UnityEditor.EditorPrefs.SetBool("AutoRename", StatusConfigObject.AutoRenameStatic);
-        //}
-
         private void DrawSpace()
         {
             GUILayout.Space(20);
@@ -142,18 +128,6 @@ namespace EGamePlay.Combat
             GUILayout.Space(30);
         }
 
-        //[OnInspectorGUI]
-        //private void OnInspectorGUI()
-        //{
-        //    if (!AutoRename)
-        //    {
-        //        return;
-        //    }
-
-        //    RenameFile();
-        //}
-
-        //[Button("重命名配置文件"), HideIf("AutoRename")]
         private void RenameFile()
         {
             string[] guids = UnityEditor.Selection.assetGUIDs;

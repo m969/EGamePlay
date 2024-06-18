@@ -12,7 +12,7 @@ public class EGamePlayInit : SerializedMonoBehaviour
     public ReferenceCollector ConfigsCollector;
     public bool EntityLog;
 
-
+#if !EGAMEPLAY_ET
     private void Awake()
     {
         Instance = this;
@@ -35,5 +35,6 @@ public class EGamePlayInit : SerializedMonoBehaviour
     {
         MasterEntity.Destroy();
     }
+#endif
 }
 #endif

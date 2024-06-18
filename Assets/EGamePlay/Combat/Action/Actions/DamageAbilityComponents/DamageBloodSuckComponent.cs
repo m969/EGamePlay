@@ -20,15 +20,18 @@ namespace EGamePlay.Combat
         private void OnCauseDamage(Entity action)
         {
             var damageAction = action as DamageAction;
-            var value = damageAction.DamageValue * 0.2f;
-            var combatEntity = Entity.GetParent<CombatEntity>();
-            if (combatEntity.CureAbility.TryMakeAction(out var cureAction))
+            if (damageAction.Target is CombatEntity target)
             {
-                cureAction.Creator = combatEntity;
-                cureAction.Target = combatEntity;
-                cureAction.CureValue = (int)value;
-                cureAction.SourceAssignAction = null;
-                cureAction.ApplyCure();
+                var value = damageAction.DamageValue * 0.2f;
+                var combatEntity = Entity.GetParent<CombatEntity>();
+                if (combatEntity.CureAbility.TryMakeAction(out var cureAction))
+                {
+                    cureAction.Creator = combatEntity;
+                    cureAction.Target = combatEntity;
+                    cureAction.CureValue = (int)value;
+                    cureAction.SourceAssignAction = null;
+                    cureAction.ApplyCure();
+                }
             }
         }
     }

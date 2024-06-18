@@ -1,4 +1,9 @@
 ﻿using System.Collections.Generic;
+#if EGAMEPLAY_ET
+using AO;
+using AO.EventType;
+using ET.EventType;
+#endif
 
 namespace EGamePlay.Combat
 {
@@ -8,7 +13,7 @@ namespace EGamePlay.Combat
     /// 战斗属性数值组件，在这里管理角色所有战斗属性数值的存储、变更、刷新等
     /// </summary>
     public class AttributeComponent : Component
-	{
+    {
         private readonly Dictionary<string, FloatNumeric> attributeNameNumerics = new Dictionary<string, FloatNumeric>();
         //private readonly Dictionary<AttributeType, FloatNumeric> attributeTypeNumerics = new Dictionary<AttributeType, FloatNumeric>();
         private readonly AttributeUpdateEvent attributeUpdateEvent = new AttributeUpdateEvent();
@@ -25,10 +30,10 @@ namespace EGamePlay.Combat
 
         public override void Awake()
         {
-            Initialize();
+
         }
 
-        public void Initialize()
+        public void InitializeCharacter()
         {
             AddNumeric(AttributeType.HealthPointMax, 99_999);
             AddNumeric(AttributeType.HealthPoint, 99_999);
@@ -37,6 +42,13 @@ namespace EGamePlay.Combat
             AddNumeric(AttributeType.Defense, 300);
             AddNumeric(AttributeType.CriticalProbability, 0.5f);
             AddNumeric(AttributeType.CauseDamage, 1);
+        }
+
+        public void InitializeAbilityItem()
+        {
+            AddNumeric(AttributeType.HealthPointMax, 9000);
+            AddNumeric(AttributeType.HealthPoint, 9000);
+            AddNumeric(AttributeType.Defense, 300);
         }
 
         public FloatNumeric AddNumeric(AttributeType attributeType, float baseValue)
@@ -49,6 +61,11 @@ namespace EGamePlay.Combat
             return numeric;
         }
 
+        public FloatNumeric GetNumeric(AttributeType attributeType)
+        {
+            return attributeNameNumerics[attributeType.ToString()];
+        }
+
         public FloatNumeric GetNumeric(string attributeName)
         {
             return attributeNameNumerics[attributeName];
@@ -59,9 +76,13 @@ namespace EGamePlay.Combat
             attributeUpdateEvent.Numeric = numeric;
             Entity.Publish(attributeUpdateEvent);
 #if EGAMEPLAY_ET
-            if (GetEntity<CombatEntity>().Unit != null)
+            if (Entity.GetComponent<CombatUnitComponent>() != null)
             {
-                AOGame.PublishServer(new UnitAttributeNumericChanged() { Unit = GetEntity<CombatEntity>().Unit, AttributeNumeric = numeric });
+                var unit = Entity.GetComponent<CombatUnitComponent>().Unit;
+                if (unit != null)
+                {
+                    AOGame.PublishServer(new UnitAttributeNumericChanged() { Unit = unit, AttributeNumeric = numeric });
+                }
             }
 #endif
         }

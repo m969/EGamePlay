@@ -46,7 +46,7 @@ namespace EGamePlay.Combat
         /// 行动实体
         public CombatEntity Creator { get; set; }
         /// 目标对象
-        public CombatEntity Target { get; set; }
+        public Entity Target { get; set; }
         /// 赋给目标
         public Entity AssignTarget { get; set; }
         /// 触发上下文
@@ -58,24 +58,14 @@ namespace EGamePlay.Combat
         {
             if (Target == null)
             {
-                if (AssignTarget is CombatEntity combatEntity)
-                {
-                    Target = combatEntity;
-                }
-                if (AssignTarget is IActionExecute actionExecute)
-                {
-                    Target = actionExecute.Target;
-                }
-                if (AssignTarget is SkillExecution skillExecution)
-                {
-                    Target = skillExecution.InputTarget;
-                }
+                Target = AssignTarget;
+                if (AssignTarget is IActionExecute actionExecute) Target = actionExecute.Target;
+                if (AssignTarget is SkillExecution skillExecution) Target = skillExecution.InputTarget;
             }
         }
 
         public void AssignEffect()
         {
-            //Log.Debug($"ApplyEffectAssign {EffectConfig}");
             PreProcess();
 
             foreach (var item in AbilityEffect.Components.Values)
@@ -95,7 +85,10 @@ namespace EGamePlay.Combat
         private void PostProcess()
         {
             Creator.TriggerActionPoint(ActionPointType.AssignEffect, this);
-            Target.TriggerActionPoint(ActionPointType.ReceiveEffect, this);
+            if (!Target.IsDisposed)
+            {
+                Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.ReceiveEffect, this);
+            }
 
             var decorators = AbilityEffect.EffectConfig.Decorators;
             if (decorators != null)

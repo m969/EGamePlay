@@ -36,7 +36,6 @@ namespace EGamePlay.Combat
             if (TryGet(out AbilityProbabilityTriggerComponent probabilityTriggerComponent))
             {
                 var r = GameUtils.RandomHelper.RandomNumber(0, 10000);
-                //Log.Debug($"IsAbilityEffectTrigger {r} < {probabilityTriggerComponent.Probability}");
                 return r < probabilityTriggerComponent.Probability;
             }
             return false;
@@ -44,7 +43,6 @@ namespace EGamePlay.Combat
 
         public void TryBlock(Entity action)
         {
-            //Log.Debug($"TryBlock");
             if (IsAbilityEffectTrigger())
             {
                 if (TryMakeAction(out var attackBlockAction))
@@ -69,7 +67,7 @@ namespace EGamePlay.Combat
         /// 行动实体
         public CombatEntity Creator { get; set; }
         /// 目标对象
-        public CombatEntity Target { get; set; }
+        public Entity Target { get; set; }
         public AttackExecution AttackExecution { get; set; }
 
 

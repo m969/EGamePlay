@@ -4,6 +4,9 @@ using UnityEngine;
 using EGamePlay;
 using EGamePlay.Combat;
 using ET;
+#if EGAMEPLAY_ET
+using Vector3 = Unity.Mathematics.float3;
+#endif
 
 namespace EGamePlay.Combat
 {
@@ -40,6 +43,7 @@ namespace EGamePlay.Combat
         public CombatEntity InputTarget { get; set; }
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
+        public ETTask Task { get; set; }
 
         /// 行动能力
         public Entity ActionAbility { get; set; }
@@ -48,7 +52,7 @@ namespace EGamePlay.Combat
         /// 行动实体
         public CombatEntity Creator { get; set; }
         /// 目标对象
-        public CombatEntity Target { get; set; }
+        public Entity Target { get; set; }
 
 
         public void FinishAction()
@@ -59,7 +63,6 @@ namespace EGamePlay.Combat
         //前置处理
         private void PreProcess()
         {
-            //Creator.Get<MotionComponent>().Enable = false;
             Creator.TriggerActionPoint(ActionPointType.PreSpell, this);
         }
 
@@ -72,12 +75,19 @@ namespace EGamePlay.Combat
             {
                 SkillExecution.SkillTargets.AddRange(SkillTargets);
             }
-            SkillExecution.ActionOccupy = actionOccupy;
+            if (SkillAbility.SkillConfig.Id != 2001)
+            {
+                SkillExecution.ActionOccupy = actionOccupy;
+            }
             SkillExecution.InputTarget = InputTarget;
             SkillExecution.InputPoint = InputPoint;
             SkillExecution.InputDirection = InputDirection;
             SkillExecution.BeginExecute();
             AddComponent<UpdateComponent>();
+            if (SkillAbility.SkillConfig.Id == 2001)
+            {
+                SkillExecution.GetParent<CombatEntity>().SpellingExecution = null;
+            }
         }
 
         public override void Update()

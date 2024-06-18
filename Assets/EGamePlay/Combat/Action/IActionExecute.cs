@@ -32,11 +32,11 @@ namespace EGamePlay.Combat
         public Entity ActionAbility { get; set; }
         /// 效果赋给行动源
         public EffectAssignAction SourceAssignAction { get; set; }
+
         /// 行动实体
         public CombatEntity Creator { get; set; }
         /// 目标对象
-        public CombatEntity Target { get; set; }
-
+        public Entity Target { get; set; }
 
         //public void FinishAction();
         //public void PreProcess();

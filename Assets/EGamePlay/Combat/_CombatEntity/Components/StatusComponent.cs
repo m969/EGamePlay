@@ -6,15 +6,15 @@ namespace EGamePlay.Combat
     /// 
     /// </summary>
     public class StatusComponent : Component
-	{
-        public CombatEntity CombatEntity => GetEntity<CombatEntity>();
+    {
+        //public CombatEntity CombatEntity => GetEntity<CombatEntity>();
         public List<StatusAbility> Statuses { get; set; } = new List<StatusAbility>();
         public Dictionary<string, List<StatusAbility>> TypeIdStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
 
 
         public StatusAbility AttachStatus(object configObject)
         {
-            var statusAbility = CombatEntity.AttachAbility<StatusAbility>(configObject);
+            var statusAbility = Entity.GetComponent<AbilityComponent>().AttachAbility<StatusAbility>(configObject);
             var statusConfigID = statusAbility.StatusConfig.ID;
             if (!TypeIdStatuses.ContainsKey(statusConfigID))
             {
@@ -23,6 +23,16 @@ namespace EGamePlay.Combat
             TypeIdStatuses[statusConfigID].Add(statusAbility);
             Statuses.Add(statusAbility);
             return statusAbility;
+        }
+
+        public bool HasStatus(string statusTypeId)
+        {
+            return TypeIdStatuses.ContainsKey(statusTypeId);
+        }
+
+        public StatusAbility GetStatus(string statusTypeId)
+        {
+            return TypeIdStatuses[statusTypeId][0];
         }
 
         public void OnStatusRemove(StatusAbility statusAbility)
@@ -34,7 +44,7 @@ namespace EGamePlay.Combat
                 TypeIdStatuses.Remove(statusConfigID);
             }
             Statuses.Remove(statusAbility);
-            this.Publish(new RemoveStatusEvent() { CombatEntity = CombatEntity, Status = statusAbility, StatusId = statusAbility.Id });
+            this.Publish(new RemoveStatusEvent() { Entity = this.Entity, Status = statusAbility, StatusId = statusAbility.Id });
         }
 
         public void OnAddStatus(StatusAbility statusAbility)
@@ -49,12 +59,12 @@ namespace EGamePlay.Combat
 
         public void OnStatusesChanged(StatusAbility statusAbility)
         {
-            var parentEntity = CombatEntity;
+            var parentEntity = statusAbility.ParentEntity;
 
             var tempActionControl = ActionControlType.None;
             //var statuses = CombatEntity.GetTypeChildren<StatusAbility>();
             //Log.Debug($"OnStatusesChanged {statuses.Length}");
-            foreach (var item in CombatEntity.GetTypeChildren<StatusAbility>())
+            foreach (var item in parentEntity.GetTypeChildren<StatusAbility>())
             {
                 if (!item.Enable)
                 {
@@ -70,10 +80,12 @@ namespace EGamePlay.Combat
                 }
             }
 
-            parentEntity.ActionControlType = tempActionControl;
-            var moveForbid = parentEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid);
-            parentEntity.GetComponent<MotionComponent>().Enable = !moveForbid;
-            //Log.Debug($"OnStatusesChanged {tempActionControl} moveForbid={moveForbid}");
+            if (parentEntity is CombatEntity combatEntity)
+            {
+                combatEntity.ActionControlType = tempActionControl;
+                var moveForbid = combatEntity.ActionControlType.HasFlag(ActionControlType.MoveForbid);
+                combatEntity.GetComponent<MotionComponent>().Enable = !moveForbid;
+            }
         }
-	}
+    }
 }

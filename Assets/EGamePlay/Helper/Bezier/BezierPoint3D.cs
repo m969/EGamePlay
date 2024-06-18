@@ -58,7 +58,7 @@ namespace NaughtyBezierCurves
             get
             {
                 if (curve == null) return Vector3.zero;
-                return this.curve.Position;
+                return this.curve.OriginPosition;
             }
         }
 

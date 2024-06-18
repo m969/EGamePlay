@@ -57,7 +57,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  SkillAssetFolder: Assets/EGPsExamples/RpgExample/Resources/SkillConfigs
-  StatusAssetFolder: Assets/EGPsExamples/RpgExample/Resources/StatusConfigs
-  SkillExecutionAssetFolder: Assets/EGPsExamples/RpgExample/Resources
-  StatusExecutionAssetFolder: Assets/EGPsExamples/RpgExample/Resources
+  SkillAssetFolder: Assets/EGPsExamples/Resources/SkillConfigs
+  StatusAssetFolder: Assets/EGPsExamples/Resources/StatusConfigs
+  SkillExecutionAssetFolder: Assets/EGPsExamples/Resources
+  StatusExecutionAssetFolder: Assets/EGPsExamples/Resources

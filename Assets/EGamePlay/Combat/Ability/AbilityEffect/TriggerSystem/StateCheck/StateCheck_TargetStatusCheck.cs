@@ -28,7 +28,7 @@ namespace EGamePlay.Combat
                 target = combatAction.Target;
             }
             var battler = target as CombatEntity;
-            if (battler.HasStatus(""))
+            if (battler.GetComponent<StatusComponent>().HasStatus(""))
             {
                 Log.Debug($"ConditionTargetStateCheck CheckCondition {battler.Name} true");
                 return true;

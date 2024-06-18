@@ -9,7 +9,7 @@ using ET;
 
 public class TurnCombatObject : MonoBehaviour
 {
-    public CombatEntity CombatEntity { get; set; } 
+    public CombatEntity CombatEntity { get; set; }
     public Vector3 SeatPoint { get; set; }
     public CombatObjectData CombatObjectData { get; set; }
     public AnimationComponent AnimationComponent => CombatObjectData.AnimationComponent;
@@ -48,7 +48,8 @@ public class TurnCombatObject : MonoBehaviour
     public void OnPreJumpTo(Entity action)
     {
         var jumpToAction = action as JumpToAction;
-        var targetPoint = jumpToAction.Target.HeroObject.transform.position + jumpToAction.Target.HeroObject.transform.forward * 1.7f;
+        var target = jumpToAction.Target as CombatEntity;
+        var targetPoint = target.HeroObject.transform.position + target.HeroObject.transform.forward * 1.7f;
         jumpToAction.Creator.HeroObject.transform.DOMove(targetPoint, jumpToAction.Creator.JumpToTime / 1000f).SetEase(Ease.Linear);
         var AnimationComponent = jumpToAction.Creator.HeroObject.GetComponent<CombatObjectData>().AnimationComponent;
         AnimationComponent.Speed = 2f;
@@ -77,13 +78,13 @@ public class TurnCombatObject : MonoBehaviour
     private void OnReceiveDamage(Entity combatAction)
     {
         AnimationComponent.Speed = 1f;
-        if (CombatEntity.CheckDead() == false)
+        if (CombatEntity.GetComponent<HealthPointComponent>().CheckDead() == false)
         {
             PlayThenIdleAsync(AnimationComponent.DamageAnimation).Coroutine();
         }
 
         var damageAction = combatAction as DamageAction;
-        CombatObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        CombatObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.ToPercent();
         var damageText = GameObject.Instantiate(CombatObjectData.DamageText);
         damageText.transform.SetParent(CombatObjectData.CanvasTrm);
         damageText.transform.localPosition = Vector3.up * 120;
@@ -104,7 +105,7 @@ public class TurnCombatObject : MonoBehaviour
     private void OnReceiveCure(Entity combatAction)
     {
         var action = combatAction as CureAction;
-        CombatObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.Percent();
+        CombatObjectData.HealthBarImage.fillAmount = CombatEntity.CurrentHealth.ToPercent();
 
         var cureText = GameObject.Instantiate(CombatObjectData.CureText);
         cureText.transform.SetParent(CombatObjectData.CanvasTrm);

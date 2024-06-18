@@ -3,6 +3,10 @@ using GameUtils;
 using ET;
 using System.Collections.Generic;
 using UnityEngine;
+#if EGAMEPLAY_ET
+using SkillConfig = cfg.Skill.SkillCfg;
+using AO;
+#endif
 
 #if !EGAMEPLAY_EXCEL
 namespace EGamePlay.Combat
@@ -10,7 +14,7 @@ namespace EGamePlay.Combat
     public partial class SkillAbility : Entity, IAbilityEntity
     {
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
-        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public Entity ParentEntity { get => Parent; }
         public bool Enable { get; set; }
         public SkillConfigObject SkillEffectsConfig { get; set; }
         public SkillConfig SkillConfig { get; set; }
@@ -107,20 +111,20 @@ namespace EGamePlay.Combat
         {
             //base.ActivateAbility();
             FireEvent(nameof(ActivateAbility));
-            //子状态效果
-            if (SkillEffectsConfig.EnableChildrenStatuses)
-            {
-                foreach (var item in SkillEffectsConfig.ChildrenStatuses)
-                {
-                    var status = OwnerEntity.AttachStatus(item.StatusConfigObject);
-                    status.OwnerEntity = OwnerEntity;
-                    status.IsChildStatus = true;
-                    status.ChildStatusData = item;
-                    status.ProcessInputKVParams(item.Params);
-                    status.TryActivateAbility();
-                    ChildrenStatuses.Add(status);
-                }
-            }
+            ////子状态效果
+            //if (SkillEffectsConfig.EnableChildrenStatuses)
+            //{
+            //    foreach (var item in SkillEffectsConfig.ChildrenStatuses)
+            //    {
+            //        var status = OwnerEntity.AttachStatus(item.StatusConfigObject);
+            //        status.OwnerEntity = OwnerEntity;
+            //        status.IsChildStatus = true;
+            //        status.ChildStatusData = item;
+            //        status.ProcessInputKVParams(item.Params);
+            //        status.TryActivateAbility();
+            //        ChildrenStatuses.Add(status);
+            //    }
+            //}
 
             Enable = true;
             GetComponent<AbilityEffectComponent>().Enable = true;
@@ -128,15 +132,15 @@ namespace EGamePlay.Combat
 
         public void EndAbility()
         {
-            //子状态效果
-            if (SkillEffectsConfig.EnableChildrenStatuses)
-            {
-                foreach (var item in ChildrenStatuses)
-                {
-                    item.EndAbility();
-                }
-                ChildrenStatuses.Clear();
-            }
+            ////子状态效果
+            //if (SkillEffectsConfig.EnableChildrenStatuses)
+            //{
+            //    foreach (var item in ChildrenStatuses)
+            //    {
+            //        item.EndAbility();
+            //    }
+            //    ChildrenStatuses.Clear();
+            //}
             Entity.Destroy(this);
         }
 

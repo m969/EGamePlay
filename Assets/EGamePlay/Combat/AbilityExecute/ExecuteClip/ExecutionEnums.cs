@@ -30,6 +30,8 @@ public enum CollisionMoveType
     PathFly,
     [LabelText("可选朝向路径飞行")]
     SelectedDirectionPathFly,
+    [LabelText("固定位置碰撞体")]
+    FixedPosition,
 }
 
 [LabelText("应用效果")]
@@ -43,6 +45,19 @@ public enum EffectApplyType
     Effect2,
     [LabelText("效果3")]
     Effect3,
+
+    [LabelText("其他")]
+    Other = 100,
+}
+
+[LabelText("应用目标")]
+public enum EffectApplyTarget
+{
+    [LabelText("(空)")]
+    None,
+    Self,
+    Owner,
+    Parent,
 
     [LabelText("其他")]
     Other = 100,

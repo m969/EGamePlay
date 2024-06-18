@@ -6,6 +6,9 @@ using EGamePlay.Combat;
 using ET;
 using Log = EGamePlay.Log;
 using System;
+#if EGAMEPLAY_ET
+using Vector3 = Unity.Mathematics.float3;
+#endif
 
 namespace EGamePlay.Combat
 {

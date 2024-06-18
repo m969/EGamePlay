@@ -15,13 +15,13 @@ namespace EGamePlay.Combat
             var time = (float)initData;
             NoDamageTimer = new GameTimer(time);
             var combatEntity = GetParent<AbilityEffect>().ParentEntity;
-            combatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
+            combatEntity.GetComponent<ActionPointComponent>().AddListener(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
         public override void OnDestroy()
         {
             var combatEntity = GetParent<AbilityEffect>().ParentEntity;
-            combatEntity.UnListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
+            combatEntity.GetComponent<ActionPointComponent>().RemoveListener(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
         public void StartListen(Action whenNoDamageInTimeCallback)

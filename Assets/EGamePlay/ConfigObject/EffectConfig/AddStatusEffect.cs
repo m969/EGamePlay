@@ -8,6 +8,7 @@ using Unity.Mathematics;
 using Vector3 = Unity.Mathematics.float3;
 using Quaternion = Unity.Mathematics.quaternion;
 using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
+using StatusConfig = cfg.Status.StatusCfg;
 #endif
 
 

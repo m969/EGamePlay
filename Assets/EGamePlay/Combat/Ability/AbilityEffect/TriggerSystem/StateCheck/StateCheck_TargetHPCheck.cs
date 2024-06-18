@@ -28,23 +28,24 @@ namespace EGamePlay.Combat
             {
                 target = combatAction.Target;
             }
-            var battler = target as CombatEntity;
-            var arr = AffectCheck.Split('<', '=', '≤');
-            var formula = arr[1];
-            formula = formula.Replace("%", $"*0.01");
-            formula = formula.Replace("TargetHPMax".ToLower(), $"{battler.GetComponent<AttributeComponent>().HealthPointMax.Value}");
-            var value = ExpressionHelper.ExpressionParser.Evaluate(formula);
-            var targetHP = battler.GetComponent<AttributeComponent>().HealthPoint.Value;
-            if (AffectCheck.Contains("<") || AffectCheck.Contains("≤"))
+            if (target is CombatEntity battler)
             {
-                //Log.Debug($"{targetHP} < {value}");
-                return targetHP <= value;
+                var arr = AffectCheck.Split('<', '=', '≤');
+                var formula = arr[1];
+                formula = formula.Replace("%", $"*0.01");
+                formula = formula.Replace("TargetHPMax".ToLower(), $"{battler.GetComponent<AttributeComponent>().HealthPointMax.Value}");
+                var value = ExpressionHelper.ExpressionParser.Evaluate(formula);
+                var targetHP = battler.GetComponent<AttributeComponent>().HealthPoint.Value;
+                if (AffectCheck.Contains("<") || AffectCheck.Contains("≤"))
+                {
+                    return targetHP <= value;
+                }
+                if (AffectCheck.Contains("="))
+                {
+                    return targetHP == value;
+                }
             }
-            if (AffectCheck.Contains("="))
-            {
-                return targetHP == value;
-            }
-            Log.Debug($"ConditionTargetHPCheck CheckCondition {battler.Name} {AffectCheck} false");
+            Log.Debug($"ConditionTargetHPCheck CheckCondition {AffectCheck} false");
             return false;
         }
     }

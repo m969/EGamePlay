@@ -46,7 +46,7 @@ namespace EGamePlay.Combat
         /// 行动实体
         public CombatEntity Creator { get; set; }
         /// 目标对象
-        public CombatEntity Target { get; set; }
+        public Entity Target { get; set; }
 
 
         public void FinishAction()
@@ -77,13 +77,13 @@ namespace EGamePlay.Combat
             }
             var config = StatusConfigCategory.Instance.GetWithIDType(statusConfig.ID);
             var canStack = config.CanStack == "是";
-            //var enabledLogicTrigger = statusConfig.EnabledLogicTrigger;
 #endif
+            var statusComp = Target.GetComponent<StatusComponent>();
             if (canStack == false)
             {
-                if (Target.HasStatus(statusConfig.ID))
+                if (statusComp.HasStatus(statusConfig.ID))
                 {
-                    var status = Target.GetStatus(statusConfig.ID);
+                    var status = statusComp.GetStatus(statusConfig.ID);
                     var statusLifeTimer = status.GetComponent<StatusLifeTimeComponent>().LifeTimer;
                     statusLifeTimer.MaxTime = AddStatusEffect.Duration / 1000f;
                     statusLifeTimer.Reset();
@@ -92,15 +92,17 @@ namespace EGamePlay.Combat
                 }
             }
 
-            Status = Target.AttachStatus(statusConfig);
+            Status = statusComp.AttachStatus(statusConfig);
             Status.OwnerEntity = Creator;
             Status.GetComponent<AbilityLevelComponent>().Level = SourceAbility.GetComponent<AbilityLevelComponent>().Level;
             Status.Duration = (int)AddStatusEffect.Duration;
-            //Log.Debug($"AddStatusAction ApplyAddStatus {statusConfig.Name}");
 
             Status.ProcessInputKVParams(AddStatusEffect.Params);
 
-            Status.AddComponent<StatusLifeTimeComponent>();
+            if (Status.GetDuration() > 0)
+            {
+                Status.AddComponent<StatusLifeTimeComponent>();
+            }
             Status.TryActivateAbility();
 
             PostProcess();
@@ -112,7 +114,7 @@ namespace EGamePlay.Combat
         private void PostProcess()
         {
             Creator.TriggerActionPoint(ActionPointType.PostGiveStatus, this);
-            Target.TriggerActionPoint(ActionPointType.PostReceiveStatus, this);
+            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PostReceiveStatus, this);
         }
     }
 }

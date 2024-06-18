@@ -90,7 +90,7 @@ namespace EGamePlay
                 ClipTypeBar.color = ParticleEffectBarColor;
             }
 
-            if (TrackClipData.ExecuteClipType == ExecuteClipType.CollisionExecute)
+            if (TrackClipData.ExecuteClipType == ExecuteClipType.ItemExecute)
             {
                 ClipRect.GetComponent<Image>().color = ExecutionClipRectColor;
                 ClipTypeBar.color = ExecutionClipBarColor;
@@ -118,7 +118,7 @@ namespace EGamePlay
 
             if (TrackClipType != ExecuteClipType.ActionEvent
                 && TrackClipType != ExecuteClipType.ParticleEffect
-                && TrackClipType != ExecuteClipType.CollisionExecute
+                && TrackClipType != ExecuteClipType.ItemExecute
                 && TrackClipType != ExecuteClipType.Animation
                 )
             {
@@ -193,7 +193,7 @@ namespace EGamePlay
             if (pEventData.button == PointerEventData.InputButton.Left)
             {
                 ExecutionLinkPanel.Instance.RightContextTrm.gameObject.SetActive(false);
-                if (TrackClipType == ExecuteClipType.CollisionExecute)
+                if (TrackClipType == ExecuteClipType.ItemExecute)
                 {
                     var executeType = TrackClipData.CollisionExecuteData.MoveType;
                     if (executeType == CollisionMoveType.PathFly || executeType == CollisionMoveType.SelectedDirectionPathFly)

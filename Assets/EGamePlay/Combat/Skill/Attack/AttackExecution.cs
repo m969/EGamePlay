@@ -45,13 +45,12 @@ namespace EGamePlay.Combat
         private void PreProcess()
         {
             AttackAction.Creator.TriggerActionPoint(ActionPointType.PreGiveAttackEffect, AttackAction);
-            AttackAction.Target.TriggerActionPoint(ActionPointType.PreReceiveAttackEffect, AttackAction);
+            AttackAction.Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PreReceiveAttackEffect, AttackAction);
         }
 
         /// <summary>   尝试触发普攻效果   </summary>
         private void TryTriggerAttackEffect()
         {
-            //Log.Debug("AttackExecution TryTriggerAttackEffect");
             HasTriggerDamage = true;
 
             PreProcess();
@@ -68,19 +67,11 @@ namespace EGamePlay.Combat
                     var effect = effects[i];
                     effect.TriggerObserver.OnTrigger(AttackAction.Target);
                 }
-
-                //var effectAssigns = AbilityEntity.GetComponent<AbilityEffectComponent>().CreateAssignActions(AttackAction.Target);
-                //foreach (var item in effectAssigns)
-                //{
-                //    item.AssignEffect();
-                //}
             }
         }
 
         public void EndExecute()
         {
-            //Log.Debug("AttackExecution EndExecute");
-            //base.EndExecute();
             AttackAction.FinishAction();
             AttackAction = null;
             Entity.Destroy(this);

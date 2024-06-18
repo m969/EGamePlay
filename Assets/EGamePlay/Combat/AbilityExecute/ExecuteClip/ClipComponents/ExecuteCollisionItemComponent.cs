@@ -33,18 +33,19 @@ namespace EGamePlay.Combat
             var abilityItem = Entity.Create<AbilityItem>(Entity.GetParent<SkillExecution>());
             abilityItem.AddComponent<AbilityItemCollisionExecuteComponent>(clipData);
 
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.PathFly) abilityItem.PathFlyProcess();
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirectionPathFly) abilityItem.DirectionPathFlyProcess();
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.PathFly) abilityItem.PathFlyProcess(Entity.GetParent<SkillExecution>().InputPoint);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirectionPathFly) abilityItem.DirectionPathFlyProcess(Entity.GetParent<SkillExecution>().InputDirection);
             if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.TargetFly) abilityItem.TargetFlyProcess(Entity.GetParent<SkillExecution>().InputTarget);
             if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.ForwardFly) abilityItem.ForwardFlyProcess(Entity.GetParent<SkillExecution>().InputDirection);
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedPosition) abilityItem.FixedPositionProcess(Entity.GetParent<SkillExecution>().InputPoint);
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirection) abilityItem.FixedDirectionProcess();
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedPosition) abilityItem.SelectedPositionProcess(Entity.GetParent<SkillExecution>().InputPoint);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.FixedPosition) abilityItem.FixedPositionProcess();
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirection) abilityItem.SelectedDirectionProcess();
 #if EGAMEPLAY_ET
             abilityItem.AddCollisionComponent();
-#endif
-
+#else
 #if UNITY
             abilityItem.CreateAbilityItemProxyObj();
+#endif
 #endif
         }
 

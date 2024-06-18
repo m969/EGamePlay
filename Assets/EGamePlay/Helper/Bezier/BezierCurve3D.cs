@@ -7,14 +7,16 @@ using Unity.Mathematics;
 using Vector3 = Unity.Mathematics.float3;
 using Quaternion = Unity.Mathematics.quaternion;
 using JsonIgnore = MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute;
-#endif
-
+#else
 public static class math
 {
-    public static Vector3 normalize(Vector3 v)=> Vector3.Normalize(v);
+    public static Vector3 normalize(Vector3 v) => Vector3.Normalize(v);
     public static Vector3 cross(Vector3 a, Vector3 b) => Vector3.Cross(a, b);
     public static float distance(Vector3 a, Vector3 b) => Vector3.Distance(a, b);
+    public static float cos(float a) => Mathf.Cos(a);
+    public static float sin(float a) => Mathf.Sin(a);
 }
+#endif
 
 namespace NaughtyBezierCurves
 {
@@ -42,7 +44,7 @@ namespace NaughtyBezierCurves
         [Range(0f, 1f)]
         float normalizedTime = 0.5f;
 
-        public Vector3 Position { get; set; }
+        public Vector3 OriginPosition { get; set; }
 
         [SerializeField]
         [JsonIgnore]

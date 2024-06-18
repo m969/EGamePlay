@@ -1,0 +1,217 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5308386053713574398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db22cb51ab2b354aae7c5f4e7e1d7aa, type: 3}
+  m_Name: ExecuteClip
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Effects
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ItemEffect, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 1|EGamePlay.Combat.CollisionEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: false
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ConditionParam
+      Entry: 6
+      Data: 
+    - Name: StateChecks
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp],[System.String, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[EGamePlay.Combat.StateCheckType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: StateCheckList
+      Entry: 7
+      Data: 4|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: TriggerProbability
+      Entry: 1
+      Data: 100%
+    - Name: AddSkillEffectTargetType
+      Entry: 3
+      Data: 0
+    - Name: Decorators
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u4FEE\u9970)"
+    - Name: Shape
+      Entry: 3
+      Data: 0
+    - Name: Radius
+      Entry: 4
+      Data: 0
+    - Name: Center
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Size
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  StartTime: 0
+  EndTime: -1
+  ExecuteClipType: 0
+  ActionEventData:
+    FireType: 0
+    ActionEventType: 0
+    EffectApply: 0
+    EffectApplyTarget: 0
+    NewExecution: 
+  CollisionExecuteData:
+    ExecuteType: 1
+    ActionData:
+      FireType: 2
+      ActionEventType: 0
+      EffectApply: 0
+      EffectApplyTarget: 1
+      NewExecution: Execution_1008_Expllosion
+    Shape: 0
+    Radius: 1.5
+    Center: {x: 0, y: 0, z: 0}
+    Size: {x: 0, y: 0, z: 0}
+    MoveType: 6
+    FixedPoint: {x: 0, y: 1, z: 0}
+    ObjAsset: {fileID: 1433933213097290759, guid: 5a82dbc56d0446d4b9548ecc2a63dbac,
+      type: 3}
+    Speed: 1
+    BezierCurve:
+      sampling: 25
+      normalizedTime: 0.5
+      keyPoints: []
+  AnimationData:
+    AnimationClip: {fileID: 0}
+  AudioData:
+    AudioClip: {fileID: 0}
+  ParticleEffectData:
+    ParticleEffect: {fileID: 0}
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb448c210e2a7b4bb0777daef6b1b34, type: 3}
+  m_Name: Execution_2001
+  m_EditorClassIdentifier: 
+  AbilityId: 0
+  TotalTime: -1
+  ObjAsset: {fileID: 0}
+  TargetInputType: 1
+  RangeIndicatorObjAsset: {fileID: 0}
+  PointIndicatorObjAsset: {fileID: 0}
+  DirectionIndicatorObjAsset: {fileID: 0}
+  ExecuteClips:
+  - {fileID: -5308386053713574398}

@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"OnTriggerEnterCallback OnTriggerEnter {other.name}");
+            //Debug.Log($"OnTriggerEnterCallback OnTriggerEnter {other.name}");
             OnTriggerEnterCallbackAction?.Invoke(other);
         }
     }

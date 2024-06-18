@@ -19,11 +19,12 @@ namespace EGamePlay.Combat
         public override void Awake()
         {
             AttributeModifyEffect = GetEntity<AbilityEffect>().EffectConfig as AttributeModifyEffect;
+            ModifyValueFormula = AttributeModifyEffect.NumericValue;
         }
 
         public override void OnEnable()
         {
-            var parentEntity = Entity.GetParent<StatusAbility>().GetParent<CombatEntity>();
+            var parentEntity = GetEntity<AbilityEffect>().OwnerAbility.Parent;
             var attributeModifyEffect = AttributeModifyEffect;
             var numericValue = ModifyValueFormula;
             numericValue = numericValue.Replace("%", "");
@@ -31,31 +32,35 @@ namespace EGamePlay.Combat
             var value = (float)expression.Value;
             var numericModifier = new FloatModifier() { Value = value };
 
-            var attributeType = attributeModifyEffect.AttributeType.ToString();
-            //Log.Debug($"EffectAttributeModifyComponent OnEnable {attributeType} {numericValue} {attributeModifyEffect.ModifyType}");
+            var attributeType = attributeModifyEffect.AttributeType;
+            var numeric = parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType);
+            if (attributeModifyEffect.ModifyType == ModifyType.BaseValue)
+            {
+                numeric.SetBase(value);
+            }
             if (attributeModifyEffect.ModifyType == ModifyType.Add)
             {
-                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddModifier(ModifierType.FinalAdd, numericModifier);
+                numeric.AddModifier(ModifierType.FinalAdd, numericModifier);
             }
             if (attributeModifyEffect.ModifyType == ModifyType.PercentAdd)
             {
-                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).AddModifier(ModifierType.FinalPctAdd, numericModifier);
+                numeric.AddModifier(ModifierType.FinalPctAdd, numericModifier);
             }
             AttributeModifier = numericModifier;
         }
 
         public override void OnDisable()
         {
-            var parentEntity = Entity.GetParent<StatusAbility>().GetParent<CombatEntity>();
-            var attributeType = AttributeModifyEffect.AttributeType.ToString();
-            //Log.Debug($"EffectAttributeModifyComponent OnDisable {attributeType} {AttributeModifyEffect.NumericValue} {AttributeModifyEffect.ModifyType}");
+            var parentEntity = GetEntity<AbilityEffect>().OwnerAbility.Parent;
+            var attributeType = AttributeModifyEffect.AttributeType;
+            var numeric = parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType);
             if (AttributeModifyEffect.ModifyType == ModifyType.Add)
             {
-                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveModifier(ModifierType.FinalAdd, AttributeModifier);
+                numeric.RemoveModifier(ModifierType.FinalAdd, AttributeModifier);
             }
             if (AttributeModifyEffect.ModifyType == ModifyType.PercentAdd)
             {
-                parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType).RemoveModifier(ModifierType.FinalPctAdd, AttributeModifier);
+                numeric.RemoveModifier(ModifierType.FinalPctAdd, AttributeModifier);
             }
         }
 

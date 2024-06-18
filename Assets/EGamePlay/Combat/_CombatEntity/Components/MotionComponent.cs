@@ -4,6 +4,11 @@ using UnityEngine;
 using System;
 using GameUtils;
 using Sirenix.OdinInspector;
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.float3;
+#endif
 
 namespace EGamePlay.Combat
 {
@@ -41,7 +46,7 @@ namespace EGamePlay.Combat
             {
                 return;
             }
-
+#if !EGAMEPLAY_ET
             if (IdleTimer.IsRunning)
             {
                 IdleTimer.UpdateAsFinish(Time.deltaTime, IdleFinish);
@@ -55,8 +60,10 @@ namespace EGamePlay.Combat
                     Position += MoveVector * speed;
                 }
             }
+#endif
         }
 
+#if !EGAMEPLAY_ET
         private void IdleFinish()
         {
             var x = RandomHelper.RandomNumber(-20, 20);
@@ -78,8 +85,15 @@ namespace EGamePlay.Combat
         private void MoveFinish()
         {
             IdleTimer.Reset();
+
+            var heroEntity = Hero.Instance.CombatEntity;
+            if (Vector3.Distance(heroEntity.Position, Position) < 5)
+            {
+                var combatEntity = GetEntity<CombatEntity>();
+                combatEntity.GetComponent<SpellComponent>().SpellWithTarget(combatEntity.GetComponent<AbilityComponent>().IdSkills[1001], heroEntity);
+            }
         }
-    
+
         private float VectorAngle(Vector2 from, Vector2 to)
         {
             var angle = 0f;
@@ -87,5 +101,6 @@ namespace EGamePlay.Combat
             angle = Vector2.Angle(from, to);
             return cross.z > 0 ? -angle : angle;
         }
+#endif
     }
 }

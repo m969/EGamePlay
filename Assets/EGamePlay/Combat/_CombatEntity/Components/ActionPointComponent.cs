@@ -99,7 +99,7 @@ namespace EGamePlay.Combat
         PostReceiveAttack = 1 << 14,
 
         [LabelText("起跳前")]
-        PreJumpTo= 1 << 15,
+        PreJumpTo = 1 << 15,
         [LabelText("起跳后")]
         PostJumpTo = 1 << 16,
 

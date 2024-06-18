@@ -5,6 +5,7 @@ using ET;
 using System;
 using System.Reflection;
 
+#if !EGAMEPLAY_ET
 namespace EGamePlay.Combat
 {
     public static class ConfigHelper
@@ -61,3 +62,4 @@ namespace EGamePlay.Combat
         }
     }
 }
+#endif

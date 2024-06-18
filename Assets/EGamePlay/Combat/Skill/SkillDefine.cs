@@ -167,5 +167,6 @@
     {
         Add = 0,
         PercentAdd = 1,
+        BaseValue = 2,
     }
 }

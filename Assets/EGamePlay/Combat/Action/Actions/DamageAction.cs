@@ -60,7 +60,7 @@ namespace EGamePlay.Combat
         /// 行动实体
         public CombatEntity Creator { get; set; }
         /// 目标对象
-        public CombatEntity Target { get; set; }
+        public Entity Target { get; set; }
 
 
         public void FinishAction()
@@ -71,27 +71,27 @@ namespace EGamePlay.Combat
         /// 前置处理
         private void PreProcess()
         {
-            //Target = SourceAssignAction.Target;
-            //if (Target == null)
-            //{
-            //    if (SourceAssignAction.AssignTarget is CombatEntity combatEntity)
-            //    {
-            //        Target = combatEntity;
-            //    }
-            //    if (SourceAssignAction.AssignTarget is SkillExecution skillExecution)
-            //    {
-            //        Target = skillExecution.InputTarget;
-            //    }
-            //    if (SourceAssignAction.AssignTarget is IActionExecute actionExecute)
-            //    {
-            //        Target = actionExecute.Target;
-            //    }
-            //}
-
             if (DamageSource == DamageSource.Attack)
             {
                 IsCritical = (RandomHelper.RandomRate() / 100f) < Creator.GetComponent<AttributeComponent>().CriticalProbability.Value;
-                DamageValue = Mathf.CeilToInt(Mathf.Max(1, Creator.GetComponent<AttributeComponent>().Attack.Value - Target.GetComponent<AttributeComponent>().Defense.Value));
+                var Atk = Creator.GetComponent<AttributeComponent>().Attack.Value;
+                var Def = Target.GetComponent<AttributeComponent>().Defense.Value;
+                var coeff = Atk / (Atk + Def);
+                var Dam1 = Atk * coeff;
+                var Dam2 = (Atk + Atk) / (Atk + Def);
+                //Dam3=力量*坚利*坚利/坚韧*坚韧
+                //坚利=武器品质
+                //破穿=术法品质
+                //coeff2=坚利 / (坚利 + 坚韧);
+                //coeff2=破穿 / (破穿 + 坚韧);
+                //coeff2=(坚利+破穿) / 坚韧;
+                //coeff2=(坚利*破穿) / (坚利 * 破穿 + 坚韧*坚韧*0.3);
+                //coeff2=10000/13000=0.3
+                //Dam4=100*coeff2=30
+                //Dam4=力量*coeff2
+                //Dam5=(力量*(坚利+坚利/2))/(坚韧+坚韧/2)
+                DamageValue = Mathf.CeilToInt(Dam1);
+                //DamageValue = Mathf.CeilToInt(Mathf.Max(1, Atk - Def));
                 if (IsCritical)
                 {
                     DamageValue = Mathf.CeilToInt(DamageValue * 1.5f);
@@ -126,20 +126,14 @@ namespace EGamePlay.Combat
                 if (SourceAssignAction.TriggerContext.AbilityItem.TryGet(out AbilityItemTargetCounterComponent targetCounterComponent))
                 {
                     var damagePercent = executionDamageReduceWithTargetCountComponent.GetDamagePercent(targetCounterComponent.TargetCounter);
-                    //Log.Debug($"{targetCounterComponent.TargetCounter} {damagePercent}");
                     DamageValue = Mathf.CeilToInt(DamageValue * damagePercent);
                 }
-                //executionDamageReduceWithTargetCountComponent.AddOneTarget();
             }
-            //if (ExecutionEffect != null)
-            //{
-
-            //}
 
             //触发 造成伤害前 行动点
             Creator.TriggerActionPoint(ActionPointType.PreCauseDamage, this);
             //触发 承受伤害前 行动点
-            Target.TriggerActionPoint(ActionPointType.PreReceiveDamage, this);
+            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PreReceiveDamage, this);
         }
 
         /// 应用伤害
@@ -147,12 +141,13 @@ namespace EGamePlay.Combat
         {
             PreProcess();
 
-            //Log.Debug($"DamageAction ApplyDamage");
-            Target.ReceiveDamage(this);
+            var healthComp = Target.GetComponent<HealthPointComponent>();
+            healthComp.ReceiveDamage(this);
+            //Log.Debug($"ApplyDamage ReceiveDamage {healthComp.HealthPointNumeric.Value}/{healthComp.HealthPointMaxNumeric.Value}");
 
             PostProcess();
 
-            if (Target.CheckDead())
+            if (healthComp.CheckDead())
             {
                 var deadEvent = new EntityDeadEvent() { DeadEntity = Target };
                 Target.Publish(deadEvent);
@@ -167,8 +162,11 @@ namespace EGamePlay.Combat
         {
             //触发 造成伤害后 行动点
             Creator.TriggerActionPoint(ActionPointType.PostCauseDamage, this);
-            //触发 承受伤害后 行动点
-            Target.TriggerActionPoint(ActionPointType.PostReceiveDamage, this);
+            if (!Target.IsDisposed)
+            {
+                //触发 承受伤害后 行动点
+                Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PostReceiveDamage, this);
+            }
         }
     }
 

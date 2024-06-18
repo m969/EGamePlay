@@ -10,8 +10,9 @@ namespace EGamePlay.Combat
     public class AttackAbility : Entity, IAbilityEntity
     {
         public CombatEntity OwnerEntity { get => GetParent<CombatEntity>(); set { } }
-        public CombatEntity ParentEntity { get => GetParent<CombatEntity>(); }
+        public Entity ParentEntity { get => Parent; }
         public bool Enable { get; set; }
+        public Vector3 InputDirection { get; set; }
 
 
         public override void Awake(object initData)
@@ -48,7 +49,7 @@ namespace EGamePlay.Combat
         {
             ActivateAbility();
         }
-        
+
         public void ActivateAbility()
         {
             Enable = true;

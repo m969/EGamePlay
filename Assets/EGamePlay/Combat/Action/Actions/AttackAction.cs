@@ -41,7 +41,7 @@ namespace EGamePlay.Combat
         /// 行动实体
         public CombatEntity Creator { get; set; }
         /// 目标对象
-        public CombatEntity Target { get; set; }
+        public Entity Target { get; set; }
         public AttackExecution AttackExecution { get; set; }
 
 
@@ -54,7 +54,7 @@ namespace EGamePlay.Combat
         private void PreProcess()
         {
             Creator.TriggerActionPoint(ActionPointType.PreGiveAttack, this);
-            Target.TriggerActionPoint(ActionPointType.PreReceiveAttack, this);
+            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PreReceiveAttack, this);
         }
 
         public async ETTask ApplyAttackAwait()
@@ -83,7 +83,7 @@ namespace EGamePlay.Combat
         private void PostProcess()
         {
             Creator.TriggerActionPoint(ActionPointType.PostGiveAttack, this);
-            Target.TriggerActionPoint(ActionPointType.PostReceiveAttack, this);
+            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PostReceiveAttack, this);
         }
     }
 }
