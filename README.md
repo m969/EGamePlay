@@ -11,8 +11,11 @@
 [![Stargazers over time](https://starchart.cc/m969/EGamePlay.svg)](https://starchart.cc/m969/EGamePlay)
 
 ---
-## 文档：
+# 文档：
 - [EGamePlay文档(wiki)](https://github.com/m969/EGamePlay/wiki)
+
+# 商业项目
+- [暗黑之地](https://www.taptap.cn/app/227372) https://www.taptap.cn/app/227372 一个人开发，用EGP重写了整个战斗后重新上线
 
 ---
 ## 知乎文章：
