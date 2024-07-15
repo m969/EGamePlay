@@ -6,8 +6,16 @@ using EGamePlay.Combat;
 using ET;
 using Log = EGamePlay.Log;
 using System;
+
 #if EGAMEPLAY_ET
+using Unity.Mathematics;
 using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.float3;
+using AO;
+using AO.EventType;
+using ET.EventType;
+#else
+using float3 = UnityEngine.Vector3;
 #endif
 
 namespace EGamePlay.Combat
@@ -18,6 +26,8 @@ namespace EGamePlay.Combat
     [EnableUpdate]
     public sealed partial class SkillExecution : Entity, IAbilityExecute
     {
+        public Vector3 Position { get; set; }
+        public Quaternion Rotation { get; set; }
         public Entity AbilityEntity { get; set; }
         public CombatEntity OwnerEntity { get; set; }
         public SkillAbility SkillAbility { get { return AbilityEntity as SkillAbility; } }
@@ -25,7 +35,8 @@ namespace EGamePlay.Combat
         public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
         public CombatEntity InputTarget { get; set; }
         public Vector3 InputPoint { get; set; }
-        public float InputDirection { get; set; }
+        public Vector3 InputDirection { get; set; }
+        public float InputRadian { get; set; }
         public long OriginTime { get; set; }
         /// 行为占用
         public bool ActionOccupy { get; set; } = true;
@@ -41,6 +52,15 @@ namespace EGamePlay.Combat
         {
             AddComponent<ExecuteClipComponent>();
         }
+
+#if EGAMEPLAY_ET
+        public ItemUnit CreateItemUnit()
+        {
+            var scene = OwnerEntity.GetComponent<CombatUnitComponent>().Unit.GetParent<Scene>();
+            var itemUnit = scene.AddChild<ItemUnit, Action<ItemUnit>>((x) => { x.ItemEntity = this; });
+            return itemUnit;
+        }
+#endif
 
         public override void Update()
         {
@@ -90,7 +110,6 @@ namespace EGamePlay.Combat
             }
             SkillTargets.Clear();
             Entity.Destroy(this);
-            //base.EndExecute();
         }
     }
 }

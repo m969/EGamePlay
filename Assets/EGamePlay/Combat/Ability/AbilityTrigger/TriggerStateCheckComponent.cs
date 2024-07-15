@@ -8,7 +8,7 @@ namespace EGamePlay.Combat
     /// <summary>
     /// 状态判断组件
     /// </summary>
-    public class EffectStateCheckComponent : Component
+    public class TriggerStateCheckComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
         public List<IStateCheck> StateChecks { get; set; } = new List<IStateCheck>();
@@ -16,7 +16,7 @@ namespace EGamePlay.Combat
 
         public override void Awake()
         {
-            var effectConfig = Entity.GetParent<AbilityEffect>().EffectConfig;
+            var effectConfig = Entity.As<AbilityTrigger>().TriggerConfig;
             if (effectConfig.StateCheckList == null)
             {
                 return;

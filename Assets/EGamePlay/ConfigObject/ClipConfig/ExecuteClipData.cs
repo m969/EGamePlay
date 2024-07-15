@@ -203,6 +203,7 @@ namespace EGamePlay
         }
 
         [ShowIf("IsTriggerAssign")]
+        [LabelText("应用效果")]
         public EffectApplyType EffectApply;
 
         [ShowIf("IsTriggerAssign")]
@@ -254,6 +255,11 @@ namespace EGamePlay
         public bool ShowPoints { get => MoveType == CollisionMoveType.PathFly || MoveType == CollisionMoveType.SelectedDirectionPathFly; }
         [ShowIf("ShowPoints")]
         public BezierCurve3D BezierCurve;
+        [ShowIf("ShowPoints")]
+        public PathExecutePoint PathExecutePoint = PathExecutePoint.EntityOffset;
+        [ShowIf("ShowPoints")]
+        [LabelText("偏移")]
+        public Vector3 Offset;
 
         public List<BezierPoint3D> GetCtrlPoints()
         {

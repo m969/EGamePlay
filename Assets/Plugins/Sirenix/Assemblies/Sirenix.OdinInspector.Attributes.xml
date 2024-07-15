@@ -1095,6 +1095,11 @@
             If <c>true</c> the string will support rich text.
             </summary>
         </member>
+        <member name="F:Sirenix.OdinInspector.DisplayAsStringAttribute.Format">
+            <summary>
+            String for formatting the value. Type must implement the <c>IFormattable</c> interface.
+            </summary>
+        </member>
         <member name="M:Sirenix.OdinInspector.DisplayAsStringAttribute.#ctor">
             <summary>
             Displays the property as a string in the inspector.
@@ -1233,6 +1238,11 @@
             <remarks>
             <para>Note that this attribute does not mean "disable Odin completely for this property"; it is visual only in nature, and in fact represents an Odin drawer which calls into Unity's old property drawing system. As Odin is still ultimately responsible for arranging the drawing of the property, and since other attributes exist with a higher priority than this attribute, and it is not guaranteed that Unity will draw the property if another attribute is present to override this one.</para>
             </remarks>
+        </member>
+        <member name="T:Sirenix.OdinInspector.DrawWithVisualElementsAttribute">
+            <summary>
+            Force Odin to draw this value as an IMGUI-embedded UI Toolkit Visual Element.
+            </summary>
         </member>
         <member name="T:Sirenix.OdinInspector.EnableGUIAttribute">
             <summary>
@@ -1382,55 +1392,55 @@
              <seealso cref="T:System.Attribute" />
         </member>
         <member name="T:Sirenix.OdinInspector.FilePathAttribute">
-            <summary>
-            <para>FilePath is used on string properties, and provides an interface for file paths.</para>
-            </summary>
-            <example>
-            <para>The following example demonstrates how FilePath is used.</para>
-            <code>
-            public class FilePathExamples : MonoBehaviour
-            {
-            	// By default, FilePath provides a path relative to the Unity project.
-            	[FilePath]
-            	public string UnityProjectPath;
+             <summary>
+             <para>FilePath is used on string properties, and provides an interface for file paths.</para>
+             </summary>
+             <example>
+             <para>The following example demonstrates how FilePath is used.</para>
+             <code>
+            	public class FilePathExamples : MonoBehaviour
+            	{
+            		// By default, FilePath provides a path relative to the Unity project.
+            		[FilePath]
+            		public string UnityProjectPath;
             
-            	// It is possible to provide custom parent path. Parent paths can be relative to the Unity project, or absolute.
-            	[FilePath(ParentFolder = "Assets/Plugins/Sirenix")]
-            	public string RelativeToParentPath;
+            		// It is possible to provide custom parent path. Parent paths can be relative to the Unity project, or absolute.
+            		[FilePath(ParentFolder = "Assets/Plugins/Sirenix")]
+            		public string RelativeToParentPath;
             
-            	// Using parent path, FilePath can also provide a path relative to a resources folder.
-            	[FilePath(ParentFolder = "Assets/Resources")]
-            	public string ResourcePath;
+            		// Using parent path, FilePath can also provide a path relative to a resources folder.
+            		[FilePath(ParentFolder = "Assets/Resources")]
+            		public string ResourcePath;
             
-            	// Provide a comma seperated list of allowed extensions. Dots are optional.
-            	[FilePath(Extensions = "cs")]
-            	public string ScriptFiles;
+            		// Provide a comma seperated list of allowed extensions. Dots are optional.
+            		[FilePath(Extensions = "cs")]
+            		public string ScriptFiles;
             
-            	// By setting AbsolutePath to true, the FilePath will provide an absolute path instead.
-            	[FilePath(AbsolutePath = true)]
-            	[BoxGroup("Conditions")]
-            	public string AbsolutePath;
+            		// By setting AbsolutePath to true, the FilePath will provide an absolute path instead.
+            		[FilePath(AbsolutePath = true)]
+            		[BoxGroup("Conditions")]
+            		public string AbsolutePath;
             
-            	// FilePath can also be configured to show an error, if the provided path is invalid.
-            	[FilePath(RequireValidPath = true)]
-            	public string ValidPath;
+            		// FilePath can also be configured to show an error, if the provided path is invalid.
+            		[FilePath(RequireValidPath = true)]
+            		public string ValidPath;
             
-            	// By default, FilePath will enforce the use of forward slashes. It can also be configured to use backslashes instead.
-            	[FilePath(UseBackslashes = true)]
-            	public string Backslashes;
+            		// By default, FilePath will enforce the use of forward slashes. It can also be configured to use backslashes instead.
+            		[FilePath(UseBackslashes = true)]
+            		public string Backslashes;
             
-            	// FilePath also supports member references with the $ symbol.
-            	[FilePath(ParentFolder = "$DynamicParent", Extensions = "$DynamicExtensions")]
-            	public string DynamicFilePath;
+            		// FilePath also supports member references with the $ symbol.
+            		[FilePath(ParentFolder = "$DynamicParent", Extensions = "$DynamicExtensions")]
+            		public string DynamicFilePath;
             
-            	public string DynamicParent = "Assets/Plugin/Sirenix";
+            		public string DynamicParent = "Assets/Plugin/Sirenix";
             
-            	public string DynamicExtensions = "cs, unity, jpg";
-            }
-            </code>
-            </example>
-            <seealso cref="T:Sirenix.OdinInspector.FolderPathAttribute"/>
-            <seealso cref="T:Sirenix.OdinInspector.DisplayAsStringAttribute"/>
+            		public string DynamicExtensions = "cs, unity, jpg";
+            	}
+             </code>
+             </example>
+             <seealso cref="T:Sirenix.OdinInspector.FolderPathAttribute"/>
+             <seealso cref="T:Sirenix.OdinInspector.DisplayAsStringAttribute"/>
         </member>
         <member name="F:Sirenix.OdinInspector.FilePathAttribute.AbsolutePath">
             <summary>
@@ -1462,6 +1472,11 @@
         <member name="F:Sirenix.OdinInspector.FilePathAttribute.UseBackslashes">
             <summary>
             By default FilePath enforces forward slashes. Set UseBackslashes to <c>true</c> if you want backslashes instead.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.FilePathAttribute.IncludeFileExtension">
+            <summary>
+            If <c>true</c> the file path will include the file's extension.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.FilePathAttribute.ReadOnly">
@@ -3360,6 +3375,59 @@
             This attribute does not do anything unless you have Odin Validator and the 'Reference Required by Default' rule is enabled.
             </summary>
         </member>
+        <member name="T:Sirenix.OdinInspector.NonDefaultConstructorPreference">
+            <summary>
+            Specifies how non-default constructors are handled.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.NonDefaultConstructorPreference.Exclude">
+            <summary>
+            Excludes types with non default constructors from the Selector.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.NonDefaultConstructorPreference.ConstructIdeal">
+            <summary>
+            Attempts to find the most straightforward constructor to call, prioritizing default values.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.NonDefaultConstructorPreference.PreferUninitialized">
+            <summary>
+            Uses <see cref="M:System.Runtime.Serialization.FormatterServices.GetUninitializedObject(System.Type)"/> if no default constructor is found.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.NonDefaultConstructorPreference.LogWarning">
+            <summary>
+            Logs a warning instead of constructing the object, indicating that an attempt was made to construct an object without a default constructor.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.PolymorphicDrawerSettingsAttribute.ShowBaseType">
+            <summary>
+            Determines whether the base type should be displayed in the drawer.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.PolymorphicDrawerSettingsAttribute.ReadOnlyIfNotNullReference">
+            <summary>
+            Indicates if the drawer should be read-only once a value is assigned.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.PolymorphicDrawerSettingsAttribute.NonDefaultConstructorPreference">
+            <summary>
+            Specifies how non-default constructors are handled.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.PolymorphicDrawerSettingsAttribute.CreateInstanceFunction">
+            <summary>
+            Specifies a custom function for creating an instance of the selected <see cref="T:System.Type"/>.
+            </summary>
+            <remarks>Does not get called for <see cref="T:UnityEngine.Object">UnityEngine.Object</see> types.</remarks>
+            <example>
+            <para>
+            The resolver expects any method that takes a single parameter of <see cref="T:System.Type"/>, where the parameter is named 'type', and which returns an <see cref="T:System.Object"/>.
+            </para>
+            
+            <para>Implementation example: <c>public object Method(Type type)</c>.</para>
+            </example>
+        </member>
         <member name="T:Sirenix.OdinInspector.PreviewFieldAttribute">
              <summary>
              <para>
@@ -5068,6 +5136,30 @@
             If true, tables are drawn with rows/columns reversed (C# initialization order).
             </summary>
         </member>
+        <member name="F:Sirenix.OdinInspector.TableMatrixAttribute.Labels">
+            <summary>
+            A resolved string that should evaluate to a tuple (string, LabelDirection) which will be used as the label for the rows and columns of the table.
+            </summary>
+            <code>
+            [TableMatrix(SquareCells = true, Labels = "GetLabel")]
+            public int[,] ChessBoard = new int[8, 8];
+             
+            private (string, LabelDirection) GetLabel(int[,] array, TableAxis axis, int index)
+            {
+                var chessFileLetters = "ABCDEFGH";
+             
+                switch (axis)
+                {
+                    case TableAxis.Y:
+                        return ((array.GetLength(1) - index).ToString(), LabelDirection.LeftToRight);
+                    case TableAxis.X:
+                        return (chessFileLetters[index].ToString(), LabelDirection.TopToBottom);
+                    default:
+                        return (index.ToString(), LabelDirection.LeftToRight);
+                }
+            }
+            </code>
+        </member>
         <member name="T:Sirenix.OdinInspector.TitleAttribute">
             <summary>
             <para>Title is used to make a bold header above a property.</para>
@@ -5364,6 +5456,16 @@
             </code>
             </example>
         </member>
+        <member name="F:Sirenix.OdinInspector.TypeDrawerSettingsAttribute.BaseType">
+            <summary>
+            Specifies whether a base type should be used instead of all types.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.TypeDrawerSettingsAttribute.Filter">
+            <summary>
+            Filters the result.
+            </summary>
+        </member>
         <member name="P:Sirenix.OdinInspector.TypeFilterAttribute.MemberName">
             <summary>
             Name of any field, property or method member that implements IList. E.g. arrays or Lists. Obsolete; use the FilterGetter member instead.
@@ -5418,6 +5520,105 @@
             Draws an info box at the top of a type in the inspector.
             </summary>
             <param name="message">The message to display in the info box.</param>
+        </member>
+        <member name="P:Sirenix.OdinInspector.TypeSelectorSettingsAttribute.ShowNoneItem">
+            <summary> Specifies if the '&lt;none&gt;' item is shown. </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.TypeSelectorSettingsAttribute.ShowCategories">
+            <summary> Specifies if categories are shown. </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.TypeSelectorSettingsAttribute.PreferNamespaces">
+            <summary>
+            Specifies if namespaces are preferred over assembly category names for category names.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.TypeSelectorSettingsAttribute.FilterTypesFunction">
+            <summary>
+            Function for filtering types displayed in the Type Selector.
+            </summary>
+            <example>
+            <para>
+            The resolver expects any method that takes a single parameter of <see cref="T:System.Type"/>, with the parameter name 'type', and which returns a <see cref="T:System.Boolean"/> indicating whether the <see cref="T:System.Type"/> is included or not;
+            </para>
+            
+            <para>Implementation example: <c>public bool SomeFilterMethod(Type type)</c>.</para>
+            </example>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Sirenix.OdinInspector.UnitAttribute" -->
+        <member name="F:Sirenix.OdinInspector.UnitAttribute.Base">
+            <summary>
+            The unit of underlying value.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.UnitAttribute.Display">
+            <summary>
+            The unit displayed in the number field.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.UnitAttribute.BaseName">
+            <summary>
+            Name of the underlying unit.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.UnitAttribute.DisplayName">
+            <summary>
+            Name of the unit displayed in the number field.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.UnitAttribute.DisplayAsString">
+            <summary>
+            If <c>true</c> the number field is drawn as read-only text.
+            </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.UnitAttribute.ForceDisplayUnit">
+            <summary>
+            If <c>true</c> disables the option to change display unit with the right-click context menu.
+            </summary>
+        </member>
+        <member name="M:Sirenix.OdinInspector.UnitAttribute.#ctor(Sirenix.OdinInspector.Units)">
+            <summary>
+            Displays the number as a unit field.
+            </summary>
+            <param name="unit">The unit of underlying value.</param>
+        </member>
+        <member name="M:Sirenix.OdinInspector.UnitAttribute.#ctor(System.String)">
+            <summary>
+            Displays the number as a unit field.
+            </summary>
+            <param name="unit">The name of the underlying value.</param>
+        </member>
+        <member name="M:Sirenix.OdinInspector.UnitAttribute.#ctor(Sirenix.OdinInspector.Units,Sirenix.OdinInspector.Units)">
+            <summary>
+            Displays the number as a unit field.
+            </summary>
+            <param name="base">The unit of underlying value.</param>
+            <param name="display">The unit to display the value as in the inspector.</param>
+        </member>
+        <member name="M:Sirenix.OdinInspector.UnitAttribute.#ctor(Sirenix.OdinInspector.Units,System.String)">
+            <summary>
+            Displays the number as a unit field.
+            </summary>
+            <param name="base">The unit of underlying value.</param>
+            <param name="display">The unit to display the value as in the inspector.</param>
+        </member>
+        <member name="M:Sirenix.OdinInspector.UnitAttribute.#ctor(System.String,Sirenix.OdinInspector.Units)">
+            <summary>
+            Displays the number as a unit field.
+            </summary>
+            <param name="base">The unit of underlying value.</param>
+            <param name="display">The unit to display the value as in the inspector.</param>
+        </member>
+        <member name="M:Sirenix.OdinInspector.UnitAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Displays the number as a unit field.
+            </summary>
+            <param name="base">The unit of underlying value.</param>
+            <param name="display">The unit to display the value as in the inspector.</param>
+        </member>
+        <member name="T:Sirenix.OdinInspector.Units">
+            <summary>
+            Units for use with <see cref="T:Sirenix.OdinInspector.UnitAttribute"/> and <see cref="!:Sirenix.Utilities.Editor.UnitNumberUtility"/>.
+            </summary>
         </member>
         <member name="T:Sirenix.OdinInspector.ValidateInputAttribute">
              <summary>
@@ -6229,6 +6430,12 @@
             <summary>
             Title on the left, subtitle on the right.
             </summary>
+        </member>
+        <member name="T:Sirenix.OdinInspector.TypeInclusionFilter">
+            <summary> Specifies the types to include based on certain criteria. </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.TypeInclusionFilter.IncludeConcreteTypes">
+            <summary> Represents types that are not interfaces, abstracts, or generics. </summary>
         </member>
     </members>
 </doc>

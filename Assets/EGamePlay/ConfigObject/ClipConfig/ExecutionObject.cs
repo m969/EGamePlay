@@ -56,6 +56,9 @@ namespace EGamePlay.Combat
         [ShowIf("TargetInputType", ExecutionTargetInputType.Point)]
         [LabelText("朝向指示器"), JsonIgnore]
         public GameObject DirectionIndicatorObjAsset;
+        [LabelText("起始坐标偏移")]
+        public Vector3 Offset;
+
         [ReadOnly, Space(10)]
         public List<ExecuteClipData> ExecuteClips = new List<ExecuteClipData>();
 

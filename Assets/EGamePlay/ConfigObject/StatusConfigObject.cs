@@ -179,7 +179,7 @@ namespace EGamePlay.Combat
         Other,
     }
 
-    public enum EffectTriggerType
+    public enum EffectAutoTriggerType
     {
         [LabelText("（空）")]
         None = 0,

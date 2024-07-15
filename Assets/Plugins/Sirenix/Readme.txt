@@ -6,7 +6,7 @@ Open up the Getting Started guide from "Tools > Odin Inspector > Getting Started
 ------------------------------------- Helpful Links -------------------------------------
 
 Tutorials:          https://odininspector.com/tutorials
-API Documentaion:   https://odininspector.com/documentation
+API Documentation:  https://odininspector.com/documentation
 Roadmap:            https://odininspector.com/roadmap
 Release Notes:      https://odininspector.com/patch-notes
 Issue Tracker:      https://bitbucket.org/sirenix/odin-inspector

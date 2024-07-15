@@ -30,14 +30,15 @@ namespace EGamePlay.Combat
         {
             //Log.Console($"ExecuteCollisionItemComponent SpawnCollisionItem {clipData.CollisionExecuteData.MoveType}");
 
-            var abilityItem = Entity.Create<AbilityItem>(Entity.GetParent<SkillExecution>());
+            var skillExecution = Entity.GetParent<SkillExecution>();
+            var abilityItem = Entity.Create<AbilityItem>(skillExecution);
             abilityItem.AddComponent<AbilityItemCollisionExecuteComponent>(clipData);
 
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.PathFly) abilityItem.PathFlyProcess(Entity.GetParent<SkillExecution>().InputPoint);
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirectionPathFly) abilityItem.DirectionPathFlyProcess(Entity.GetParent<SkillExecution>().InputDirection);
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.TargetFly) abilityItem.TargetFlyProcess(Entity.GetParent<SkillExecution>().InputTarget);
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.ForwardFly) abilityItem.ForwardFlyProcess(Entity.GetParent<SkillExecution>().InputDirection);
-            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedPosition) abilityItem.SelectedPositionProcess(Entity.GetParent<SkillExecution>().InputPoint);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.PathFly) abilityItem.PathFlyProcess(skillExecution.InputPoint);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirectionPathFly) abilityItem.DirectionPathFlyProcess(skillExecution.InputPoint, skillExecution.InputRadian);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.TargetFly) abilityItem.TargetFlyProcess(skillExecution.InputTarget);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.ForwardFly) abilityItem.ForwardFlyProcess(skillExecution.InputRadian);
+            if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedPosition) abilityItem.SelectedPositionProcess(skillExecution.InputPoint);
             if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.FixedPosition) abilityItem.FixedPositionProcess();
             if (clipData.CollisionExecuteData.MoveType == CollisionMoveType.SelectedDirection) abilityItem.SelectedDirectionProcess();
 #if EGAMEPLAY_ET

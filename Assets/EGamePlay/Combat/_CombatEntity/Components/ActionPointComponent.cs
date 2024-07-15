@@ -12,7 +12,7 @@ namespace EGamePlay.Combat
     public sealed class ActionPoint
     {
         public List<Action<Entity>> Listeners { get; set; } = new List<Action<Entity>>();
-        public List<ActionPointObserver> Observers { get; set; } = new List<ActionPointObserver>();
+        public List<ActionPointObserveComponent> Observers { get; set; } = new List<ActionPointObserveComponent>();
 
 
         public void AddListener(Action<Entity> action)
@@ -25,12 +25,12 @@ namespace EGamePlay.Combat
             Listeners.Remove(action);
         }
 
-        public void AddObserver(ActionPointObserver action)
+        public void AddObserver(ActionPointObserveComponent action)
         {
             Observers.Add(action);
         }
 
-        public void RemoveObserver(ActionPointObserver action)
+        public void RemoveObserver(ActionPointObserveComponent action)
         {
             Observers.Remove(action);
         }
@@ -145,7 +145,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        public void AddObserver(ActionPointType actionPointType, ActionPointObserver action)
+        public void AddObserver(ActionPointType actionPointType, ActionPointObserveComponent action)
         {
             if (!ActionPoints.ContainsKey(actionPointType))
             {
@@ -155,7 +155,7 @@ namespace EGamePlay.Combat
             //Log.Debug($"AddObserver {actionPointType} {ActionPoints[actionPointType].Observers.Count}");
         }
 
-        public void RemoveObserver(ActionPointType actionPointType, ActionPointObserver action)
+        public void RemoveObserver(ActionPointType actionPointType, ActionPointObserveComponent action)
         {
             if (ActionPoints.ContainsKey(actionPointType))
             {

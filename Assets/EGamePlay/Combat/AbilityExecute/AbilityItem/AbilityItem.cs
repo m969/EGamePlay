@@ -5,10 +5,11 @@ using UnityEngine;
 using ET;
 using GameUtils;
 using System;
+
 #if EGAMEPLAY_ET
 using Unity.Mathematics;
 using Vector3 = Unity.Mathematics.float3;
-using Quaternion = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.quaternion;
 using AO;
 using AO.EventType;
 using ET.EventType;
@@ -190,14 +191,14 @@ namespace EGamePlay.Combat
         }
 
         /// <summary>   前向飞行碰撞体     </summary>
-        public void ForwardFlyProcess(float InputDirection)
+        public void ForwardFlyProcess(float inputRadian)
         {
             var abilityItem = this;
             abilityItem.Position = AbilityExecution.OwnerEntity.Position;
             //moveComp.InputPoint = AbilityExecution.OwnerEntity.Position;
 
-            var x = MathF.Sin(MathF.PI / 180 * InputDirection);
-            var z = MathF.Cos(MathF.PI / 180 * InputDirection);
+            var x = MathF.Sin(inputRadian);
+            var z = MathF.Cos(inputRadian);
             var destination = abilityItem.Position + new Vector3(x, 0, z) * 30;
 #if !EGAMEPLAY_ET
             abilityItem.AddComponent<MoveWithDotweenComponent>().DoMoveTo(destination, 1f).OnMoveFinish(() => { Entity.Destroy(abilityItem); });
@@ -205,7 +206,7 @@ namespace EGamePlay.Combat
         }
 
         /// <summary>   路径飞行     </summary>
-        public void PathFlyProcess(Vector3 InputPoint)
+        public void PathFlyProcess(Vector3 inputPoint)
         {
             var skillExecution = (AbilityExecution as SkillExecution);
             var abilityItem = this;
@@ -220,7 +221,7 @@ namespace EGamePlay.Combat
             abilityItem.LocalPosition = tempPoints[0].Position;
             var moveComp = abilityItem.AddComponent<AbilityItemPathMoveComponent>();
             moveComp.PositionEntity = abilityItem;
-            moveComp.InputPoint = InputPoint;
+            moveComp.ExecutePoint = inputPoint;
             abilityItem.Position = moveComp.OriginPoint + abilityItem.LocalPosition;
 
             moveComp.BezierCurve = new NaughtyBezierCurves.BezierCurve3D();
@@ -234,7 +235,7 @@ namespace EGamePlay.Combat
             {
                 abilityItem.Position = moveComp.OriginPoint + abilityItem.LocalPosition;
             }
-            moveComp.RotateAgree = 0;
+            moveComp.RotateRadian = 0;
             moveComp.Rotate = false;
             moveComp.Duration = clipData.Duration;
             moveComp.GetPathLocalPoints();
@@ -242,25 +243,32 @@ namespace EGamePlay.Combat
         }
 
         /// <summary>   朝向路径飞行     </summary>
-        public void DirectionPathFlyProcess(float InputDirection)
+        public void DirectionPathFlyProcess(Vector3 inputPoint, float inputRadian)
         {
             var abilityItem = this;
+            var skillExecution = AbilityExecution as SkillExecution;
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
             var tempPoints = clipData.CollisionExecuteData.GetCtrlPoints();
-
-            //var angle = AbilityExecution.OwnerEntity.Rotation.y - 90;
-            //var agree = angle * MathF.PI / 180;
-            var agree = (InputDirection) * MathF.PI / 180f;
 
             if (tempPoints.Count == 0)
             {
                 return;
             }
-            abilityItem.Position = AbilityExecution.OwnerEntity.Position + (float3)tempPoints[0].Position;
             var moveComp = abilityItem.AddComponent<AbilityItemPathMoveComponent>();
+            var executePoint = AbilityExecution.Position;
+            if (clipData.CollisionExecuteData.PathExecutePoint == PathExecutePoint.EntityOffset)
+            {
+                moveComp.ExecutePoint = AbilityExecution.Position + clipData.CollisionExecuteData.Offset;
+            }
+            if (clipData.CollisionExecuteData.PathExecutePoint == PathExecutePoint.InputPoint)
+            {
+                moveComp.ExecutePoint = inputPoint + clipData.CollisionExecuteData.Offset;
+            }
+            abilityItem.Position = executePoint + tempPoints[0].Position;
+            abilityItem.Rotation = skillExecution.InputDirection.GetRotation();
             moveComp.PositionEntity = abilityItem;
-            moveComp.OriginEntity = AbilityExecution.OwnerEntity;
+            moveComp.ExecutePoint = executePoint;
 
             moveComp.BezierCurve = new NaughtyBezierCurves.BezierCurve3D();
             moveComp.BezierCurve.Sampling = clipData.CollisionExecuteData.BezierCurve.Sampling;
@@ -269,7 +277,7 @@ namespace EGamePlay.Combat
             {
                 item.Curve = moveComp.BezierCurve;
             }
-            moveComp.RotateAgree = agree;
+            moveComp.RotateRadian = inputRadian;
             moveComp.Rotate = true;
             moveComp.Duration = clipData.Duration;
             moveComp.GetPathLocalPoints();
@@ -322,41 +330,7 @@ namespace EGamePlay.Combat
         {
             var abilityItem = this;
             var scene = AbilityExecution.OwnerEntity.GetComponent<CombatUnitComponent>().Unit.GetParent<Scene>();
-            var itemUnit = scene.AddChild<ItemUnit>();
-            itemUnit.OwnerUnit = AbilityExecution.OwnerEntity.GetComponent<CombatUnitComponent>().Unit;
-            itemUnit.AbilityItem = abilityItem;
-            itemUnit.Position = abilityItem.Position;
-            itemUnit.Name = (abilityItem.AbilityExecution as SkillExecution).ExecutionObject.Name;
-            //ET.Log.Console($"AddCollisionComponent itemUnit={itemUnit.Name}");
-            itemUnit.AddComponent<UnitLifeTimeComponent, float>(abilityItem.GetComponent<LifeTimeComponent>().LifeTimer.MaxTime);
-            abilityItem.AddComponent<CombatUnitComponent>().Unit = itemUnit;
-            if (AbilityEntity != null && AbilityEntity.As<SkillAbility>().SkillConfig != null)
-            {
-                itemUnit.ConfigId = AbilityEntity.As<SkillAbility>().SkillConfig.Id;
-            }
-            itemUnit.AddComponent<UnitCollisionComponent>().Radius = 2;
-            var moveComp = abilityItem.GetComponent<AbilityItemPathMoveComponent>();
-            if (moveComp != null)
-            {
-                itemUnit.AddComponent<UnitTranslateComponent>();
-                itemUnit.AddComponent<UnitPathMoveComponent>();
-                var points = moveComp.GetPathPoints();
-                itemUnit.GetComponent<UnitPathMoveComponent>().Speed = moveComp.Speed;
-                itemUnit.GetComponent<UnitPathMoveComponent>().PathPoints = points.ToList();
-                var lifeTime = abilityItem.GetComponent<LifeTimeComponent>().LifeTimer.MaxTime * 1000;
-                AOGame.PublishServer(new PublishNewUnitEvent() { Unit = itemUnit.MapUnit() });
-#if UNITY
-                AOGame.Publish(new CreateUnit() { MapUnit = itemUnit, IsMainAvatar = false });
-#endif
-                AOGame.Publish(new UnitPathMoveEvent() { Unit = itemUnit.MapUnit(), PathPoints = points, ArriveTime = (long)(TimeHelper.ServerNow() + lifeTime) });
-            }
-            else
-            {
-#if UNITY
-                AOGame.Publish(new CreateUnit() { MapUnit = itemUnit, IsMainAvatar = false });
-#endif
-                AOGame.PublishServer(new PublishNewUnitEvent() { Unit = itemUnit.MapUnit() });
-            }
+            var itemUnit = scene.AddChild<ItemUnit, Action<ItemUnit>>((x) => { x.AbilityItem = abilityItem; });
             return itemUnit;
         }
 #endif

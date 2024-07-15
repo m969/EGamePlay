@@ -54,6 +54,14 @@
             </summary>
             <param name="color">The color.</param>
         </member>
+        <member name="M:Sirenix.Utilities.ColorExtensions.PerceivedLuminosity(UnityEngine.Color,System.Boolean)">
+            <summary>
+            Gets the perceived luminosity of a given <see cref="T:UnityEngine.Color"/>.
+            </summary>
+            <param name="color">The current <see cref="T:UnityEngine.Color"/>.</param>
+            <param name="includeAlpha">Determines if the <see cref="F:UnityEngine.Color.a">Color.a</see> value should impact the result.</param>
+            <returns>The <see cref="T:System.Single">float</see> value representing the luminosity.</returns>
+        </member>
         <member name="T:Sirenix.Utilities.DelegateExtensions">
             <summary>
             Delegate method extensions.
@@ -1328,6 +1336,13 @@
             <param name="rect">The original Rect.</param>
             <param name="pos">The position to expand the rect towards.</param>
         </member>
+        <member name="M:Sirenix.Utilities.RectExtensions.IsPlaceholder(UnityEngine.Rect)">
+            <summary>
+            Determines if an <see cref="T:UnityEngine.Rect"/> is a placeholder; usually (0, 0, 1, 1) in Layout.
+            </summary>
+            <param name="rect">The original <see cref="T:UnityEngine.Rect"/>.</param>
+            <returns><c>true</c> if the <see cref="T:UnityEngine.Rect"/> is equal to (0, 0, 0, 0) or (0, 0, 1, 1); otherwise <c>false</c>.</returns>
+        </member>
         <member name="T:Sirenix.Utilities.StringExtensions">
             <summary>
             String method extensions.
@@ -1724,6 +1739,40 @@
             </summary>
             <param name="identifier">The identifier to check.</param>
             <returns><c>true</c> if the string is a C# keyword. Otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.HasDefaultConstructor(System.Type)">
+            <summary>
+            <para>Determines if a given <see cref="T:System.Type"/> has a default constructor.</para>
+            <para>A type is considered to have a default constructor if: It is a string, if it is an array, if it is a value type or if it has a public parameterless constructor.</para>
+            </summary>
+            <param name="self">The <see cref="T:System.Type"/> to investigate.</param>
+            <returns><c>true</c> if a default constructor has been found; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.InstantiateDefault(System.Type,System.Boolean)">
+            <summary>
+            Attempts to instantiate an object of a given <see cref="T:System.Type"/> with it's default constructor. If no default constructor is found then it attempts to find the most suitable alternative constructor and instantiate the <see cref="T:System.Type"/> with default parameters.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> to instantiate.</param>
+            <param name="preferUninitializedOverNonDefault">Determines if the use of <see cref="M:System.Runtime.Serialization.FormatterServices.GetUninitializedObject(System.Type)"/> is preferred over a non-default constructor call.</param>
+            <returns>The instantiated object or <c>null</c> if no suitable alternative constructor is found.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.FindIdealConstructor(System.Type,System.Reflection.BindingFlags)">
+            <summary>
+            Weighs multiple constructors for a given type, and attempts to find the most ideal constructor. This will ignore any unmanaged constructors.
+            </summary>
+            <param name="type">The <see cref="T:System.Type"/> to weigh the constructors of.</param>
+            <param name="flags">The <see cref="T:System.Reflection.BindingFlags"/> to search for the constructors; <see cref="F:System.Reflection.BindingFlags.Default"/> means only find the public ones.</param>
+            <returns>The most ideal <see cref="T:System.Reflection.ConstructorInfo"/> based on the scoring system.</returns>
+            <remarks>The scoring system prefers value types over reference types (adjusted for default values),
+            it provides bonuses for empty constructors or constructors solely consisting of default values.
+            Lastly it considers the amount of parameters present in the constructor in the overall score. </remarks>
+        </member>
+        <member name="M:Sirenix.Utilities.TypeExtensions.IsUnmanagedCtor(System.Reflection.ConstructorInfo)">
+            <summary>
+            Checks if a given <see cref="T:System.Reflection.ConstructorInfo"/> is unmanaged, by checking if it contains any <see cref="P:System.Type.IsPointer"/>, <see cref="P:System.Type.IsByRef"/> or <see cref="P:System.Type.IsMarshalByRef"/> parameters.
+            </summary>
+            <param name="ctor">The <see cref="T:System.Reflection.ConstructorInfo"/> to validate.</param>
+            <returns><c>true</c> if the <see cref="T:System.Reflection.ConstructorInfo"/> is unmanaged; otherwise <c>false</c>.</returns>
         </member>
         <member name="T:Sirenix.Utilities.UnityExtensions">
             <summary>

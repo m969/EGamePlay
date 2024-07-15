@@ -10,7 +10,7 @@ public class Skill1006Component : EGamePlay.Component
 {
     public override void Awake()
     {
-        Entity.OnEvent(nameof(SkillAbility.CreateExecution), PostCreateExecution);
+        Entity.OnEvent("CreateExecution", PostCreateExecution);
     }
 
     public void PostCreateExecution(Entity execution)

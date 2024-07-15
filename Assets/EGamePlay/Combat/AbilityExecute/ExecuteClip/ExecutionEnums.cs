@@ -34,7 +34,16 @@ public enum CollisionMoveType
     FixedPosition,
 }
 
-[LabelText("应用效果")]
+[LabelText("路径中轴点")]
+public enum PathExecutePoint
+{
+    [LabelText("以执行体坐标加偏移为中轴点")]
+    EntityOffset = 10,
+    [LabelText("以输入坐标加偏移为中轴点")]
+    InputPoint = 20
+}
+
+//[LabelText("应用效果")]
 public enum EffectApplyType
 {
     [LabelText("全部效果")]

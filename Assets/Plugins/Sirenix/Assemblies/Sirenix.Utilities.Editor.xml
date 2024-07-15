@@ -682,6 +682,21 @@
             Gets an icon of a unity folder.
             </summary>
         </member>
+        <member name="P:Sirenix.Utilities.Editor.EditorIcons.ObjectFieldButtonDark">
+            <summary>
+            Gets the dark mode version of the ObjectFieldButton texture.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.Editor.EditorIcons.ObjectFieldButtonLight">
+            <summary>
+            Gets the light mode version of the ObjectFieldButton texture.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.Editor.EditorIcons.ObjectFieldButton">
+            <summary>
+            Gets the ObjectFieldButton texture based on the current active theme.
+            </summary>
+        </member>
         <member name="T:Sirenix.Utilities.Editor.LazyEditorIcon">
             <summary>
             Lazy loading Editor Icon.
@@ -1094,9 +1109,14 @@
             A draggable zone for both Unity and non-unity objects.
             </summary>
         </member>
+        <member name="M:Sirenix.Utilities.Editor.DragAndDropUtilities.DragAndDropZone(UnityEngine.Rect,System.Object,System.Type,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            A draggable zone for both Unity and non-unity objects.
+            </summary>
+        </member>
         <member name="M:Sirenix.Utilities.Editor.DragAndDropUtilities.DropZone(UnityEngine.Rect,System.Object,System.Type,System.Boolean,System.Int32)">
             <summary>
-            A drop zone area for bot Unity and non-unity objects.
+            A drop zone area for both Unity and non-unity objects.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.DragAndDropUtilities.DropZone(UnityEngine.Rect,System.Object,System.Type,System.Int32)">
@@ -1208,6 +1228,14 @@
             <summary>
             Collection of extension methods for <see cref="T:UnityEngine.Event"/>.
             </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.EventExtensions.IsMouseOver(UnityEngine.Event,UnityEngine.Rect)">
+            <summary>
+            Returns <c>true</c> when the users mouse is hovering over the specified <see cref="T:UnityEngine.Rect"/>
+            </summary>
+            <param name="current">The  <see cref="T:UnityEngine.Event"/>.</param>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to check.</param>
+            <returns><c>true</c> if the mouse is over the specified <see cref="T:UnityEngine.Rect"/> otherwise <c>false</c>.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.EventExtensions.OnMouseDown(UnityEngine.Event,System.Int32,System.Boolean)">
             <summary>
@@ -1559,6 +1587,11 @@
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.RequestRepaint">
             <summary>
             Requests a repaint.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.GUIHelper.SafeHandleUtilityRepaint">
+            <summary>
+            Calls <see cref="M:UnityEditor.HandleUtility.Repaint"/>, if the <see cref="P:Sirenix.Utilities.Editor.GUIHelper.CurrentWindow"/> is not NULL.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.RequestRepaint(System.Int32)">
@@ -1970,6 +2003,49 @@
             </summary>
             <param name="objectToPreview"></param>
             <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.GUIHelper.CalcSize(UnityEngine.GUIStyle,System.String)">
+            <summary>
+            Measures the size of a given <see cref="T:System.String"/>, if it would be presented with this <see cref="T:UnityEngine.GUIStyle"/>.
+            </summary>
+            <param name="style">The <see cref="T:UnityEngine.GUIStyle"/> to present the <see cref="T:System.String"/> as.</param>
+            <param name="text">The <see cref="T:System.String"/> to measure.</param>
+            <returns>A <see cref="T:UnityEngine.Vector2"/> consisting of the width (<see cref="F:UnityEngine.Vector2.x"/>) &amp; height (<see cref="F:UnityEngine.Vector2.y"/>), as the size of the <see cref="T:System.String"/> in GUI-space.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.GUIHelper.CalcHeight(UnityEngine.GUIStyle,System.String,System.Single)">
+            <summary>
+            Measures the height of a given <see cref="T:System.String"/>, if it would be presented with this <see cref="T:UnityEngine.GUIStyle"/>.
+            </summary>
+            <param name="style">The <see cref="T:UnityEngine.GUIStyle"/> to present the <see cref="T:System.String"/> as.</param>
+            <param name="text">The <see cref="T:System.String"/> to measure.</param>
+            <param name="width">The width of the area the <see cref="T:System.String"/> is being presented in.</param>
+            <returns>The height of the <see cref="T:System.String"/>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.GUIHelper.CalcWidth(UnityEngine.GUIStyle,System.String)">
+            <summary>
+            Measures the width of a given <see cref="T:System.String"/>, if it would be presented with this <see cref="T:UnityEngine.GUIStyle"/>.
+            </summary>
+            <param name="style">The <see cref="T:UnityEngine.GUIStyle"/> to present the <see cref="T:System.String"/> as.</param>
+            <param name="text">The <see cref="T:System.String"/> to measure.</param>
+            <returns>The width of the <see cref="T:System.String"/>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.GUIHelper.CalcWidth(UnityEngine.GUIStyle,UnityEngine.GUIContent)">
+            <summary>
+            Measures the width of a given <see cref="T:UnityEngine.GUIContent"/>, if it would be presented with this <see cref="T:UnityEngine.GUIStyle"/>.
+            </summary>
+            <param name="style">The <see cref="T:UnityEngine.GUIStyle"/> to present the <see cref="T:UnityEngine.GUIContent"/> as.</param>
+            <param name="content">The <see cref="T:UnityEngine.GUIContent"/> to measure.</param>
+            <returns>The width of the <see cref="T:UnityEngine.GUIContent"/>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.GUIHelper.CalcMinMaxWidth(UnityEngine.GUIStyle,System.String,System.Single@,System.Single@)">
+            <summary>
+            Measures the min- &amp; max width of a given <see cref="T:System.String"/>, if it would be presented with this <see cref="T:UnityEngine.GUIStyle"/>.
+            </summary>
+            <param name="style">The <see cref="T:UnityEngine.GUIStyle"/> to present the <see cref="T:System.String"/> as.</param>
+            <param name="text">The <see cref="T:System.String"/> to measure.</param>
+            <param name="minWidth">The minimum width of the <see cref="T:System.String"/>.</param>
+            <param name="maxWidth">The maximum width of the <see cref="T:System.String"/>.</param>
+            <returns>The min- &amp; max width of the <see cref="T:System.String"/>, as <c>out</c> parameters.</returns>
         </member>
         <member name="T:Sirenix.Utilities.Editor.GUIPagingHelper">
             <summary>
@@ -2541,6 +2617,10 @@
             Ends the page.
             </summary>
         </member>
+        <member name="T:Sirenix.Utilities.Editor.Internal.InternalOdinEditorWrapper">
+            <summary> Temporary. </summary>
+            <warning>This implementation <b>will</b> get refactored.</warning>
+        </member>
         <member name="T:Sirenix.Utilities.Editor.ObjectFieldAlignment">
             <summary>
             How the square object field should be aligned.
@@ -2634,6 +2714,11 @@
             <summary>
             Draw the quaternion as raw x, y, z and w values.
             </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SearchField.#ctor">
+            <summary>Initializes the <see cref="T:Sirenix.Utilities.Editor.SearchField"/> and creates a permanent ID for the Control.</summary>
+            <remarks>If you create this <see cref="T:Sirenix.Utilities.Editor.SearchField"/> on a <see cref="T:UnityEngine.ScriptableObject"/> such as <see cref="T:UnityEditor.EditorWindow"/>,
+            make sure to initialize this during OnEnable to ensure it gets initialized correctly.</remarks>
         </member>
         <member name="T:Sirenix.Utilities.Editor.SirenixEditorFields">
             <summary>
@@ -4261,7 +4346,7 @@
             <param name="options">Layout options.</param>
             <returns>Value assigned to the field.</returns>
         </member>
-        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FilePathField(UnityEngine.Rect,UnityEngine.GUIContent,System.String,System.String,System.String,System.Boolean,System.Boolean)">
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FilePathField(UnityEngine.Rect,UnityEngine.GUIContent,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Draws a field that lets the user select a path to a file.
             </summary>
@@ -4272,9 +4357,10 @@
             <param name="extensions">Comma separated list of allowed file extensions. Use <c>null</c> to allow any file extension.</param>
             <param name="absolutePath">If <c>true</c> the path will be absolute. Otherwise the path will be relative to parentPath or to the Unity project directory.</param>
             <param name="useBackslashes">If <c>true</c> the path will be enforced to use backslashes. Otherwise the path will be enforced to use forward slashes.</param>
+            <param name="includeFileExtension">If <c>true</c> the file path will include the file's extension.</param>
             <returns>A path to a file.</returns>
         </member>
-        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FilePathField(UnityEngine.Rect,System.String,System.String,System.String,System.Boolean,System.Boolean)">
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FilePathField(UnityEngine.Rect,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Draws a field that lets the user select a path to a file.
             </summary>
@@ -4284,6 +4370,7 @@
             <param name="extensions">Comma separated list of allowed file extensions. Use <c>null</c> to allow any file extension.</param>
             <param name="absolutePath">If <c>true</c> the path will be absolute. Otherwise the path will be relative to parentPath or to the Unity project directory.</param>
             <param name="useBackslashes">If <c>true</c> the path will be enforced to use backslashes. Otherwise the path will be enforced to use forward slashes.</param>
+            <param name="includeFileExtension">If <c>true</c> the file path will include the file's extension.</param>
             <returns>A path to a file.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FilePathField(UnityEngine.GUIContent,System.String,System.String,System.String,System.Boolean,System.Boolean,UnityEngine.GUILayoutOption[])">
@@ -4297,6 +4384,33 @@
             <param name="absolutePath">If <c>true</c> the path will be absolute. Otherwise the path will be relative to parentPath or to the Unity project directory.</param>
             <param name="useBackslashes">If <c>true</c> the path will be enforced to use backslashes. Otherwise the path will be enforced to use forward slashes.</param>
             <param name="options">Layout options.</param>
+            <returns>A path to a file.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FilePathField(UnityEngine.GUIContent,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a field that lets the user select a path to a file.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="path">The current value.</param>
+            <param name="parentPath">A parent path the path needs to be relative to. Use <c>null</c> for Unity project directory.</param>
+            <param name="extensions">Comma separated list of allowed file extensions. Use <c>null</c> to allow any file extension.</param>
+            <param name="absolutePath">If <c>true</c> the path will be absolute. Otherwise the path will be relative to parentPath or to the Unity project directory.</param>
+            <param name="useBackslashes">If <c>true</c> the path will be enforced to use backslashes. Otherwise the path will be enforced to use forward slashes.</param>
+            <param name="options">Layout options.</param>
+            <param name="includeFileExtension">If <c>true</c> the file path will include the file's extension.</param>
+            <returns>A path to a file.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FilePathField(System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a field that lets the user select a path to a file.
+            </summary>
+            <param name="path">The current value.</param>
+            <param name="parentPath">A parent path the path needs to be relative to. Use <c>null</c> for Unity project directory.</param>
+            <param name="extensions">Comma separated list of allowed file extensions. Use <c>null</c> to allow any file extension.</param>
+            <param name="absolutePath">If <c>true</c> the path will be absolute. Otherwise the path will be relative to parentPath or to the Unity project directory.</param>
+            <param name="useBackslashes">If <c>true</c> the path will be enforced to use backslashes. Otherwise the path will be enforced to use forward slashes.</param>
+            <param name="options">Layout options.</param>
+            <param name="includeFileExtension">If <c>true</c> the file path will include the file's extension.</param>
             <returns>A path to a file.</returns>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FilePathField(System.String,System.String,System.String,System.Boolean,System.Boolean,UnityEngine.GUILayoutOption[])">
@@ -5291,6 +5405,1209 @@
             <param name="options">Layout options.</param>
             <returns><c>true</c> when the user has changed the selection. Otherwise <c>false</c>.</returns>
         </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Decimal,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a decimal field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Decimal)">
+            <summary>
+            Draws a decimal field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Decimal)">
+            <summary>
+            Draws a decimal field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Decimal,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Decimal,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Decimal,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Decimal,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Double,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a double field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Double)">
+            <summary>
+            Draws a double field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Double)">
+            <summary>
+            Draws a double field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Double,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Double,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Double,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Double,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Single,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a float field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Single)">
+            <summary>
+            Draws a float field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Single)">
+            <summary>
+            Draws a float field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Single,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Single,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Single,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Single,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Int64,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a long field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Int64)">
+            <summary>
+            Draws a long field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Int64)">
+            <summary>
+            Draws a long field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Int64,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Int64,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Int64,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Int64,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Int32,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a int field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Int32)">
+            <summary>
+            Draws a int field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Int32)">
+            <summary>
+            Draws a int field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Int32,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Int32,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Int32,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Int32,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a decimal field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a decimal field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a decimal field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a decimal field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDecimalUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DecimalUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a decimal field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DecimalUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a decimal field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DecimalUnitField(UnityEngine.Rect,System.String,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a decimal field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DecimalUnitField(UnityEngine.Rect,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a decimal field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DecimalUnitField(UnityEngine.GUIContent,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DecimalUnitField(UnityEngine.GUIContent,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DecimalUnitField(System.String,System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DecimalUnitField(System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a decimal field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a double field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a double field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a double field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a double field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartDoubleUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a float field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a float field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a float field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a float field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartFloatUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FloatUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a float field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FloatUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a float field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FloatUnitField(UnityEngine.Rect,System.String,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a float field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FloatUnitField(UnityEngine.Rect,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a float field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FloatUnitField(UnityEngine.GUIContent,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FloatUnitField(UnityEngine.GUIContent,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FloatUnitField(System.String,System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.FloatUnitField(System.Single,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a float field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DoubleUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a double field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DoubleUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a double field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DoubleUnitField(UnityEngine.Rect,System.String,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a double field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DoubleUnitField(UnityEngine.Rect,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a double field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DoubleUnitField(UnityEngine.GUIContent,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DoubleUnitField(UnityEngine.GUIContent,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DoubleUnitField(System.String,System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.DoubleUnitField(System.Double,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a double field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a long field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a long field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a long field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a long field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartLongUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])" -->
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.LongUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a long field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.LongUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a long field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.LongUnitField(UnityEngine.Rect,System.String,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a long field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.LongUnitField(UnityEngine.Rect,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a long field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.LongUnitField(UnityEngine.GUIContent,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.LongUnitField(UnityEngine.GUIContent,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.LongUnitField(System.String,System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.LongUnitField(System.Int64,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a long field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a int field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,UnityEngine.GUIContent,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a int field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.String,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a int field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.Rect,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a int field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="rect">Position and size of the field.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,UnityEngine.GUIContent,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.String,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports unit conversions and Odin expressions.
+            </summary>
+            <param name="expressionContext">Context for expression support.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Sirenix.Utilities.Editor.SirenixEditorFields.SmartIntUnitField(Sirenix.Utilities.Editor.FieldExpressionContext@,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])" -->
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.IntUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a int field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="style">GUIStyle for drawing the field. Set to <c>null</c> for default.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.IntUnitField(UnityEngine.Rect,UnityEngine.GUIContent,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a int field that supports unit conversions.
+            </summary>
+            <param name="rect">Position and size of the field.</param>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.IntUnitField(UnityEngine.Rect,System.String,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a int field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.IntUnitField(UnityEngine.Rect,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Draws a int field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.IntUnitField(UnityEngine.GUIContent,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.IntUnitField(UnityEngine.GUIContent,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports unit conversions.
+            </summary>
+            <param name="label">Label of field. Set to <c>null</c> for no label.</param>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.IntUnitField(System.String,System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.IntUnitField(System.Int32,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a int field that supports unit conversions.
+            </summary>
+            <param name="value">Current value.</param>
+            <param name="baseUnitInfo">UnitInfo of the <c>value</c> and <c>return value</c>. Must have same <c>UnitCategory</c> as <c>displayUnitInfo</c>.</param>
+            <param name="displayUnitInfo">UnitInfo of the displayed value in the field, converted from <c>baseUnitInfo</c>. Must have same <c>UnitCategory</c> as <c>baseUnitInfo</c>.</param>
+            <param name="options">Layout options.</param>
+            <returns>Value assigned to the field.</returns>
+        </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.EnumMaskDropdown(UnityEngine.Rect,UnityEngine.GUIContent,System.Enum,UnityEngine.GUIStyle)">
             <summary>
             Draws a dropdown field for enum masks.
@@ -5362,6 +6679,72 @@
             <param name="selected">Current selection.</param>
             <param name="options">Layout options.</param>
             <returns>Value assigned to the field.</returns>
+        </member>
+        <member name="T:Sirenix.Utilities.Editor.SirenixEditorFields.InternalExpressionEvaluator">
+            <summary>
+            Wrapper for Unity's ExpressionEvaluator. It was moved from UnityEditor to UnityEngine in version 2023 and
+            that *should* have been automatically fixed by the AssemblyUpdater, but that broke for one reason or another.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Utilities.Editor.FieldExpressionContext">
+            <summary>
+            Type containing the necessary components to use C# expressions in fields.
+            </summary>
+            <example>
+            // Creating and using a context with for a static type. 
+            FieldExpressionContext context = FieldExpressionContext.StaticExpression(typeof(MyStaticType));
+            
+            SirenixEditorFields.SmartIntField(context, ...);
+            </example>
+            <example>
+            // Creating and using a context with an instanced type.
+            FieldExpressionContext context = FieldExpressionContext.InstanceContext(myInstance);
+            
+            SirenixEditorFields.SmartIntField(context, ...);
+            </example>
+            <example>
+            // Creating and using context with an InspectorProperty, for example, in a custom Odin drawer.
+            FieldExpressionContext context = property.ToFieldExpressionContext();
+            
+            SirenixEditorFields.SmartIntField(context, ...);
+            </example>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.FieldExpressionContext.Instance">
+            <summary>
+            Target instance for field expressions.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.FieldExpressionContext.Type">
+            <summary>
+            Target type for expressions.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.Editor.FieldExpressionContext.IsStatic">
+            <summary>
+            Indicates if the expressions targets a static type or not.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.FieldExpressionContext.None">
+            <summary>
+            Creates an expression context that targets nothing. Expressions are still possible, but no members can be accessed, and only static method can be called.
+            </summary>
+            <returns>FieldExpresionContext target targets nothing.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.FieldExpressionContext.InstanceContext(System.Object)">
+            <summary>
+            Creates an expression context that targets the provided instance. Expression can access members of the instance.
+            </summary>
+            <param name="instance">The instance for the context to target.</param>
+            <returns>FieldExpressionContext that targets an instance.</returns>
+            <exception cref="T:System.ArgumentNullException">Throws if instance is null.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.FieldExpressionContext.StaticContext(System.Type)">
+            <summary>
+            Creates an expression context that targets the provided type. Only static members can be accessed.
+            </summary>
+            <param name="type">The type to target.</param>
+            <returns>FieldExpressionContext that targets a static type.</returns>
+            <exception cref="T:System.ArgumentNullException">Throws if type is null.</exception>
         </member>
         <member name="T:Sirenix.Utilities.Editor.SirenixEditorGUI">
             <summary>
@@ -6158,6 +7541,15 @@
             <param name="valueRect">The value rect.</param>
             <param name="style">The GUI style.</param>
         </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.Foldout(UnityEngine.Rect,System.Boolean,System.String,UnityEngine.GUIStyle)">
+            <summary>
+            Draws a foldout field where clicking on the label toggles to the foldout too.
+            </summary>
+            <param name="rect">The rect to draw the foldout field in.</param>
+            <param name="isVisible">The current state of the foldout.</param>
+            <param name="label">The label of the foldout.</param>
+            <param name="style">The style.</param>
+        </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.Foldout(UnityEngine.Rect,System.Boolean,UnityEngine.GUIContent,UnityEngine.GUIStyle)">
             <summary>
             Draws a foldout field where clicking on the label toggles to the foldout too.
@@ -6308,6 +7700,26 @@
             Ends the shakeable group.
             </summary>
         </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginShakeableGroup">
+            <summary>
+            Begins a shakeable group.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginShakeableGroup(System.Single)">
+            <summary>
+            Begins a shakeable group.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.StartShakingGroup">
+            <summary>
+            Starts the shaking animation of a shaking group.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndShakeableGroup">
+            <summary>
+            Ends the shakeable group.
+            </summary>
+        </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginVerticalMenuList(System.Object)">
             <summary>
             Begins drawing a vertical menu list.
@@ -6427,7 +7839,7 @@
             </summary>
             <param name="rect">The grabbable rect.</param>
             <param name="id">The control ID for the sliding.</param>
-            <param name="value">The current value.</param>
+            <param name="t">The current value.</param>
             <returns>
             The current value.
             </returns>
@@ -6529,6 +7941,155 @@
             <param name="rect">The rect to make a feature rich control for.</param>
             <param name="controlId">The created control ID.</param>
             <param name="hasKeyboardFocus">A value indicating whether or not the control has keyboard focus.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="slice">The amount of slicing applied to the texture on all sides.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,System.Int32,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="horizontalSlice">The amount of slicing applied to the left and right sides.</param>
+            <param name="verticalSlice">The amount of slicing applied to the top and bottom sides.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="leftSlice">The amount of slicing applied to the left side.</param>
+            <param name="rightSlice">The amount of slicing applied to the right side.</param>
+            <param name="topSlice">The amount of slicing applied to the top side.</param>
+            <param name="bottomSlice">The amount of slicing applied to the bottom side.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Rect,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="uvRect">The UV-coordinates to use.</param>
+            <param name="slice">The amount of slicing applied to the texture on all sides.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Rect,System.Int32,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="uvRect">The UV-coordinates to use.</param>
+            <param name="horizontalSlice">The amount of slicing applied to the left and right sides.</param>
+            <param name="verticalSlice">The amount of slicing applied to the top and bottom sides.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Rect,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="uvRect">The UV-coordinates to use.</param>
+            <param name="leftSlice">The amount of slicing applied to the left side.</param>
+            <param name="rightSlice">The amount of slicing applied to the right side.</param>
+            <param name="topSlice">The amount of slicing applied to the top side.</param>
+            <param name="bottomSlice">The amount of slicing applied to the bottom side.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Color,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="color">The <see cref="T:UnityEngine.Color"/> that modulates the output.</param>
+            <param name="slice">The amount of slicing applied to the texture on all sides.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Color,System.Int32,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="color">The <see cref="T:UnityEngine.Color"/> that modulates the output.</param>
+            <param name="horizontalSlice">The amount of slicing applied to the left and right sides.</param>
+            <param name="verticalSlice">The amount of slicing applied to the top and bottom sides.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Color,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="color">The <see cref="T:UnityEngine.Color"/> that modulates the output.</param>
+            <param name="leftSlice">The amount of slicing applied to the left side.</param>
+            <param name="rightSlice">The amount of slicing applied to the right side.</param>
+            <param name="topSlice">The amount of slicing applied to the top side.</param>
+            <param name="bottomSlice">The amount of slicing applied to the bottom side.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Color,UnityEngine.Rect,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="color">The <see cref="T:UnityEngine.Color"/> that modulates the output.</param>
+            <param name="uvRect">The UV-coordinates to use.</param>
+            <param name="slice">The amount of slicing applied to the texture on all sides.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Color,UnityEngine.Rect,System.Int32,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="color">The <see cref="T:UnityEngine.Color"/> that modulates the output.</param>
+            <param name="uvRect">The UV-coordinates to use.</param>
+            <param name="horizontalSlice">The amount of slicing applied to the left and right sides.</param>
+            <param name="verticalSlice">The amount of slicing applied to the top and bottom sides.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureSliced(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Color,UnityEngine.Rect,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draws a <see cref="T:UnityEngine.Texture"/> with support for slicing the Texture.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="color">The <see cref="T:UnityEngine.Color"/> that modulates the output.</param>
+            <param name="uvRect">The UV-coordinates to use.</param>
+            <param name="leftSlice">The amount of slicing applied to the left side.</param>
+            <param name="rightSlice">The amount of slicing applied to the right side.</param>
+            <param name="topSlice">The amount of slicing applied to the top side.</param>
+            <param name="bottomSlice">The amount of slicing applied to the bottom side.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureRepeat(UnityEngine.Rect,UnityEngine.Texture,System.Single)">
+            <summary>
+            Draws a repeating <see cref="T:UnityEngine.Texture"/> in a given <see cref="T:UnityEngine.Rect"/>.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="scale">Amount of scaling applied to the output.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.DrawTextureRepeat(UnityEngine.Rect,UnityEngine.Texture,UnityEngine.Color,System.Single)">
+            <summary>
+            Draws a repeating <see cref="T:UnityEngine.Texture"/> in a given <see cref="T:UnityEngine.Rect"/>.
+            </summary>
+            <param name="rect">The <see cref="T:UnityEngine.Rect"/> to draw the <see cref="T:UnityEngine.Texture"/> in.</param>
+            <param name="texture">The <see cref="T:UnityEngine.Texture"/> to draw.</param>
+            <param name="color">The <see cref="T:UnityEngine.Color"/> that modulates the output.</param>
+            <param name="scale">Amount of scaling applied to the output.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.Button(System.String,Sirenix.OdinInspector.ButtonSizes)">
+            <summary>
+            Draws a button with a given <see cref="T:Sirenix.OdinInspector.ButtonSizes">Size</see>.
+            </summary>
+            <param name="text">Text to display on the button.</param>
+            <param name="size">The size of the button.</param>
+            <returns><c>true</c> when the button is pressed; otherwise <c>false</c>.</returns>
         </member>
         <member name="T:Sirenix.Utilities.Editor.SirenixGUIStyles">
             <summary>
@@ -6855,6 +8416,11 @@
             Label style.
             </summary>
         </member>
+        <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.HighlightedLabel">
+            <summary>
+            Highlighted label style.
+            </summary>
+        </member>
         <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.WhiteLabel">
             <summary>
             White label style.
@@ -6870,9 +8436,19 @@
             Centered label style.
             </summary>
         </member>
+        <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.RichTextLabelCentered">
+            <summary>
+            Centered label style.
+            </summary>
+        </member>
         <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.WhiteLabelCentered">
             <summary>
             White centered label style.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.BlackLabelCentered">
+            <summary>
+            Black centered label style.
             </summary>
         </member>
         <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.MiniLabelCentered">
@@ -7083,6 +8659,11 @@
         <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.DetailedMessageBox">
             <summary>
             Detailed Message box style.
+            </summary>
+        </member>
+        <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.MultiLineWhiteLabel">
+            <summary>
+            Multiline white label style.
             </summary>
         </member>
         <member name="P:Sirenix.Utilities.Editor.SirenixGUIStyles.MultiLineLabel">
@@ -7509,6 +9090,271 @@
             <param name="sprite"></param>
             <returns></returns>
         </member>
+        <member name="T:Sirenix.Utilities.Editor.UnitCategory">
+            <summary>
+            Categories of units. A unit value can only be converted to another of the same category.
+            </summary>
+        </member>
+        <member name="T:Sirenix.Utilities.Editor.UnitNumberUtility">
+            <summary>
+            Tools for converting between units, for example, converting from inches to meters.
+            </summary>
+            <seealso cref="T:Sirenix.Utilities.Editor.UnitInfo"/>
+            <seealso cref="T:Sirenix.OdinInspector.UnitAttribute"/>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.GetAllUnitInfos">
+            <summary>
+            Gets all UnitInfo registered, both built-in and custom.
+            </summary>
+            <returns>Enumerable of both built-in and custom units.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.GetUnitInfo(Sirenix.OdinInspector.Units)">
+            <summary>
+            Gets the UnitInfo for the given Units enum value.
+            </summary>
+            <param name="unit">Units enum value.</param>
+            <returns>UnitInfo for the unit.</returns>
+            <exception cref="T:System.Exception">Throws for invalid unit input.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.GetUnitInfoByName(System.String)">
+            <summary>
+            Gets the UnitInfo with the corrosponding name.
+            </summary>
+            <param name="unitName">The name of the unit.</param>
+            <returns>UnitInfo for the name.</returns>
+            <exception cref="T:System.Exception">Throws when no unit with the given name is found.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.MatchUnitInfoBySymbol(System.String,System.String)">
+            <summary>
+            Finds the UnitInfo that best fits the given symbol within the given category.
+            </summary>
+            <param name="symbol">The symbol to find a unit for.</param>
+            <param name="unitCategory">The category to look for units within.</param>
+            <returns>The UnitInfo that best matches the given symbol.</returns>
+            <exception cref="T:System.Exception">Throws when no match was found.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.TryGetUnitInfo(Sirenix.OdinInspector.Units,Sirenix.Utilities.Editor.UnitInfo@)">
+            <summary>
+            Gets the UnitInfo for the given Units enum value.
+            </summary>
+            <param name="unit">Units enum value.</param>
+            <param name="unitInfo">The UnitInfo matching the given unit value.</param>
+            <returns><c>true</c> when a UnitInfo was found. Otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.TryGetUnitInfoByName(System.String,Sirenix.Utilities.Editor.UnitInfo@)">
+            <summary>
+            Gets the UnitInfo with the given name.
+            </summary>
+            <param name="unitName">The name of the unit.</param>
+            <param name="unitInfo">The UnitInfo matching the given name.</param>
+            <returns><c>true</c> when a UnitInfo was found. Otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.TryMatchUnitInfoBySymbol(System.String,System.String,Sirenix.Utilities.Editor.UnitInfo@)">
+            <summary>
+            Finds the UnitInfo that best fits the given symbol within the given category.
+            </summary>
+            <param name="symbol">The symbol to find a unit for.</param>
+            <param name="unitCategory">The category to look for units within.</param>
+            <param name="unitInfo">The UnitInfo that best matches the given symbol.</param>
+            <returns><c>true</c> when a UnitInfo was found. Otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.ConvertUnitFromTo(System.Decimal,Sirenix.OdinInspector.Units,Sirenix.OdinInspector.Units)">
+            <summary>
+            Converts between two units. The units must be of the same category.
+            </summary>
+            <param name="value">The value to convert. Should be in the <c>from</c> units.</param>
+            <param name="from">The unit to convert the value from. <c>value</c> should be in this unit.</param>
+            <param name="to">To unit to convert the value to. Must be the same category as <c>from</c>.</param>
+            <returns>The <c>value</c> converted to <c>to</c> units.</returns>
+            <exception cref="T:System.Exception">Throws when either 'from' or 'to' units are invalid, or when the units are of different categories.</exception>
+            <example>
+            <code>
+            decimal meters = 5m;
+            decimal centimeters = ConvertUnitsFromTo(meters, Units.Meter, Units.Centimeter);
+            // centimeters = 500
+            </code>
+            </example>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.ConvertUnitFromTo(System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Converts between two units. The units must be of the same category.
+            </summary>
+            <param name="value">The value to convert. Should be in the <c>fromUnitInfo</c> units.</param>
+            <param name="fromUnitInfo">The unit to convert the value from. <c>value</c> should be in this unit.</param>
+            <param name="toUnitInfo">To unit to convert the value to. Must be the same category as <c>fromUnitInfo</c>.</param>
+            <returns>The <c>value</c> converted to <c>toUnitInfo</c> units.</returns>
+            <exception cref="T:System.Exception">Throws when either 'fromUnitInfo' or 'toUnitInfo' units are invalid, or when the units are of different categories.</exception>
+            <example>
+            <code>
+            decimal meters = 5m;
+            decimal centimeters = ConvertUnitsFromTo(meters, meterUnitInfo, centimeterUnitInfo);
+            // centimeters = 500
+            </code>
+            </example>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.TryConvertUnitFromTo(System.Decimal,Sirenix.OdinInspector.Units,Sirenix.OdinInspector.Units,System.Decimal@)">
+            <summary>
+            Converts between two units. The units must be of the same category.
+            </summary>
+            <param name="value">The value to convert. Should be in the <c>from</c> units.</param>
+            <param name="from">The unit to convert the value from. <c>value</c> should be in this unit.</param>
+            <param name="to">To unit to convert the value to. Must be the same category as <c>from</c>.</param>
+            <param name="converted">The <c>value</c> converted to <c>to</c> units.</param>
+            <returns><c>true</c> when the unit was successfully converted. Otherwise <c>false</c>.</returns>
+            <example>
+            <code>
+            decimal meters = 5m;
+            if (TryConvertUnitsFromTo(meters, Units.Meter, Units.Centimeter, out decimal centimeters)
+            {
+                // centimeters = 500
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.TryConvertUnitFromTo(System.Decimal,Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo,System.Decimal@)">
+            <summary>
+            Converts between two units. The units must be of the same category.
+            </summary>
+            <param name="value">The value to convert. Should be in the <c>fromUnitInfo</c> units.</param>
+            <param name="fromUnitInfo">The unit to convert the value from. <c>value</c> should be in this unit.</param>
+            <param name="toUnitInfo">To unit to convert the value to. Must be the same category as <c>fromUnitInfo</c>.</param>
+            <param name="converted">The <c>value</c> converted to <c>toUnitInfo</c> units.</param>
+            <returns><c>true</c> when the unit was successfully converted. Otherwise <c>false</c>.</returns>
+            <example>
+            <code>
+            decimal meters = 5m;
+            if (TryConvertUnitsFromTo(meters, meterUnitInfo, centimeterUnitInfo, out decimal centimeters))
+            {
+                // centimeters = 500
+            }
+            </code>
+            </example>
+            <exception cref="T:System.ArgumentNullException">Throws if either fromUnitInfo or toUnitInfo is null.</exception>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.CanConvertBetween(Sirenix.OdinInspector.Units,Sirenix.OdinInspector.Units)">
+            <summary>
+            Indicates whether or not a value can be converted between the given <c>a</c> and <c>b</c> units.
+            </summary>
+            <param name="a">Unit a.</param>
+            <param name="b">Unit b.</param>
+            <returns><c>true</c> if both units have the same category. Otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.CanConvertBetween(Sirenix.Utilities.Editor.UnitInfo,Sirenix.Utilities.Editor.UnitInfo)">
+            <summary>
+            Indicates whether or not a value can be converted between the given <c>a</c> and <c>b</c> units.
+            </summary>
+            <param name="a">Unit a.</param>
+            <param name="b">Unit b.</param>
+            <returns><c>true</c> if both units have the same category. Otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.AddCustomUnit(System.String,System.String[],System.String,System.Decimal)">
+            <summary>
+            Adds a custom unit to the UnitNumberUtility, that can also be used with the <see cref="!:>UnitAttribute"/>.
+            Call this using InitializeOnLoad or InitializeOnLoadMethod.
+            </summary>
+            <param name="name">The name of the unit. Duplicate names are not allowed.</param>
+            <param name="symbols">Symbols used for the unit. First value in the array will be used as the primary symbol. Atleast 1 value required. Duplicate symbols are not allowed within the same category.</param>
+            <param name="unitCategory">The category of the unit. Units can only be converted to another of the same category. Custom categories are allowed.</param>
+            <param name="multiplier">The multiplier to convert the unit from the base value. For example, meters are the base unit of the distance category, therefore centimeters have a multipler of 100.</param>
+            <example>
+            <para>Example of adding centimeters as a custom unit.</para>
+            <code>
+            UnitNumberUtility.AddCustomUnit("Centimeter", new string[]{ "cm" }, "Distance", 100m);
+            </code>
+            </example>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.AddCustomUnit(System.String,System.String[],Sirenix.Utilities.Editor.UnitCategory,System.Decimal)">
+            <summary>
+            Adds a custom unit to the UnitNumberUtility, that can also be used with the <see cref="!:>UnitAttribute"/>.
+            Call this using InitializeOnLoad or InitializeOnLoadMethod.
+            </summary>
+            <param name="name">The name of the unit. Duplicate names are not allowed.</param>
+            <param name="symbols">Symbols used for the unit. First value in the array will be used as the primary symbol. Atleast 1 value required. Duplicate symbols are not allowed within the same category.</param>
+            <param name="unitCategory">The category of the unit. Units can only be converted to another of the same category. Custom categories are allowed.</param>
+            <param name="multiplier">The multiplier to convert the unit from the base value. For example, meters are the base unit of the distance category, therefore centimeters have a multipler of 100.</param>
+            <example>
+            <para>Example of adding centimeters as a custom unit.</para>
+            <code>
+            UnitNumberUtility.AddCustomUnit("Centimeter", new string[]{ "cm" }, UnitCategory.Distance, 100m);
+            </code>
+            </example>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.AddCustomUnit(System.String,System.String[],System.String,System.Func{System.Decimal,System.Decimal},System.Func{System.Decimal,System.Decimal})">
+            <summary>
+            Adds a custom unit to the UnitNumberUtility, that can also be used with the <see cref="!:>UnitAttribute"/>.
+            This overload allows for custom conversion methods but, if possible, the multiplier overloads should be prefered.
+            Call this using InitializeOnLoad or InitializeOnLoadMethod.
+            </summary>
+            <param name="name">The name of the unit. Duplicate names are not allowed.</param>
+            <param name="symbols">Symbols used for the unit. First value in the array will be used as the primary symbol. Atleast 1 value required. Duplicate symbols are not allowed within the same category.</param>
+            <param name="unitCategory">The category of the unit. Units can only be converted to another of the same category. Custom categories are allowed.</param>
+            <param name="convertToBase">Method for converting a given value of the custom unit to the base unit. For example, for centimeter, use: <c>x =&gt; x / 100m;</c>.</param>
+            <param name="convertFromBase">Method for converting a given value of the base unit to the custom unit. For example, for centimeter, use: <c>x =&gt; x * 100m;</c>.</param>
+            <example>
+            <para>Example of adding centimeters as a custom unit.</para>
+            <code>
+            UnitNumberUtility.AddCustomUnit("Centimeter", new string[]{ "cm" }, "Distance", x =&gt; x / 100m, x = &gt; x * 100m);
+            </code>
+            </example>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.UnitNumberUtility.AddCustomUnit(System.String,System.String[],Sirenix.Utilities.Editor.UnitCategory,System.Func{System.Decimal,System.Decimal},System.Func{System.Decimal,System.Decimal})">
+            <summary>
+            Adds a custom unit to the UnitNumberUtility, that can also be used with the <see cref="!:>UnitAttribute"/>.
+            This overload allows for custom conversion methods but, if possible, the multiplier overloads should be prefered.
+            Call this using InitializeOnLoad or InitializeOnLoadMethod.
+            </summary>
+            <param name="name">The name of the unit. Duplicate names are not allowed.</param>
+            <param name="symbols">Symbols used for the unit. First value in the array will be used as the primary symbol. Atleast 1 value required. Duplicate symbols are not allowed within the same category.</param>
+            <param name="unitCategory">The category of the unit. Units can only be converted to another of the same category. Custom categories are allowed.</param>
+            <param name="convertToBase">Method for converting a given value of the custom unit to the base unit. For example, for centimeter, use: <c>x =&gt; x / 100m;</c>.</param>
+            <param name="convertFromBase">Method for converting a given value of the base unit to the custom unit. For example, for centimeter, use: <c>x =&gt; x * 100m;</c>.</param>
+            /// <example>
+            <para>Example of adding centimeters as a custom unit.</para>
+            <code>
+            UnitNumberUtility.AddCustomUnit("Centimeter", new string[]{ "cm" }, UnitCategory.Distance, x =&gt; x / 100m, x = &gt; x * 100m);
+            </code>
+            </example>
+        </member>
+        <member name="T:Sirenix.Utilities.Editor.UnitInfo">
+            <summary>
+            Object describing units, including name, symbols and how to convert it to other units.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.UnitInfo.Name">
+            <summary>
+            Name of the unit.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.UnitInfo.Symbols">
+            <summary>
+            Symbols of the unit. First symbol is considered the primary symbol.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.UnitInfo.UnitCategory">
+            <summary>
+            The category of the unit. Units can only be converted within the same category.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.UnitInfo.Multiplier">
+            <summary>
+            Multiplier for converting from the base unit.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.UnitInfo.ConvertFromBase">
+            <summary>
+            Custom method for converting from the base unit.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.UnitInfo.ConvertToBase">
+            <summary>
+            Custom method for converting to the base unit.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.UnitInfo.UsesCustomConversion">
+            <summary>
+            Indicates whether the UnitInfo should use the <c>multiplier</c> or the <c>ConvertFromBase</c> and <c>ConvertToBase</c> methods.
+            </summary>
+        </member>
         <member name="T:Sirenix.Utilities.AssemblyTypeFlags">
             <summary>
             AssemblyTypeFlags is a bitmask used to filter types and assemblies related to Unity.
@@ -7620,10 +9466,10 @@
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAssemblyDirectory(System.Reflection.Assembly)">
             <summary>
-            Gets the full file path to a given assembly.
+            Gets the full file path to a given assembly's containing directory.
             </summary>
             <param name="assembly">The assembly.</param>
-            <returns>The full file path to a given assembly, or <c>Null</c> if no file path was found.</returns>
+            <returns>The full file path to a given assembly's containing directory, or <c>Null</c> if no file path was found.</returns>
             <exception cref="T:System.NullReferenceException"><paramref name="assembly"/> is Null.</exception>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAssemblyFilePath(System.Reflection.Assembly)">
@@ -7638,6 +9484,13 @@
             Gets the type.
             </summary>
             <param name="fullName">The full name of the type, with or without any assembly information.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.AssemblyUtilities.GetTypes(Sirenix.Utilities.AssemblyCategory)">
+            <summary>
+            Get types from the current AppDomain with a specified <see cref="T:Sirenix.Utilities.AssemblyCategory"/> filter.
+            </summary>
+            <param name="assemblyFlags">The <see cref="T:Sirenix.Utilities.AssemblyCategory"/> filters.</param>
+            <returns>Types from the current AppDomain with the specified <see cref="T:Sirenix.Utilities.AssemblyCategory"/> filters.</returns>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetTypes(Sirenix.Utilities.AssemblyTypeFlags)">
             <summary>

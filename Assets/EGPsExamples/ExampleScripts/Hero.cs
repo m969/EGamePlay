@@ -217,7 +217,7 @@ public sealed class Hero : MonoBehaviour
             else if (spellAction.SkillExecution.InputPoint != null)
                 transform.GetChild(0).LookAt(spellAction.SkillExecution.InputPoint);
             else
-                transform.GetChild(0).localEulerAngles = new Vector3(0, spellAction.SkillExecution.InputDirection, 0);
+                transform.GetChild(0).localEulerAngles = new Vector3(0, spellAction.SkillExecution.InputRadian, 0);
 
             CombatEntity.Position = transform.position;
             CombatEntity.Rotation = transform.GetChild(0).localRotation;

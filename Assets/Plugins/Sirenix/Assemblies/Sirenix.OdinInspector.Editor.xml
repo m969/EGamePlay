@@ -259,6 +259,11 @@
             </para>
             </summary>
         </member>
+        <member name="P:Sirenix.OdinInspector.Editor.GeneralDrawerConfig.EnableUIToolkitSupport">
+            <summary>
+            Specify whether or not the script selector above components should be drawn.
+            </summary>
+        </member>
         <member name="P:Sirenix.OdinInspector.Editor.GeneralDrawerConfig.ShowMonoScriptInEditor">
             <summary>
             Specify whether or not the script selector above components should be drawn.
@@ -4480,6 +4485,13 @@
             </summary>
             <param name="label">The label.</param>
         </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Drawers.InlineEditorAttributeDrawer`1.DrawAnimationClipEditorPreview(UnityEngine.Rect)">
+            <summary>
+            
+            </summary>
+            <param name="rect"></param>
+            <remarks>Will set <see cref="P:UnityEngine.GUI.enabled">GUI.enabled</see> to false during some cases, to avoid the Preview eating events when it really shouldn't.</remarks>
+        </member>
         <member name="T:Sirenix.OdinInspector.Editor.Drawers.InlinePropertyAttributeDrawer">
             <summary>
             Drawer for the <see cref="T:Sirenix.OdinInspector.InlinePropertyAttribute"/> attribute.
@@ -5637,16 +5649,6 @@
             Draws the property layout.
             </summary>
         </member>
-        <member name="T:Sirenix.OdinInspector.Editor.Drawers.NullableReferenceDrawer`1">
-            <summary>
-            Draws all nullable reference types, with an object field.
-            </summary>
-        </member>
-        <member name="M:Sirenix.OdinInspector.Editor.Drawers.NullableReferenceDrawer`1.DrawPropertyLayout(UnityEngine.GUIContent)">
-            <summary>
-            Draws the property.
-            </summary>
-        </member>
         <member name="M:Sirenix.OdinInspector.Editor.Drawers.NullableReferenceDrawer`1.CanDrawValueProperty(Sirenix.OdinInspector.Editor.InspectorProperty)">
             <summary>
             Returns a value that indicates if this drawer can be used for the given property.
@@ -5998,6 +6000,22 @@
             <summary>
             Draws the property.
             </summary>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Drawers.MultiCollectionFilter`1.GetCollectionIndex(System.Int32)">
+            <summary>
+            Retrieves the index of a filtered item; if the collection is not filtered, it just returns the passed index.
+            </summary>
+            <param name="index">The index to find.</param>
+            
+            <returns>
+            The index in the collection of the filtered item,
+            or the passed index if the collection is not <see cref="P:Sirenix.OdinInspector.Editor.Drawers.MultiCollectionFilter`1.IsFiltered">filtered</see>.
+            </returns>
+            
+            <exception cref="T:Sirenix.OdinInspector.Editor.Drawers.MultiCollectionFilter`1.IndexNotFoundException">
+            This is thrown if it's unable to find the index in the original collection,
+            this indicates a discrepancy between the filtered collection and the original collection.
+            </exception>
         </member>
         <member name="T:Sirenix.OdinInspector.Editor.Drawers.SingleDrawer">
             <summary>
@@ -7126,6 +7144,135 @@
             Preview object of the example.
             </summary>
         </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.VisibleItems.HasAssociatedData(System.Int32)">
+            <summary>
+            Checks whether the allocated <see cref="T:UnityEngine.Rect"/> has data associated with it.
+            </summary>
+            <param name="index">The index of the <see cref="T:UnityEngine.Rect"/> to check.</param>
+            <returns><c>true</c> if the <see cref="T:UnityEngine.Rect"/> has data associated with it; otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.VisibleItems.GetAssociatedData(System.Int32)">
+            <summary>
+            Gets the data associated with the <see cref="T:UnityEngine.Rect"/> at the given <paramref name="index"/>; this is the second parameter assigned in the <see cref="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.AllocateRect(System.Single,System.Object)"/> method.
+            </summary>
+            <param name="index">The index of the <see cref="T:UnityEngine.Rect"/> to retrieve the associated data from.</param>
+            <returns>The associated data.</returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.VisibleItems.GetAssociatedData``1(System.Int32)">
+            <summary>
+            Gets the data associated with the <see cref="T:UnityEngine.Rect"/> at the given <see cref="!:index"/>; this is the second parameter assigned in the <see cref="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.AllocateRect(System.Single,System.Object)"/> method.
+            </summary>
+            <param name="index">The index of the <see cref="T:UnityEngine.Rect"/> to retrieve the associated data from.</param>
+            <typeparam name="T">The expected associated data type.</typeparam>
+            <returns>The associated data.</returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.VisibleItems.GetIndentation(System.Int32)">
+            <summary>
+            Gets the indentation set for the <see cref="T:UnityEngine.Rect"/> at the given <paramref name="index"/>.
+            </summary>
+            <param name="index">The <paramref name="index"/> of the <see cref="T:UnityEngine.Rect"/> to retrieve the indentation for.</param>
+            <returns>The indentation for the <see cref="T:UnityEngine.Rect"/>.</returns>
+            <remarks>The indentation is set using <see cref="F:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.Indentation"/> during <see cref="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.BeginAllocations"/> and <see cref="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.EndAllocations"/>.</remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.VisibleItems.GetCombinedRects">
+            <summary>
+            Creates a <see cref="T:UnityEngine.Rect"/> representing all the visible <see cref="T:UnityEngine.Rect"/>'s combined.
+            </summary>
+            <returns>The created <see cref="T:UnityEngine.Rect"/>.</returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.AllocateRect(System.Single,System.Object)">
+            <summary>
+            Allocates an <see cref="T:UnityEngine.Rect"/> in the view, with the option to associate a given <see cref="T:System.Object"/> with it.
+            </summary>
+            <param name="height"></param>
+            <param name="reference"></param>
+            <remarks>Ensure <see cref="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.BeginAllocations"/> is called before calling this, and ensure <see cref="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.EndAllocations"/> is called after you're done with <see cref="M:Sirenix.OdinInspector.Editor.Internal.OdinGUIScrollView.AllocateRect(System.Single,System.Object)"/></remarks>
+        </member>
+        <member name="T:Sirenix.OdinInspector.Editor.Internal.OdinInternalDragAndDropUtils">
+            <summary> Temporary. </summary>
+            <warning>This implementation <b>will</b> get refactored.</warning>
+        </member>
+        <member name="T:Sirenix.OdinInspector.Editor.Internal.OdinInternalEditorFields">
+            <summary> Temporary. </summary>
+            <warning>This implementation <b>will</b> get refactored.</warning>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinInternalEditorFields.UnityObjectField(UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.Object,System.Type,System.Boolean,System.Boolean,Sirenix.OdinInspector.Editor.InspectorProperty)">
+            <summary>
+            Draws a regular Unity ObjectField, but supports labels being nulls, and also adds a small button that will open the object in a new inspector window.
+            </summary>
+            <param name="position">Position and size of the field.</param>
+            <param name="label">The label to use, or null if no label should be used.</param>
+            <param name="value">The Unity object.</param>
+            <param name="objectType">The Unity object type. This supports inheritance.</param>
+            <param name="allowSceneObjects">Whether to allow scene objects.</param>
+            <param name="readOnly">Determines if the Field is read-only.</param>
+            <param name="property">Will be used for setting and updating the value, this provides a more consistent way to the handle changes.</param>
+            <remarks>If a property is assigned through the parameters, the return value should not be used for setting the <see cref="T:Sirenix.OdinInspector.Editor.PropertyValueEntry`1"/>, the drawer will handle that.</remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinInternalEditorFields.UnityObjectField(System.Object,System.Int32,UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.Object,System.Type,System.Boolean,System.Boolean,Sirenix.OdinInspector.Editor.InspectorProperty)">
+            <summary>
+            Draws a regular Unity ObjectField, but supports labels being nulls, and also adds a small button that will open the object in a new inspector window.
+            </summary>
+            <param name="position">Position and size of the field.</param>
+            <param name="label">The label to use, or null if no label should be used.</param>
+            <param name="value">The Unity object.</param>
+            <param name="objectType">The Unity object type. This supports inheritance.</param>
+            <param name="allowSceneObjects">Whether to allow scene objects.</param>
+            <param name="readOnly">Determines if the Field is read-only.</param>
+            <param name="property">Will be used for setting and updating the value, this provides a more consistent way to the handle changes.</param>
+            <remarks>If a property is assigned through the parameters, the return value should not be used for setting the <see cref="T:Sirenix.OdinInspector.Editor.PropertyValueEntry`1"/>, the drawer will handle that.</remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinInternalEditorFields.PolymorphicObjectField(UnityEngine.Rect,System.Int32,System.Boolean,UnityEngine.GUIContent,System.Object,System.Type,System.Type,System.Boolean,System.Boolean,Sirenix.OdinInspector.Editor.InspectorProperty,System.Boolean,System.Boolean,System.String)">
+            <summary>
+            TODO
+            </summary>
+            <param name="position"></param>
+            <param name="id"></param>
+            <param name="hasKeyboardFocus"></param>
+            <param name="label"></param>
+            <param name="value"></param>
+            <param name="valueType"></param>
+            <param name="baseType"></param>
+            <param name="allowSceneObjects"></param>
+            <param name="disallowNullValues"></param>
+            <param name="property"></param>
+            <param name="readOnly"></param>
+            <param name="showBaseType"></param>
+            <param name="title"></param>
+            <returns></returns>
+            <remarks>If a property is assigned through the parameters, the return value should not be used for setting the <see cref="T:Sirenix.OdinInspector.Editor.PropertyValueEntry`1"/>, the drawer will handle that.</remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.Internal.OdinInternalEditorFields.PolymorphicObjectField(System.Object,System.Int32,UnityEngine.Rect,System.Int32,System.Boolean,UnityEngine.GUIContent,System.Object,System.Type,System.Type,System.Boolean,System.Boolean,Sirenix.OdinInspector.Editor.InspectorProperty,System.Boolean,System.Boolean,System.String)">
+            <summary>
+            TODO
+            </summary>
+            <param name="position"></param>
+            <param name="id"></param>
+            <param name="hasKeyboardFocus"></param>
+            <param name="label"></param>
+            <param name="value"></param>
+            <param name="valueType"></param>
+            <param name="baseType"></param>
+            <param name="allowSceneObjects"></param>
+            <param name="disallowNullValues"></param>
+            <param name="property"></param>
+            <param name="readOnly"></param>
+            <param name="showBaseType"></param>
+            <param name="title"></param>
+            <returns></returns>
+            <remarks>If a property is assigned through the parameters, the return value should not be used for setting the <see cref="T:Sirenix.OdinInspector.Editor.PropertyValueEntry`1"/>, the drawer will handle that.</remarks>
+        </member>
+        <member name="T:Sirenix.OdinInspector.Editor.Internal.OdinObjectSelectorIds">
+            <summary>
+            Contains a set of Unique IDs used for various parts of Odin that don't rely on ControlIds as the ID identifier for OdinObjectSelector.
+            </summary>
+        </member>
+        <member name="T:Sirenix.OdinInspector.Editor.Internal.TypeSelectorHandler_WILL_BE_DEPRECATED">
+            <summary>
+            Handles instantiating different versions of the Type Selector depending on the context.
+            </summary>
+            <remarks>This handler only handles shared constructors between the two versions, for obsolete or unique constructors use the desired selector.</remarks>
+        </member>
         <member name="T:Sirenix.OdinInspector.Editor.AllowGUIEnabledForReadonlyAttribute">
              <summary>
              Some drawers don't want to have its GUI disabled, even if the property is read-only or a ReadOnly attribute is defined on the property.
@@ -7995,6 +8142,15 @@
             To safely change anything in the type cache, you must be holding this lock.
             </summary>
         </member>
+        <member name="M:Sirenix.OdinInspector.Editor.TypeRegistry.GetInstantiableInheritors(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="includeUnityTypes"></param>
+            <param name="excludeTypesWithoutDefaultConstructor">This is checked using <see cref="M:Sirenix.Utilities.TypeExtensions.HasDefaultConstructor(System.Type)"/>.</param>
+            <returns></returns>
+        </member>
         <member name="T:Sirenix.OdinInspector.Editor.UniqueDrawerKey">
              <summary>
              Gets a unique key for any given property within a drawer.
@@ -8497,7 +8653,7 @@
             Draws the menu tree selection.
             </summary>
         </member>
-        <member name="M:Sirenix.OdinInspector.Editor.OdinMenuEditorWindow.OnGUI">
+        <member name="M:Sirenix.OdinInspector.Editor.OdinMenuEditorWindow.OnImGUI">
             <summary>
             Draws the Odin Editor Window.
             </summary>
@@ -8574,6 +8730,16 @@
             Gets a value indicating whether this instance is selected.
             </summary>
         </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinMenuItem.IsSelectable">
+            <summary>
+            Determines whether this instance is selectable.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinMenuItem.IsEnabled">
+            <summary>
+            Determines whether this instance is enabled.
+            </summary>
+        </member>
         <member name="P:Sirenix.OdinInspector.Editor.OdinMenuItem.MenuTree">
             <summary>
             Gets the menu tree instance.
@@ -8594,6 +8760,11 @@
             Gets the next visual menu item.
             </summary>
         </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinMenuItem.NextSelectableMenuItem">
+            <summary>
+            Gets the next selectable visual menu item.
+            </summary>
+        </member>
         <member name="P:Sirenix.OdinInspector.Editor.OdinMenuItem.Parent">
             <summary>
             Gets the parent menu item.
@@ -8602,6 +8773,11 @@
         <member name="P:Sirenix.OdinInspector.Editor.OdinMenuItem.PrevVisualMenuItem">
             <summary>
             Gets the previous visual menu item.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinMenuItem.PrevSelectableMenuItem">
+            <summary>
+            Gets the previous selectable visual menu item.
             </summary>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.OdinMenuItem.Rect">
@@ -9063,6 +9239,11 @@
             Initializes a new instance of the <see cref="T:Sirenix.OdinInspector.Editor.OdinMenuTree"/> class.
             </summary>
         </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinMenuTree.FocusSearchField">
+            <summary>
+            Sets the focus to the <see cref="F:Sirenix.OdinInspector.Editor.OdinMenuTree.searchField"/>.
+            </summary>
+        </member>
         <member name="M:Sirenix.OdinInspector.Editor.OdinMenuTree.ScrollToMenuItem(Sirenix.OdinInspector.Editor.OdinMenuItem,System.Boolean)">
             <summary>
             Scrolls to the specified menu item.
@@ -9094,6 +9275,12 @@
         <member name="M:Sirenix.OdinInspector.Editor.OdinMenuTree.MarkDirty">
             <summary>
             Marks the dirty. This will cause a tree.UpdateTree() in the beginning of the next Layout frame.
+            </summary>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinMenuTree.MarkLayoutChanged">
+            <summary>
+            Indicates that the layout has changed and needs to be recomputed.
+            This is used when <see cref="F:Sirenix.OdinInspector.Editor.OdinMenuTreeDrawingConfig.EXPERIMENTAL_INTERNAL_SparseFixedLayouting"/> is enabled.
             </summary>
         </member>
         <member name="M:Sirenix.OdinInspector.Editor.OdinMenuTree.DrawSearchToolbar(UnityEngine.GUIStyle)">
@@ -9177,6 +9364,15 @@
             <summary>
             The height of the search toolbar.
             </summary>
+        </member>
+        <member name="F:Sirenix.OdinInspector.Editor.OdinMenuTreeDrawingConfig.EXPERIMENTAL_INTERNAL_SparseFixedLayouting">
+            <summary>
+            Will only handle layouting when there has been a hierarchical change (such as an item being expanded or collapsed).
+            </summary>
+            <remarks>
+            This expects every item to have the same height specified in the style (<see cref="F:Sirenix.OdinInspector.Editor.OdinMenuStyle.Height"/>).
+            This means no custom layouting is supported with this on.
+            </remarks>
         </member>
         <member name="P:Sirenix.OdinInspector.Editor.OdinMenuTreeDrawingConfig.SearchFunction">
             <summary>
@@ -9547,6 +9743,7 @@
              </example>
              <seealso cref="T:Sirenix.OdinInspector.Editor.OdinSelector`1"/>
              <seealso cref="T:Sirenix.OdinInspector.Editor.TypeSelector"/>
+             <seealso cref="T:Sirenix.OdinInspector.Editor.TypeSelectorV2"/>
              <seealso cref="T:Sirenix.OdinInspector.Editor.GenericSelector`1"/>
              <seealso cref="T:Sirenix.OdinInspector.Editor.OdinMenuTree"/>
              <seealso cref="T:Sirenix.OdinInspector.Editor.OdinEditorWindow"/>
@@ -9638,6 +9835,7 @@
             <seealso cref="T:Sirenix.OdinInspector.Editor.OdinSelector`1"/>
             <seealso cref="T:Sirenix.OdinInspector.Editor.EnumSelector`1"/>
             <seealso cref="T:Sirenix.OdinInspector.Editor.TypeSelector"/>
+            <seealso cref="T:Sirenix.OdinInspector.Editor.TypeSelectorV2"/>
             <seealso cref="T:Sirenix.OdinInspector.Editor.OdinMenuTree"/>
             <seealso cref="T:Sirenix.OdinInspector.Editor.OdinEditorWindow"/>
         </member>
@@ -9805,6 +10003,7 @@
             </example>
             <seealso cref="T:Sirenix.OdinInspector.Editor.EnumSelector`1"/>
             <seealso cref="T:Sirenix.OdinInspector.Editor.TypeSelector"/>
+            <seealso cref="T:Sirenix.OdinInspector.Editor.TypeSelectorV2"/>
             <seealso cref="T:Sirenix.OdinInspector.Editor.GenericSelector`1"/>
             <seealso cref="T:Sirenix.OdinInspector.Editor.OdinMenuTree"/>
             <seealso cref="T:Sirenix.OdinInspector.Editor.OdinEditorWindow"/>
@@ -9977,56 +10176,6 @@
             Draws dropwdown field, that creates and binds the selector to the dropdown field.
             </summary>
         </member>
-        <member name="T:Sirenix.OdinInspector.Editor.TypeSelector">
-             <summary>
-             A feature-rich type selector.
-             </summary>
-             <example>
-             <code>
-             Type[] selectedTypes;
-            
-             void OnGUI()
-             {
-                 // Use the selector manually. See the documentation for OdinSelector for more information.
-                 if (GUILayout.Button("Open My Selector"))
-                 {
-                     TypeSelector selector = new TypeSelector(customListOfTypes);
-                     TypeSelector selector = new TypeSelector(AssemblyTypeFlags.CustomTypes, supportsMultiSelect: true);
-                     selector.SetSelection(this.selectedTypes);
-                     selector.SelectionConfirmed += selection =&gt; this.selectedTypes = selection.ToArray();
-                     selector.ShowInPopup(); // Returns the Odin Editor Window instance, in case you want to mess around with that as well.
-                 }
-             }
-             </code>
-             </example>
-             <example>
-             <code>
-             private static Type currentSelectedType;
-             private static IEnumerable&lt;Type&gt; currentSource;
-             private static Func&lt;Rect, OdinSelector&lt;Type&gt;&gt; createTypeSelector = (rect) =>
-             {
-                 TypeSelector selector = new TypeSelector(currentSource, false);
-                 selector.SetSelection(currentSelectedType);
-                 selector.ShowInPopup(rect);
-                 return selector;
-             };
-             
-             public static Type DrawTypeSelectorDropdown(GUIContent label, Type selectedType, IEnumerable&lt;Type&gt; source)
-             {
-                 currentSource = source;
-                 currentSelectedType = selectedType;
-             
-                 var dropdownText = selectedType == null ? "None" : selectedType.GetNiceName();
-                 var selected = TypeSelector.DrawSelectorDropdown(label, dropdownText, createTypeSelector);
-                 if (selected != null &amp;&amp; selected.Any())
-                 {
-                     selectedType = selected.FirstOrDefault();
-                 }
-                 return selectedType;
-             }
-             </code>
-             </example>
-        </member>
         <member name="M:Sirenix.OdinInspector.Editor.TypeSelector.BuildSelectionTree(Sirenix.OdinInspector.Editor.OdinMenuTree)">
             <summary>
             Builds the selection tree.
@@ -10041,6 +10190,213 @@
             <summary>
             Sets the selected types.
             </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorProperty">
+            <summary>
+            The <see cref="T:Sirenix.OdinInspector.Editor.InspectorProperty"/> that was used in the last 'Show' call.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorKey">
+            <summary>
+            The key to identify who called the selector.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorId">
+            <summary>
+            The id to identify who called the selector.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject">
+            <summary>
+            The current selected object.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.IsUnityObjectSelector">
+            <summary>
+            True if <see cref="T:UnityEditor.ObjectSelector"/> is used; otherwise false.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorValueType">
+            <summary>
+            The type of the value used in the last 'Show' call.
+            </summary>
+        </member>
+        <member name="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorBaseType">
+            <summary>
+            The base type of the value used in the last 'Show' call.
+            </summary>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.Show(System.Object,System.Int32,System.Object,System.Type,System.Boolean,System.Boolean,UnityEngine.Rect)">
+            <summary>
+            Shows a selector.
+            </summary>
+            <param name="key">The key used to identify who called the selector; this can be null.</param>
+            <param name="id">The ID used to identify who called the selector; this can be 0.</param>
+            <param name="value">The current value selected.</param>
+            <param name="baseType">The base type of the 'value'.</param>
+            <param name="allowSceneObjects">Determines if scene objects are allowed.</param>
+            <param name="disallowNullValues">Determines if null values are allowed.</param>
+            <param name="position">The position where the selector should appear.</param>
+            <exception cref="T:System.NotImplementedException">Thrown if the selector was opened for a case that it didn't expect.</exception>
+            <remarks>
+            <para>Either '<paramref name="key"/>' or '<paramref name="id"/>' must be set, but both can also be set for more consistent results.</para>
+            </remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.Show(System.Object,System.Int32,Sirenix.OdinInspector.Editor.InspectorProperty,System.Boolean)">
+            <summary>
+            Shows a selector.
+            </summary>
+            <param name="key">The key used to identify who called the selector; this can be null.</param>
+            <param name="id">The ID used to identify who called the selector; this can be 0.</param>
+            <param name="property">
+            Used to provide values for all parameters in the full declaration of this method.
+            It also allows for customization of various stages of the selector with attributes.
+            This also sets the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorProperty"/>.
+            </param>
+            <param name="useUnitySelector">Determines if the default Unity Object Selector should be the one to appear.</param>
+            <exception cref="T:System.NotImplementedException">Thrown if the selector was opened for a case that it didn't expect.</exception>
+            <remarks>
+            <para>Either '<paramref name="key"/>' or '<paramref name="id"/>' must be set, but both can also be set for more consistent results.</para>
+            </remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.Show(UnityEngine.Rect,System.Object,System.Int32,Sirenix.OdinInspector.Editor.InspectorProperty,System.Boolean,System.Boolean)">
+            <summary>
+            Shows a selector.
+            </summary>
+            <param name="position">The position where the selector should appear; can be <see cref="P:UnityEngine.Rect.zero"/>.</param>
+            <param name="key">The key used to identify who called the selector; this can be null.</param>
+            <param name="id">The ID used to identify who called the selector; this can be 0.</param>
+            <param name="property">
+            Used to provide values for all parameters in the full declaration of this method.
+            It also allows for customization of various stages of the selector with attributes.
+            This also sets the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorProperty"/>.
+            </param>
+            <param name="useUnitySelector">Determines if the default Unity Object Selector should be the one to appear.</param>
+            <exception cref="T:System.NotImplementedException">Thrown if the selector was opened for a case that it didn't expect.</exception>
+            <remarks>
+            <para>Either '<paramref name="key"/>' or '<paramref name="id"/>' must be set, but both can also be set for more consistent results.</para>
+            </remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.Show(System.Object,System.Int32,System.Object,System.Type,System.Boolean,System.Boolean,Sirenix.OdinInspector.Editor.InspectorProperty,System.Boolean)">
+            <summary>
+            Shows a selector.
+            </summary>
+            <param name="key">The key used to identify who called the selector; this can be null.</param>
+            <param name="id">The ID used to identify who called the selector; this can be 0.</param>
+            <param name="value">The current value selected.</param>
+            <param name="baseType">The base type of the 'value'.</param>
+            <param name="allowSceneObjects">Determines if scene objects are allowed.</param>
+            <param name="disallowNullValues">Determines if null values are allowed.</param>
+            <param name="property">Used for various stages of the selector that can be customized with attributes. This also sets the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorProperty"/>.</param>
+            <param name="useUnitySelector">Determines if the default Unity Object Selector should be the one to appear.</param>
+            <exception cref="T:System.NotImplementedException">Thrown if the selector was opened for a case that it didn't expect.</exception>
+            <remarks>
+            <para>Either '<paramref name="key"/>' or '<paramref name="id"/>' must be set, but both can also be set for more consistent results.</para>
+            </remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.Show(System.Object,System.Int32,System.Object,System.Type,System.Type,System.Boolean,System.Boolean,Sirenix.OdinInspector.Editor.InspectorProperty,System.Boolean)">
+            <summary>
+            Shows a selector.
+            </summary>
+            <param name="key">The key used to identify who called the selector; this can be null.</param>
+            <param name="id">The ID used to identify who called the selector; this can be 0.</param>
+            <param name="value">The current value selected.</param>
+            <param name="valueType">The type of the 'value'.</param>
+            <param name="baseType">The base type of the 'value'.</param>
+            <param name="allowSceneObjects">Determines if scene objects are allowed.</param>
+            <param name="disallowNullValues">Determines if null values are allowed.</param>
+            <param name="property">Used for various stages of the selector that can be customized with attributes. This also sets the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorProperty"/>.</param>
+            <param name="useUnitySelector">Determines if the default Unity Object Selector should be the one to appear.</param>
+            <exception cref="T:System.NotImplementedException">Thrown if the selector was opened for a case that it didn't expect.</exception>
+            <remarks>
+            <para>Either '<paramref name="key"/>' or '<paramref name="id"/>' must be set, but both can also be set for more consistent results.</para>
+            </remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.Show(UnityEngine.Rect,System.Object,System.Int32,System.Object,System.Type,System.Boolean,System.Boolean,Sirenix.OdinInspector.Editor.InspectorProperty,System.Boolean)">
+            <summary>
+            Shows a selector.
+            </summary>
+            <param name="position">The position where the selector should appear; can be <see cref="P:UnityEngine.Rect.zero"/>.</param>
+            <param name="key">The key used to identify who called the selector; this can be null.</param>
+            <param name="id">The ID used to identify who called the selector; this can be 0.</param>
+            <param name="value">The current value selected.</param>
+            <param name="baseType">The base type of the 'value'.</param>
+            <param name="allowSceneObjects">Determines if scene objects are allowed.</param>
+            <param name="disallowNullValues">Determines if null values are allowed.</param>
+            <param name="property">Used for various stages of the selector that can be customized with attributes. This also sets the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorProperty"/>.</param>
+            <param name="useUnitySelector">Determines if the default Unity Object Selector should be the one to appear.</param>
+            <exception cref="T:System.NotImplementedException">Thrown if the selector was opened for a case that it didn't expect.</exception>
+            <remarks>
+            <para>Either '<paramref name="key"/>' or '<paramref name="id"/>' must be set, but both can also be set for more consistent results.</para>
+            </remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.Show(UnityEngine.Rect,System.Object,System.Int32,System.Object,System.Type,System.Type,System.Boolean,System.Boolean,Sirenix.OdinInspector.Editor.InspectorProperty,System.Boolean)">
+            <summary>
+            Shows a selector.
+            </summary>
+            <param name="position">The position where the selector should appear; can be <see cref="P:UnityEngine.Rect.zero"/>.</param>
+            <param name="key">The key used to identify who called the selector; this can be null.</param>
+            <param name="id">The ID used to identify who called the selector; this can be 0.</param>
+            <param name="value">The current value selected.</param>
+            <param name="valueType">The type of the 'value'.</param>
+            <param name="baseType">The base type of the 'value'.</param>
+            <param name="allowSceneObjects">Determines if scene objects are allowed.</param>
+            <param name="disallowNullValues">Determines if null values are allowed.</param>
+            <param name="property">Used for various stages of the selector that can be customized with attributes. This also sets the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorProperty"/>.</param>
+            <param name="useUnitySelector">Determines if the default Unity Object Selector should be the one to appear.</param>
+            <exception cref="T:System.NotImplementedException">Thrown if the selector was opened for a case that it didn't expect.</exception>
+            <remarks>
+            <para>Either '<paramref name="key"/>' or '<paramref name="id"/>' must be set, but both can also be set for more consistent results.</para>
+            </remarks>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.GetChangedObject``1(``0,System.Object,System.Int32)">
+            <summary>
+            If the object was changed since the last time this method was called, it returns the changed object (<see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/>); otherwise, it returns the provided value.
+            </summary>
+            <param name="value">The current value; the value to return if no change has occurred.</param>
+            <param name="key">The key to identify who showed the current selector.</param>
+            <param name="id">The ID to identify who showed the current selector.</param>
+            <typeparam name="T">The type of object to expect as a return value.</typeparam>
+            <returns><see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/> if it was marked as changed, otherwise <paramref name="value"/>.</returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.IsReadyToClaim(System.Object,System.Int32)">
+            <summary>
+            Checks if the selector's object is ready to be claimed.
+            </summary>
+            <param name="key">The key to identify who showed the current selector.</param>
+            <param name="id">The ID to identify who showed the current selector.</param>
+            <returns><c>true</c> if the selector's object (<see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/>) is ready to be claimed; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.IsCurrentSelector(System.Object,System.Int32)">
+            <summary>
+            Determines whether the specified <paramref name="key"/> and <paramref name="id"/> combination match the currently open selectors.
+            </summary>
+            <param name="key">The key to match.</param>
+            <param name="id">The ID to match.</param>
+            <returns><c>true</c> if the combination is a match; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.Claim">
+            <summary>
+            Claims the current <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/>.
+            </summary>
+            <returns>The <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/> if it is ready to be claimed; otherwise, NULL with an accompanying error message.</returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.ClaimMultiple(System.Int32)">
+            <summary>
+            Claims the current <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/> and copies a specified amount (<paramref name="amount"/>) of instances of the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/>.
+            </summary>
+            <param name="amount">The number of instances to copy.</param>
+            <returns>
+            An array of <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/> copies, where element 0 is always the original value, 
+            if the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/> is ready to be claimed; otherwise, NULL with an accompanying error message.
+            </returns>
+        </member>
+        <member name="M:Sirenix.OdinInspector.Editor.OdinObjectSelector.ClaimAndAssign(Sirenix.OdinInspector.Editor.InspectorProperty)">
+            <summary>
+            Claims the current <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/> and, if ready, assigns it to the specified <see cref="T:Sirenix.OdinInspector.Editor.InspectorProperty"/>.
+            If the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/> is not ready to be claimed, an error message will be logged.
+            </summary>
+            <param name="property">The <see cref="T:Sirenix.OdinInspector.Editor.InspectorProperty"/> to assign the <see cref="P:Sirenix.OdinInspector.Editor.OdinObjectSelector.SelectorObject"/> to.</param>
         </member>
         <member name="T:Sirenix.OdinInspector.Editor.GlobalPersistentContext">
             <summary>
@@ -10855,7 +11211,7 @@
             Opens a new static inspector window for the given type.
             </summary>
         </member>
-        <member name="M:Sirenix.OdinInspector.Editor.StaticInspectorWindow.OnGUI">
+        <member name="M:Sirenix.OdinInspector.Editor.StaticInspectorWindow.OnImGUI">
             <summary>
             Draws the Odin Editor Window.
             </summary>

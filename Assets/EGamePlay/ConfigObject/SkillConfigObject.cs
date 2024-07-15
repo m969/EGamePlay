@@ -43,16 +43,10 @@ namespace EGamePlay.Combat
         [LabelText("目标选取类型"), ShowIf("SkillSpellType", SkillSpellType.Initiative)]
         public SkillTargetSelectType TargetSelectType;
 
-        //[HideInInspector]
-        //[LabelText("附加状态效果")]
-        //public bool EnableChildrenStatuses;
-        //[HideReferenceObjectPicker]
-        //[LabelText("附加状态效果列表"), ShowIf("EnableChildrenStatuses"), ListDrawerSettings(DraggableItems = false, ShowItemCount = false, CustomAddFunction = "AddChildStatus")]
-        //public List<ChildStatus> ChildrenStatuses = new List<ChildStatus>();
-        //private void AddChildStatus()
-        //{
-        //    ChildrenStatuses.Add(new ChildStatus());
-        //}
+        [LabelText("触发行为"), Space(30)]
+        [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = true, ShowItemCount = false, CustomAddFunction = "AddTrigger")]
+        [HideReferenceObjectPicker]
+        public List<TriggerConfig> TriggerActions = new List<TriggerConfig>();
 
         [LabelText("效果列表"), Space(30)]
         [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = true, ShowItemCount = false, HideAddButton = true)]
@@ -95,6 +89,11 @@ namespace EGamePlay.Combat
 
                 EffectTypeName = "(添加效果)";
             }
+        }
+
+        private void AddTrigger()
+        {
+            TriggerActions.Add(new TriggerConfig() { Enabled = true });
         }
 
 #if UNITY_EDITOR

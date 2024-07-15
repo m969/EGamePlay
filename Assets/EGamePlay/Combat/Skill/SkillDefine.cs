@@ -169,4 +169,13 @@
         PercentAdd = 1,
         BaseValue = 2,
     }
+
+    [LabelText("触发类型")]
+    public enum EffectTriggerType
+    {
+        [LabelText("主动触发")]
+        ExecuteTrigger = 1,
+        [LabelText("被动触发")]
+        AutoTrigger = 2
+    }
 }

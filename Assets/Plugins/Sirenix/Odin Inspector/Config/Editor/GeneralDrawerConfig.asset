@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: -645759843, guid: a4865f1ab4504ed8a368670db22f409c, type: 3}
   m_Name: GeneralDrawerConfig
   m_EditorClassIdentifier: 
+  enableUIToolkitSupport: 1
+  useOldUnityObjectField: 0
+  useOldUnityPreviewField: 0
+  useOldTypeSelector: 0
+  useNewObjectSelector: 1
+  showNoneItem: 1
+  showCategoriesByDefault: 0
+  preferNamespacesOverAssemblyCategories: 1
+  useOldPolymorphicField: 0
+  showBaseType: 1
+  nonDefaultConstructorPreference: 0

@@ -83,6 +83,10 @@ namespace EGamePlay
 
         public static void Destroy(Entity entity)
         {
+            if (entity == null)
+                return;
+            if (entity.IsDisposed)
+                return;
             try
             {
                 entity.OnDestroy();

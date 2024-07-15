@@ -57,9 +57,6 @@ namespace EGamePlay.Combat
         }
 
         [HideInInspector]
-        public bool IsExecutionEffect;
-
-        [HideInInspector]
         public virtual string Label => "Effect";
 
         [ToggleGroup("Enabled", "$Label")]
@@ -68,23 +65,23 @@ namespace EGamePlay.Combat
         [OnInspectorGUI("BeginBox", append: false)]
         [FoldoutGroup("Enabled/TriggerType", GroupName = "触发机制")]
         [ToggleGroup("Enabled"), HideIf("HideTriggerType", true), LabelText("触发事件")]
-        public EffectTriggerType EffectTriggerType;
+        public EffectAutoTriggerType EffectTriggerType;
 
         [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectTriggerType.Action)]
+        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectAutoTriggerType.Action)]
         public ActionPointType ActionPointType;
 
         [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
+        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectAutoTriggerType.Condition)]
         public TimeStateEventType ConditionType;
 
         [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, LabelText("x="), ShowIf("EffectTriggerType", EffectTriggerType.Condition)]
+        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, LabelText("x="), ShowIf("EffectTriggerType", EffectAutoTriggerType.Condition)]
         public string ConditionParam;
 
-        [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled"), LabelText("状态判断"), HideInInspector]
-        public Dictionary<StateCheckType, string> StateChecks = new Dictionary<StateCheckType, string>();
+        //[FoldoutGroup("Enabled/TriggerType")]
+        //[ToggleGroup("Enabled"), LabelText("状态判断"), HideInInspector]
+        //public Dictionary<StateCheckType, string> StateChecks = new Dictionary<StateCheckType, string>();
 
         [FoldoutGroup("Enabled/TriggerType")]
         [ToggleGroup("Enabled"), LabelText("状态判断")]

@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public sealed class TimeState_WhenInTimeNoDamageObserver : Entity, ICombatObserver
+    public sealed class TimeState_WhenInTimeNoDamageObserveComponent : Component, ICombatObserver
     {
+        public override bool DefaultEnable => false;
         private GameTimer NoDamageTimer { get; set; }
         private Action WhenNoDamageInTimeCallback { get; set; }
 
@@ -14,33 +15,31 @@ namespace EGamePlay.Combat
         {
             var time = (float)initData;
             NoDamageTimer = new GameTimer(time);
-            var combatEntity = GetParent<AbilityEffect>().ParentEntity;
+            var combatEntity = GetEntity<AbilityTrigger>().ParentEntity;
             combatEntity.GetComponent<ActionPointComponent>().AddListener(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
         public override void OnDestroy()
         {
-            var combatEntity = GetParent<AbilityEffect>().ParentEntity;
+            var combatEntity = GetEntity<AbilityTrigger>().ParentEntity;
             combatEntity.GetComponent<ActionPointComponent>().RemoveListener(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
         public void StartListen(Action whenNoDamageInTimeCallback)
         {
-            //WhenNoDamageInTimeCallback = whenNoDamageInTimeCallback;
             NoDamageTimer.OnFinish(OnFinish);
-            AddComponent<UpdateComponent>();
+            Enable = true;
+            //AddComponent<UpdateComponent>();
         }
 
         private void OnFinish()
         {
-            OnTrigger(this);
+            OnTrigger(GetEntity<AbilityTrigger>());
         }
 
         public void OnTrigger(Entity source)
         {
-            //WhenNoDamageInTimeCallback?.Invoke();
-            var abilityEffect = GetParent<AbilityEffect>();
-            abilityEffect.OnObserverTrigger(new TriggerContext(this, source));
+            GetEntity<AbilityTrigger>().OnTrigger(new TriggerContext(this, source));
         }
 
         public override void Update()
@@ -53,7 +52,6 @@ namespace EGamePlay.Combat
 
         private void WhenReceiveDamage(Entity combatAction)
         {
-            //Log.Debug($"{GetType().Name}->WhenReceiveDamage");
             NoDamageTimer.Reset();
         }
     }

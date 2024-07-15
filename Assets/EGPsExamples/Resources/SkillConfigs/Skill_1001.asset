@@ -35,9 +35,6 @@ MonoBehaviour:
     - Name: IsSkillEffect
       Entry: 5
       Data: true
-    - Name: IsExecutionEffect
-      Entry: 5
-      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -53,35 +50,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: StateChecks
-      Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[EGamePlay.Combat.StateCheckType,
-        Assembly-CSharp],[System.String, mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[EGamePlay.Combat.StateCheckType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: StateCheckList
       Entry: 7
-      Data: 4|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+      Data: 2|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -99,14 +70,14 @@ MonoBehaviour:
       Data: 0
     - Name: Decorators
       Entry: 7
-      Data: 5|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
+      Data: 3|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 6|EGamePlay.Combat.TriggerNewEffectWhenAssignEffectDecorator, Assembly-CSharp
+      Data: 4|EGamePlay.Combat.TriggerNewEffectWhenAssignEffectDecorator, Assembly-CSharp
     - Name: Enabled
       Entry: 5
       Data: true
@@ -139,13 +110,10 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 7|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
+      Data: 5|EGamePlay.Combat.AddStatusEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
-    - Name: IsExecutionEffect
-      Entry: 5
-      Data: false
     - Name: Enabled
       Entry: 5
       Data: true
@@ -161,47 +129,9 @@ MonoBehaviour:
     - Name: ConditionParam
       Entry: 6
       Data: 
-    - Name: StateChecks
-      Entry: 7
-      Data: 8|System.Collections.Generic.Dictionary`2[[EGamePlay.Combat.StateCheckType,
-        Assembly-CSharp],[System.String, mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 9|System.Collections.Generic.EnumEqualityComparer`1[[EGamePlay.Combat.StateCheckType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 1
-      Data: 30%
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: StateCheckList
       Entry: 7
-      Data: 10|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+      Data: 6|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
@@ -234,11 +164,11 @@ MonoBehaviour:
       Data: 6000
     - Name: Params
       Entry: 7
-      Data: 11|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+      Data: 7|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 12|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 8|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -265,4 +195,29 @@ MonoBehaviour:
   SkillSpellType: 0
   AffectTargetType: 2
   TargetSelectType: 0
+  TriggerActions:
+  - Enabled: 1
+    TriggerType: 1
+    AutoTriggerType: 0
+    ActionPointType: 0
+    ConditionType: 0
+    ConditionParam: 
+    AddSkillEffectTargetType: 0
+    StateCheckList: []
+    TriggerEffects:
+    - EffectApplyType: 1
+      Params: []
+  - Enabled: 1
+    TriggerType: 1
+    AutoTriggerType: 0
+    ActionPointType: 0
+    ConditionType: 0
+    ConditionParam: 
+    AddSkillEffectTargetType: 0
+    StateCheckList:
+    - "TargetHP\u226490%*TargetHPMax"
+    - "Random\u226450%"
+    TriggerEffects:
+    - EffectApplyType: 2
+      Params: []
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

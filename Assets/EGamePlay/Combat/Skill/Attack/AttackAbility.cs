@@ -21,7 +21,7 @@ namespace EGamePlay.Combat
             var damageEffect = new DamageEffect();
             damageEffect.Enabled = true;
             damageEffect.AddSkillEffectTargetType = AddSkillEffetTargetType.SkillTarget;
-            damageEffect.EffectTriggerType = EffectTriggerType.None;
+            damageEffect.EffectTriggerType = EffectAutoTriggerType.None;
             damageEffect.CanCrit = true;
             damageEffect.DamageType = DamageType.Physic;
             damageEffect.DamageValueFormula = $"自身攻击力";

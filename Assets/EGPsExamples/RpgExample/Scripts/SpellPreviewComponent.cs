@@ -173,7 +173,7 @@ public class SpellPreviewComponent : EGamePlay.Component
             //OwnerEntity.ModelTrans.localRotation = Quaternion.LookRotation(point - OwnerEntity.ModelTrans.position);
             //Hero.Instance.DisableMove();
             action.SkillAbility = SpellSkill;
-            action.SkillExecution = SpellSkill.CreateExecution() as SkillExecution;
+            //action.SkillExecution = SpellSkill.CreateExecution() as SkillExecution;
             action.SpellSkill(false);
         }
     }

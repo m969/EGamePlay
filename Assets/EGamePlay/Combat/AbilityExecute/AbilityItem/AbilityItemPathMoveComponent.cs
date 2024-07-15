@@ -28,19 +28,19 @@ namespace EGamePlay.Combat
     {
         public IPosition PositionEntity { get; set; }
         public bool Rotate { get; set; }
-        public float RotateAgree { get; set; }
+        public float RotateRadian { get; set; }
         public float Duration { get; set; }
         public float Speed { get; set; } = 0.05f;
         public float Progress { get; set; }
         public BezierCurve3D BezierCurve { get; set; }
         public IPosition OriginEntity { get; set; }
-        public Vector3 InputPoint { get; set; }
+        public Vector3 ExecutePoint { get; set; }
         public Vector3 OriginPoint
         {
             get
             {
                 if (OriginEntity != null) return OriginEntity.Position;
-                else return InputPoint;
+                else return ExecutePoint;
             }
         }
 
@@ -82,13 +82,13 @@ namespace EGamePlay.Combat
 
                 if (Rotate)
                 {
-                    var a = RotateAgree;
+                    var a = RotateRadian;
 
                     var x = v.x;
                     var y = v.y;
 
                     var x1 = x * math.cos(a) - y * math.sin(a);
-                    var y1 = -(y * math.cos(a) + x * math.sin(a));
+                    var y1 = (y * math.cos(a) + x * math.sin(a));
 
                     v = new float3(x1, y1, v.z);
                     //Log.Console($"PositionEntity.Position={PositionEntity.Position}, v.y={v.y}, v={v}");

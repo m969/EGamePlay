@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public sealed class TimeState_TimeIntervalObserver : Entity, ICombatObserver
+    public sealed class TimeState_TimeIntervalObserveComponent : Component, ICombatObserver
     {
+        public override bool DefaultEnable => false;
         private GameTimer IntervalTimer { get; set; }
         private Action WhenTimeIntervalAction { get; set; }
 
@@ -18,21 +19,19 @@ namespace EGamePlay.Combat
 
         public void StartListen(Action whenTimeIntervalAction)
         {
-            //WhenTimeIntervalAction = whenTimeIntervalAction;
             IntervalTimer.OnRepeat(OnRepeat);
-            AddComponent<UpdateComponent>();
+            Enable = true;
+            //AddComponent<UpdateComponent>();
         }
 
         private void OnRepeat()
         {
-            OnTrigger(this);
+            OnTrigger(GetEntity<AbilityTrigger>());
         }
 
         public void OnTrigger(Entity source)
         {
-            //WhenTimeIntervalAction?.Invoke();
-            var abilityEffect = GetParent<AbilityEffect>();
-            abilityEffect.OnObserverTrigger(new TriggerContext(this, source));
+            GetEntity<AbilityTrigger>().OnTrigger(new TriggerContext(this, source));
         }
 
         public override void Update()
@@ -42,10 +41,5 @@ namespace EGamePlay.Combat
                 IntervalTimer.UpdateAsRepeat(Time.deltaTime);
             }
         }
-
-        //private void WhenInterval()
-        //{
-        //    Log.Error("ConditionTimeInterval WhenInterval");
-        //}
     }
 }

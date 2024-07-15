@@ -59,7 +59,7 @@ namespace RPGCharacterAnimsFREE
 				animator.gameObject.AddComponent<AnimatorParentMoveFREE>();
 				animator.GetComponent<AnimatorParentMoveFREE>().anim = animator;
 				animator.GetComponent<AnimatorParentMoveFREE>().rpgCharacterMovementController = rpgCharacterMovementControllerFREE;
-				animator.updateMode = AnimatorUpdateMode.AnimatePhysics;
+				animator.updateMode = AnimatorUpdateMode.Fixed;
 				animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
 			}
 

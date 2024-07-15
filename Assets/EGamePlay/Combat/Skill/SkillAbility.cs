@@ -20,7 +20,7 @@ namespace EGamePlay.Combat
         public SkillConfig SkillConfig { get; set; }
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
-        private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
+        //private List<StatusAbility> ChildrenStatuses { get; set; } = new List<StatusAbility>();
         public ExecutionObject ExecutionObject { get; set; }
 
 
@@ -80,6 +80,7 @@ namespace EGamePlay.Combat
 
             Name = this.SkillConfig.Name;
             AddComponent<AbilityEffectComponent>(SkillEffectsConfig.Effects);
+            AddComponent<AbilityTriggerComponent>(SkillEffectsConfig.TriggerActions);
             LoadExecution();
             //if (SkillEffectsConfig.SkillSpellType == SkillSpellType.Passive)
             {
@@ -101,56 +102,24 @@ namespace EGamePlay.Combat
             this.ActivateAbility();
         }
 
+        public void ActivateAbility()
+        {
+            FireEvent(nameof(ActivateAbility));
+            Enable = true;
+            GetComponent<AbilityEffectComponent>().Enable = true;
+            GetComponent<AbilityTriggerComponent>().Enable = true;
+        }
+
         public void DeactivateAbility()
         {
             Enable = false;
             GetComponent<AbilityEffectComponent>().Enable = false;
-        }
-
-        public void ActivateAbility()
-        {
-            //base.ActivateAbility();
-            FireEvent(nameof(ActivateAbility));
-            ////子状态效果
-            //if (SkillEffectsConfig.EnableChildrenStatuses)
-            //{
-            //    foreach (var item in SkillEffectsConfig.ChildrenStatuses)
-            //    {
-            //        var status = OwnerEntity.AttachStatus(item.StatusConfigObject);
-            //        status.OwnerEntity = OwnerEntity;
-            //        status.IsChildStatus = true;
-            //        status.ChildStatusData = item;
-            //        status.ProcessInputKVParams(item.Params);
-            //        status.TryActivateAbility();
-            //        ChildrenStatuses.Add(status);
-            //    }
-            //}
-
-            Enable = true;
-            GetComponent<AbilityEffectComponent>().Enable = true;
+            GetComponent<AbilityTriggerComponent>().Enable = false;
         }
 
         public void EndAbility()
         {
-            ////子状态效果
-            //if (SkillEffectsConfig.EnableChildrenStatuses)
-            //{
-            //    foreach (var item in ChildrenStatuses)
-            //    {
-            //        item.EndAbility();
-            //    }
-            //    ChildrenStatuses.Clear();
-            //}
             Entity.Destroy(this);
-        }
-
-        public Entity CreateExecution()
-        {
-            var execution = OwnerEntity.AddChild<SkillExecution>(this);
-            execution.ExecutionObject = ExecutionObject;
-            execution.LoadExecutionEffects();
-            this.FireEvent(nameof(CreateExecution), execution);
-            return execution;
         }
     }
 }

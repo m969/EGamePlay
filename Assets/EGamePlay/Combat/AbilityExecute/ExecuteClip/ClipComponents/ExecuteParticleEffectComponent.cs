@@ -27,7 +27,7 @@ namespace EGamePlay.Combat
         public void OnTriggerStart(Entity entity)
         {
 #if EGAMEPLAY_ET
-            ParticleEffectObj = GameObject.Instantiate(ParticleEffectPrefab, Entity.GetParent<SkillExecution>().OwnerEntity.Position, quaternion.LookRotation(Entity.GetParent<SkillExecution>().OwnerEntity.Rotation, math.forward()));
+            ParticleEffectObj = GameObject.Instantiate(ParticleEffectPrefab, Entity.GetParent<SkillExecution>().OwnerEntity.Position, Entity.GetParent<SkillExecution>().OwnerEntity.Rotation);
 #else
             ParticleEffectObj = GameObject.Instantiate(ParticleEffectPrefab, Entity.GetParent<SkillExecution>().OwnerEntity.Position, Entity.GetParent<SkillExecution>().OwnerEntity.Rotation);
 #endif

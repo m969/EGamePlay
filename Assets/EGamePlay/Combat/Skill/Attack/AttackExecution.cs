@@ -1,4 +1,16 @@
 ﻿using EGamePlay.Combat;
+using UnityEngine;
+
+#if EGAMEPLAY_ET
+using Unity.Mathematics;
+using Vector3 = Unity.Mathematics.float3;
+using Quaternion = Unity.Mathematics.float3;
+using AO;
+using AO.EventType;
+using ET.EventType;
+#else
+using float3 = UnityEngine.Vector3;
+#endif
 
 namespace EGamePlay.Combat
 {
@@ -7,6 +19,8 @@ namespace EGamePlay.Combat
     /// </summary>
     public class AttackExecution : Entity, IAbilityExecute
     {
+        public Vector3 Position { get; set; }
+        public Quaternion Rotation { get; set; }
         public AttackAction AttackAction { get; set; }
         public Entity AbilityEntity { get; set; }
         public CombatEntity OwnerEntity { get; set; }
