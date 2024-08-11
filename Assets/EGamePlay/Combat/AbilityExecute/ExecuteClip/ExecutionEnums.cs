@@ -43,6 +43,21 @@ public enum PathExecutePoint
     InputPoint = 20
 }
 
+public enum ExecuteTriggerType
+{
+    [LabelText("全部主动触发")]
+    AllTriggers,
+    [LabelText("主动触发1")]
+    Trigger1,
+    [LabelText("主动触发2")]
+    Trigger2,
+    [LabelText("主动触发3")]
+    Trigger3,
+
+    [LabelText("其他")]
+    Other = 100,
+}
+
 //[LabelText("应用效果")]
 public enum EffectApplyType
 {

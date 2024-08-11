@@ -20,6 +20,9 @@ public sealed class Monster : MonoBehaviour
     public Transform CanvasTrm;
     public Transform StatusSlotsTrm;
     public GameObject StatusIconPrefab;
+    //public GameObject VertigoParticlePrefab;
+    //public GameObject WeakParticlePrefab;
+
     private GameObject vertigoParticle;
     private GameObject weakParticle;
     public MotionComponent MotionComponent { get; set; }
@@ -38,25 +41,25 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
         CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
 
-#if EGAMEPLAY_EXCEL
-        var config = ET.StatusConfigCategory.Instance.GetByName("Tenacity");
-#else
-        var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
-#endif
-        var Status = CombatEntity.AttachStatus(config);
-        Status.AddComponent<StatusTenacityComponent>();
-        Status.OwnerEntity = CombatEntity;
-        Status.TryActivateAbility();
+//#if EGAMEPLAY_EXCEL
+//        var config = ET.StatusConfigCategory.Instance.GetByName("Tenacity");
+//#else
+//        var config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_Tenacity");
+//#endif
+//        var Status = CombatEntity.GetComponent<StatusComponent>().AttachStatus(config);
+//        Status.AddComponent<StatusTenacityComponent>();
+//        Status.OwnerEntity = CombatEntity;
+//        Status.TryActivateAbility();
 
-        var allConfigs = ConfigHelper.GetAll<SkillConfig>().Values.ToArray();
+        var allConfigs = ConfigHelper.GetAll<AbilityConfig>().Values.ToArray();
         for (int i = 0; i < allConfigs.Length; i++)
         {
             var skillConfig = allConfigs[i];
             var skilld = skillConfig.Id;
             if (skilld == 1001)
             {
-                var skillConfigObj = GameUtils.AssetUtils.LoadObject<SkillConfigObject>($"SkillConfigs/Skill_{skilld}");
-                var ability = CombatEntity.AttachSkill(skillConfigObj);
+                var skillConfigObj = GameUtils.AssetUtils.LoadObject<AbilityConfigObject>($"{AbilityManagerObject.SkillResFolder}/Skill_{skilld}");
+                var ability = CombatEntity.GetComponent<SkillComponent>().AttachSkill(skillConfigObj);
                 CombatEntity.BindSkillInput(ability, KeyCode.Q);
             }
         }
@@ -69,12 +72,12 @@ public sealed class Monster : MonoBehaviour
             {
                 ExecutionLinkPanelObj.GetComponent<ExecutionLinkPanel>().BossEntity = Boss.CombatEntity;
             }
-#if !EGAMEPLAY_EXCEL
-            config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_QiangTi");
-            Status = CombatEntity.AttachStatus(config);
-            Status.OwnerEntity = CombatEntity;
-            Status.TryActivateAbility();
-#endif
+//#if !EGAMEPLAY_EXCEL
+//            config = Resources.Load<StatusConfigObject>("StatusConfigs/Status_QiangTi");
+//            Status = CombatEntity.AttachStatus(config);
+//            Status.OwnerEntity = CombatEntity;
+//            Status.TryActivateAbility();
+//#endif
         }
     }
 
@@ -140,32 +143,34 @@ public sealed class Monster : MonoBehaviour
 #else
         var statusConfig = addStatusEffect.AddStatus;
 #endif
+        var abilityConfig = ConfigHelper.Get<AbilityConfig>(statusConfig.Id);
+        var keyName = abilityConfig.KeyName;
         if (name == "Monster")
         {
             if (StatusSlotsTrm != null)
             {
                 var obj = GameObject.Instantiate(StatusIconPrefab);
                 obj.transform.SetParent(StatusSlotsTrm);
-                obj.GetComponentInChildren<Text>().text = statusConfig.Name;
-                obj.name = action.Status.Id.ToString();
+                obj.GetComponentInChildren<Text>().text = abilityConfig.Name;
+                obj.name = action.BuffAbility.Id.ToString();
             }
         }
 
-        if (statusConfig.ID == "Vertigo")
+        if (keyName == "Vertigo")
         {
             AnimationComponent.Play(AnimationComponent.StunAnimation);
             if (vertigoParticle == null)
             {
-                vertigoParticle = GameObject.Instantiate(statusConfig.GetParticleEffect());
+                vertigoParticle = GameObject.Instantiate(Resources.Load<GameObject>("Status_Vertigo"));
                 vertigoParticle.transform.parent = transform;
                 vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
             }
         }
-        if (statusConfig.ID == "Weak")
+        if (keyName == "Weak")
         {
             if (weakParticle == null)
             {
-                weakParticle = GameObject.Instantiate(statusConfig.GetParticleEffect());
+                weakParticle = GameObject.Instantiate(Resources.Load<GameObject>("Status_Weak"));
                 weakParticle.transform.parent = transform;
                 weakParticle.transform.localPosition = new Vector3(0, 0, 0);
             }
@@ -186,8 +191,8 @@ public sealed class Monster : MonoBehaviour
             }
         }
 
-        var statusConfig = eventData.Status.StatusConfig;
-        if (statusConfig.ID == "Vertigo")
+        var statusConfig = eventData.Status.Config;
+        if (statusConfig.KeyName == "Vertigo")
         {
             AnimationComponent.Play(AnimationComponent.IdleAnimation);
             if (vertigoParticle != null)
@@ -195,14 +200,12 @@ public sealed class Monster : MonoBehaviour
                 GameObject.Destroy(vertigoParticle);
             }
         }
-        if (statusConfig.ID == "Weak")
+        if (statusConfig.KeyName == "Weak")
         {
             if (weakParticle != null)
             {
                 GameObject.Destroy(weakParticle);
             }
         }
-
-        //EEvent.Run<BossDeadEventExecution>(eventData.CombatEntity);
     }
 }

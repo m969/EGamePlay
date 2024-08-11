@@ -33,9 +33,9 @@ namespace EGamePlay.Combat
 
         public void LoadExecutionObjects()
         {
-            foreach (var item in CombatEntity.GetComponent<AbilityComponent>().IdSkills)
+            foreach (var item in CombatEntity.GetComponent<SkillComponent>().IdSkills)
             {
-                var executionObj = AssetUtils.LoadObject<ExecutionObject>($"SkillConfigs/ExecutionConfigs/Execution_{item.Key}");
+                var executionObj = AssetUtils.LoadObject<ExecutionObject>($"{AbilityManagerObject.ExecutionResFolder}/Execution_{item.Key}");
                 if (executionObj != null)
                 {
                     ExecutionObjects.Add(item.Key, executionObj);
@@ -43,7 +43,7 @@ namespace EGamePlay.Combat
             }
         }
 
-        public void SpellWithTarget(SkillAbility spellSkill, CombatEntity targetEntity)
+        public void SpellWithTarget(Ability spellSkill, CombatEntity targetEntity)
         {
             if (CombatEntity.SpellingExecution != null)
                 return;
@@ -100,9 +100,9 @@ namespace EGamePlay.Combat
             return null;
         }
 #else
-        public SpellAction SpellWithPoint(SkillAbility spellSkill, Vector3 point)
+        public SpellAction SpellWithPoint(Ability spellSkill, Vector3 point)
         {
-            Log.Console($"SpellComponent SpellWithPoint {spellSkill.SkillConfig.Id}");
+            Log.Console($"SpellComponent SpellWithPoint {spellSkill.Config.Id}");
             if (CombatEntity.SpellingExecution != null)
                 return null;
 

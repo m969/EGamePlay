@@ -21,7 +21,7 @@ public class SkillEditorWindow : OdinMenuEditorWindow
 
     public class SkillConfigData
     {
-        public SkillConfigObject ConfigObject;
+        public AbilityConfigObject ConfigObject;
         public ExecutionObject ExecutionObject;
     }
 
@@ -32,7 +32,7 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         window.position = GUIHelper.GetEditorWindowRect().AlignCenter(1200, 800);
     }
 
-    SkillConfigCategory SkillConfigCategory;
+    AbilityConfigCategory SkillConfigCategory;
 
     int totalCount = 0;
     protected override OdinMenuTree BuildMenuTree()
@@ -46,12 +46,12 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         var configsCollector = configsPrefab.GetComponent<ReferenceCollector>();
         if (configsCollector != null)
         {
-            var configText = configsCollector.Get<TextAsset>("SkillConfig");
-            var configTypeName = $"ET.SkillConfig";
+            var configText = configsCollector.Get<TextAsset>("AbilityConfig");
+            var configTypeName = $"ET.AbilityConfig";
             var configType = assembly.GetType(configTypeName);
-            var typeName = $"ET.SkillConfigCategory";
+            var typeName = $"ET.AbilityConfigCategory";
             var configCategoryType = assembly.GetType(typeName);
-            var configCategory = Activator.CreateInstance(configCategoryType) as ET.SkillConfigCategory;
+            var configCategory = Activator.CreateInstance(configCategoryType) as ET.AbilityConfigCategory;
             configCategory.ConfigText = configText.text;
             configCategory.BeginInit();
             SkillConfigCategory = configCategory;
@@ -61,7 +61,7 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         {
             var path = $"{SkillConfigObjectsPath}/Skill_{item.Id}.asset";
             var path2 = $"{ExecutionObjectsPath}/Execution_{item.Id}.asset";
-            var asset = AssetDatabase.LoadAssetAtPath<SkillConfigObject>(path);
+            var asset = AssetDatabase.LoadAssetAtPath<AbilityConfigObject>(path);
             var asset2 = AssetDatabase.LoadAssetAtPath<ExecutionObject>(path2);
             //var data = new SkillConfigData();
             //data.ConfigObject = asset;
@@ -87,12 +87,12 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         bool changed = false;
         SirenixEditorGUI.BeginHorizontalToolbar(toolbarHeight);
         {
-            var data = selected?.Value as SkillConfigObject;
-            EditorGUILayout.ObjectField(data, typeof(SkillConfigObject), false);
+            var data = selected?.Value as AbilityConfigObject;
+            EditorGUILayout.ObjectField(data, typeof(AbilityConfigObject), false);
             if (GUILayout.Button("Select In Editor"))
             {
-                Selection.objects = this.MenuTree.Selection.Where(_ => _.Value is SkillConfigObject)
-                    .Select(_ => (_.Value as SkillConfigObject)).ToArray();
+                Selection.objects = this.MenuTree.Selection.Where(_ => _.Value is AbilityConfigObject)
+                    .Select(_ => (_.Value as AbilityConfigObject)).ToArray();
             }
         }
         SirenixEditorGUI.EndHorizontalToolbar();

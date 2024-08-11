@@ -43,7 +43,7 @@ namespace EGamePlay.Combat
         public CollisionActionAbility CollisionAbility { get; private set; }
 
         //普攻能力
-        public AttackAbility AttackAbility { get; set; }
+        //public AttackAbility AttackAbility { get; set; }
         //普攻格挡能力
         public AttackBlockActionAbility AttackBlockAbility { get; set; }
 
@@ -65,19 +65,19 @@ namespace EGamePlay.Combat
         {
             AddComponent<AttributeComponent>().InitializeCharacter();
             AddComponent<ActionPointComponent>();
+            AddComponent<AbilityComponent>();
             //AddComponent<ConditionEventComponent>();
             AddComponent<StatusComponent>();
             AddComponent<SkillComponent>();
             AddComponent<SpellComponent>();
             AddComponent<MotionComponent>();
-            AddComponent<AbilityComponent>();
             CurrentHealth = AddComponent<HealthPointComponent>();
             CurrentHealth.HealthPointNumeric = GetComponent<AttributeComponent>().HealthPoint;
             CurrentHealth.HealthPointMaxNumeric = GetComponent<AttributeComponent>().HealthPointMax;
             CurrentHealth.Reset();
 
-            AttackAbility = GetComponent<AbilityComponent>().AttachAbility<AttackAbility>(null);
-            AttackBlockAbility = AttachAction<AttackBlockActionAbility>();
+            //AttackAbility = GetComponent<AbilityComponent>().AttachAbility<AttackAbility>(null);
+            //AttackBlockAbility = AttachAction<AttackBlockActionAbility>();
 
             EffectAssignAbility = AttachAction<EffectAssignAbility>();
             SpellAbility = AttachAction<SpellActionAbility>();
@@ -108,16 +108,16 @@ namespace EGamePlay.Combat
         }
         #endregion
 
-        /// <summary>
-        /// 挂载能力，技能、被动、buff等都通过这个接口挂载
-        /// </summary>
-        /// <param name="configObject"></param>
-        public T AttachAbility<T>(object configObject) where T : Entity, IAbilityEntity
-        {
-            var ability = this.AddChild<T>(configObject);
-            ability.AddComponent<AbilityLevelComponent>();
-            return ability;
-        }
+        ///// <summary>
+        ///// 挂载能力，技能、被动、buff等都通过这个接口挂载
+        ///// </summary>
+        ///// <param name="configObject"></param>
+        //public T AttachAbility<T>(object configObject) where T : Entity, IAbilityEntity
+        //{
+        //    var ability = this.AddChild<T>(configObject);
+        //    ability.AddComponent<AbilityLevelComponent>();
+        //    return ability;
+        //}
 
         public T AttachAction<T>() where T : Entity, IActionAbility
         {
@@ -129,16 +129,16 @@ namespace EGamePlay.Combat
             return action;
         }
 
-        public SkillAbility AttachSkill(object configObject)
-        {
-            var abilityComp = GetComponent<AbilityComponent>();
-            var skill = abilityComp.AttachAbility<SkillAbility>(configObject);
-            abilityComp.NameSkills.Add(skill.SkillConfig.Name, skill);
-            abilityComp.IdSkills.Add(skill.SkillConfig.Id, skill);
-            return skill;
-        }
+        //public Ability AttachSkill(object configObject)
+        //{
+        //    var abilityComp = GetComponent<AbilityComponent>();
+        //    var skill = abilityComp.AttachAbility<Ability>(configObject);
+        //    abilityComp.NameSkills.Add(skill.Config.Name, skill);
+        //    abilityComp.IdSkills.Add(skill.Config.Id, skill);
+        //    return skill;
+        //}
 
-        public StatusAbility AttachStatus(object configObject)
+        public Ability AttachStatus(object configObject)
         {
             return GetComponent<StatusComponent>().AttachStatus(configObject);
         }
@@ -148,9 +148,9 @@ namespace EGamePlay.Combat
         //    GetComponent<StatusComponent>().OnStatusRemove(statusAbility);
         //}
 
-        public void BindSkillInput(SkillAbility abilityEntity, KeyCode keyCode)
+        public void BindSkillInput(Ability abilityEntity, KeyCode keyCode)
         {
-            GetComponent<AbilityComponent>().InputSkills.Add(keyCode, abilityEntity);
+            GetComponent<SkillComponent>().InputSkills.Add(keyCode, abilityEntity);
             abilityEntity.TryActivateAbility();
         }
 
@@ -189,7 +189,7 @@ namespace EGamePlay.Combat
     public class RemoveStatusEvent
     {
         public Entity Entity { get; set; }
-        public StatusAbility Status { get; set; }
+        public Ability Status { get; set; }
         public long StatusId { get; set; }
     }
 }

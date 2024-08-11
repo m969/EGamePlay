@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8957007620084665256}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8957007620084665262
 MonoBehaviour:
@@ -45,17 +45,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-  - key: SkillConfig
-    gameObject: {fileID: 4900000, guid: 23634d520f9e666409d18131e3c6bbc5, type: 3}
-  - key: UnitConfig
-    gameObject: {fileID: 4900000, guid: 79f1713de1c57e646a74288a5fe0f14f, type: 3}
+  - key: AbilityConfig
+    gameObject: {fileID: 4900000, guid: 7abc57efe5e7cd644863f94f6443376a, type: 3}
+  - key: ChildStatusConfig
+    gameObject: {fileID: 4900000, guid: 67db3b1729f4ed84ea52acb3cb1df7f4, type: 3}
   - key: EquipmentConfig
     gameObject: {fileID: 4900000, guid: 2fe1f7d325cf4744b9a6b0882ed76076, type: 3}
   - key: SkillEffectsConfig
     gameObject: {fileID: 4900000, guid: e816f3402f4d9054480636751f5aa9c9, type: 3}
   - key: StatusConfig
     gameObject: {fileID: 4900000, guid: ec4a396fa6fcfef46a92da7c5344d4c2, type: 3}
-  - key: ChildStatusConfig
-    gameObject: {fileID: 4900000, guid: 67db3b1729f4ed84ea52acb3cb1df7f4, type: 3}
   - key: StatusEffectsConfig
     gameObject: {fileID: 4900000, guid: 9793e11789345274b9d0dccfcc551fd5, type: 3}
+  - key: UnitConfig
+    gameObject: {fileID: 4900000, guid: 79f1713de1c57e646a74288a5fe0f14f, type: 3}

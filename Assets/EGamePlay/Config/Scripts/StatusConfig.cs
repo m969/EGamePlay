@@ -19,11 +19,5 @@ namespace ET
 		public string StatusSlot;
 		public string CanStack;
 		public string Description;
-		public string ActionControl;
-		public string AttributeType;
-		public string AttributeParams;
-		public string Effect1;
-		public string Effect2;
-		public string Effect3;
 	}
 }

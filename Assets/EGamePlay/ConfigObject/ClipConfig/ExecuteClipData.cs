@@ -203,8 +203,8 @@ namespace EGamePlay
         }
 
         [ShowIf("IsTriggerAssign")]
-        [LabelText("应用效果")]
-        public EffectApplyType EffectApply;
+        [LabelText("主动触发效果")]
+        public ExecuteTriggerType ExecuteTrigger;
 
         [ShowIf("IsTriggerAssign")]
         public EffectApplyTarget EffectApplyTarget;
@@ -223,10 +223,20 @@ namespace EGamePlay
         InHand = 1,
     }
 
+    public enum CollisionExecuteTargetType
+    {
+        [LabelText("敌方")]
+        EnemyGroup = 0,
+        [LabelText("己方")]
+        SelfGroup = 1,
+    }
+
     [Serializable]
     public class CollisionExecuteData
     {
         public CollisionExecuteType ExecuteType;
+        [LabelText("碰撞执行对象")]
+        public CollisionExecuteTargetType ExecuteTargetType;
         public ActionEventData ActionData;
 
         [Space(10)]

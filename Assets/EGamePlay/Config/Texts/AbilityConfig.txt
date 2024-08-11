@@ -1,0 +1,16 @@
+{
+"101":{"Id":101,"KeyName":"Vertigo","Name":"眩晕","Type":"Buff","TargetGroup":"敌方","BuffType":"Weaken","StatusSlot":"是","CanStack":"否"},
+"102":{"Id":102,"KeyName":"Mute","Name":"沉默","Type":"Buff","TargetGroup":"敌方","BuffType":"Weaken","StatusSlot":"是","CanStack":"否"},
+"1001":{"Id":1001,"KeyName":"DarkFireball","Name":"黑火球术","Type":"Skill","TargetGroup":"敌方","TargetSelect":"手动指定","Cooldown":0,"BuffType":"None"},
+"1002":{"Id":1002,"KeyName":"FireExplode","Name":"炎爆","Type":"Skill","TargetGroup":"敌方","TargetSelect":"碰撞检测","Cooldown":0,"BuffType":"None"},
+"1003":{"Id":1003,"KeyName":"Cure","Name":"治愈","Type":"Skill","TargetGroup":"己方","TargetSelect":"手动指定","Cooldown":0,"BuffType":"None"},
+"1004":{"Id":1004,"Name":"血红激光炮","Type":"Skill","TargetGroup":"敌方","TargetSelect":"碰撞检测","Cooldown":0,"BuffType":"None"},
+"1005":{"Id":1005,"Name":"火弹","Type":"Skill","TargetGroup":"敌方","TargetSelect":"碰撞检测","Cooldown":0,"Description":"每命中一个目标后下一次伤害会减少20%，最低减到40%","BuffType":"None"},
+"1006":{"Id":1006,"Name":"灵魂锁链","Type":"Skill","TargetGroup":"敌方","TargetSelect":"条件指定","Cooldown":0,"BuffType":"None"},
+"1008":{"Id":1008,"Name":"火球","Type":"Skill","TargetGroup":"敌方","TargetSelect":"碰撞检测","Cooldown":0,"BuffType":"None"},
+"3001":{"Id":3001,"Name":"mini","Type":"Skill","TargetGroup":"敌方","TargetSelect":"手动指定","Cooldown":0,"BuffType":"None"},
+"2001":{"Id":2001,"Name":"光盾","Type":"Skill","TargetGroup":"自身","TargetSelect":"条件指定","Cooldown":0,"BuffType":"None"},
+"10011":{"Id":10011,"KeyName":"Weak","Name":"虚弱","Type":"Buff","TargetGroup":"敌方","BuffType":"Weaken","StatusSlot":"是","CanStack":"否"},
+"10041":{"Id":10041,"KeyName":"Burn","Name":"普通灼烧","Type":"Buff","TargetGroup":"敌方","BuffType":"Weaken","StatusSlot":"是","CanStack":"否"},
+"20011":{"Id":20011,"KeyName":"Shield","Name":"护盾","Type":"Buff","TargetGroup":"自身","BuffType":"Enhance","StatusSlot":"是","CanStack":"否"}
+}

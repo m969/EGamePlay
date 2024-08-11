@@ -56,8 +56,8 @@ namespace EGamePlay.Combat
 
         #endregion
 
-        [Space(10)]
-        [ToggleGroup("Enabled")]
+        //[Space(10)]
+        [ToggleGroup("Enabled"), ShowIf("HideAutoTrigger")]
         public AddSkillEffetTargetType AddSkillEffectTargetType;
 
         //[FoldoutGroup("Enabled/TriggerType", GroupName = "触发机制")]

@@ -58,6 +58,9 @@ namespace EGamePlay.Combat
         public void ApplyCollision()
         {
             PreProcess();
+
+
+
             if (Target != null)
             {
                 if (Target is CombatEntity combatEntity)
@@ -71,7 +74,9 @@ namespace EGamePlay.Combat
                     var actionEvent = collisionComp.CollisionExecuteData.ActionData.ActionEventType;
                     if (Target.GetComponent<AbilityItemShieldComponent>() != null)
                     {
+#if !EGAMEPLAY_ET
                         if (CauseItem.OwnerEntity.IsHero != abilityItem.OwnerEntity.IsHero)
+#endif
                         {
                             CauseItem.OnTriggerEvent(Target);
 

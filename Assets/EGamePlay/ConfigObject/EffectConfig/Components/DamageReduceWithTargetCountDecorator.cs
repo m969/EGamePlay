@@ -55,6 +55,7 @@ namespace EGamePlay.Combat
         public override string Label => "当赋给效果后触发新的效果";
 
         [ToggleGroup("Enabled")]
-        public EffectApplyType EffectApplyType;
+        [LabelText("触发效果")]
+        public ExecuteTriggerType ExecuteTriggerType;
     }
 }

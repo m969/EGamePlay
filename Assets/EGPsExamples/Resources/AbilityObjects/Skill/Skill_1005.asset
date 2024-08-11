@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d94b31d7cad340479dce17e71326ede, type: 3}
+  m_Name: Skill_1005
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Effects
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.Effect, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 1|EGamePlay.Combat.DamageEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: true
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: Decorators
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 3|EGamePlay.Combat.DamageReduceWithTargetCountDecorator, Assembly-CSharp
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: ReducePercent
+      Entry: 4
+      Data: 20
+    - Name: MinPercent
+      Entry: 4
+      Data: 40
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+    - Name: DamageType
+      Entry: 3
+      Data: 1
+    - Name: DamageValueFormula
+      Entry: 1
+      Data: 500
+    - Name: CanCrit
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  Id: 1005
+  SkillSpellType: 0
+  AffectTargetType: 2
+  TargetSelectType: 1
+  TriggerActions:
+  - Enabled: 1
+    TriggerType: 1
+    AutoTriggerType: 0
+    ActionPointType: 0
+    ConditionType: 0
+    ConditionParam: 
+    AddSkillEffectTargetType: 0
+    StateCheckList: []
+    TriggerEffects:
+    - EffectApplyType: 0
+      Params: []
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

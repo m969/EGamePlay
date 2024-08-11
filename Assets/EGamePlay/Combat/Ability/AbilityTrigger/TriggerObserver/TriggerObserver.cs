@@ -5,37 +5,37 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    /// <summary>
-    /// 主动触发观察者
-    /// </summary>
-    public class TriggerObserver : Entity, ICombatObserver
-    {
-        public void OnTrigger(Entity source)
-        {
-            GetParent<AbilityEffect>().OnObserverTrigger(new TriggerContext(this, source));
-        }
+    ///// <summary>
+    ///// 主动触发观察者
+    ///// </summary>
+    //public class TriggerObserver : Entity, ICombatObserver
+    //{
+    //    public void OnTrigger(Entity source)
+    //    {
+    //        //GetParent<AbilityEffect>().OnObserverTrigger(new TriggerContext(this, source));
+    //    }
 
-        public void OnTriggerWithAbilityItem(AbilityItem abilityItem, Entity target)
-        {
-            var context = new TriggerContext()
-            {
-                Observer = this,
-                Source = abilityItem,
-                AbilityItem = abilityItem,
-                Target = target,
-            };
-            GetParent<AbilityEffect>().OnObserverTrigger(context);
-        }
+    //    //public void OnTriggerWithAbilityItem(AbilityItem abilityItem, Entity target)
+    //    //{
+    //    //    var context = new TriggerContext()
+    //    //    {
+    //    //        AbilityTrigger = this,
+    //    //        Source = abilityItem,
+    //    //        AbilityItem = abilityItem,
+    //    //        Target = target,
+    //    //    };
+    //    //    GetParent<AbilityEffect>().OnObserverTrigger(context);
+    //    //}
 
-        public void OnTriggerWithSkillExecution(SkillExecution skillExecution, Entity target)
-        {
-            var context = new TriggerContext()
-            {
-                Observer = this,
-                Source = skillExecution,
-                Target = target,
-            };
-            GetParent<AbilityEffect>().OnObserverTrigger(context);
-        }
-    }
+    //    //public void OnTriggerWithSkillExecution(SkillExecution skillExecution, Entity target)
+    //    //{
+    //    //    var context = new TriggerContext()
+    //    //    {
+    //    //        AbilityTrigger = this,
+    //    //        Source = skillExecution,
+    //    //        Target = target,
+    //    //    };
+    //    //    GetParent<AbilityEffect>().OnObserverTrigger(context);
+    //    //}
+    //}
 }

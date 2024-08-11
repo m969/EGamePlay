@@ -3,8 +3,8 @@ using System;
 
 namespace EGamePlay.Combat
 {
-    public interface ICombatObserver
-    {
-        void OnTrigger(Entity source);
-    }
+    //public interface ICombatObserver
+    //{
+    //    void OnTrigger(Entity source);
+    //}
 }

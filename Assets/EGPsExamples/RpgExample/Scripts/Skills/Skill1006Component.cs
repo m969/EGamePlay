@@ -48,11 +48,10 @@ public class SkillExecution1006Component : EGamePlay.Component
         foreach (var item in EntityChannels)
         {
 #if !EGAMEPLAY_EXCEL
-            var effects = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().AbilityEffects;
+            var abilityTriggerComp = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
+            var effects = abilityTriggerComp.AbilityTriggers;
             var effect = effects[2];
-            effect.TriggerObserver.OnTrigger(item.Key);
-            //var effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 2);
-            //effectAssign.AssignEffect();
+            effect.OnTrigger(new TriggerContext() { Target = item.Key });
 #endif
         }
         Enable = true;
@@ -80,19 +79,16 @@ public class SkillExecution1006Component : EGamePlay.Component
 #if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
-            var effects = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().AbilityEffects;
+            var abilityTriggerComp = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
+            var effects = abilityTriggerComp.AbilityTriggers;
             for (int i = 0; i < effects.Count; i++)
             {
                 if (i == 0 || i == 1)
                 {
                     var effect = effects[i];
-                    effect.TriggerObserver.OnTrigger(item.Key);
+                    effect.OnTrigger(new TriggerContext() { Target = item.Key });
                 }
             }
-            //var effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 0);
-            //effectAssign.AssignEffect();
-            //effectAssign = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(item.Key, 1);
-            //effectAssign.AssignEffect();
         }
 #endif
         EndExecute();

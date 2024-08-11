@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
             {
                 if (this.AddStatus != null)
                 {
-                    return $"施加 [ {this.AddStatus.Name} ] 状态效果";
+                    return $"施加 [ {this.AddStatus.Id} ] 状态效果";
                 }
                 return "施加状态效果";
             }
@@ -32,14 +32,14 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("Enabled")]
         [LabelText("状态配置"), JsonIgnore]
-        public StatusConfigObject AddStatus;
+        public AbilityConfigObject AddStatus;
 
         private string addStatusId;
         public string AddStatusId
         {
             get
             {
-                if (this.AddStatus != null) return AddStatus.ID;
+                if (this.AddStatus != null) return AddStatus.Id.ToString();
                 return addStatusId;
             }
             set
@@ -48,10 +48,10 @@ namespace EGamePlay.Combat
             }
         }
 
-        public StatusConfig AddStatusConfig { get; set; }
+        public AbilityConfig AddStatusConfig { get; set; }
 
-        [ToggleGroup("Enabled"), LabelText("持续时间"), SuffixLabel("毫秒", true)]
-        public uint Duration;
+        [ToggleGroup("Enabled"), LabelText("持续时间")/*, SuffixLabel("毫秒", true)*/]
+        public float Duration;
 
         [HideReferenceObjectPicker]
         [ToggleGroup("Enabled")]

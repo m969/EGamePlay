@@ -19,12 +19,12 @@ public class StatusTenacityComponent : EGamePlay.Component
 
     public override void Awake()
     {
-        Entity.OnEvent(nameof(StatusAbility.ActivateAbility), OnActivateAbility);
+        Entity.OnEvent(nameof(Ability.ActivateAbility), OnActivateAbility);
     }
 
     public void OnActivateAbility(Entity entity)
     {
-        var statusAbility = entity.As<StatusAbility>();
+        var statusAbility = entity.As<Ability>();
         var OwnerEntity = statusAbility.OwnerEntity;
         CureAbilityEffect = statusAbility.GetComponent<AbilityEffectComponent>().CureAbilityEffect;
         OwnerEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
@@ -52,7 +52,7 @@ public class StatusTenacityComponent : EGamePlay.Component
     //开始生命回复
     private void StartReplyHealth()
     {
-        if (GetEntity<StatusAbility>().OwnerEntity.CurrentHealth.IsFull() == false)
+        if (GetEntity<Ability>().OwnerEntity.CurrentHealth.IsFull() == false)
         {
             CanReplyHealth = true;
             HealthReplyTimer.Reset();
@@ -62,13 +62,12 @@ public class StatusTenacityComponent : EGamePlay.Component
     //生命回复
     private void ReplyHealth()
     {
-        var OwnerEntity = GetEntity<StatusAbility>().OwnerEntity;
+        var OwnerEntity = GetEntity<Ability>().OwnerEntity;
         if (OwnerEntity.CurrentHealth.IsFull())
         {
             return;
         }
-        CureAbilityEffect.TriggerObserver.OnTrigger(OwnerEntity);
-        //var effectAssign = Entity.GetComponent<AbilityEffectComponent>().CreateAssignActionByIndex(OwnerEntity, 0);
-        //effectAssign.AssignEffect();
+        var abilityTriggerComp = Entity.GetComponent<AbilityTriggerComponent>();
+        abilityTriggerComp.GetTrigger(0).OnTrigger(new TriggerContext() { Target = OwnerEntity });
     }
 }

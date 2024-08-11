@@ -11,10 +11,11 @@ namespace EGamePlay.Combat
     public class AbilityTrigger : Entity
     {
         public bool Enable { get; set; }
-        public Entity OwnerAbility => Parent;
-        public CombatEntity OwnerEntity => (OwnerAbility as IAbilityEntity).OwnerEntity;
-        public Entity ParentEntity => (OwnerAbility as IAbilityEntity).ParentEntity;
+        public Ability OwnerAbility => GetParent<Ability>();
+        public CombatEntity OwnerEntity => OwnerAbility.OwnerEntity;
+        public Entity ParentEntity => OwnerAbility.ParentEntity;
         public TriggerConfig TriggerConfig { get; set; }
+        public string ConditionParamValue { get; set; }
 
 
         public override void Awake(object initData)
@@ -35,7 +36,7 @@ namespace EGamePlay.Combat
                 if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Condition)
                 {
                     var conditionType = TriggerConfig.ConditionType;
-                    var paramObj = TriggerConfig.ConditionParam;
+                    var paramObj = ConditionParamValue;
                     if (conditionType == TimeStateEventType.WhenInTimeNoDamage && float.TryParse((string)paramObj, out var time))
                     {
                         var condition = AddComponent<TimeState_WhenInTimeNoDamageObserveComponent>(time);
@@ -52,36 +53,48 @@ namespace EGamePlay.Combat
             if (TriggerConfig.StateCheckList != null && TriggerConfig.StateCheckList.Count > 0)
             {
                 AddComponent<TriggerStateCheckComponent>();
-                //foreach (var item in Children)
-                //{
-                //    if (item is ICombatObserver)
-                //    {
-                //        item.AddComponent<TriggerStateCheckComponent>();
-                //    }
-                //}
             }
         }
 
-        //public void OnTrigger(Entity source)
+        public void EnableTrigger()
+        {
+            Enable = true;
+
+            /// 立即触发
+            if (TriggerConfig.TriggerType == EffectTriggerType.AutoTrigger && TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Instant)
+            {
+                OnTrigger(new TriggerContext() { Target = ParentEntity });
+            }
+        }
+
+        public void DisableTrigger()
+        {
+            Enable = false;
+        }
+
         public void OnTrigger(TriggerContext context)
         {
-            //Log.Debug("AbilityEffect OnObserverTrigger");
-            var observer = context.Observer;
-            var source = context.Source;
+            //Log.Debug($"{GetParent<Ability>().Config.KeyName} AbilityTrigger OnTrigger");
+            var newContext = context;
+            newContext.AbilityTrigger = this;
+            context = newContext;
+            var abilityTrigger = this;
+
+            var source = context.TriggerSource;
             Entity target = context.Target;
-            if (target == null)
+            if (target == null && source != null)
             {
                 target = source;
             }
-
-            var stateCheckResult = true;
-            if (!(observer is ActionPointObserveComponent) && !(observer is TriggerObserver))
+            if (target == null)
             {
                 target = ParentEntity;
             }
 
+            var stateCheckResult = true;
+
             /// 这里是状态判断，状态判断是判断目标的状态是否满足条件，满足才能触发效果
-            if ((observer as Entity).TryGet(out TriggerStateCheckComponent component))
+            if ((abilityTrigger as Entity).TryGet(out TriggerStateCheckComponent component))
             {
                 stateCheckResult = component.CheckTargetState(target);
             }
@@ -108,25 +121,8 @@ namespace EGamePlay.Combat
                             }
                         }
                     }
-
                 }
             }
-        }
-
-        public void EnableTrigger()
-        {
-            Enable = true;
-
-            /// 立即触发
-            if (TriggerConfig.TriggerType == EffectTriggerType.AutoTrigger && TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Instant)
-            {
-                OnTrigger(new TriggerContext() { Target = ParentEntity, Source = OwnerEntity });
-            }
-        }
-
-        public void DisableTrigger()
-        {
-            Enable = false;
         }
     }
 }

@@ -74,9 +74,9 @@ namespace EGamePlay.Combat
 
         public void ApplyAttack()
         {
-            AttackExecution = Creator.AttackAbility.CreateExecution() as AttackExecution;
-            AttackExecution.AttackAction = this;
-            AttackExecution.BeginExecute();
+            //AttackExecution = Creator.AttackAbility.CreateExecution() as AttackExecution;
+            //AttackExecution.AttackAction = this;
+            //AttackExecution.BeginExecute();
         }
 
         //后置处理

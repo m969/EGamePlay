@@ -420,12 +420,12 @@ namespace EGamePlay
             SkillTimeImage.fillAmount = 0;
             CurrentTime = 0;
             IsPlaying = true;
-            if (CurrentExecutionObject.AbilityId > 0 && HeroEntity.GetComponent<AbilityComponent>().IdSkills.TryGetValue(CurrentExecutionObject.AbilityId, out var skillAbility))
+            if (CurrentExecutionObject.AbilityId > 0 && HeroEntity.GetComponent<SkillComponent>().IdSkills.TryGetValue(CurrentExecutionObject.AbilityId, out var skillAbility))
             {
                 skillAbility.LoadExecution();
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
                 {
-                    if (skillAbility.SkillEffectsConfig.AffectTargetType == SkillAffectTargetType.EnemyTeam)
+                    if (skillAbility.ConfigObject.AffectTargetType == SkillAffectTargetType.EnemyTeam)
                     {
                         HeroEntity.GetComponent<SpellComponent>().SpellWithTarget(skillAbility, BossEntity);
                     }

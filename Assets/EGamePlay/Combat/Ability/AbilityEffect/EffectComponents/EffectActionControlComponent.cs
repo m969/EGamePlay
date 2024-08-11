@@ -22,12 +22,12 @@ namespace EGamePlay.Combat
 
         public override void OnEnable()
         {
-            Entity.Parent.Parent.GetComponent<StatusComponent>().OnStatusesChanged(Entity.GetParent<StatusAbility>());
+            Entity.Parent.Parent.GetComponent<StatusComponent>().OnStatusesChanged(Entity.GetParent<Ability>());
         }
 
         public override void OnDisable()
         {
-            Entity.Parent.Parent.GetComponent<StatusComponent>().OnStatusesChanged(Entity.GetParent<StatusAbility>());
+            Entity.Parent.Parent.GetComponent<StatusComponent>().OnStatusesChanged(Entity.GetParent<Ability>());
         }
 
         public void OnTriggerApplyEffect(Entity effectAssign)

@@ -12,7 +12,7 @@ namespace EGamePlay.Combat
     public class EffectAddStatusComponent : Component, IEffectTriggerSystem
     {
         public AddStatusEffect AddStatusEffect { get; set; }
-        public uint Duration { get; set; }
+        public float Duration { get; set; }
         public string NumericValueProperty { get; set; }
 
 

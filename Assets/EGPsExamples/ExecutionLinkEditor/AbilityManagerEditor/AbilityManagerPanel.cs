@@ -59,7 +59,7 @@ namespace EGamePlay
         {
 #if UNITY_EDITOR
             AbilityListContentTrans.DestroyChildren();
-            var allconfigs = SkillConfigCategory.Instance.GetAll();
+            var allconfigs = AbilityConfigCategory.Instance.GetAll();
             //var guids = UnityEditor.AssetDatabase.FindAssets("t:ExecutionObject");
             foreach (var item in allconfigs)
             {
@@ -69,7 +69,7 @@ namespace EGamePlay
                 btn.transform.Find("AbilityDesText").GetComponent<Text>().text = item.Value.Description;
                 btn.GetComponent<Button>().onClick.AddListener(() => {
                     var folder = AbilityManagerObject.Instance.SkillAssetFolder;
-                    var obj = AssetDatabase.LoadAssetAtPath<SkillConfigObject>(folder + $"/Skill_{item.Key}.asset");
+                    var obj = AssetDatabase.LoadAssetAtPath<AbilityConfigObject>(folder + $"/Skill_{item.Key}.asset");
                     UnityEditor.EditorGUIUtility.PingObject(obj);
                     Selection.activeObject = obj;
 

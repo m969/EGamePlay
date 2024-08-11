@@ -8,20 +8,26 @@ namespace EGamePlay.Combat
     /// </summary>
     public class AbilityComponent : Component
     {
-        public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
-        public Dictionary<int, SkillAbility> IdSkills { get; set; } = new Dictionary<int, SkillAbility>();
-        public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();
-        //public Dictionary<string, List<StatusAbility>> TypeIdStatuses { get; set; } = new Dictionary<string, List<StatusAbility>>();
+        //public Dictionary<string, Ability> NameSkills { get; set; } = new Dictionary<string, Ability>();
+        public Dictionary<long, Ability> IdAbilities { get; set; } = new Dictionary<long, Ability>();
+        //public Dictionary<KeyCode, Ability> InputSkills { get; set; } = new Dictionary<KeyCode, Ability>();
 
 
         /// <summary>
         /// 挂载能力，技能、被动、buff等都通过这个接口挂载
         /// </summary>
-        public T AttachAbility<T>(object configObject) where T : Entity, IAbilityEntity
+        public Ability AttachAbility(object configObject)
         {
-            var ability = Entity.AddChild<T>(configObject);
+            var ability = Entity.AddChild<Ability>(configObject);
             ability.AddComponent<AbilityLevelComponent>();
+            IdAbilities.Add(ability.Id, ability);
             return ability;
+        }
+
+        public void RemoveAbility(Ability ability)
+        {
+            IdAbilities.Remove(ability.Id);
+            ability.EndAbility();
         }
     }
 }

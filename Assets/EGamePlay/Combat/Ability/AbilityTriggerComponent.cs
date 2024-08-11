@@ -3,7 +3,7 @@
 namespace EGamePlay.Combat
 {
     /// <summary>
-    /// 能力触发组件
+    /// 能力触发点组件，一个能力可以包含多个触发点
     /// </summary>
     public class AbilityTriggerComponent : Component
 	{
@@ -19,6 +19,11 @@ namespace EGamePlay.Combat
                 var abilityTrigger = Entity.AddChild<AbilityTrigger>(item);
                 AbilityTriggers.Add(abilityTrigger);
             }
+        }
+
+        public AbilityTrigger GetTrigger(int index = 0)
+        {
+            return AbilityTriggers[index];
         }
 
         public override void OnEnable()

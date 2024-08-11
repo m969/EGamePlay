@@ -22,7 +22,7 @@ namespace EGamePlay.Combat
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
         public AttackAction AttackAction { get; set; }
-        public Entity AbilityEntity { get; set; }
+        public Ability AbilityEntity { get; set; }
         public CombatEntity OwnerEntity { get; set; }
 
         private bool BeBlocked;/// 是否被格挡
@@ -75,11 +75,12 @@ namespace EGamePlay.Combat
             }
             else
             {
-                var effects = AbilityEntity.GetComponent<AbilityEffectComponent>().AbilityEffects;
+                var abilityTriggerComp = AbilityEntity.GetComponent<AbilityTriggerComponent>();
+                var effects = abilityTriggerComp.AbilityTriggers;
                 for (int i = 0; i < effects.Count; i++)
                 {
                     var effect = effects[i];
-                    effect.TriggerObserver.OnTrigger(AttackAction.Target);
+                    effect.OnTrigger(new TriggerContext() { Target = AttackAction.Target });
                 }
             }
         }

@@ -90,7 +90,7 @@ namespace EGamePlay.Combat
             if (Vector3.Distance(heroEntity.Position, Position) < 5)
             {
                 var combatEntity = GetEntity<CombatEntity>();
-                combatEntity.GetComponent<SpellComponent>().SpellWithTarget(combatEntity.GetComponent<AbilityComponent>().IdSkills[1001], heroEntity);
+                combatEntity.GetComponent<SpellComponent>().SpellWithTarget(combatEntity.GetComponent<SkillComponent>().IdSkills[1001], heroEntity);
             }
         }
 

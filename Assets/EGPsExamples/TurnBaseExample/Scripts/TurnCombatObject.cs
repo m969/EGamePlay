@@ -122,34 +122,36 @@ public class TurnCombatObject : MonoBehaviour
         var action = combatAction as AddStatusAction;
         var addStatusEffect = action.AddStatusEffect;
         var statusConfig = addStatusEffect.AddStatus;
+        var abilityConfig = ConfigHelper.Get<AbilityConfig>(statusConfig.Id);
+        var keyName = abilityConfig.KeyName;
         if (name == "Monster")
         {
             var obj = GameObject.Instantiate(CombatObjectData.StatusIconPrefab);
             obj.transform.SetParent(CombatObjectData.StatusSlotsTrm);
-            obj.GetComponentInChildren<Text>().text = statusConfig.Name;
-            obj.name = action.Status.Id.ToString();
+            obj.GetComponentInChildren<Text>().text = abilityConfig.Name;
+            obj.name = action.BuffAbility.Id.ToString();
         }
 
-        if (statusConfig.ID == "Vertigo")
+        if (keyName == "Vertigo")
         {
             CombatEntity.GetComponent<MotionComponent>().Enable = false;
             CombatObjectData.AnimationComponent.Play(CombatObjectData.AnimationComponent.StunAnimation);
             var vertigoParticle = CombatObjectData.vertigoParticle;
             if (vertigoParticle == null)
             {
-                vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
-                vertigoParticle.transform.parent = transform;
-                vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
+                //vertigoParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                //vertigoParticle.transform.parent = transform;
+                //vertigoParticle.transform.localPosition = new Vector3(0, 2, 0);
             }
         }
-        if (statusConfig.ID == "Weak")
+        if (keyName == "Weak")
         {
             var weakParticle = CombatObjectData.weakParticle;
             if (weakParticle == null)
             {
-                weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
-                weakParticle.transform.parent = transform;
-                weakParticle.transform.localPosition = new Vector3(0, 0, 0);
+                //weakParticle = GameObject.Instantiate(statusConfig.ParticleEffect);
+                //weakParticle.transform.parent = transform;
+                //weakParticle.transform.localPosition = new Vector3(0, 0, 0);
             }
         }
     }
@@ -165,8 +167,8 @@ public class TurnCombatObject : MonoBehaviour
             }
         }
 
-        var statusConfig = eventData.Status.StatusConfig;
-        if (statusConfig.ID == "Vertigo")
+        var statusConfig = eventData.Status.Config;
+        if (statusConfig.KeyName == "Vertigo")
         {
             CombatEntity.GetComponent<MotionComponent>().Enable = true;
             CombatObjectData.AnimationComponent.Play(CombatObjectData.AnimationComponent.IdleAnimation);
@@ -175,7 +177,7 @@ public class TurnCombatObject : MonoBehaviour
                 GameObject.Destroy(CombatObjectData.vertigoParticle);
             }
         }
-        if (statusConfig.ID == "Weak")
+        if (statusConfig.KeyName == "Weak")
         {
             if (CombatObjectData.weakParticle != null)
             {

@@ -57,10 +57,12 @@
     {
         [LabelText("技能目标")]
         SkillTarget = 0,
+        [LabelText("附身对象")]
+        AttachTarget = 1,
         [LabelText("自身")]
-        Self = 1,
+        Self = 2,
         [LabelText("其他")]
-        Other = 2,
+        Other = 3,
     }
 
     [LabelText("目标类型")]

@@ -81,17 +81,25 @@ public sealed class Hero : MonoBehaviour
             SkillSlotsTrm.Find("SkillButtonF").gameObject.SetActive(false);
         }
 #else
-        var allConfigs = ConfigHelper.GetAll<SkillConfig>().Values.ToArray();
+        var allConfigs = ConfigHelper.GetAll<AbilityConfig>().Values.ToArray();
         for (int i = 0; i < allConfigs.Length; i++)
         {
-            var skillConfig = allConfigs[i];
-            var skilld = skillConfig.Id;
-            if (skilld == 201)
+            var config = allConfigs[i];
+            if (config.Type != "Skill")
             {
                 continue;
             }
-            var config = GameUtils.AssetUtils.LoadObject<SkillConfigObject>($"SkillConfigs/Skill_{skilld}");
-            var ability = CombatEntity.AttachSkill(config);
+            var skilld = config.Id;
+            if (skilld == 3001)
+            {
+                continue;
+            }
+            //if (skilld != 1001)
+            //{
+            //    continue;
+            //}
+            var configObj = GameUtils.AssetUtils.LoadObject<AbilityConfigObject>($"{AbilityManagerObject.SkillResFolder}/Skill_{skilld}");
+            var ability = CombatEntity.GetComponent<SkillComponent>().AttachSkill(configObj);
             if (skilld == 1001) CombatEntity.BindSkillInput(ability, KeyCode.Q);
             if (skilld == 1002) CombatEntity.BindSkillInput(ability, KeyCode.W);
             if (skilld == 1003) CombatEntity.BindSkillInput(ability, KeyCode.Y);

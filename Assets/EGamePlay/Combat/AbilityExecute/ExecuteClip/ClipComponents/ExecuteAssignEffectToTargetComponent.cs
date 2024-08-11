@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using GameUtils;
+using static UnityEngine.GraphicsBuffer;
 
 namespace EGamePlay.Combat
 {
@@ -12,7 +13,7 @@ namespace EGamePlay.Combat
     public class ExecuteAssignEffectToTargetComponent : Component
     {
         public override bool DefaultEnable { get; set; } = false;
-        public EffectApplyType EffectApplyType { get; set; }
+        public ExecuteTriggerType ExecuteTriggerType { get; set; }
 
 
         public override void Awake()
@@ -26,15 +27,21 @@ namespace EGamePlay.Combat
             //Log.Debug($"ExecutionAssignToTargetComponent OnTriggerExecutionEffect {skillExecution.InputTarget} {EffectApplyType}");
             if (skillExecution.InputTarget != null)
             {
-                var abilityEffectComponent = skillExecution.AbilityEntity.GetComponent<AbilityEffectComponent>();
+                var abilityTriggerComp = skillExecution.AbilityEntity.GetComponent<AbilityTriggerComponent>();
                 var OwnerEntity = skillExecution.OwnerEntity;
-                var effects = abilityEffectComponent.AbilityEffects;
+                var effects = abilityTriggerComp.AbilityTriggers;
                 for (int i = 0; i < effects.Count; i++)
                 {
-                    if (i == (int)EffectApplyType - 1 || EffectApplyType == EffectApplyType.AllEffects)
+                    if (i == (int)ExecuteTriggerType - 1 || ExecuteTriggerType == ExecuteTriggerType.AllTriggers)
                     {
                         var effect = effects[i];
-                        effect.TriggerObserver.OnTriggerWithSkillExecution(skillExecution, skillExecution.InputTarget);
+                        var context = new TriggerContext()
+                        {
+                            AbilityTrigger = effect,
+                            TriggerSource = skillExecution,
+                            Target = skillExecution.InputTarget,
+                        };
+                        effect.OnTrigger(context);
                     }
                 }
             }

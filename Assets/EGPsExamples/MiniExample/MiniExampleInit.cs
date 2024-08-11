@@ -9,7 +9,7 @@ using UnityEngine;
 public class MiniExampleInit : MonoBehaviour
 {
     public bool EntityLog;
-    public SkillConfigObject SkillConfigObject;
+    public AbilityConfigObject SkillConfigObject;
     public ReferenceCollector ConfigsCollector;
 
 
@@ -28,7 +28,7 @@ public class MiniExampleInit : MonoBehaviour
         //创建英雄战斗实体
         var hero = CombatContext.Instance.AddChild<CombatEntity>();
         //给英雄挂载技能并加载技能执行体
-        var heroSkillAbility = hero.AttachSkill(SkillConfigObject);
+        var heroSkillAbility = hero.GetComponent<SkillComponent>().AttachSkill(SkillConfigObject);
 
         Debug.Log($"1 monster.CurrentHealth={monster.CurrentHealth.Value}");
         //使用英雄技能攻击怪物

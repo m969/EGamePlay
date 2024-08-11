@@ -45,7 +45,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class SpellAction : Entity, IActionExecute
     {
-        public SkillAbility SkillAbility { get; set; }
+        public Ability SkillAbility { get; set; }
         public SkillExecution SkillExecution { get; set; }
         public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
         public CombatEntity InputTarget { get; set; }
@@ -98,7 +98,7 @@ namespace EGamePlay.Combat
             {
                 SkillExecution.SkillTargets.AddRange(SkillTargets);
             }
-            if (SkillAbility.SkillConfig.Id != 2001)
+            if (SkillAbility.Config.Id != 2001)
             {
                 SkillExecution.ActionOccupy = actionOccupy;
             }
@@ -108,7 +108,7 @@ namespace EGamePlay.Combat
             execution.InputRadian = InputRadian;
             execution.BeginExecute();
             AddComponent<UpdateComponent>();
-            if (SkillAbility.SkillConfig.Id == 2001)
+            if (SkillAbility.Config.Id == 2001)
             {
                 execution.GetParent<CombatEntity>().SpellingExecution = null;
             }

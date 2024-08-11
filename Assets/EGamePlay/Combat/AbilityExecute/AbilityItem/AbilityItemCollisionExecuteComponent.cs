@@ -20,7 +20,7 @@ namespace EGamePlay.Combat
             ExecuteClipData = initData as ExecuteClipData;
             if (CollisionExecuteData.ActionData.ActionEventType == FireEventType.AssignEffect)
             {
-                GetEntity<AbilityItem>().EffectApplyType = CollisionExecuteData.ActionData.EffectApply;
+                GetEntity<AbilityItem>().ExecuteTriggerType = CollisionExecuteData.ActionData.ExecuteTrigger;
                 if (CollisionExecuteData.ActionData.FireType == FireType.StartTrigger)
                 {
                     if (CollisionExecuteData.ActionData.EffectApplyTarget == EffectApplyTarget.Self)
@@ -37,12 +37,12 @@ namespace EGamePlay.Combat
 
         public AbilityEffect[] GetAssignEffects()
         {
-            var EffectApplyType = CollisionExecuteData.ActionData.EffectApply;
+            var triggerType = CollisionExecuteData.ActionData.ExecuteTrigger;
             var effects = GetEntity<AbilityItem>().AbilityEntity.GetComponent<AbilityEffectComponent>().AbilityEffects;
             var list = new List<AbilityEffect>();
             for (int i = 0; i < effects.Count; i++)
             {
-                if (i == (int)EffectApplyType - 1 || EffectApplyType == EffectApplyType.AllEffects)
+                if (i == (int)triggerType - 1 || triggerType == ExecuteTriggerType.AllTriggers)
                 {
                     var effect = effects[i];
                     list.Add(effect);

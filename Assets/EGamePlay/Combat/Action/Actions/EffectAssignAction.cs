@@ -67,7 +67,7 @@ namespace EGamePlay.Combat
         public void AssignEffect()
         {
             PreProcess();
-
+            //Log.Debug($"EffectAssignAction AssignEffect {EffectConfig.GetType().Name}");
             foreach (var item in AbilityEffect.Components.Values)
             {
                 if (item is IEffectTriggerSystem effectTriggerSystem)
@@ -97,8 +97,17 @@ namespace EGamePlay.Combat
                 {
                     if (item is TriggerNewEffectWhenAssignEffectDecorator effectDecorator)
                     {
-                        var newEffect = AbilityEffect.OwnerAbility.GetComponent<AbilityEffectComponent>().GetEffect(((int)effectDecorator.EffectApplyType) - 1);
-                        newEffect.TriggerObserver.OnTrigger(Target);
+                        var abilityTriggerComp = AbilityEffect.OwnerAbility.GetComponent<AbilityTriggerComponent>();
+                        var effects = abilityTriggerComp.AbilityTriggers;
+                        var ExecuteTriggerType = effectDecorator.ExecuteTriggerType;
+                        for (int i = 0; i < effects.Count; i++)
+                        {
+                            if (i == (int)ExecuteTriggerType - 1 || ExecuteTriggerType == ExecuteTriggerType.AllTriggers)
+                            {
+                                var effect = effects[i];
+                                effect.OnTrigger(new TriggerContext() { Target = Target });
+                            }
+                        }
                     }
                 }
             }

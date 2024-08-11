@@ -37,7 +37,7 @@ namespace EGamePlay.Combat
     {
         public Entity SourceAbility { get; set; }
         public AddStatusEffect AddStatusEffect => SourceAssignAction.AbilityEffect.EffectConfig as AddStatusEffect;
-        public StatusAbility Status { get; set; }
+        public Ability BuffAbility { get; set; }
 
         /// 行动能力
         public Entity ActionAbility { get; set; }
@@ -69,41 +69,45 @@ namespace EGamePlay.Combat
             var canStack = statusConfig.CanStack == "是";
             var enabledLogicTrigger = statusConfig.EnabledLogicTrigger();
 #else
-            var statusConfig = AddStatusEffect.AddStatus;
-            if (statusConfig == null)
+            var buffObject = AddStatusEffect.AddStatus;
+            if (buffObject == null)
             {
                 var statusId = AddStatusEffect.AddStatusId;
-                statusConfig = AssetUtils.LoadObject<StatusConfigObject>($"StatusConfigs/Status_{statusId}");
+                buffObject = AssetUtils.LoadObject<AbilityConfigObject>($"{AbilityManagerObject.BuffResFolder}/Buff_{statusId}");
             }
-            var config = StatusConfigCategory.Instance.GetWithIDType(statusConfig.ID);
-            var canStack = config.CanStack == "是";
+            var buffConfig = AbilityConfigCategory.Instance.Get(buffObject.Id);
+            var canStack = buffConfig.CanStack == "是";
 #endif
             var statusComp = Target.GetComponent<StatusComponent>();
             if (canStack == false)
             {
-                if (statusComp.HasStatus(statusConfig.ID))
+                if (statusComp.HasStatus(buffConfig.KeyName))
                 {
-                    var status = statusComp.GetStatus(statusConfig.ID);
-                    var statusLifeTimer = status.GetComponent<StatusLifeTimeComponent>().LifeTimer;
-                    statusLifeTimer.MaxTime = AddStatusEffect.Duration / 1000f;
-                    statusLifeTimer.Reset();
+                    var status = statusComp.GetStatus(buffConfig.KeyName);
+                    var lifeComp = status.GetComponent<AbilityLifeTimeComponent>();
+                    if (lifeComp != null)
+                    {
+                        var statusLifeTimer = lifeComp.LifeTimer;
+                        statusLifeTimer.MaxTime = AddStatusEffect.Duration;
+                        statusLifeTimer.Reset();
+                    }
                     FinishAction();
                     return;
                 }
             }
 
-            Status = statusComp.AttachStatus(statusConfig);
-            Status.OwnerEntity = Creator;
-            Status.GetComponent<AbilityLevelComponent>().Level = SourceAbility.GetComponent<AbilityLevelComponent>().Level;
-            Status.Duration = (int)AddStatusEffect.Duration;
+            BuffAbility = statusComp.AttachStatus(buffObject);
+            BuffAbility.OwnerEntity = Creator;
+            BuffAbility.GetComponent<AbilityLevelComponent>().Level = SourceAbility.GetComponent<AbilityLevelComponent>().Level;
+            //BuffAbility.Duration = (int)AddStatusEffect.Duration;
 
-            Status.ProcessInputKVParams(AddStatusEffect.Params);
+            ProcessInputKVParams(BuffAbility, AddStatusEffect.Params);
 
-            if (Status.GetDuration() > 0)
+            if (AddStatusEffect.Duration > 0)
             {
-                Status.AddComponent<StatusLifeTimeComponent>();
+                BuffAbility.AddComponent<AbilityLifeTimeComponent>(AddStatusEffect.Duration);
             }
-            Status.TryActivateAbility();
+            BuffAbility.TryActivateAbility();
 
             PostProcess();
 
@@ -115,6 +119,50 @@ namespace EGamePlay.Combat
         {
             Creator.TriggerActionPoint(ActionPointType.PostGiveStatus, this);
             Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PostReceiveStatus, this);
+        }
+
+        /// 这里处理技能传入的参数数值替换
+        public void ProcessInputKVParams(Ability ability, Dictionary<string, string> Params)
+        {
+            foreach (var abilityTrigger in ability.GetComponent<AbilityTriggerComponent>().AbilityTriggers)
+            {
+                var effect = abilityTrigger.TriggerConfig;
+
+                if (!string.IsNullOrEmpty(effect.ConditionParam))
+                {
+                    abilityTrigger.ConditionParamValue = ProcessReplaceKV(effect.ConditionParam, Params);
+                }
+            }
+
+            foreach (var abilityEffect in ability.GetComponent<AbilityEffectComponent>().AbilityEffects)
+            {
+                var effect = abilityEffect.EffectConfig;
+
+                if (effect is AttributeModifyEffect attributeModify && abilityEffect.TryGet(out EffectAttributeModifyComponent attributeModifyComponent))
+                {
+                    attributeModifyComponent.ModifyValueFormula = ProcessReplaceKV(attributeModify.NumericValue, Params);
+                }
+                if (effect is DamageEffect damage && abilityEffect.TryGet(out EffectDamageComponent damageComponent))
+                {
+                    damageComponent.DamageValueFormula = ProcessReplaceKV(damage.DamageValueFormula, Params);
+                }
+                if (effect is CureEffect cure && abilityEffect.TryGet(out EffectCureComponent cureComponent))
+                {
+                    cureComponent.CureValueProperty = ProcessReplaceKV(cure.CureValueFormula, Params);
+                }
+            }
+        }
+
+        private string ProcessReplaceKV(string originValue, Dictionary<string, string> Params)
+        {
+            foreach (var aInputKVItem in Params)
+            {
+                if (!string.IsNullOrEmpty(originValue))
+                {
+                    originValue = originValue.Replace(aInputKVItem.Key, aInputKVItem.Value);
+                }
+            }
+            return originValue;
         }
     }
 }

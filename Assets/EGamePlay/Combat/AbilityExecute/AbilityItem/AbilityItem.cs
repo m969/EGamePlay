@@ -5,6 +5,8 @@ using UnityEngine;
 using ET;
 using GameUtils;
 using System;
+using static UnityEngine.GraphicsBuffer;
+
 
 #if EGAMEPLAY_ET
 using Unity.Mathematics;
@@ -24,14 +26,14 @@ namespace EGamePlay.Combat
     /// </summary>
     public class AbilityItem : Entity, IPosition
     {
-        public Entity AbilityEntity { get; private set; }
+        public Ability AbilityEntity { get; private set; }
         public IAbilityExecute AbilityExecution { get; private set; }
-        public EffectApplyType EffectApplyType { get; set; }
+        public ExecuteTriggerType ExecuteTriggerType { get; set; }
         public Vector3 LocalPosition { get; set; }
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
         public CombatEntity TargetEntity { get; set; }
-        public CombatEntity OwnerEntity => AbilityEntity.As<IAbilityEntity>().OwnerEntity;
+        public CombatEntity OwnerEntity => AbilityEntity.OwnerEntity;
 #if UNITY
         public AbilityItemViewComponent ItemProxy { get; set; }
 #endif
@@ -122,19 +124,23 @@ namespace EGamePlay.Combat
             var collisionExecuteData = GetComponent<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
             if (AbilityEntity != null)
             {
-                Log.Debug($"AbilityItem OnTriggerEvent {collisionExecuteData.ActionData.ActionEventType}");
+                //Log.Debug($"AbilityItem OnTriggerEvent {collisionExecuteData.ActionData.ActionEventType}");
                 if (collisionExecuteData.ActionData.ActionEventType == FireEventType.AssignEffect)
                 {
-                    var effects = AbilityEntity.GetComponent<AbilityEffectComponent>().AbilityEffects;
+                    var effects = AbilityEntity.GetComponent<AbilityTriggerComponent>().AbilityTriggers;
                     for (int i = 0; i < effects.Count; i++)
                     {
-                        if (i == (int)EffectApplyType - 1 || EffectApplyType == EffectApplyType.AllEffects)
+                        if (i == (int)ExecuteTriggerType - 1 || ExecuteTriggerType == ExecuteTriggerType.AllTriggers)
                         {
                             var effect = effects[i];
-                            if (effect.TriggerObserver != null)
+                            var context = new TriggerContext()
                             {
-                                effect.TriggerObserver.OnTriggerWithAbilityItem(this, otherEntity);
-                            }
+                                AbilityTrigger = effect,
+                                TriggerSource = this,
+                                AbilityItem = this,
+                                Target = otherEntity,
+                            };
+                            effect.OnTrigger(context);
                         }
                     }
                 }
@@ -162,7 +168,7 @@ namespace EGamePlay.Combat
         public void OnTriggerNewExecution(ActionEventData ActionEventData)
         {
             Log.Debug($"AbilityItem OnTriggerNewExecution");
-            var executionObject = AssetUtils.LoadObject<ExecutionObject>("SkillConfigs/ExecutionConfigs/" + ActionEventData.NewExecution);
+            var executionObject = AssetUtils.LoadObject<ExecutionObject>($"{AbilityManagerObject.ExecutionResFolder}/" + ActionEventData.NewExecution);
             if (executionObject == null)
             {
                 Log.Error($"Can not find {ActionEventData.NewExecution}");
@@ -380,24 +386,41 @@ namespace EGamePlay.Combat
                     {
                         return;
                     }
-                    var owner = abilityItem.AbilityEntity.As<IAbilityEntity>().OwnerEntity;
+                    var owner = abilityItem.AbilityEntity.OwnerEntity;
+                    Entity target = null;
+                    if (CombatContext.Instance.Object2Entities.TryGetValue(other.gameObject, out var otherEntity))
+                    {
+                        target = otherEntity;
+                    }
+                    else
+                    {
+                        if (CombatContext.Instance.Object2Items.TryGetValue(other.gameObject, out var otherItem))
+                        {
+                            target = otherItem;
+                        }
+                    }
+
+                    if (clipData.ExecuteTargetType == CollisionExecuteTargetType.SelfGroup)
+                    {
+                        if (otherEntity.IsHero != owner.IsHero)
+                        {
+                            return;
+                        }
+                    }
+                    if (clipData.ExecuteTargetType == CollisionExecuteTargetType.EnemyGroup)
+                    {
+                        if (otherEntity.IsHero == owner.IsHero)
+                        {
+                            return;
+                        }
+                    }
+
                     if (owner.CollisionAbility.TryMakeAction(out var collisionAction))
                     {
                         collisionAction.Creator = owner;
                         collisionAction.CauseItem = abilityItem;
-                        if (CombatContext.Instance.Object2Entities.TryGetValue(other.gameObject, out var combatEntity))
-                        {
-                            collisionAction.Target = combatEntity;
-                            collisionAction.ApplyCollision();
-                        }
-                        else
-                        {
-                            if (CombatContext.Instance.Object2Items.TryGetValue(other.gameObject, out var otherItem))
-                            {
-                                collisionAction.Target = otherItem;
-                                collisionAction.ApplyCollision();
-                            }
-                        }
+                        collisionAction.Target = target;
+                        collisionAction.ApplyCollision();
                     }
                 };
             }

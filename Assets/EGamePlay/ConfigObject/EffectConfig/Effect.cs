@@ -62,38 +62,36 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled", "$Label")]
         public bool Enabled;
 
-        [OnInspectorGUI("BeginBox", append: false)]
-        [FoldoutGroup("Enabled/TriggerType", GroupName = "触发机制")]
-        [ToggleGroup("Enabled"), HideIf("HideTriggerType", true), LabelText("触发事件")]
-        public EffectAutoTriggerType EffectTriggerType;
-
-        [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectAutoTriggerType.Action)]
-        public ActionPointType ActionPointType;
-
-        [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectAutoTriggerType.Condition)]
-        public TimeStateEventType ConditionType;
-
-        [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, LabelText("x="), ShowIf("EffectTriggerType", EffectAutoTriggerType.Condition)]
-        public string ConditionParam;
+        //#region 遗弃
+        //[OnInspectorGUI("BeginBox", append: false)]
+        //[FoldoutGroup("Enabled/TriggerType", GroupName = "触发机制")]
+        //[ToggleGroup("Enabled"), HideIf("HideTriggerType", true), LabelText("触发事件")]
+        //public EffectAutoTriggerType EffectTriggerType;
 
         //[FoldoutGroup("Enabled/TriggerType")]
-        //[ToggleGroup("Enabled"), LabelText("状态判断"), HideInInspector]
-        //public Dictionary<StateCheckType, string> StateChecks = new Dictionary<StateCheckType, string>();
+        //[ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectAutoTriggerType.Action)]
+        //public ActionPointType ActionPointType;
 
-        [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled"), LabelText("状态判断")]
-        public List<string> StateCheckList = new List<string>();
+        //[FoldoutGroup("Enabled/TriggerType")]
+        //[ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, ShowIf("EffectTriggerType", EffectAutoTriggerType.Condition)]
+        //public TimeStateEventType ConditionType;
 
-        [OnInspectorGUI("EndBox", append: true)]
-        [FoldoutGroup("Enabled/TriggerType")]
-        [ToggleGroup("Enabled"), /*HideIf("IsSkillEffect", true), */LabelText("触发概率")]
-        public string TriggerProbability = "100%";
+        //[FoldoutGroup("Enabled/TriggerType")]
+        //[ToggleGroup("Enabled")/*, HideIf("IsSkillEffect", true)*/, LabelText("x="), ShowIf("EffectTriggerType", EffectAutoTriggerType.Condition)]
+        //public string ConditionParam;
 
-        [ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
-        public AddSkillEffetTargetType AddSkillEffectTargetType;
+        //[FoldoutGroup("Enabled/TriggerType")]
+        //[ToggleGroup("Enabled"), LabelText("状态判断")]
+        //public List<string> StateCheckList = new List<string>();
+
+        //[OnInspectorGUI("EndBox", append: true)]
+        //[FoldoutGroup("Enabled/TriggerType")]
+        //[ToggleGroup("Enabled"), /*HideIf("IsSkillEffect", true), */LabelText("触发概率")]
+        //public string TriggerProbability = "100%";
+
+        //[ToggleGroup("Enabled"), ShowIf("IsSkillEffect", true)]
+        //public AddSkillEffetTargetType AddSkillEffectTargetType;
+        //#endregion
 
         [ShowIf("@this.Decorators != null && this.Decorators.Count > 0")]
         [ToggleGroup("Enabled"), LabelText("效果修饰"), PropertyOrder(100)]

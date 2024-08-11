@@ -28,9 +28,9 @@ namespace EGamePlay.Combat
     {
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
-        public Entity AbilityEntity { get; set; }
+        public Ability AbilityEntity { get; set; }
         public CombatEntity OwnerEntity { get; set; }
-        public SkillAbility SkillAbility { get { return AbilityEntity as SkillAbility; } }
+        public Ability SkillAbility { get { return AbilityEntity as Ability; } }
         public ExecutionObject ExecutionObject { get; set; }
         public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
         public CombatEntity InputTarget { get; set; }
@@ -44,7 +44,7 @@ namespace EGamePlay.Combat
 
         public override void Awake(object initData)
         {
-            AbilityEntity = initData as SkillAbility;
+            AbilityEntity = initData as Ability;
             OwnerEntity = GetParent<CombatEntity>();
         }
 

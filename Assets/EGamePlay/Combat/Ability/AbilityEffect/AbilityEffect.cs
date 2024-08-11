@@ -12,16 +12,8 @@ namespace EGamePlay.Combat
 
     public struct TriggerContext
     {
-        public TriggerContext(ICombatObserver observer, Entity source)
-        {
-            Observer = observer;
-            Source = source;
-            AbilityItem = null;
-            Target = null;
-        }
-
-        public ICombatObserver Observer;
-        public Entity Source;
+        public AbilityTrigger AbilityTrigger;
+        public Entity TriggerSource;
         public AbilityItem AbilityItem;
         public Entity Target;
     }
@@ -32,12 +24,12 @@ namespace EGamePlay.Combat
     public partial class AbilityEffect : Entity
     {
         public bool Enable { get; set; }
-        public Entity OwnerAbility => Parent;
-        public CombatEntity OwnerEntity => (OwnerAbility as IAbilityEntity).OwnerEntity;
-        public Entity ParentEntity => (OwnerAbility as IAbilityEntity).ParentEntity;
+        public Ability OwnerAbility => GetParent<Ability>();
+        public CombatEntity OwnerEntity => OwnerAbility.OwnerEntity;
+        public Entity ParentEntity => OwnerAbility.ParentEntity;
         public Effect EffectConfig { get; set; }
-        public string ConditionParamValue { get; set; }
-        public TriggerObserver TriggerObserver { get; set; }
+        //public string ConditionParamValue { get; set; }
+        //public TriggerObserver TriggerObserver { get; set; }
 
 
         public override void Awake(object initData)
@@ -138,39 +130,38 @@ namespace EGamePlay.Combat
 
         public void OnObserverTrigger(TriggerContext context)
         {
-            //Log.Debug("AbilityEffect OnObserverTrigger");
-            var observer = context.Observer;
-            var source = context.Source;
-            Entity target = context.Target;
-            if (target == null)
-            {
-                target = source;
-            }
+            //var observer = context.AbilityTrigger;
+            //var source = context.Source;
+            //Entity target = context.Target;
+            //if (target == null)
+            //{
+            //    target = source;
+            //}
 
-            var stateCheckResult = true;
-            if (!(observer is ActionPointObserveComponent) && !(observer is TriggerObserver))
-            {
-                target = ParentEntity;
-            }
+            //var stateCheckResult = true;
+            //if (!(observer is ActionPointObserveComponent) && !(observer is TriggerObserver))
+            //{
+            //    target = ParentEntity;
+            //}
 
-            /// 这里是状态判断，状态判断是判断目标的状态是否满足条件，满足才能触发效果
-            if ((observer as Entity).TryGet(out TriggerStateCheckComponent component))
-            {
-                stateCheckResult = component.CheckTargetState(target);
-            }
+            ///// 这里是状态判断，状态判断是判断目标的状态是否满足条件，满足才能触发效果
+            //if ((observer as Entity).TryGet(out TriggerStateCheckComponent component))
+            //{
+            //    stateCheckResult = component.CheckTargetState(target);
+            //}
 
-            /// 条件满足则触发效果
-            if (stateCheckResult)
-            {
-                if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var effectAssign))
-                {
-                    effectAssign.AssignTarget = target;
-                    effectAssign.SourceAbility = OwnerAbility;
-                    effectAssign.AbilityEffect = this;
-                    effectAssign.TriggerContext = context;
-                    effectAssign.AssignEffect();
-                }
-            }
+            ///// 条件满足则触发效果
+            //if (stateCheckResult)
+            //{
+            //    if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var effectAssign))
+            //    {
+            //        effectAssign.AssignTarget = target;
+            //        effectAssign.SourceAbility = OwnerAbility;
+            //        effectAssign.AbilityEffect = this;
+            //        effectAssign.TriggerContext = context;
+            //        effectAssign.AssignEffect();
+            //    }
+            //}
         }
     }
 }

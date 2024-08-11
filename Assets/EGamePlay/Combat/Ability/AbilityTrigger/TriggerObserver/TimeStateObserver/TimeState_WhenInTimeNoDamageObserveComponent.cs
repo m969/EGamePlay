@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    public sealed class TimeState_WhenInTimeNoDamageObserveComponent : Component, ICombatObserver
+    public sealed class TimeState_WhenInTimeNoDamageObserveComponent : Component
     {
         public override bool DefaultEnable => false;
         private GameTimer NoDamageTimer { get; set; }
@@ -34,12 +34,8 @@ namespace EGamePlay.Combat
 
         private void OnFinish()
         {
-            OnTrigger(GetEntity<AbilityTrigger>());
-        }
-
-        public void OnTrigger(Entity source)
-        {
-            GetEntity<AbilityTrigger>().OnTrigger(new TriggerContext(this, source));
+            GetEntity<AbilityTrigger>().OnTrigger(new TriggerContext());
+            //OnTrigger(GetEntity<AbilityTrigger>());
         }
 
         public override void Update()

@@ -18,7 +18,7 @@ namespace EGamePlay.Combat
 	{
         public static AbilityManagerObject AbilityManagerObject { get; private set; }
 
-        [MenuItem("Tools/EGamePlay/AbilityManagerEditor")]
+        //[MenuItem("Tools/EGamePlay/AbilityManagerEditor")]
         private static void ShowWindow()
         {
 			AbilityManagerObject = AssetDatabase.LoadAssetAtPath<AbilityManagerObject>("Assets/EGamePlay.Unity/AbilityManager.asset");
@@ -38,7 +38,7 @@ namespace EGamePlay.Combat
 
 			if (GUILayout.Button("CreateAbility"))
 			{
-                var ability = new SkillConfigObject();
+                var ability = new AbilityConfigObject();
                 AssetDatabase.CreateAsset(ability, AbilityManagerObject.SkillAssetFolder + "/AbilityConfig.asset");
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();

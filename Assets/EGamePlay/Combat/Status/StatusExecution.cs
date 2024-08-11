@@ -27,7 +27,7 @@ namespace EGamePlay.Combat
         public CombatEntity InputCombatEntity { get; set; }
         public Vector3 InputPoint { get; set; }
         public float InputDirection { get; set; }
-        public Entity AbilityEntity { get; set; }
+        public Ability AbilityEntity { get; set; }
         public CombatEntity OwnerEntity { get; set; }
 
 

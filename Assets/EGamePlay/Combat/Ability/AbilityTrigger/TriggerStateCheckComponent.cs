@@ -30,6 +30,10 @@ namespace EGamePlay.Combat
                 {
                     continue;
                 }
+                if (conditionStr.StartsWith("#"))
+                {
+                    continue;
+                }
                 var condition = conditionStr;
                 if (conditionStr.StartsWith("!")) condition = conditionStr.TrimStart('!');
                 var arr2 = condition.Split('<', '=', '≤');

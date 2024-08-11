@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public interface IAbilityExecute : IPosition
     {
-        public Entity AbilityEntity { get; set; }
+        public Ability AbilityEntity { get; set; }
         public CombatEntity OwnerEntity { get; set; }
 
 
