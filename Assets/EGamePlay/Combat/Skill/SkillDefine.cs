@@ -180,4 +180,14 @@
         [LabelText("被动触发")]
         AutoTrigger = 2
     }
+
+    public enum ItemTriggerType
+    {
+        [LabelText("片段开始执行")]
+        BeginTrigger = 0,
+        [LabelText("碰撞执行")]
+        CollisionTrigger = 1,
+        [LabelText("计时状态执行")]
+        TimeStateTrigger = 2
+    }
 }

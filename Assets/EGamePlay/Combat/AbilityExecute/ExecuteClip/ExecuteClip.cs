@@ -41,7 +41,7 @@ namespace EGamePlay.Combat
             /// 生成碰撞体效果，碰撞体再触发应用能力效果
             if (clipType == ExecuteClipType.ItemExecute)
             {
-                var spawnItemEffect = ExecutionEffectConfig.CollisionExecuteData;
+                var spawnItemEffect = ExecutionEffectConfig.ItemData;
                 AddComponent<ExecuteCollisionItemComponent>().CollisionExecuteData = spawnItemEffect;
             }
 #if UNITY

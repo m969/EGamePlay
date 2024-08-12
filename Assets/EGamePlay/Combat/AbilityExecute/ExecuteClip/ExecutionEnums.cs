@@ -15,7 +15,7 @@ public enum CollisionShape
     Custom,
 }
 
-[LabelText("碰撞体执行类型")]
+[LabelText("移动类型")]
 public enum CollisionMoveType
 {
     [LabelText("可选位置碰撞体")]

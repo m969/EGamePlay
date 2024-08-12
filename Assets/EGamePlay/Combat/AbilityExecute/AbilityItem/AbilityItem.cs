@@ -86,12 +86,12 @@ namespace EGamePlay.Combat
         {
             var clipData = GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             //Log.Debug($"AbilityItem OnDestroy {clipData.ExecuteClipType} {clipData.CollisionExecuteData.ActionData.FireType}");
-            if (clipData.ExecuteClipType == ExecuteClipType.ItemExecute && clipData.CollisionExecuteData.ActionData.FireType == FireType.EndTrigger)
+            if (clipData.ExecuteClipType == ExecuteClipType.ItemExecute && clipData.ItemData.ActionData.FireType == FireType.EndTrigger)
             {
                 OnTriggerEvent(null);
             }
 
-            if (clipData.CollisionExecuteData.ExecuteType == CollisionExecuteType.InHand)
+            if (clipData.ItemData.ExecuteType == CollisionExecuteType.InHand)
             {
                 AbilityExecution.EndExecute();
             }
@@ -218,7 +218,7 @@ namespace EGamePlay.Combat
             var abilityItem = this;
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
-            var tempPoints = clipData.CollisionExecuteData.GetCtrlPoints();
+            var tempPoints = clipData.ItemData.GetCtrlPoints();
 
             if (tempPoints.Count == 0)
             {
@@ -231,7 +231,7 @@ namespace EGamePlay.Combat
             abilityItem.Position = moveComp.OriginPoint + abilityItem.LocalPosition;
 
             moveComp.BezierCurve = new NaughtyBezierCurves.BezierCurve3D();
-            moveComp.BezierCurve.Sampling = clipData.CollisionExecuteData.BezierCurve.Sampling;
+            moveComp.BezierCurve.Sampling = clipData.ItemData.BezierCurve.Sampling;
             moveComp.BezierCurve.KeyPoints = tempPoints;
             foreach (var item in tempPoints)
             {
@@ -255,7 +255,7 @@ namespace EGamePlay.Combat
             var skillExecution = AbilityExecution as SkillExecution;
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.AddComponent<LifeTimeComponent>(clipData.Duration);
-            var tempPoints = clipData.CollisionExecuteData.GetCtrlPoints();
+            var tempPoints = clipData.ItemData.GetCtrlPoints();
 
             if (tempPoints.Count == 0)
             {
@@ -263,13 +263,13 @@ namespace EGamePlay.Combat
             }
             var moveComp = abilityItem.AddComponent<AbilityItemPathMoveComponent>();
             var executePoint = AbilityExecution.Position;
-            if (clipData.CollisionExecuteData.PathExecutePoint == PathExecutePoint.EntityOffset)
+            if (clipData.ItemData.PathExecutePoint == PathExecutePoint.EntityOffset)
             {
-                moveComp.ExecutePoint = AbilityExecution.Position + clipData.CollisionExecuteData.Offset;
+                moveComp.ExecutePoint = AbilityExecution.Position + clipData.ItemData.Offset;
             }
-            if (clipData.CollisionExecuteData.PathExecutePoint == PathExecutePoint.InputPoint)
+            if (clipData.ItemData.PathExecutePoint == PathExecutePoint.InputPoint)
             {
-                moveComp.ExecutePoint = inputPoint + clipData.CollisionExecuteData.Offset;
+                moveComp.ExecutePoint = inputPoint + clipData.ItemData.Offset;
             }
             abilityItem.Position = executePoint + tempPoints[0].Position;
             abilityItem.Rotation = skillExecution.InputDirection.GetRotation();
@@ -277,7 +277,7 @@ namespace EGamePlay.Combat
             moveComp.ExecutePoint = executePoint;
 
             moveComp.BezierCurve = new NaughtyBezierCurves.BezierCurve3D();
-            moveComp.BezierCurve.Sampling = clipData.CollisionExecuteData.BezierCurve.Sampling;
+            moveComp.BezierCurve.Sampling = clipData.ItemData.BezierCurve.Sampling;
             moveComp.BezierCurve.KeyPoints = tempPoints;
             foreach (var item in tempPoints)
             {
@@ -295,8 +295,8 @@ namespace EGamePlay.Combat
         {
             var abilityItem = this;
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
-            abilityItem.LocalPosition = clipData.CollisionExecuteData.FixedPoint;
-            abilityItem.Position = AbilityExecution.OwnerEntity.Position + clipData.CollisionExecuteData.FixedPoint;
+            abilityItem.LocalPosition = clipData.ItemData.FixedPoint;
+            abilityItem.Position = AbilityExecution.OwnerEntity.Position + clipData.ItemData.FixedPoint;
             var moveComp = abilityItem.AddComponent<AbilityItemPathMoveComponent>();
             moveComp.PositionEntity = abilityItem;
             moveComp.OriginEntity = AbilityExecution.OwnerEntity;
@@ -353,6 +353,8 @@ namespace EGamePlay.Combat
             abilityItem.GetComponent<AbilityItemViewComponent>().AbilityItemTrans = proxyObj.transform;
             var executeComp = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>();
             var clipData = executeComp.CollisionExecuteData;
+            var effectDatas = executeComp.ExecuteClipData.EventDatas;
+            var collisionData = effectDatas[0] as CollisionEffect;
             ItemProxy = abilityItem.GetComponent<AbilityItemViewComponent>();
             CombatContext.Instance.Object2Items[proxyObj.gameObject] = abilityItem;
 
@@ -400,14 +402,14 @@ namespace EGamePlay.Combat
                         }
                     }
 
-                    if (clipData.ExecuteTargetType == CollisionExecuteTargetType.SelfGroup)
+                    if (collisionData.ExecuteTargetType == CollisionExecuteTargetType.SelfGroup)
                     {
                         if (otherEntity.IsHero != owner.IsHero)
                         {
                             return;
                         }
                     }
-                    if (clipData.ExecuteTargetType == CollisionExecuteTargetType.EnemyGroup)
+                    if (collisionData.ExecuteTargetType == CollisionExecuteTargetType.EnemyGroup)
                     {
                         if (otherEntity.IsHero == owner.IsHero)
                         {

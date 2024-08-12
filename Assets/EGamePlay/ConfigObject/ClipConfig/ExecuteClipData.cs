@@ -46,7 +46,7 @@ namespace EGamePlay
 
         [Space(10)]
         [ShowIf("ExecuteClipType", ExecuteClipType.ItemExecute)]
-        public CollisionExecuteData CollisionExecuteData;
+        public CollisionExecuteData ItemData;
 
 #if UNITY
         [Space(10)]
@@ -62,21 +62,26 @@ namespace EGamePlay
         public ParticleEffectData ParticleEffectData;
 #endif
 
-        [LabelText("效果列表"), Space(30)]
+        [ShowIf("ExecuteClipType", ExecuteClipType.ItemExecute), LabelText("表现效果"), Space(30)]
         [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
-        public List<ItemEffect> Effects = new List<ItemEffect>();
+        public List<ItemEvent> EventDatas = new List<ItemEvent>();
 
         [OnInspectorGUI("BeginBox", append: false)]
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect"), JsonIgnore]
         public string EffectTypeName = "(添加效果)";
 
+        //[LabelText("触发点"), Space(30)]
+        //[ListDrawerSettings(DefaultExpandedState = true, DraggableItems = true, ShowItemCount = false, CustomAddFunction = "AddTrigger")]
+        //[HideReferenceObjectPicker]
+        //public List<ItemTriggerConfig> TriggerActions = new List<ItemTriggerConfig>();
+
         public IEnumerable<string> EffectTypeSelect()
         {
-            var types = typeof(ItemEffect).Assembly.GetTypes()
+            var types = typeof(ItemEvent).Assembly.GetTypes()
                 .Where(x => !x.IsAbstract)
-                .Where(x => typeof(ItemEffect).IsAssignableFrom(x))
+                .Where(x => typeof(ItemEvent).IsAssignableFrom(x))
                 .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
                 .OrderBy(x => x.GetCustomAttribute<EffectAttribute>().Order)
                 .Select(x => x.GetCustomAttribute<EffectAttribute>().EffectType);
@@ -90,18 +95,23 @@ namespace EGamePlay
         {
             if (EffectTypeName != "(添加效果)")
             {
-                var effectType = typeof(ItemEffect).Assembly.GetTypes()
+                var effectType = typeof(ItemEvent).Assembly.GetTypes()
                     .Where(x => !x.IsAbstract)
-                    .Where(x => typeof(ItemEffect).IsAssignableFrom(x))
+                    .Where(x => typeof(ItemEvent).IsAssignableFrom(x))
                     .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
                     .Where(x => x.GetCustomAttribute<EffectAttribute>().EffectType == EffectTypeName)
                     .FirstOrDefault();
-                var effect = Activator.CreateInstance(effectType) as ItemEffect;
+                var effect = Activator.CreateInstance(effectType) as ItemEvent;
                 effect.Enabled = true;
-                Effects.Add(effect);
+                EventDatas.Add(effect);
                 EffectTypeName = "(添加效果)";
             }
         }
+
+        //private void AddTrigger()
+        //{
+        //    TriggerActions.Add(new ItemTriggerConfig() { Enabled = true });
+        //}
 
 #if UNITY_EDITOR
         private void DrawSpace()
@@ -214,7 +224,6 @@ namespace EGamePlay
         public string NewExecution;
     }
 
-    [LabelText("碰撞体执行类型")]
     public enum CollisionExecuteType
     {
         [LabelText("脱手执行")]
@@ -234,28 +243,32 @@ namespace EGamePlay
     [Serializable]
     public class CollisionExecuteData
     {
+        [LabelText("执行类型")]
         public CollisionExecuteType ExecuteType;
-        [LabelText("碰撞执行对象")]
-        public CollisionExecuteTargetType ExecuteTargetType;
+        [HideInInspector]
         public ActionEventData ActionData;
 
-        [Space(10)]
+        //[Space(10)]
+        [HideInInspector]
         public CollisionShape Shape;
-        [ShowIf("Shape", CollisionShape.Sphere), LabelText("半径")]
+        //[ShowIf("Shape", CollisionShape.Sphere), LabelText("半径")]
+        [HideInInspector]
         public double Radius;
 
-        [ShowIf("Shape", CollisionShape.Box)]
+        //[ShowIf("Shape", CollisionShape.Box)]
+        [HideInInspector]
         public Vector3 Center;
-        [ShowIf("Shape", CollisionShape.Box)]
+        //[ShowIf("Shape", CollisionShape.Box)]
+        [HideInInspector]
         public Vector3 Size;
 
-        [Space(10)]
+        //[Space(10)]
         public CollisionMoveType MoveType;
 
         [ShowIf("MoveType", CollisionMoveType.FixedPosition)]
         public Vector3 FixedPoint;
 
-        [Space(10)]
+        //[Space(10)]
         [DelayedProperty, JsonIgnore]
         public GameObject ObjAsset;
 

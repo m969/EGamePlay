@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    [Effect("碰撞体效果", 20)]
-    public class CollisionEffect : ItemEffect
+    [Effect("碰撞体", 20)]
+    public class CollisionEffect : ItemEvent
     {
-        public override string Label => "碰撞体效果";
+        public override string Label => "碰撞体";
 
         [ToggleGroup("Enabled")]
         public CollisionShape Shape;
@@ -22,5 +22,9 @@ namespace EGamePlay.Combat
         [ToggleGroup("Enabled")]
         [ShowIf("Shape", CollisionShape.Box)]
         public Vector3 Size;
+
+        [ToggleGroup("Enabled")]
+        [LabelText("碰撞对象")]
+        public CollisionExecuteTargetType ExecuteTargetType;
     }
 }

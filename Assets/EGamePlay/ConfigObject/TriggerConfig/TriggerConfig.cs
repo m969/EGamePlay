@@ -68,17 +68,6 @@ namespace EGamePlay.Combat
         [LabelText("触发效果")]
         public List<EffectApplyData> TriggerEffects = new List<EffectApplyData>();
 
-        //[OnInspectorGUI("EndBox", append: true)]
-        ////[FoldoutGroup("Enabled/TriggerType")]
-        //[ToggleGroup("Enabled"), LabelText("触发概率")]
-        //public string TriggerProbability = "100%";
-
-        //[ToggleGroup("Enabled")]
-        //[LabelText("触发效果")]
-        //[SerializeField]
-        //[DictionaryDrawerSettings(KeyLabel = "", ValueLabel = "")]
-        //public Dictionary<EffectApplyType, string[]> TriggerEffects = new Dictionary<EffectApplyType, string[]>();
-
 #if UNITY_EDITOR
         private void DrawSpace()
         {

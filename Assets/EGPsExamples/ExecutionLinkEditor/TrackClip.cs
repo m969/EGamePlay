@@ -94,10 +94,10 @@ namespace EGamePlay
             {
                 ClipRect.GetComponent<Image>().color = ExecutionClipRectColor;
                 ClipTypeBar.color = ExecutionClipBarColor;
-                var executeType = TrackClipData.CollisionExecuteData.MoveType;
+                var executeType = TrackClipData.ItemData.MoveType;
                 if (executeType == CollisionMoveType.PathFly || executeType == CollisionMoveType.SelectedDirectionPathFly)
                 {
-                    gameObject.AddComponent<BezierComponent>().CollisionExecuteData = TrackClipData.CollisionExecuteData;
+                    gameObject.AddComponent<BezierComponent>().CollisionExecuteData = TrackClipData.ItemData;
                 }
             }
 
@@ -195,7 +195,7 @@ namespace EGamePlay
                 ExecutionLinkPanel.Instance.RightContextTrm.gameObject.SetActive(false);
                 if (TrackClipType == ExecuteClipType.ItemExecute)
                 {
-                    var executeType = TrackClipData.CollisionExecuteData.MoveType;
+                    var executeType = TrackClipData.ItemData.MoveType;
                     if (executeType == CollisionMoveType.PathFly || executeType == CollisionMoveType.SelectedDirectionPathFly)
                     {
                         UnityEditor.Selection.activeObject = this;

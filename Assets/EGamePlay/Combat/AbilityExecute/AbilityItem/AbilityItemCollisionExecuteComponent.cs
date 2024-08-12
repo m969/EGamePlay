@@ -12,7 +12,7 @@ namespace EGamePlay.Combat
     public class AbilityItemCollisionExecuteComponent : Component
     {
         public ExecuteClipData ExecuteClipData { get; private set; }
-        public CollisionExecuteData CollisionExecuteData => ExecuteClipData.CollisionExecuteData;
+        public CollisionExecuteData CollisionExecuteData => ExecuteClipData.ItemData;
 
 
         public override void Awake(object initData)
