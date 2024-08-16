@@ -22,33 +22,13 @@ namespace EGamePlay.Combat
         {
             this.TriggerConfig = initData as TriggerConfig;
 
-            if (TriggerConfig.TriggerType == EffectTriggerType.ExecuteTrigger)
-            {
-                //TriggerObserver = AddChild<TriggerObserver>();
-            }
+            //if (TriggerConfig.TriggerType == EffectTriggerType.ExecuteTrigger)
+            //{
+            //}
 
-            if (TriggerConfig.TriggerType == EffectTriggerType.AutoTrigger)
-            {
-                if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Action)
-                {
-                    AddComponent<ActionPointObserveComponent>();
-                }
-                if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Condition)
-                {
-                    var conditionType = TriggerConfig.ConditionType;
-                    var paramObj = ConditionParamValue;
-                    if (conditionType == TimeStateEventType.WhenInTimeNoDamage && float.TryParse((string)paramObj, out var time))
-                    {
-                        var condition = AddComponent<TimeState_WhenInTimeNoDamageObserveComponent>(time);
-                        condition.StartListen(null);
-                    }
-                    if (conditionType == TimeStateEventType.WhenIntervalTime && float.TryParse((string)paramObj, out var intervalTime))
-                    {
-                        var condition = AddComponent<TimeState_TimeIntervalObserveComponent>(intervalTime);
-                        condition.StartListen(null);
-                    }
-                }
-            }
+            //if (TriggerConfig.TriggerType == EffectTriggerType.AutoTrigger)
+            //{
+            //}
 
             if (TriggerConfig.StateCheckList != null && TriggerConfig.StateCheckList.Count > 0)
             {
@@ -67,6 +47,27 @@ namespace EGamePlay.Combat
                 if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Instant)
                 {
                     OnTrigger(new TriggerContext() { Target = ParentEntity });
+                }
+                /// 按行动点事件触发
+                if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Action)
+                {
+                    AddComponent<ActionPointObserveComponent>();
+                }
+                /// 按计时状态事件触发
+                if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Condition)
+                {
+                    var conditionType = TriggerConfig.ConditionType;
+                    var paramObj = ConditionParamValue;
+                    if (conditionType == TimeStateEventType.WhenInTimeNoDamage && float.TryParse((string)paramObj, out var time))
+                    {
+                        var condition = AddComponent<TimeState_WhenInTimeNoDamageObserveComponent>(time);
+                        condition.StartListen(null);
+                    }
+                    if (conditionType == TimeStateEventType.WhenIntervalTime && float.TryParse((string)paramObj, out var intervalTime))
+                    {
+                        var condition = AddComponent<TimeState_TimeIntervalObserveComponent>(intervalTime);
+                        condition.StartListen(null);
+                    }
                 }
             }
         }

@@ -16,11 +16,13 @@ namespace EGamePlay.Combat
         public CombatEntity OwnerEntity { get { return GetParent<CombatEntity>(); } set { } }
         public Entity ParentEntity { get => Parent; }
         public bool Enable { get; set; }
-        public AbilityConfigObject ConfigObject { get; set; }
         public AbilityConfig Config { get; set; }
+        public AbilityConfigObject ConfigObject { get; set; }
         public bool Spelling { get; set; }
         public GameTimer CooldownTimer { get; } = new GameTimer(1f);
         public ExecutionObject ExecutionObject { get; set; }
+        public bool IsBuff => Config.Type == "Buff";
+        public bool IsSkill => !IsBuff;
 
 
         public override void Awake(object initData)
@@ -28,6 +30,11 @@ namespace EGamePlay.Combat
             base.Awake(initData);
             ConfigObject = initData as AbilityConfigObject;
             Config = ConfigHelper.Get<AbilityConfig>(ConfigObject.Id);
+
+            //if (IsBuff)
+            //{
+            //    Log.Debug($"Ability Awake Buff {Config.KeyName}");
+            //}
 
             //if (Config.Type == "主动")
             //{
@@ -59,7 +66,7 @@ namespace EGamePlay.Combat
                 Log.Error($"技能目标阵营错误 {Config.TargetGroup}");
             }
 
-            if (Config.BuffType == "None")
+            if (IsSkill)
             {
                 if (Config.TargetSelect == "碰撞检测")
                 {
@@ -102,7 +109,6 @@ namespace EGamePlay.Combat
 
         public void ActivateAbility()
         {
-            FireEvent(nameof(ActivateAbility));
             Enable = true;
             GetComponent<AbilityEffectComponent>().Enable = true;
             GetComponent<AbilityTriggerComponent>().Enable = true;

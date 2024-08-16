@@ -22,7 +22,7 @@ namespace EGamePlay.Combat
 
         public override void OnEnable()
         {
-            Log.Debug($"EffectActionControlComponent OnEnable {Entity.GetParent<Ability>().Config.KeyName}");
+            //Log.Debug($"EffectActionControlComponent OnEnable {Entity.GetParent<Ability>().Config.KeyName}");
             Entity.Parent.Parent.GetComponent<StatusComponent>().OnStatusesChanged(Entity.GetParent<Ability>());
         }
 

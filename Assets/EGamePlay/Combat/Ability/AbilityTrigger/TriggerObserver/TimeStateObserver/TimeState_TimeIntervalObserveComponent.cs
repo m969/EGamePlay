@@ -13,6 +13,7 @@ namespace EGamePlay.Combat
 
         public override void Awake(object initData)
         {
+            //Log.Debug($"TimeState_TimeIntervalObserveComponent Awake {initData}");
             var time = (float)initData;
             IntervalTimer = new GameTimer(time);
         }

@@ -19,7 +19,7 @@ public class StatusTenacityComponent : EGamePlay.Component
 
     public override void Awake()
     {
-        Entity.OnEvent(nameof(Ability.ActivateAbility), OnActivateAbility);
+        //Entity.OnEvent(nameof(Ability.ActivateAbility), OnActivateAbility);
     }
 
     public void OnActivateAbility(Entity entity)
