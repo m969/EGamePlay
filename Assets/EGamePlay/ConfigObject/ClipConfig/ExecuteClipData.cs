@@ -46,7 +46,7 @@ namespace EGamePlay
 
         [Space(10)]
         [ShowIf("ExecuteClipType", ExecuteClipType.ItemExecute)]
-        public CollisionExecuteData ItemData;
+        public ItemExecute ItemData;
 
 #if UNITY
         [Space(10)]
@@ -65,8 +65,9 @@ namespace EGamePlay
         [ShowIf("ExecuteClipType", ExecuteClipType.ItemExecute), LabelText("表现效果"), Space(30)]
         [ListDrawerSettings(DefaultExpandedState = true, DraggableItems = false, ShowItemCount = false, HideAddButton = true)]
         [HideReferenceObjectPicker]
-        public List<ItemEvent> EventDatas = new List<ItemEvent>();
+        public List<ItemEffect> EffectDatas = new List<ItemEffect>();
 
+        [ShowIf("ExecuteClipType", ExecuteClipType.ItemExecute)]
         [OnInspectorGUI("BeginBox", append: false)]
         [HorizontalGroup(PaddingLeft = 40, PaddingRight = 40)]
         [HideLabel, OnValueChanged("AddEffect"), ValueDropdown("EffectTypeSelect"), JsonIgnore]
@@ -79,9 +80,9 @@ namespace EGamePlay
 
         public IEnumerable<string> EffectTypeSelect()
         {
-            var types = typeof(ItemEvent).Assembly.GetTypes()
+            var types = typeof(ItemEffect).Assembly.GetTypes()
                 .Where(x => !x.IsAbstract)
-                .Where(x => typeof(ItemEvent).IsAssignableFrom(x))
+                .Where(x => typeof(ItemEffect).IsAssignableFrom(x))
                 .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
                 .OrderBy(x => x.GetCustomAttribute<EffectAttribute>().Order)
                 .Select(x => x.GetCustomAttribute<EffectAttribute>().EffectType);
@@ -95,15 +96,15 @@ namespace EGamePlay
         {
             if (EffectTypeName != "(添加效果)")
             {
-                var effectType = typeof(ItemEvent).Assembly.GetTypes()
+                var effectType = typeof(ItemEffect).Assembly.GetTypes()
                     .Where(x => !x.IsAbstract)
-                    .Where(x => typeof(ItemEvent).IsAssignableFrom(x))
+                    .Where(x => typeof(ItemEffect).IsAssignableFrom(x))
                     .Where(x => x.GetCustomAttribute<EffectAttribute>() != null)
                     .Where(x => x.GetCustomAttribute<EffectAttribute>().EffectType == EffectTypeName)
                     .FirstOrDefault();
-                var effect = Activator.CreateInstance(effectType) as ItemEvent;
+                var effect = Activator.CreateInstance(effectType) as ItemEffect;
                 effect.Enabled = true;
-                EventDatas.Add(effect);
+                EffectDatas.Add(effect);
                 EffectTypeName = "(添加效果)";
             }
         }
@@ -241,7 +242,7 @@ namespace EGamePlay
     }
 
     [Serializable]
-    public class CollisionExecuteData
+    public class ItemExecute
     {
         [LabelText("执行类型")]
         public CollisionExecuteType ExecuteType;
@@ -249,18 +250,18 @@ namespace EGamePlay
         public ActionEventData ActionData;
 
         //[Space(10)]
-        [HideInInspector]
-        public CollisionShape Shape;
+        //[HideInInspector]
+        //public CollisionShape Shape;
         //[ShowIf("Shape", CollisionShape.Sphere), LabelText("半径")]
-        [HideInInspector]
-        public double Radius;
+        //[HideInInspector]
+        //public double Radius;
 
         //[ShowIf("Shape", CollisionShape.Box)]
-        [HideInInspector]
-        public Vector3 Center;
+        //[HideInInspector]
+        //public Vector3 Center;
         //[ShowIf("Shape", CollisionShape.Box)]
-        [HideInInspector]
-        public Vector3 Size;
+        //[HideInInspector]
+        //public Vector3 Size;
 
         //[Space(10)]
         public CollisionMoveType MoveType;

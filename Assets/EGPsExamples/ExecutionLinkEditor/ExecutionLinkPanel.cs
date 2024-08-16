@@ -156,7 +156,7 @@ namespace EGamePlay
             var excClipObj = ScriptableObject.CreateInstance<ExecuteClipData>();
             excClipObj.name = "ExecuteClip";
             excClipObj.ExecuteClipType = ExecuteClipType.ItemExecute;
-            excClipObj.ItemData = new CollisionExecuteData();
+            excClipObj.ItemData = new ItemExecute();
             excClipObj.GetClipTime().EndTime = 0.1f;
             excObj.ExecuteClips.Add(excClipObj);
             UnityEditor.AssetDatabase.AddObjectToAsset(excClipObj, excObj);

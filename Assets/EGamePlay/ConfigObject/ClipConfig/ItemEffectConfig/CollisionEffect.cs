@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace EGamePlay.Combat
 {
-    [Effect("碰撞体", 20)]
-    public class CollisionEffect : ItemEvent
+    [Effect("碰撞体", 10)]
+    public class CollisionEffect : ItemEffect
     {
         public override string Label => "碰撞体";
 

@@ -40,9 +40,9 @@ namespace EGamePlay.Combat
 
     [Serializable]
 #if UNITY
-    public abstract class ItemEvent
+    public abstract class ItemEffect
 #else
-    public class ItemEvent : ET.Object
+    public class ItemEffect : ET.Object
 #endif
     {
         [HideInInspector]

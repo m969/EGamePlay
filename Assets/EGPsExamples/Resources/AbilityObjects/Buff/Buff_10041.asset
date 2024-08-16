@@ -27,10 +27,10 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 1
     - Name: 
       Entry: 7
-      Data: 1|EGamePlay.Combat.AttributeModifyEffect, Assembly-CSharp
+      Data: 1|EGamePlay.Combat.DamageEffect, Assembly-CSharp
     - Name: IsSkillEffect
       Entry: 5
       Data: true
@@ -53,52 +53,15 @@ MonoBehaviour:
     - Name: EffectTypeName
       Entry: 1
       Data: "(\u6DFB\u52A0\u4FEE\u9970)"
-    - Name: AttributeType
+    - Name: DamageType
       Entry: 3
-      Data: 4001
-    - Name: NumericValue
-      Entry: 1
-      Data: -60%
-    - Name: ModifyType
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 3|EGamePlay.Combat.AttributeModifyEffect, Assembly-CSharp
-    - Name: IsSkillEffect
-      Entry: 5
-      Data: true
-    - Name: Enabled
-      Entry: 5
-      Data: true
-    - Name: Decorators
-      Entry: 7
-      Data: 4|System.Collections.Generic.List`1[[EGamePlay.Combat.EffectDecorator,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
       Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: EffectTypeName
+    - Name: DamageValueFormula
       Entry: 1
-      Data: "(\u6DFB\u52A0\u4FEE\u9970)"
-    - Name: AttributeType
-      Entry: 3
-      Data: 2002
-    - Name: NumericValue
-      Entry: 1
-      Data: -60%
-    - Name: ModifyType
-      Entry: 3
-      Data: 1
+      Data: "\u4F24\u5BB3\u53D6\u503C"
+    - Name: CanCrit
+      Entry: 5
+      Data: false
     - Name: 
       Entry: 8
       Data: 
@@ -115,10 +78,10 @@ MonoBehaviour:
   TriggerActions:
   - Enabled: 1
     TriggerType: 2
-    AutoTriggerType: 1
+    AutoTriggerType: 3
     ActionPointType: 0
-    ConditionType: 0
-    ConditionParam: 
+    ConditionType: 4
+    ConditionParam: "\u95F4\u9694\u65F6\u95F4"
     AddSkillEffectTargetType: 1
     StateCheckList: []
     TriggerEffects:

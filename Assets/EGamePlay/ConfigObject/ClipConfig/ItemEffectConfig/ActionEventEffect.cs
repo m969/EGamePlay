@@ -4,7 +4,7 @@ using UnityEngine;
 namespace EGamePlay.Combat
 {
     [Effect("触发事件", 20)]
-    public class ActionEventEffect : ItemEvent
+    public class ActionEventEffect : ItemEffect
     {
         public override string Label => "触发事件";
 

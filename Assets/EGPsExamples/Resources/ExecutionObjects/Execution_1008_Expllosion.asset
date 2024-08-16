@@ -12,27 +12,123 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db22cb51ab2b354aae7c5f4e7e1d7aa, type: 3}
   m_Name: ExecuteClip
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: EffectDatas
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ItemEffect, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 1|EGamePlay.Combat.CollisionEffect, Assembly-CSharp
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: TriggerType
+      Entry: 3
+      Data: 0
+    - Name: Shape
+      Entry: 3
+      Data: 0
+    - Name: Radius
+      Entry: 4
+      Data: 1
+    - Name: Center
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Size
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ExecuteTargetType
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.ActionEventEffect, Assembly-CSharp
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: TriggerType
+      Entry: 3
+      Data: 1
+    - Name: FireType
+      Entry: 3
+      Data: 16
+    - Name: ActionEventType
+      Entry: 3
+      Data: 0
+    - Name: ExecuteTrigger
+      Entry: 3
+      Data: 0
+    - Name: EffectApplyTarget
+      Entry: 3
+      Data: 0
+    - Name: NewExecution
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   StartTime: 0
   EndTime: 0.3
   ExecuteClipType: 0
   ActionEventData:
     FireType: 0
     ActionEventType: 0
-    EffectApply: 0
+    ExecuteTrigger: 0
     EffectApplyTarget: 0
     NewExecution: 
-  CollisionExecuteData:
+  ItemData:
     ExecuteType: 0
     ActionData:
-      FireType: 4
+      FireType: 0
       ActionEventType: 0
-      EffectApply: 0
+      ExecuteTrigger: 0
       EffectApplyTarget: 0
       NewExecution: 
-    Shape: 0
-    Radius: 3
-    Center: {x: 0, y: 0, z: 0}
-    Size: {x: 0, y: 0, z: 0}
     MoveType: 0
     FixedPoint: {x: 0, y: 0, z: 0}
     ObjAsset: {fileID: 4659930441604555287, guid: e04cf34d12876b249b8a764625ced6f6,
@@ -42,12 +138,15 @@ MonoBehaviour:
       sampling: 25
       normalizedTime: 0.5
       keyPoints: []
+    PathExecutePoint: 10
+    Offset: {x: 0, y: 0, z: 0}
   AnimationData:
     AnimationClip: {fileID: 0}
   AudioData:
     AudioClip: {fileID: 0}
   ParticleEffectData:
     ParticleEffect: {fileID: 0}
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,5 +166,6 @@ MonoBehaviour:
   RangeIndicatorObjAsset: {fileID: 0}
   PointIndicatorObjAsset: {fileID: 0}
   DirectionIndicatorObjAsset: {fileID: 0}
+  Offset: {x: 0, y: 0, z: 0}
   ExecuteClips:
   - {fileID: -1396265068132933951}

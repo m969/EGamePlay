@@ -21,13 +21,91 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: Effects
+    - Name: EffectDatas
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ItemEffect, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 1|EGamePlay.Combat.CollisionEffect, Assembly-CSharp
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: TriggerType
+      Entry: 3
       Data: 0
+    - Name: Shape
+      Entry: 3
+      Data: 1
+    - Name: Radius
+      Entry: 4
+      Data: 0
+    - Name: Center
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 25
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Size
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 4
+      Data: 50
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ExecuteTargetType
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|EGamePlay.Combat.ActionEventEffect, Assembly-CSharp
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: TriggerType
+      Entry: 3
+      Data: 1
+    - Name: FireType
+      Entry: 3
+      Data: 16
+    - Name: ActionEventType
+      Entry: 3
+      Data: 0
+    - Name: ExecuteTrigger
+      Entry: 3
+      Data: 0
+    - Name: EffectApplyTarget
+      Entry: 3
+      Data: 0
+    - Name: NewExecution
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -43,20 +121,15 @@ MonoBehaviour:
     ExecuteTrigger: 0
     EffectApplyTarget: 0
     NewExecution: 
-  CollisionExecuteData:
+  ItemData:
     ExecuteType: 0
-    ExecuteTargetType: 0
     ActionData:
-      FireType: 4
+      FireType: 0
       ActionEventType: 0
       ExecuteTrigger: 0
       EffectApplyTarget: 0
       NewExecution: 
-    Shape: 1
-    Radius: 1
-    Center: {x: 0, y: 1, z: 25}
-    Size: {x: 0, y: 2, z: 50}
-    MoveType: 1
+    MoveType: 0
     FixedPoint: {x: 0, y: 0, z: 0}
     ObjAsset: {fileID: 7427793808108117812, guid: 9a3cb84c6b8a07d4b901ee026f22a2dc,
       type: 3}
@@ -119,7 +192,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: Effects
+    - Name: EffectDatas
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ItemEffect, Assembly-CSharp]],
         mscorlib
@@ -141,19 +214,14 @@ MonoBehaviour:
     ExecuteTrigger: 0
     EffectApplyTarget: 0
     NewExecution: 
-  CollisionExecuteData:
+  ItemData:
     ExecuteType: 0
-    ExecuteTargetType: 0
     ActionData:
       FireType: 0
       ActionEventType: 0
       ExecuteTrigger: 0
       EffectApplyTarget: 0
       NewExecution: 
-    Shape: 0
-    Radius: 0
-    Center: {x: 0, y: 0, z: 0}
-    Size: {x: 0, y: 0, z: 0}
     MoveType: 0
     FixedPoint: {x: 0, y: 0, z: 0}
     ObjAsset: {fileID: 0}
@@ -193,7 +261,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: Effects
+    - Name: EffectDatas
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ItemEffect, Assembly-CSharp]],
         mscorlib
@@ -215,19 +283,14 @@ MonoBehaviour:
     ExecuteTrigger: 0
     EffectApplyTarget: 0
     NewExecution: 
-  CollisionExecuteData:
+  ItemData:
     ExecuteType: 0
-    ExecuteTargetType: 0
     ActionData:
       FireType: 0
       ActionEventType: 0
       ExecuteTrigger: 0
       EffectApplyTarget: 0
       NewExecution: 
-    Shape: 0
-    Radius: 0
-    Center: {x: 0, y: 0, z: 0}
-    Size: {x: 0, y: 0, z: 0}
     MoveType: 0
     FixedPoint: {x: 0, y: 0, z: 0}
     ObjAsset: {fileID: 0}

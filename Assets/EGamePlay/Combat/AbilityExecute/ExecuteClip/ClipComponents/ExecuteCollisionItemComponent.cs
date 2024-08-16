@@ -10,7 +10,7 @@ namespace EGamePlay.Combat
     /// </summary>
     public class ExecuteCollisionItemComponent : Component
     {
-        public CollisionExecuteData CollisionExecuteData { get; set; }
+        public ItemExecute CollisionExecuteData { get; set; }
 
 
         public override void Awake()
@@ -34,13 +34,14 @@ namespace EGamePlay.Combat
             var abilityItem = Entity.Create<AbilityItem>(skillExecution);
             abilityItem.AddComponent<AbilityItemCollisionExecuteComponent>(clipData);
 
-            if (clipData.ItemData.MoveType == CollisionMoveType.PathFly) abilityItem.PathFlyProcess(skillExecution.InputPoint);
-            if (clipData.ItemData.MoveType == CollisionMoveType.SelectedDirectionPathFly) abilityItem.DirectionPathFlyProcess(skillExecution.InputPoint, skillExecution.InputRadian);
-            if (clipData.ItemData.MoveType == CollisionMoveType.TargetFly) abilityItem.TargetFlyProcess(skillExecution.InputTarget);
-            if (clipData.ItemData.MoveType == CollisionMoveType.ForwardFly) abilityItem.ForwardFlyProcess(skillExecution.InputRadian);
-            if (clipData.ItemData.MoveType == CollisionMoveType.SelectedPosition) abilityItem.SelectedPositionProcess(skillExecution.InputPoint);
-            if (clipData.ItemData.MoveType == CollisionMoveType.FixedPosition) abilityItem.FixedPositionProcess();
-            if (clipData.ItemData.MoveType == CollisionMoveType.SelectedDirection) abilityItem.SelectedDirectionProcess();
+            var moveType = clipData.ItemData.MoveType;
+            if (moveType == CollisionMoveType.PathFly) abilityItem.PathFlyProcess(skillExecution.InputPoint);
+            if (moveType == CollisionMoveType.SelectedDirectionPathFly) abilityItem.DirectionPathFlyProcess(skillExecution.InputPoint, skillExecution.InputRadian);
+            if (moveType == CollisionMoveType.TargetFly) abilityItem.TargetFlyProcess(skillExecution.InputTarget);
+            if (moveType == CollisionMoveType.ForwardFly) abilityItem.ForwardFlyProcess(skillExecution.InputRadian);
+            if (moveType == CollisionMoveType.SelectedPosition) abilityItem.SelectedPositionProcess(skillExecution.InputPoint);
+            if (moveType == CollisionMoveType.FixedPosition) abilityItem.FixedPositionProcess();
+            if (moveType == CollisionMoveType.SelectedDirection) abilityItem.SelectedDirectionProcess();
 #if EGAMEPLAY_ET
             abilityItem.AddCollisionComponent();
 #else

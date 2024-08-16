@@ -22,6 +22,7 @@ namespace EGamePlay.Combat
 
         public override void OnEnable()
         {
+            Log.Debug($"EffectActionControlComponent OnEnable {Entity.GetParent<Ability>().Config.KeyName}");
             Entity.Parent.Parent.GetComponent<StatusComponent>().OnStatusesChanged(Entity.GetParent<Ability>());
         }
 
@@ -32,7 +33,7 @@ namespace EGamePlay.Combat
 
         public void OnTriggerApplyEffect(Entity effectAssign)
         {
-
+            Enable = true;
         }
     }
 }

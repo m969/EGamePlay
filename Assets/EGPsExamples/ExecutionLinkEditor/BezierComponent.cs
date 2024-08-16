@@ -17,7 +17,7 @@ namespace EGamePlay
         //[ShowInInspector]
         public List<BezierPoint3D> ctrlPoints { get => CollisionExecuteData.BezierCurve.KeyPoints; }
         public BezierCurve3D BezierCurve { get => CollisionExecuteData.BezierCurve; }
-        public CollisionExecuteData CollisionExecuteData;
+        public ItemExecute CollisionExecuteData;
 
         //这两个画Beizer线段的时候要用
         private Vector3 lastPosition;

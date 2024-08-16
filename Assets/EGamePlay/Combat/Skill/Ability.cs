@@ -83,7 +83,7 @@ namespace EGamePlay.Combat
             AddComponent<AbilityEffectComponent>(ConfigObject.Effects);
             AddComponent<AbilityTriggerComponent>(ConfigObject.TriggerActions);
             LoadExecution();
-            TryActivateAbility();
+            //TryActivateAbility();
         }
 
         public void LoadExecution()

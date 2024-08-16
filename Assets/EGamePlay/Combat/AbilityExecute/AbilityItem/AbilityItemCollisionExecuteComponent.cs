@@ -12,7 +12,7 @@ namespace EGamePlay.Combat
     public class AbilityItemCollisionExecuteComponent : Component
     {
         public ExecuteClipData ExecuteClipData { get; private set; }
-        public CollisionExecuteData CollisionExecuteData => ExecuteClipData.ItemData;
+        public ItemExecute CollisionExecuteData => ExecuteClipData.ItemData;
 
 
         public override void Awake(object initData)
@@ -33,6 +33,20 @@ namespace EGamePlay.Combat
             {
 
             }
+        }
+
+        public T GetItemEffect<T>() where T : ItemEffect
+        {
+            T effectData = null;
+            foreach (var item in ExecuteClipData.EffectDatas)
+            {
+                if (item is T itemEffect)
+                {
+                    effectData = itemEffect;
+                    break;
+                }
+            }
+            return effectData;
         }
 
         public AbilityEffect[] GetAssignEffects()

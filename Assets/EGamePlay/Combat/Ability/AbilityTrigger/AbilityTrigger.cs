@@ -60,10 +60,14 @@ namespace EGamePlay.Combat
         {
             Enable = true;
 
-            /// 立即触发
-            if (TriggerConfig.TriggerType == EffectTriggerType.AutoTrigger && TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Instant)
+            /// 被动触发
+            if (TriggerConfig.TriggerType == EffectTriggerType.AutoTrigger)
             {
-                OnTrigger(new TriggerContext() { Target = ParentEntity });
+                /// 能力激活时触发
+                if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Instant)
+                {
+                    OnTrigger(new TriggerContext() { Target = ParentEntity });
+                }
             }
         }
 
@@ -110,10 +114,26 @@ namespace EGamePlay.Combat
                     {
                         if (i == (int)item.EffectApplyType - 1 || item.EffectApplyType == EffectApplyType.AllEffects)
                         {
-                            var effect = effects[i];
+                            var abilityEffect = effects[i];
+                            //if (abilityEffect.EffectConfig is ActionControlEffect)
+                            //{
+                            //    abilityEffect.EnableEffect();
+                            //    continue;
+                            //}
+                            //if (abilityEffect.EffectConfig is AttributeModifyEffect)
+                            //{
+                            //    abilityEffect.EnableEffect();
+                            //    continue;
+                            //}
+                            //if (abilityEffect.EffectConfig is ShieldDefenseEffect)
+                            //{
+                            //    abilityEffect.EnableEffect();
+                            //    continue;
+                            //}
+
                             if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var effectAssign))
                             {
-                                effectAssign.AbilityEffect = effect;
+                                effectAssign.AbilityEffect = abilityEffect;
                                 effectAssign.AssignTarget = target;
                                 effectAssign.SourceAbility = OwnerAbility;
                                 effectAssign.TriggerContext = context;

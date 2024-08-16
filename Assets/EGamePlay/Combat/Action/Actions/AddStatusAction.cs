@@ -99,8 +99,7 @@ namespace EGamePlay.Combat
             BuffAbility = statusComp.AttachStatus(buffObject);
             BuffAbility.OwnerEntity = Creator;
             BuffAbility.GetComponent<AbilityLevelComponent>().Level = SourceAbility.GetComponent<AbilityLevelComponent>().Level;
-            //BuffAbility.Duration = (int)AddStatusEffect.Duration;
-
+            //Log.Debug($"ApplyAddStatus BuffAbility={BuffAbility.Config.KeyName}");
             ProcessInputKVParams(BuffAbility, AddStatusEffect.Params);
 
             if (AddStatusEffect.Duration > 0)

@@ -85,8 +85,8 @@ namespace EGamePlay.Combat
         public override void OnDestroy()
         {
             var clipData = GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
-            //Log.Debug($"AbilityItem OnDestroy {clipData.ExecuteClipType} {clipData.CollisionExecuteData.ActionData.FireType}");
-            if (clipData.ExecuteClipType == ExecuteClipType.ItemExecute && clipData.ItemData.ActionData.FireType == FireType.EndTrigger)
+            var actionEvenData = GetComponent<AbilityItemCollisionExecuteComponent>().GetItemEffect<ActionEventEffect>();
+            if (clipData.ExecuteClipType == ExecuteClipType.ItemExecute && actionEvenData.FireType == FireType.EndTrigger)
             {
                 OnTriggerEvent(null);
             }
@@ -352,24 +352,23 @@ namespace EGamePlay.Combat
             abilityItem.AddComponent<AbilityItemViewComponent>().AbilityItem = abilityItem;
             abilityItem.GetComponent<AbilityItemViewComponent>().AbilityItemTrans = proxyObj.transform;
             var executeComp = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>();
-            var clipData = executeComp.CollisionExecuteData;
-            var effectDatas = executeComp.ExecuteClipData.EventDatas;
-            var collisionData = effectDatas[0] as CollisionEffect;
+            var itemData = executeComp.CollisionExecuteData;
+            CollisionEffect collisionData = executeComp.GetItemEffect<CollisionEffect>();
             ItemProxy = abilityItem.GetComponent<AbilityItemViewComponent>();
             CombatContext.Instance.Object2Items[proxyObj.gameObject] = abilityItem;
 
-            if (clipData.Shape == CollisionShape.Sphere)
+            if (collisionData.Shape == CollisionShape.Sphere)
             {
                 proxyObj.AddComponent<SphereCollider>().enabled = false;
                 proxyObj.GetComponent<SphereCollider>().isTrigger = true;
-                proxyObj.GetComponent<SphereCollider>().radius = (float)clipData.Radius;
+                proxyObj.GetComponent<SphereCollider>().radius = (float)collisionData.Radius;
             }
-            if (clipData.Shape == CollisionShape.Box)
+            if (collisionData.Shape == CollisionShape.Box)
             {
                 proxyObj.AddComponent<BoxCollider>().enabled = false;
                 proxyObj.GetComponent<BoxCollider>().isTrigger = true;
-                proxyObj.GetComponent<BoxCollider>().center = clipData.Center;
-                proxyObj.GetComponent<BoxCollider>().size = clipData.Size;
+                proxyObj.GetComponent<BoxCollider>().center = collisionData.Center;
+                proxyObj.GetComponent<BoxCollider>().size = collisionData.Size;
             }
 
             //Log.Debug($"CreateAbilityItemProxyObj ActionEventType {clipData.ActionData.ActionEventType}");
@@ -433,10 +432,10 @@ namespace EGamePlay.Combat
                 collider.enabled = true;
             }
 
-            if (clipData.ObjAsset != null)
+            if (itemData.ObjAsset != null)
             {
-                abilityItem.Name = clipData.ObjAsset.name;
-                var effectObj = GameObject.Instantiate(clipData.ObjAsset, proxyObj.transform);
+                abilityItem.Name = itemData.ObjAsset.name;
+                var effectObj = GameObject.Instantiate(itemData.ObjAsset, proxyObj.transform);
                 effectObj.transform.localPosition = Vector3.zero;
                 effectObj.transform.localRotation = UnityEngine.Quaternion.identity;
             }

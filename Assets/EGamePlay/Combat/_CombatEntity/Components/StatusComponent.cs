@@ -47,36 +47,12 @@ namespace EGamePlay.Combat
             return TypeIdStatuses[statusTypeId][0];
         }
 
-        //public void OnStatusRemove(Ability statusAbility)
-        //{
-        //    //var statusConfigID = statusAbility.Config.KeyName;
-        //    //TypeIdStatuses[statusConfigID].Remove(statusAbility);
-        //    //if (TypeIdStatuses[statusConfigID].Count == 0)
-        //    //{
-        //    //    TypeIdStatuses.Remove(statusConfigID);
-        //    //}
-        //    //Statuses.Remove(statusAbility);
-        //    //this.Publish(new RemoveStatusEvent() { Entity = this.Entity, Status = statusAbility, StatusId = statusAbility.Id });
-        //}
-
-        //public void OnAddStatus(Ability statusAbility)
-        //{
-
-        //}
-
-        //public void OnRemoveStatus(Ability statusAbility)
-        //{
-
-        //}
-
         public void OnStatusesChanged(Ability statusAbility)
         {
             var parentEntity = statusAbility.ParentEntity;
 
             var tempActionControl = ActionControlType.None;
-            //var statuses = CombatEntity.GetTypeChildren<StatusAbility>();
-            //Log.Debug($"OnStatusesChanged {statuses.Length}");
-            foreach (var item in parentEntity.GetTypeChildren<Ability>())
+            foreach (var item in Statuses)
             {
                 if (!item.Enable)
                 {
@@ -86,7 +62,6 @@ namespace EGamePlay.Combat
                 {
                     if (effect.Enable && effect.TryGet(out EffectActionControlComponent actionControlComponent))
                     {
-                        //Log.Debug($"{tempActionControl} {actionControlComponent.ActionControlEffect.ActionControlType}");
                         tempActionControl = tempActionControl | actionControlComponent.ActionControlEffect.ActionControlType;
                     }
                 }

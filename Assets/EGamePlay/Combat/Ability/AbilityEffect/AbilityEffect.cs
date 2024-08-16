@@ -66,102 +66,19 @@ namespace EGamePlay.Combat
         public void EnableEffect()
         {
             Enable = true;
-            //if (EffectConfig.EffectTriggerType != EffectAutoTriggerType.None)
-            //{
-            //    foreach (var item in Components.Values)
-            //    {
-            //        item.Enable = true;
-            //    }
-            //}
-
-            //if (EffectConfig.EffectTriggerType == EffectAutoTriggerType.None || EffectConfig.EffectTriggerType == EffectAutoTriggerType.Instant)
-            //{
-            //    TriggerObserver = AddChild<TriggerObserver>();
-            //}
-
-            //if (EffectConfig.EffectTriggerType == EffectAutoTriggerType.Action)
-            //{
-            //    //Log.Debug("EnableEffect ActionPointObserver");
-            //    AddChild<ActionPointObserveComponent>();
-            //}
-            //if (EffectConfig.EffectTriggerType == EffectAutoTriggerType.Condition)
-            //{
-            //    var conditionType = EffectConfig.ConditionType;
-            //    var paramObj = ConditionParamValue;
-            //    if (conditionType == TimeStateEventType.WhenInTimeNoDamage && float.TryParse((string)paramObj, out var time))
-            //    {
-            //        var condition = AddChild<TimeState_WhenInTimeNoDamageObserveComponent>(time);
-            //        condition.StartListen(null);
-            //    }
-            //    if (conditionType == TimeStateEventType.WhenIntervalTime && float.TryParse((string)paramObj, out var intervalTime))
-            //    {
-            //        var condition = AddChild<TimeState_TimeIntervalObserveComponent>(intervalTime);
-            //        condition.StartListen(null);
-            //    }
-            //}
-
-            //if (EffectConfig.StateCheckList != null && EffectConfig.StateCheckList.Count > 0)
-            //{
-            //    foreach (var item in Children)
-            //    {
-            //        if (item is ICombatObserver)
-            //        {
-            //            item.AddComponent<TriggerStateCheckComponent>();
-            //        }
-            //    }
-            //}
-
-            ///// 立即触发
-            //if (EffectConfig.EffectTriggerType == EffectAutoTriggerType.Instant)
-            //{
-            //    //TriggerEffectToParent();
-            //    TriggerObserver.OnTrigger(ParentEntity);
-            //}
+            foreach (var item in Components.Values)
+            {
+                item.Enable = true;
+            }
         }
 
         public void DisableEffect()
         {
             Enable = false;
-            //foreach (var item in Components.Values)
-            //{
-            //    item.Enable = false;
-            //}
-        }
-
-        public void OnObserverTrigger(TriggerContext context)
-        {
-            //var observer = context.AbilityTrigger;
-            //var source = context.Source;
-            //Entity target = context.Target;
-            //if (target == null)
-            //{
-            //    target = source;
-            //}
-
-            //var stateCheckResult = true;
-            //if (!(observer is ActionPointObserveComponent) && !(observer is TriggerObserver))
-            //{
-            //    target = ParentEntity;
-            //}
-
-            ///// 这里是状态判断，状态判断是判断目标的状态是否满足条件，满足才能触发效果
-            //if ((observer as Entity).TryGet(out TriggerStateCheckComponent component))
-            //{
-            //    stateCheckResult = component.CheckTargetState(target);
-            //}
-
-            ///// 条件满足则触发效果
-            //if (stateCheckResult)
-            //{
-            //    if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var effectAssign))
-            //    {
-            //        effectAssign.AssignTarget = target;
-            //        effectAssign.SourceAbility = OwnerAbility;
-            //        effectAssign.AbilityEffect = this;
-            //        effectAssign.TriggerContext = context;
-            //        effectAssign.AssignEffect();
-            //    }
-            //}
+            foreach (var item in Components.Values)
+            {
+                item.Enable = false;
+            }
         }
     }
 }
