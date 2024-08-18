@@ -42,7 +42,7 @@ namespace EGamePlay.Combat
         public CombatEntity Creator { get; set; }
         /// 目标对象
         public Entity Target { get; set; }
-        public AttackExecution AttackExecution { get; set; }
+        //public AttackExecution AttackExecution { get; set; }
 
 
         public void FinishAction()

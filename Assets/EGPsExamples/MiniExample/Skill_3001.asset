@@ -75,5 +75,16 @@ MonoBehaviour:
   SkillSpellType: 0
   AffectTargetType: 2
   TargetSelectType: 0
-  TriggerActions: []
+  TriggerActions:
+  - Enabled: 1
+    TriggerType: 1
+    AutoTriggerType: 0
+    ActionPointType: 0
+    ConditionType: 0
+    ConditionParam: 
+    AddSkillEffectTargetType: 0
+    StateCheckList: []
+    TriggerEffects:
+    - EffectApplyType: 0
+      Params: []
   EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"

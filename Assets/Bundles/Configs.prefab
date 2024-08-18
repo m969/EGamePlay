@@ -47,15 +47,5 @@ MonoBehaviour:
   data:
   - key: AbilityConfig
     gameObject: {fileID: 4900000, guid: 7abc57efe5e7cd644863f94f6443376a, type: 3}
-  - key: ChildStatusConfig
-    gameObject: {fileID: 4900000, guid: 67db3b1729f4ed84ea52acb3cb1df7f4, type: 3}
-  - key: EquipmentConfig
-    gameObject: {fileID: 4900000, guid: 2fe1f7d325cf4744b9a6b0882ed76076, type: 3}
-  - key: SkillEffectsConfig
-    gameObject: {fileID: 4900000, guid: e816f3402f4d9054480636751f5aa9c9, type: 3}
-  - key: StatusConfig
-    gameObject: {fileID: 4900000, guid: ec4a396fa6fcfef46a92da7c5344d4c2, type: 3}
-  - key: StatusEffectsConfig
-    gameObject: {fileID: 4900000, guid: 9793e11789345274b9d0dccfcc551fd5, type: 3}
   - key: UnitConfig
     gameObject: {fileID: 4900000, guid: 79f1713de1c57e646a74288a5fe0f14f, type: 3}

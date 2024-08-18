@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2220083092640144752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db22cb51ab2b354aae7c5f4e7e1d7aa, type: 3}
+  m_Name: ExecuteClip
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: EffectDatas
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[EGamePlay.Combat.ItemEffect, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  StartTime: 0.49988514
+  EndTime: 0.50988513
+  ExecuteClipType: 1
+  ActionEventData:
+    FireType: 2
+    ActionEventType: 0
+    ExecuteTrigger: 0
+    EffectApplyTarget: 0
+    NewExecution: 
+  ItemData:
+    ExecuteType: 0
+    ActionData:
+      FireType: 0
+      ActionEventType: 0
+      ExecuteTrigger: 0
+      EffectApplyTarget: 0
+      NewExecution: 
+    MoveType: 0
+    FixedPoint: {x: 0, y: 0, z: 0}
+    ObjAsset: {fileID: 0}
+    Speed: 1
+    BezierCurve:
+      sampling: 25
+      normalizedTime: 0.5
+      keyPoints: []
+    PathExecutePoint: 10
+    Offset: {x: 0, y: 0, z: 0}
+  AnimationData:
+    AnimationClip: {fileID: 0}
+  AudioData:
+    AudioClip: {fileID: 0}
+  ParticleEffectData:
+    ParticleEffect: {fileID: 0}
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb448c210e2a7b4bb0777daef6b1b34, type: 3}
+  m_Name: Execution_3001
+  m_EditorClassIdentifier: 
+  AbilityId: 3001
+  TotalTime: 1
+  ObjAsset: {fileID: 0}
+  TargetInputType: 1
+  RangeIndicatorObjAsset: {fileID: 0}
+  PointIndicatorObjAsset: {fileID: 0}
+  DirectionIndicatorObjAsset: {fileID: 0}
+  Offset: {x: 0, y: 0, z: 0}
+  ExecuteClips:
+  - {fileID: -2220083092640144752}

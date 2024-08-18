@@ -46,7 +46,7 @@ namespace EGamePlay.Combat
     public class SpellAction : Entity, IActionExecute
     {
         public Ability SkillAbility { get; set; }
-        public SkillExecution SkillExecution { get; set; }
+        public AbilityExecution SkillExecution { get; set; }
         public List<CombatEntity> SkillTargets { get; set; } = new List<CombatEntity>();
         public CombatEntity InputTarget { get; set; }
         public Vector3 InputPoint { get; set; }
@@ -79,7 +79,7 @@ namespace EGamePlay.Combat
         {
             PreProcess();
 
-            var execution = SkillAbility.OwnerEntity.AddChild<SkillExecution>(SkillAbility);
+            var execution = SkillAbility.OwnerEntity.AddChild<AbilityExecution>(SkillAbility);
             SkillExecution = execution;
 #if EGAMEPLAY_ET && DEBUG
             SkillAbility.LoadExecution();

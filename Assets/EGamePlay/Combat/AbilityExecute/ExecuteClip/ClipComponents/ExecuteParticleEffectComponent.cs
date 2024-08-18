@@ -29,7 +29,7 @@ namespace EGamePlay.Combat
 #if EGAMEPLAY_ET
             ParticleEffectObj = GameObject.Instantiate(ParticleEffectPrefab, Entity.GetParent<SkillExecution>().OwnerEntity.Position, Entity.GetParent<SkillExecution>().OwnerEntity.Rotation);
 #else
-            ParticleEffectObj = GameObject.Instantiate(ParticleEffectPrefab, Entity.GetParent<SkillExecution>().OwnerEntity.Position, Entity.GetParent<SkillExecution>().OwnerEntity.Rotation);
+            ParticleEffectObj = GameObject.Instantiate(ParticleEffectPrefab, Entity.GetParent<AbilityExecution>().OwnerEntity.Position, Entity.GetParent<AbilityExecution>().OwnerEntity.Rotation);
 #endif
         }
 

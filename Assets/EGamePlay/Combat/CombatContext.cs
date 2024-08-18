@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
         {
             base.Awake();
             Instance = this;
-            AddComponent<CombatActionManageComponent>();
+            //AddComponent<CombatActionManageComponent>();
             AddComponent<UpdateComponent>();
             Subscribe<EntityDeadEvent>(OnEntityDead);
         }

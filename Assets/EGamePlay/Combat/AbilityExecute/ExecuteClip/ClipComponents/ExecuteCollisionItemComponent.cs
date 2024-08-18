@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
         {
             //Log.Console($"ExecuteCollisionItemComponent SpawnCollisionItem {clipData.CollisionExecuteData.MoveType}");
 
-            var skillExecution = Entity.GetParent<SkillExecution>();
+            var skillExecution = Entity.GetParent<AbilityExecution>();
             var abilityItem = Entity.Create<AbilityItem>(skillExecution);
             abilityItem.AddComponent<AbilityItemCollisionExecuteComponent>(clipData);
 

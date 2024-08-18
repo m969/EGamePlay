@@ -44,13 +44,17 @@ namespace ET
                 {
 					dict.Add(int.Parse(item.Key), item.Value);
 				}
-                if (typeName == nameof(StatusConfig))
+                if (typeName == nameof(AbilityConfig))
                 {
                     nameDict = new Dictionary<string, T>();
                     foreach (var item in dit)
                     {
-                        var statusConfig = item.Value as StatusConfig;
-                        nameDict.Add(statusConfig.ID, statusConfig as T);
+                        var statusConfig = item.Value as AbilityConfig;
+						if (string.IsNullOrEmpty(statusConfig.KeyName))
+						{
+                            continue;
+                        }
+                        nameDict.Add(statusConfig.KeyName, statusConfig as T);
                     }
                 }
             }

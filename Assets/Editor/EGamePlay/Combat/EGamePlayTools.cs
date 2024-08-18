@@ -9,7 +9,7 @@ namespace EGamePlay
 {
     public static class EGamePlayTools
     {
-        [MenuItem("Tools/EGamePlay/使用技能Excel配置")]
+        //[MenuItem("Tools/EGamePlay/使用技能Excel配置")]
         public static void UseExcel()
         {
             var dedfine = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.Standalone);
@@ -22,14 +22,14 @@ namespace EGamePlay
             //AssetDatabase.Refresh();
         }
 
-        [MenuItem("Tools/EGamePlay/使用技能Excel配置", true)]
+        //[MenuItem("Tools/EGamePlay/使用技能Excel配置", true)]
         public static bool IsUseExcel()
         {
             var dedfine = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.Standalone);
             return !dedfine.Contains("EGAMEPLAY_EXCEL");
         }
 
-        [MenuItem("Tools/EGamePlay/使用技能ScriptableObj配置")]
+        //[MenuItem("Tools/EGamePlay/使用技能ScriptableObj配置")]
         public static void UseScripableObj()
         {
             var dedfine = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.Standalone);
@@ -41,7 +41,7 @@ namespace EGamePlay
             //AssetDatabase.Refresh();
         }
 
-        [MenuItem("Tools/EGamePlay/使用技能ScriptableObj配置", true)]
+        //[MenuItem("Tools/EGamePlay/使用技能ScriptableObj配置", true)]
         public static bool IsUseScripableObj()
         {
             var dedfine = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.Standalone);

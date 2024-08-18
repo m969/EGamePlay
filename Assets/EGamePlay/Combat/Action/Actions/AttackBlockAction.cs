@@ -43,15 +43,15 @@ namespace EGamePlay.Combat
 
         public void TryBlock(Entity action)
         {
-            if (IsAbilityEffectTrigger())
-            {
-                if (TryMakeAction(out var attackBlockAction))
-                {
-                    attackBlockAction.ActionAbility = this;
-                    attackBlockAction.AttackExecution = action.As<AttackAction>().AttackExecution;
-                    attackBlockAction.ApplyBlock();
-                }
-            }
+            //if (IsAbilityEffectTrigger())
+            //{
+            //    if (TryMakeAction(out var attackBlockAction))
+            //    {
+            //        attackBlockAction.ActionAbility = this;
+            //        attackBlockAction.AttackExecution = action.As<AttackAction>().AttackExecution;
+            //        attackBlockAction.ApplyBlock();
+            //    }
+            //}
         }
     }
 
@@ -68,7 +68,7 @@ namespace EGamePlay.Combat
         public CombatEntity Creator { get; set; }
         /// 目标对象
         public Entity Target { get; set; }
-        public AttackExecution AttackExecution { get; set; }
+        //public AttackExecution AttackExecution { get; set; }
 
 
         public void FinishAction()
@@ -86,7 +86,7 @@ namespace EGamePlay.Combat
         {
             PreProcess();
 
-            AttackExecution.SetBlocked();
+            //AttackExecution.SetBlocked();
 
             PostProcess();
 

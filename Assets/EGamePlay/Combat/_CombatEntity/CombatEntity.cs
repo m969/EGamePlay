@@ -48,7 +48,7 @@ namespace EGamePlay.Combat
         public AttackBlockActionAbility AttackBlockAbility { get; set; }
 
         //执行中的执行体
-        public SkillExecution SpellingExecution { get; set; }
+        public AbilityExecution SpellingExecution { get; set; }
         //public Dictionary<string, SkillAbility> NameSkills { get; set; } = new Dictionary<string, SkillAbility>();
         //public Dictionary<int, SkillAbility> IdSkills { get; set; } = new Dictionary<int, SkillAbility>();
         //public Dictionary<KeyCode, SkillAbility> InputSkills { get; set; } = new Dictionary<KeyCode, SkillAbility>();

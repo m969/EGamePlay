@@ -112,8 +112,8 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  StartTime: 1.5653772
-  EndTime: 1.6992991
+  StartTime: 1.5653771884093501
+  EndTime: 1.6992990527054985
   ExecuteClipType: 0
   ActionEventData:
     FireType: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
       ExecuteTrigger: 0
       EffectApplyTarget: 0
       NewExecution: 
-    MoveType: 0
+    MoveType: 1
     FixedPoint: {x: 0, y: 0, z: 0}
     ObjAsset: {fileID: 7427793808108117812, guid: 9a3cb84c6b8a07d4b901ee026f22a2dc,
       type: 3}
@@ -206,7 +206,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   StartTime: 0
-  EndTime: 1.7
+  EndTime: 1.7000000254895724
   ExecuteClipType: 4
   ActionEventData:
     FireType: 0
@@ -275,7 +275,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   StartTime: 0
-  EndTime: 1.933
+  EndTime: 1.9329999685287476
   ExecuteClipType: 2
   ActionEventData:
     FireType: 0

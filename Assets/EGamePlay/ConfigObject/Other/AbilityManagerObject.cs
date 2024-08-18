@@ -43,6 +43,7 @@ namespace EGamePlay.Combat
 
         public string SkillAssetFolder = "Assets/EGPsExamples/Resources/AbilityObjects/Skill";
         public string BuffAssetFolder = "Assets/EGPsExamples/Resources/AbilityObjects/Buff";
+        public string ExecutionAssetFolder = "Assets/EGPsExamples/Resources/ExecutionObjects";
 
         //public string SkillExecutionAssetFolder = "Assets/Resources/ExecutionObjects";
         //public string StatusExecutionAssetFolder = "Assets/Resources/ExecutionObjects";

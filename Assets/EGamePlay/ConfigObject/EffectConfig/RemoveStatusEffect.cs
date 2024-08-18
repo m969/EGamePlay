@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
             {
                 if (this.RemoveStatus != null)
                 {
-                    return $"移除 [ {this.RemoveStatus.Name} ] 状态效果";
+                    return $"移除 [ {this.RemoveStatus.Id} ] 状态效果";
                 }
                 return "移除状态效果";
             }
@@ -19,6 +19,6 @@ namespace EGamePlay.Combat
 
         [ToggleGroup("Enabled")]
         [LabelText("状态配置")]
-        public StatusConfigObject RemoveStatus;
+        public AbilityConfigObject RemoveStatus;
     }
 }

@@ -64,11 +64,11 @@ namespace EGamePlay.Combat
         {
             PreProcess();
 
-#if EGAMEPLAY_EXCEL
-            var statusConfig = AddStatusEffect.AddStatusConfig;
-            var canStack = statusConfig.CanStack == "ÊÇ";
-            var enabledLogicTrigger = statusConfig.EnabledLogicTrigger();
-#else
+//#if EGAMEPLAY_EXCEL
+//            var statusConfig = AddStatusEffect.AddStatusConfig;
+//            var canStack = statusConfig.CanStack == "ÊÇ";
+//            var enabledLogicTrigger = statusConfig.EnabledLogicTrigger();
+//#else
             var buffObject = AddStatusEffect.AddStatus;
             if (buffObject == null)
             {
@@ -77,7 +77,7 @@ namespace EGamePlay.Combat
             }
             var buffConfig = AbilityConfigCategory.Instance.Get(buffObject.Id);
             var canStack = buffConfig.CanStack == "ÊÇ";
-#endif
+//#endif
             var statusComp = Target.GetComponent<StatusComponent>();
             if (canStack == false)
             {

@@ -138,11 +138,11 @@ public sealed class Monster : MonoBehaviour
     {
         var action = combatAction as AddStatusAction;
         var addStatusEffect = action.AddStatusEffect;
-#if EGAMEPLAY_EXCEL
-        var statusConfig = addStatusEffect.AddStatusConfig;
-#else
+//#if EGAMEPLAY_EXCEL
+//        var statusConfig = addStatusEffect.AddStatusConfig;
+//#else
         var statusConfig = addStatusEffect.AddStatus;
-#endif
+//#endif
         var abilityConfig = ConfigHelper.Get<AbilityConfig>(statusConfig.Id);
         var keyName = abilityConfig.KeyName;
         if (name == "Monster")

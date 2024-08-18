@@ -445,7 +445,7 @@ namespace EGamePlay
                 //var skillAbility = Hero.Instance.CombatEntity.AttachSkill(new SkillConfigObject() { Id = 9999 });
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
                 {
-                    var execution = HeroEntity.AddChild<SkillExecution>(null);
+                    var execution = HeroEntity.AddChild<AbilityExecution>(null);
                     execution.ExecutionObject = CurrentExecutionObject;
                     execution.InputTarget = BossEntity;
                     execution.LoadExecutionEffects();
@@ -454,7 +454,7 @@ namespace EGamePlay
                 }
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Point)
                 {
-                    var execution = HeroEntity.AddChild<SkillExecution>(null);
+                    var execution = HeroEntity.AddChild<AbilityExecution>(null);
                     execution.ExecutionObject = CurrentExecutionObject;
                     execution.InputPoint = BossEntity.Position;
                     execution.LoadExecutionEffects();

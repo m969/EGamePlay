@@ -28,17 +28,17 @@ public class SkillExecution1006Component : EGamePlay.Component
 
     public override void Awake()
     {
-        Entity.OnEvent(nameof(SkillExecution.BeginExecute), OnBeginExecute);
+        Entity.OnEvent(nameof(AbilityExecution.BeginExecute), OnBeginExecute);
     }
 
     public void OnBeginExecute(Entity entity)
     {
-        GetEntity<SkillExecution>().ActionOccupy = false;
+        GetEntity<AbilityExecution>().ActionOccupy = false;
         var channelPrefab = AssetUtils.LoadObject<GameObject>("AbilityItems/Channel");
         channelPrefab.gameObject.SetActive(false);
-        for (int i = GetEntity<SkillExecution>().SkillTargets.Count - 1; i >= 0; i--)
+        for (int i = GetEntity<AbilityExecution>().SkillTargets.Count - 1; i >= 0; i--)
         {
-            var item = GetEntity<SkillExecution>().SkillTargets[i];
+            var item = GetEntity<AbilityExecution>().SkillTargets[i];
             var channel = GameObject.Instantiate(channelPrefab);
             var lineRenderer = channel.GetComponent<LineRenderer>();
             lineRenderer.SetPosition(1, item.Position);
@@ -47,26 +47,26 @@ public class SkillExecution1006Component : EGamePlay.Component
         }
         foreach (var item in EntityChannels)
         {
-#if !EGAMEPLAY_EXCEL
-            var abilityTriggerComp = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
+//#if !EGAMEPLAY_EXCEL
+            var abilityTriggerComp = GetEntity<AbilityExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
             var effects = abilityTriggerComp.AbilityTriggers;
             var effect = effects[2];
             effect.OnTrigger(new TriggerContext() { Target = item.Key });
-#endif
+//#endif
         }
         Enable = true;
     }
 
     public override void Update()
     {
-        if (GetEntity<SkillExecution>().SkillTargets.Count == 0)
+        if (GetEntity<AbilityExecution>().SkillTargets.Count == 0)
         {
             EndExecute();
             return;
         }
         foreach (var item in EntityChannels)
         {
-            item.Value.SetPosition(0, GetEntity<SkillExecution>().OwnerEntity.Position);
+            item.Value.SetPosition(0, GetEntity<AbilityExecution>().OwnerEntity.Position);
             item.Value.SetPosition(1, item.Key.Position);
             //Log.Debug($"{GetEntity<SkillExecution>().OwnerEntity.Position}    {item.Key.Position}");
         }
@@ -76,10 +76,10 @@ public class SkillExecution1006Component : EGamePlay.Component
     public void OnLock()
     {
         //Log.Debug("OnLock");
-#if !EGAMEPLAY_EXCEL
+//#if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
-            var abilityTriggerComp = GetEntity<SkillExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
+            var abilityTriggerComp = GetEntity<AbilityExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
             var effects = abilityTriggerComp.AbilityTriggers;
             for (int i = 0; i < effects.Count; i++)
             {
@@ -90,13 +90,13 @@ public class SkillExecution1006Component : EGamePlay.Component
                 }
             }
         }
-#endif
+//#endif
         EndExecute();
     }
 
     public void EndExecute()
     {
-        GetEntity<SkillExecution>().EndExecute();
+        GetEntity<AbilityExecution>().EndExecute();
         foreach (var item in EntityChannels)
         {
             GameObject.Destroy(item.Value.gameObject);

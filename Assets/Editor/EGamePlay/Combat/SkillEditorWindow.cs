@@ -13,8 +13,8 @@ using EGamePlay.Combat;
 
 public class SkillEditorWindow : OdinMenuEditorWindow
 {
-    public static string SkillConfigObjectsPath = "Assets/EGPsExamples/RpgExample/Resources/SkillConfigs";
-    public static string ExecutionObjectsPath = "Assets/EGPsExamples/RpgExample/Resources";
+    public static string SkillConfigObjectsPath => AbilityManagerObject.Instance.SkillAssetFolder;
+    public static string ExecutionObjectsPath = AbilityManagerObject.Instance.ExecutionAssetFolder;
 
     public Dictionary<string, ExecutionObject> ExecutionObjects = new Dictionary<string, ExecutionObject>();
 
@@ -59,6 +59,7 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         var allSkill = SkillConfigCategory.GetAll();
         foreach (var item in allSkill.Values)
         {
+            if (item.Type == "Buff") continue;
             var path = $"{SkillConfigObjectsPath}/Skill_{item.Id}.asset";
             var path2 = $"{ExecutionObjectsPath}/Execution_{item.Id}.asset";
             var asset = AssetDatabase.LoadAssetAtPath<AbilityConfigObject>(path);

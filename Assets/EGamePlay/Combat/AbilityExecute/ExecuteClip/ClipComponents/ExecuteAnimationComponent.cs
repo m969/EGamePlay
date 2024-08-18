@@ -22,7 +22,7 @@ namespace EGamePlay.Combat
         public void OnTriggerExecutionEffect(Entity entity)
         {
             //Log.Debug("ExecutionAnimationComponent OnTriggerExecutionEffect");
-            Entity.GetParent<SkillExecution>().OwnerEntity.Publish(AnimationClip);
+            Entity.GetParent<AbilityExecution>().OwnerEntity.Publish(AnimationClip);
         }
     }
 }

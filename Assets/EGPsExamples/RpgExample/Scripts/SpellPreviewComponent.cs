@@ -39,7 +39,7 @@ public class SpellPreviewComponent : EGamePlay.Component
             PreviewingSkill = abilityComp.InputSkills[KeyCode.E];
             EnterPreview();
         }
-#if !EGAMEPLAY_EXCEL
+//#if !EGAMEPLAY_EXCEL
         if (Input.GetKeyDown(KeyCode.R))
         {
             Cursor.visible = false;
@@ -69,7 +69,7 @@ public class SpellPreviewComponent : EGamePlay.Component
             PreviewingSkill = abilityComp.InputSkills[KeyCode.S];
             OnSelectedSelf();
         }
-#endif
+//#endif
         if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse))
         {
             CancelPreview();

@@ -15,7 +15,7 @@ namespace EGamePlay.Combat
     public partial class ExecuteClip : Entity
     {
         public ExecuteClipData ExecutionEffectConfig { get; set; }
-        public SkillExecution ParentExecution => GetParent<SkillExecution>();
+        public AbilityExecution ParentExecution => GetParent<AbilityExecution>();
 
 
         public override void Awake(object initData)

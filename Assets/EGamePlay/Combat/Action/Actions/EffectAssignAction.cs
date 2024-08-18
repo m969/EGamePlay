@@ -60,7 +60,7 @@ namespace EGamePlay.Combat
             {
                 Target = AssignTarget;
                 if (AssignTarget is IActionExecute actionExecute) Target = actionExecute.Target;
-                if (AssignTarget is SkillExecution skillExecution) Target = skillExecution.InputTarget;
+                if (AssignTarget is AbilityExecution skillExecution) Target = skillExecution.InputTarget;
             }
         }
 

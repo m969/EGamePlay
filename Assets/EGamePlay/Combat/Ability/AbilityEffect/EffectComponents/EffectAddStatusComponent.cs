@@ -21,23 +21,22 @@ namespace EGamePlay.Combat
             AddStatusEffect = GetEntity<AbilityEffect>().EffectConfig as AddStatusEffect;
             Duration = AddStatusEffect.Duration;
 
-#if EGAMEPLAY_EXCEL
-            var statusConfig = AddStatusEffect.AddStatusConfig;
-            //Log.Debug($"EffectAddStatusComponent Awake {statusConfig.Name}");
-            if (statusConfig.EnabledAttributeModify())
-            {
-                if (!string.IsNullOrEmpty(statusConfig.AttributeParams))
-                {
-                    NumericValueProperty = statusConfig.AttributeParams;
-                    foreach (var aInputKVItem in AddStatusEffect.Params)
-                    {
-                        NumericValueProperty = NumericValueProperty.Replace(aInputKVItem.Key, aInputKVItem.Value);
-                    }
-                }
-            }
-#else
-
-#endif
+//#if EGAMEPLAY_EXCEL
+//            var statusConfig = AddStatusEffect.AddStatusConfig;
+//            //Log.Debug($"EffectAddStatusComponent Awake {statusConfig.Name}");
+//            if (statusConfig.EnabledAttributeModify())
+//            {
+//                if (!string.IsNullOrEmpty(statusConfig.AttributeParams))
+//                {
+//                    NumericValueProperty = statusConfig.AttributeParams;
+//                    foreach (var aInputKVItem in AddStatusEffect.Params)
+//                    {
+//                        NumericValueProperty = NumericValueProperty.Replace(aInputKVItem.Key, aInputKVItem.Value);
+//                    }
+//                }
+//            }
+//#else
+//#endif
         }
 
         public int GetNumericValue()

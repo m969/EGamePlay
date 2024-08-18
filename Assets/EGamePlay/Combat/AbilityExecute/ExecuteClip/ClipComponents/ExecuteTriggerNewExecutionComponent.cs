@@ -27,8 +27,8 @@ namespace EGamePlay.Combat
             {
                 return;
             }
-            var sourceExecution = Entity.GetParent<SkillExecution>();
-            var execution = sourceExecution.OwnerEntity.AddChild<SkillExecution>(sourceExecution.SkillAbility);
+            var sourceExecution = Entity.GetParent<AbilityExecution>();
+            var execution = sourceExecution.OwnerEntity.AddChild<AbilityExecution>(sourceExecution.SkillAbility);
             execution.ExecutionObject = executionObject;
             execution.InputTarget = sourceExecution.InputTarget;
             execution.InputPoint = sourceExecution.InputPoint;
