@@ -61,3 +61,4 @@ crashlytics-build.properties
 
 # /ProjectSettings/ProjectVersion.txt
 /.idea
+.vsconfig

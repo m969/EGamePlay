@@ -22,7 +22,7 @@ using Sirenix.Utilities.Editor;
 
 namespace EGamePlay.Combat
 {
-    [CreateAssetMenu(fileName = "技能配置", menuName = "技能|状态/技能配置")]
+    [CreateAssetMenu(fileName = "能力配置", menuName = "能力/能力配置")]
     [LabelText("技能配置")]
     public class AbilityConfigObject
 #if !NOT_UNITY

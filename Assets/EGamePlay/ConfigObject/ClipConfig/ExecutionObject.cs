@@ -22,7 +22,7 @@ using UnityEngine.UI;
 
 namespace EGamePlay.Combat
 {
-    [CreateAssetMenu(fileName = "Execution", menuName = "技能|状态/Execution")]
+    [CreateAssetMenu(fileName = "Execution", menuName = "能力/Execution")]
     public class ExecutionObject
 #if UNITY
  : ScriptableObject

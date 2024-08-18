@@ -3,7 +3,7 @@
 <img src="Readme/EGamePaly_logo.png" width="60%">
 
 ---
-[![Unity Version: 2021.3.1f1](https://img.shields.io/badge/Unity-2021.3.1f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
+[![Unity Version: 2023.2.20f1](https://img.shields.io/badge/Unity-2023.2.20f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
 
 
 ## Stargazers over time
@@ -39,9 +39,9 @@
 
 ---
 ## 如何制作一个简单的技能
-- 首先在SkillConfig表里添加一个技能，给定技能id，配置参数
-- 然后右键选择 ```技能|状态/技能配置``` 创建对应id的技能配置，配置效果
-- 然后右键选择 ```技能|状态/Execution``` 创建对应id的技能执行体，配置片段表现
+- 首先在AbilityConfig.xlsx表里添加一个技能，给定技能id，配置参数
+- 然后右键选择 ```能力/能力配置``` 创建对应id的技能配置，配置效果
+- 然后右键选择 ```能力/Execution``` 创建对应id的技能执行体，配置片段表现
 - 最后就是运行时将技能挂载到CombatEntity上，再通过施法组件SpellComponent释放技能即可
 
 ---
@@ -130,19 +130,10 @@ ExecutionLink
 ---
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具
 
-![SkillConfigImage.png](Readme/ConfigImage.png)
-
----
-## 技能ScriptableObject配置和Excel配置流程切换命令
-之前的命令新版unity用不了了，需要手动到PlayerSettings面板添加 EGAMEPLAY_EXCEL 条件编译
-<img src="Readme/Define_Excel.png" width="">
+<img src="Readme/AbilityObjectConfig.png" width="80%">
 
 ### 技能Excel配置
-![SkillConfigImage.png](Readme/SkillExcel.png)
-### 状态Excel配置
-![SkillConfigImage.png](Readme/StatusExcel.png)
-### 技能效果Excel配置
-![SkillConfigImage.png](Readme/SkillEffectsExcel.png)
+![AbilityConfigExcel.png](Readme/AbilityConfigExcel.png)
 
 ---
 ## EGamePlay战斗框架技术讨论交流qq群：763696367
