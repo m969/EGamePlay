@@ -78,18 +78,7 @@ namespace EGamePlay.Combat
                 var Def = Target.GetComponent<AttributeComponent>().Defense.Value;
                 var coeff = Atk / (Atk + Def);
                 var Dam1 = Atk * coeff;
-                //var Dam2 = (Atk + Atk) / (Atk + Def);
-                //Dam3=力量*坚利*坚利/坚韧*坚韧
-                //坚利=武器品质
-                //破穿=术法品质
-                //coeff2=坚利 / (坚利 + 坚韧);
-                //coeff2=破穿 / (破穿 + 坚韧);
-                //coeff2=(坚利+破穿) / 坚韧;
-                //coeff2=(坚利*破穿) / (坚利 * 破穿 + 坚韧*坚韧*0.3);
-                //coeff2=10000/13000=0.3
-                //Dam4=100*coeff2=30
-                //Dam4=力量*coeff2
-                //Dam5=(力量*(坚利+坚利/2))/(坚韧+坚韧/2)
+
                 DamageValue = Mathf.CeilToInt(Dam1);
                 //DamageValue = Mathf.CeilToInt(Mathf.Max(1, Atk - Def));
                 if (IsCritical)
