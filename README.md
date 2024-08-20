@@ -3,12 +3,9 @@
 <img src="Readme/EGamePaly_logo.png" width="60%">
 
 ---
+# 最新的这个是2.0的版本，之前的版本在1.0分支
+
 [![Unity Version: 2023.2.20f1](https://img.shields.io/badge/Unity-2023.2.20f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
-
-
-## Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/m969/EGamePlay.svg)](https://starchart.cc/m969/EGamePlay)
 
 ---
 # 文档：
@@ -131,6 +128,7 @@ ExecutionLink
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具
 
 <img src="Readme/AbilityObjectConfig.png" width="80%">
+<img src="Readme/SkillEditorWindow.png" width="100%">
 
 ### 技能Excel配置
 ![AbilityConfigExcel.png](Readme/AbilityConfigExcel.png)
