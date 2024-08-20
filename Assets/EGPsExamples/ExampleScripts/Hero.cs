@@ -61,26 +61,6 @@ public sealed class Hero : MonoBehaviour
         CombatEntity.Subscribe<AnimationClip>(OnPlayAnimation);
         CombatEntity.CurrentHealth.Minus(30000);
 
-//#if EGAMEPLAY_EXCEL
-//        var config = ConfigHelper.Get<SkillConfig>(1001);
-//        SkillAbility ability = CombatEntity.AttachSkill(config);
-//        CombatEntity.BindSkillInput(ability, KeyCode.Q);
-
-//        config = ConfigHelper.Get<SkillConfig>(1002);
-//        ability = CombatEntity.AttachSkill(config);
-//        CombatEntity.BindSkillInput(ability, KeyCode.W);
-
-//        config = ConfigHelper.Get<SkillConfig>(1004);
-//        ability = CombatEntity.AttachSkill(config);
-//        CombatEntity.BindSkillInput(ability, KeyCode.E);
-
-//        if (SkillSlotsTrm != null)
-//        {
-//            SkillSlotsTrm.Find("SkillButtonD").gameObject.SetActive(false);
-//            SkillSlotsTrm.Find("SkillButtonE").gameObject.SetActive(false);
-//            SkillSlotsTrm.Find("SkillButtonF").gameObject.SetActive(false);
-//        }
-//#else
         var allConfigs = ConfigHelper.GetAll<AbilityConfig>().Values.ToArray();
         for (int i = 0; i < allConfigs.Length; i++)
         {

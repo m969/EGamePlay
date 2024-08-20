@@ -122,21 +122,6 @@ namespace EGamePlay.Combat
             var endValue = OriginPoint + localPos;
             PositionEntity.Position = endValue;
 #endif
-            //var startPos = PositionEntity.Position;
-            //            var dist = math.distance(endValue, startPos);
-            //            if (dist < 0.01f)
-            //            {
-            //                return;
-            //            }
-            //#if EGAMEPLAY_ET
-            //            var itemUnit = GetEntity<AbilityItem>().GetComponent<CombatUnitComponent>().Unit;
-            //            AOGame.Publish(new UnitPathMoveEvent() { Unit = itemUnit.MapUnit(), PathPoints = new Vector3[] { startPos, endValue } });
-            //#else
-            //#if UNITY
-            //            var duration = dist / Speed;
-            //            DOTween.To(() => startPos, (x) => PositionEntity.Position = x, endValue, duration).SetEase(DG.Tweening.Ease.Linear);
-            //#endif
-            //#endif
         }
 
         public void DOMove()

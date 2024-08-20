@@ -17,10 +17,10 @@ public class MiniExampleInit : MonoBehaviour
     {
         SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
         Entity.EnableLog = EntityLog;
-        MasterEntity.Create();
+        ECSNode.Create();
         Entity.Create<TimerManager>();
         Entity.Create<CombatContext>();
-        MasterEntity.Instance.AddComponent<ConfigManageComponent>(ConfigsCollector);
+        ECSNode.Instance.AddComponent<ConfigManageComponent>(ConfigsCollector);
 
         await TimerManager.Instance.WaitAsync(2000);
         //创建怪物战斗实体
@@ -40,12 +40,12 @@ public class MiniExampleInit : MonoBehaviour
 
     private void Update()
     {
-        MasterEntity.Instance?.Update();
+        ECSNode.Instance?.Update();
         TimerManager.Instance?.Update();
     }
 
     private void OnApplicationQuit()
     {
-        MasterEntity.Destroy();
+        ECSNode.Destroy();
     }
 }

@@ -39,7 +39,7 @@ namespace EGamePlay
         public Entity()
         {
 #if !NOT_UNITY
-            if (this is MasterEntity) { }
+            if (this is ECSNode) { }
             else if (this.GetType().Name.Contains("OnceWaitTimer")) { }
             else AddComponent<GameObjectComponent>();
 #endif
@@ -101,9 +101,9 @@ namespace EGamePlay
             }
             Components.Clear();
             InstanceId = 0;
-            if (Master.Entities.ContainsKey(GetType()))
+            if (ECSNode.Entities.ContainsKey(GetType()))
             {
-                Master.Entities[GetType()].Remove(this);
+                ECSNode.Entities[GetType()].Remove(this);
             }
         }
 
@@ -130,7 +130,7 @@ namespace EGamePlay
             component.Entity = this;
             component.IsDisposed = false;
             Components.Add(typeof(T), component);
-            Master.AllComponents.Add(component);
+            ECSNode.AllComponents.Add(component);
             if (EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name}");
             component.Awake();
             component.Setup();
@@ -148,7 +148,7 @@ namespace EGamePlay
             component.Entity = this;
             component.IsDisposed = false;
             Components.Add(typeof(T), component);
-            Master.AllComponents.Add(component);
+            ECSNode.AllComponents.Add(component);
             if (EnableLog) Log.Debug($"{GetType().Name}->AddComponent, {typeof(T).Name} initData={initData}");
             component.Awake(initData);
             component.Setup(initData);

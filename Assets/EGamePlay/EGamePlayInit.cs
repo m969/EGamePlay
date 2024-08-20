@@ -18,22 +18,22 @@ public class EGamePlayInit : SerializedMonoBehaviour
         Instance = this;
         SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
         Entity.EnableLog = EntityLog;
-        MasterEntity.Create();
-        Entity.Create<TimerManager>();
-        Entity.Create<CombatContext>();
-        MasterEntity.Instance.AddComponent<ConfigManageComponent>(ConfigsCollector);
+        var ecsNode = ECSNode.Create();
+        ecsNode.AddChild<TimerManager>();
+        ecsNode.AddChild<CombatContext>();
+        ecsNode.AddComponent<ConfigManageComponent>(ConfigsCollector);
     }
 
     private void Update()
     {
         ThreadSynchronizationContext.Instance.Update();
-        MasterEntity.Instance.Update();
+        ECSNode.Instance.Update();
         TimerManager.Instance.Update();
     }
 
     private void OnApplicationQuit()
     {
-        MasterEntity.Destroy();
+        ECSNode.Destroy();
     }
 #endif
 }

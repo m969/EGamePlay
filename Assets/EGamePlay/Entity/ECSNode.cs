@@ -4,24 +4,24 @@ using System.Collections.Generic;
 
 namespace EGamePlay
 {
-    public sealed class MasterEntity : Entity
+    public sealed class ECSNode : Entity
     {
         public Dictionary<Type, List<Entity>> Entities { get; private set; } = new Dictionary<Type, List<Entity>>();
         public List<Component> AllComponents { get; private set; } = new List<Component>();
         public List<UpdateComponent> UpdateComponents { get; private set; } = new List<UpdateComponent>();
-        public static MasterEntity Instance { get; private set; }
+        public static ECSNode Instance { get; private set; }
 
 
-        private MasterEntity()
+        private ECSNode()
         {
             
         }
 
-        public static MasterEntity Create()
+        public static ECSNode Create()
         {
             if (Instance == null)
             {
-                Instance = new MasterEntity();
+                Instance = new ECSNode();
 #if !NOT_UNITY
                 Instance.AddComponent<GameObjectComponent>();
                 UnityEngine.GameObject.DontDestroyOnLoad(Instance.GetComponent<GameObjectComponent>().GameObject);

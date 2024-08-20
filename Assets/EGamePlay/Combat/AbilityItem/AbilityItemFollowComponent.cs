@@ -18,9 +18,7 @@ namespace EGamePlay.Combat
 
         public override void Awake()
         {
-            //var abilityItem = GetEntity<AbilityItem>();
-            //var moveComp = abilityItem.GetComponent<AbilityItemPathMoveComponent>();
-            //moveComp.Speed = 5;
+
         }
 
         public override void Update()
@@ -28,15 +26,6 @@ namespace EGamePlay.Combat
             var abilityItem = GetEntity<AbilityItem>();
             var moveComp = abilityItem.GetComponent<AbilityItemPathMoveComponent>();
             moveComp.FollowMove();
-            //var now = TimeHelper.ClientNow();
-            //if (now > NextFollowTime)
-            //{
-            //    NextFollowTime = now + FollowInterval;
-
-            //    var abilityItem = GetEntity<AbilityItem>();
-            //    var moveComp = abilityItem.GetComponent<AbilityItemPathMoveComponent>();
-            //    moveComp.FollowMove();
-            //}
         }
     }
 }

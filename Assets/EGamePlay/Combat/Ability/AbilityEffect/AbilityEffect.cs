@@ -28,8 +28,6 @@ namespace EGamePlay.Combat
         public CombatEntity OwnerEntity => OwnerAbility.OwnerEntity;
         public Entity ParentEntity => OwnerAbility.ParentEntity;
         public Effect EffectConfig { get; set; }
-        //public string ConditionParamValue { get; set; }
-        //public TriggerObserver TriggerObserver { get; set; }
 
 
         public override void Awake(object initData)

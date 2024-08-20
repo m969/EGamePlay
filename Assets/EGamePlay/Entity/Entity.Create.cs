@@ -16,7 +16,7 @@ namespace EGamePlay
 
     public abstract partial class Entity
     {
-        public static MasterEntity Master => MasterEntity.Instance;
+        public static ECSNode ECSNode => ECSNode.Instance;
         public static bool EnableLog { get; set; } = false;
 
         public static Entity NewEntity(Type entityType, long id = 0)
@@ -25,11 +25,11 @@ namespace EGamePlay
             entity.InstanceId = IdFactory.NewInstanceId();
             if (id == 0) entity.Id = entity.InstanceId;
             else entity.Id = id;
-            if (!Master.Entities.ContainsKey(entityType))
+            if (!ECSNode.Entities.ContainsKey(entityType))
             {
-                Master.Entities.Add(entityType, new List<Entity>());
+                ECSNode.Entities.Add(entityType, new List<Entity>());
             }
-            Master.Entities[entityType].Add(entity);
+            ECSNode.Entities[entityType].Add(entity);
             return entity;
         }
 
@@ -69,7 +69,7 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}");
-            SetupEntity(entity, Master);
+            SetupEntity(entity, ECSNode);
             return entity;
         }
 
@@ -77,7 +77,7 @@ namespace EGamePlay
         {
             var entity = NewEntity(entityType);
             if (EnableLog) Log.Debug($"Create {entityType.Name}={entity.Id}, {initData}");
-            SetupEntity(entity, Master, initData);
+            SetupEntity(entity, ECSNode, initData);
             return entity;
         }
 

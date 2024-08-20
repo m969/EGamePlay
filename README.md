@@ -54,9 +54,7 @@
 - EGamePlay/Assets/Editor
 - EGamePlay/Assets/EGamePlay
 - EGamePlay/Assets/EGamePlay.Unity
-- Plugins/Editor/npoi
-
-如果要使用Excel配置流程的话，还需要将以下目录复制过去，再生成配置
+- EGamePlay/Assets/Plugins/Editor/npoi
 - EGamePlay/Excel
 
 ---
@@ -66,63 +64,6 @@
 <img src="Readme/EGamePlayExecutionLink2.gif" width="90%">
 
 ***
-
-
-<details>
-<summary>
-CombatEntity
-</summary>
-CombatEntity
-</details>
-
-<details>
-<summary>
-Attribute、Numeric
-</summary>
-NumericFloat
-</details>
-
-<details>
-<summary>
-Ability
-</summary>
-Ability
-</details>
-
-<details>
-<summary>
-StatusAbility
-</summary>
-StatusAbility
-</details>
-
-<details>
-<summary>
-SkillAbility
-</summary>
-SkillAbility
-</details>
-
-<details>
-<summary>
-AbilityEffect
-</summary>
-AbilityEffect
-</details>
-
-<details>
-<summary>
-ExpressionParser
-</summary>
-ExpressionParser
-</details>
-
-<details>
-<summary>
-ExecutionLink
-</summary>
-ExecutionLink
-</details>
 
 ---
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具

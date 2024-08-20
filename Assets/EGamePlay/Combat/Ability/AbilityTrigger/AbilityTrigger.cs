@@ -22,14 +22,6 @@ namespace EGamePlay.Combat
         {
             this.TriggerConfig = initData as TriggerConfig;
 
-            //if (TriggerConfig.TriggerType == EffectTriggerType.ExecuteTrigger)
-            //{
-            //}
-
-            //if (TriggerConfig.TriggerType == EffectTriggerType.AutoTrigger)
-            //{
-            //}
-
             if (TriggerConfig.StateCheckList != null && TriggerConfig.StateCheckList.Count > 0)
             {
                 AddComponent<TriggerStateCheckComponent>();
@@ -116,21 +108,6 @@ namespace EGamePlay.Combat
                         if (i == (int)item.EffectApplyType - 1 || item.EffectApplyType == EffectApplyType.AllEffects)
                         {
                             var abilityEffect = effects[i];
-                            //if (abilityEffect.EffectConfig is ActionControlEffect)
-                            //{
-                            //    abilityEffect.EnableEffect();
-                            //    continue;
-                            //}
-                            //if (abilityEffect.EffectConfig is AttributeModifyEffect)
-                            //{
-                            //    abilityEffect.EnableEffect();
-                            //    continue;
-                            //}
-                            //if (abilityEffect.EffectConfig is ShieldDefenseEffect)
-                            //{
-                            //    abilityEffect.EnableEffect();
-                            //    continue;
-                            //}
 
                             if (OwnerEntity.EffectAssignAbility.TryMakeAction(out var effectAssign))
                             {
