@@ -3,9 +3,13 @@
 <img src="Readme/EGamePaly_logo.png" width="60%">
 
 ---
-# 最新的这个是2.0的版本，之前的版本在1.0分支
+# 这个是2.0的版本，之前的版本在1.0分支
 
 [![Unity Version: 2023.2.20f1](https://img.shields.io/badge/Unity-2023.2.20f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/m969/EGamePlay.svg)](https://starchart.cc/m969/EGamePlay)
 
 ---
 # 文档：

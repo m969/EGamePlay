@@ -62,3 +62,5 @@ crashlytics-build.properties
 # /ProjectSettings/ProjectVersion.txt
 /.idea
 .vsconfig
+/Assets/Plugins/Sirenix
+/Assets/Plugins/Sirenix.meta
