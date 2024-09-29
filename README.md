@@ -63,7 +63,7 @@
 ---
 
 ## 如何将EGamePlay移植到别的Unity工程
-如果要将EGamePlay移植到自己的Unity工程里，首先要确保Odin Inspector插件已经在工程中，然后再将以下目录拖过去即可：
+如果要将EGamePlay移植到自己的Unity工程里，首先要确保Odin Inspector插件已经在工程中，并加上UNITY条件编译，最后将以下目录复制过去即可：
 - EGamePlay/Assets/Editor
 - EGamePlay/Assets/EGamePlay
 - EGamePlay/Assets/EGamePlay.Unity
