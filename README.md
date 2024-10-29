@@ -71,6 +71,16 @@
 - EGamePlay/Excel
 
 ---
+## 如何将EGamePlay移植到ET框架里
+- 把EGamePlay/Assets/Editor移到ET.Editor程序集下
+- 把EGamePlay/Assets/EGamePlay移到Model程序集下 
+- 把EGamePlay/Assets/EGamePlay.Unity移到ModelView程序集下 
+- 最后要添加条件编译EGAMEPLAY_ET
+
+可以参考这个联网同步demo https://github.com/m969/AOGame
+
+## EGamePlay demo示意图
+---
 
 <img src="Readme/EGamePlay.gif" width="60%">
 <img src="Readme/EGamePlayTurn.gif" width="60%">
@@ -91,9 +101,6 @@
 ## EGamePlay战斗框架技术讨论交流qq群：763696367
 对战斗感兴趣的同学可以进群一起探讨更合适、高效的战斗框架实现
 <br>对EGamePlay有任何疑问或建议可以进群反馈，或是提在[Discussions](https://github.com/m969/EGamePlay/discussions)
-
----
-联网同步demo在这里 https://github.com/m969/AOGame
 
 ---
 ## 其他类似项目
