@@ -66,6 +66,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   Id: 101
+  ShowName: "\u7729\u6655"
   SkillSpellType: 1
   AffectTargetType: 2
   TargetSelectType: 0

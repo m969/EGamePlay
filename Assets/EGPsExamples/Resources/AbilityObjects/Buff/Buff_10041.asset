@@ -72,6 +72,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   Id: 10041
+  ShowName: "\u707C\u70E7"
   SkillSpellType: 1
   AffectTargetType: 2
   TargetSelectType: 0

@@ -91,7 +91,7 @@
 ---
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具
 
-<img src="Readme/AbilityObjectConfig.png" width="80%">
+<img src="Readme/AbilityObjectSkill2.png" width="50%">
 <img src="Readme/SkillEditorWindow.png" width="100%">
 
 ### 技能Excel配置

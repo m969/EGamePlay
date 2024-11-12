@@ -31,6 +31,8 @@ namespace EGamePlay.Combat
     {
         [LabelText("技能ID"), DelayedProperty]
         public int Id;
+        [LabelText("显示名称")]
+        public string ShowName;
 
         [HideInInspector]
         public SkillSpellType SkillSpellType;

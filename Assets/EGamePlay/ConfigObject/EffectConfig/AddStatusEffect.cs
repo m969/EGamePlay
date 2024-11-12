@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
             {
                 if (this.AddStatus != null)
                 {
-                    return $"施加 [ {this.AddStatus.Id} ] 状态效果";
+                    return $"施加 [ {this.AddStatus.ShowName} ] 状态效果";
                 }
                 return "施加状态效果";
             }
