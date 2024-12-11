@@ -9,9 +9,11 @@
 
 1、将SkillAbility和StatusAbility统一为Ability，实体类和配置表都统一，通过配置表里的Type字段区分Skill和Buff
 
-2、AbilityConfigObject的效果配置拆分为```触发点```和```效果列表```分开配置，通过触发点去触发效果，触发点分为主动触发和被动触发，主动触发通过技能执行体触发，其余的都是被动触发，比如大多数的buff触发机制
+2、不再分Excel流程和ScriptableObject流程，2.0的效果结构更复杂，Excel不好表达，统一为Excel做技能信息配置，SO做效果配置AbilityConfigObject
 
-3、执行体里的碰撞体配置改为更方便扩展的效果列表配置
+3、AbilityConfigObject的效果配置拆分为```触发点```和```效果列表```分开配置，通过触发点去触发效果，触发点分为主动触发和被动触发，主动触发通过技能执行体触发，其余的都是被动触发，比如大多数的buff触发机制
+
+4、执行体里的碰撞体配置改为更方便扩展的效果列表配置
 
 ---
 [![Unity Version: 2023.2.20f1](https://img.shields.io/badge/Unity-2023.2.20f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
