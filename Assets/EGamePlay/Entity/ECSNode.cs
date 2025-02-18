@@ -57,5 +57,27 @@ namespace EGamePlay
                 item.Update();
             }
         }
+
+        public override void FixedUpdate()
+        {
+            if (AllComponents.Count == 0)
+            {
+                return;
+            }
+            for (int i = AllComponents.Count - 1; i >= 0; i--)
+            {
+                var item = AllComponents[i];
+                if (item.IsDisposed)
+                {
+                    AllComponents.RemoveAt(i);
+                    continue;
+                }
+                if (item.Disable)
+                {
+                    continue;
+                }
+                item.FixedUpdate();
+            }
+        }
     }
 }

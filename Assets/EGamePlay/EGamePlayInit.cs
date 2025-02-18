@@ -31,6 +31,11 @@ public class EGamePlayInit : SerializedMonoBehaviour
         TimerManager.Instance.Update();
     }
 
+    private void FixedUpdate()
+    {
+        ECSNode.Instance.FixedUpdate();
+    }
+
     private void OnApplicationQuit()
     {
         ECSNode.Destroy();

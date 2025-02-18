@@ -75,6 +75,11 @@ namespace EGamePlay
 
         }
 
+        public virtual void FixedUpdate()
+        {
+
+        }
+
         public virtual void OnDestroy()
         {
 
