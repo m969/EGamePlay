@@ -69,7 +69,7 @@ namespace EGamePlay.Combat
         }
 
         /// 前置处理
-        private void PreProcess()
+        private void ActionProcess()
         {
             if (DamageSource == DamageSource.Attack)
             {
@@ -119,24 +119,28 @@ namespace EGamePlay.Combat
                 }
             }
 
-            //触发 造成伤害前 行动点
-            Creator.TriggerActionPoint(ActionPointType.PreCauseDamage, this);
-            //触发 承受伤害前 行动点
-            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PreReceiveDamage, this);
+            //触发 执行行动前 行动点
+            this.TriggerCreatorActionPoint(ActionPointType.PreExecuteDamage);
+            //触发 遭遇行动前 行动点
+            this.TriggerTargetActionPoint(ActionPointType.PreSufferDamage);
         }
 
-        /// 应用伤害
-        public void ApplyDamage()
+        public void Execute()
         {
-            PreProcess();
+            ActionProcess();
 
-            var healthComp = Target.GetComponent<HealthPointComponent>();
-            healthComp.ReceiveDamage(this);
-            //Log.Debug($"ApplyDamage ReceiveDamage {healthComp.HealthPointNumeric.Value}/{healthComp.HealthPointMaxNumeric.Value}");
+            this.TriggerCreatorApplyPoint(ApplyPointType.PreCauseDamage);
+            this.TriggerTargetApplyPoint(ApplyPointType.PreReceiveDamage);
 
-            PostProcess();
+            //伤害实际施效流程
+            Target.GetComponent<HealthPointComponent>().ReceiveDamage(this);
 
-            if (healthComp.CheckDead())
+            this.TriggerCreatorApplyPoint(ApplyPointType.PostCauseDamage);
+            this.TriggerTargetApplyPoint(ApplyPointType.PostReceiveDamage);
+
+            AfterActionProcess();
+
+            if (Target.GetComponent<HealthPointComponent>().CheckDead())
             {
                 var deadEvent = new EntityDeadEvent() { DeadEntity = Target };
                 Target.Publish(deadEvent);
@@ -147,15 +151,12 @@ namespace EGamePlay.Combat
         }
 
         /// 后置处理
-        private void PostProcess()
+        private void AfterActionProcess()
         {
-            //触发 造成伤害后 行动点
-            Creator.TriggerActionPoint(ActionPointType.PostCauseDamage, this);
-            if (!Target.IsDisposed)
-            {
-                //触发 承受伤害后 行动点
-                Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PostReceiveDamage, this);
-            }
+            //触发 执行行动后 行动点
+            this.TriggerCreatorActionPoint(ActionPointType.PostExecuteDamage);
+            //触发 遭遇行动后 行动点
+            this.TriggerTargetActionPoint(ActionPointType.PostSufferDamage);
         }
     }
 

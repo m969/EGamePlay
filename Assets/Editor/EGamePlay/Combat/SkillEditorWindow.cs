@@ -10,11 +10,24 @@ using System.IO;
 using Object = UnityEngine.Object;
 using ET;
 using EGamePlay.Combat;
+using Sirenix.OdinInspector;
+using DG.DemiEditor;
+
+public enum AbilityType
+{
+    Skill,
+    Buff
+}
+
+public enum ConditionType
+{
+    StateCheck,
+}
 
 public class SkillEditorWindow : OdinMenuEditorWindow
 {
     public static string SkillConfigObjectsPath => AbilityManagerObject.Instance.SkillAssetFolder;
-    public static string ExecutionObjectsPath = AbilityManagerObject.Instance.ExecutionAssetFolder;
+    public static string ExecutionObjectsPath => AbilityManagerObject.Instance.ExecutionAssetFolder;
 
     public Dictionary<string, ExecutionObject> ExecutionObjects = new Dictionary<string, ExecutionObject>();
 
@@ -30,10 +43,12 @@ public class SkillEditorWindow : OdinMenuEditorWindow
     {
         var window = GetWindow<SkillEditorWindow>();
         window.position = GUIHelper.GetEditorWindowRect().AlignCenter(1200, 800);
+        //window.OnEndGUI += window.OnEndGUIAction;
     }
 
     AbilityConfigCategory SkillConfigCategory;
 
+    private List<string> allConditions = new List<string>();
     int totalCount = 0;
     protected override OdinMenuTree BuildMenuTree()
     {
@@ -64,6 +79,18 @@ public class SkillEditorWindow : OdinMenuEditorWindow
             var path2 = $"{ExecutionObjectsPath}/Execution_{item.Id}.asset";
             var asset = AssetDatabase.LoadAssetAtPath<AbilityConfigObject>(path);
             var asset2 = AssetDatabase.LoadAssetAtPath<ExecutionObject>(path2);
+            if (asset != null)
+            {
+                foreach (TriggerConfig triggerConfig in asset.TriggerActions)
+                {
+                    if (triggerConfig.StateCheckList.Count > 0)
+                    {
+                        continue;
+                    }
+                    allConditions.AddRange(triggerConfig.StateCheckList);
+                }
+            }
+
             //var data = new SkillConfigData();
             //data.ConfigObject = asset;
             //data.ExecutionObject = asset2;
@@ -80,8 +107,32 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         return tree;
     }
 
+    private AbilityType enumType = AbilityType.Skill;
+    private ConditionType conditionType = ConditionType.StateCheck;
+    protected override void DrawMenu()
+    {
+        //GUILayout.BeginHorizontal();
+        //if (SirenixEditorGUI.Button("Skill", ButtonSizes.Medium))
+        //{
+
+        //}
+        //if (SirenixEditorGUI.Button("Buff", ButtonSizes.Medium))
+        //{
+
+        //}
+        //GUILayout.EndHorizontal();
+        enumType = (AbilityType)EditorGUILayout.EnumPopup(enumType, GUILayout.ExpandWidth(true));
+        base.DrawMenu();
+    }
+
+    protected override void OnImGUI()
+    {
+        base.OnImGUI();
+    }
+
     protected override void OnBeginDrawEditors()
     {
+
         var selected = this.MenuTree.Selection.FirstOrDefault();
         var toolbarHeight = this.MenuTree.Config.SearchToolbarHeight;
 
@@ -116,6 +167,39 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         {
             ForceMenuTreeRebuild();
         }
+        GUILayout.Space(20);
+
+        GUILayout.BeginHorizontal();
+        GUILayout.BeginHorizontal();
+    }
+
+    protected override void OnEndDrawEditors()
+    {
+        base.OnEndDrawEditors();
+        GUILayout.EndHorizontal();
+        GUILayout.Space(20);
+        GUILayout.BeginHorizontal(GUILayout.Width(360));
+        GUILayout.BeginVertical();
+        conditionType = (ConditionType)EditorGUILayout.EnumPopup(conditionType, GUILayout.ExpandWidth(true));
+        foreach (var condition in allConditions)
+        {
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("复制", GUILayout.Width(60)))
+            {
+
+            }
+            GUILayout.Label(condition);
+            GUILayout.EndHorizontal();
+        }
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
+
+        GUILayout.EndHorizontal();
+    }
+
+    protected void OnEndGUIAction()
+    {
+
     }
 }
 

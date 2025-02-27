@@ -53,8 +53,8 @@ namespace EGamePlay.Combat
         //前置处理
         private void PreProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PreGiveAttack, this);
-            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PreReceiveAttack, this);
+            Creator.TriggerActionPoint(ActionPointType.PreExecuteAttack, this);
+            Target.GetComponent<BehaviourPointComponent>().TriggerActionPoint(ActionPointType.PreSufferAttack, this);
         }
 
         public async ETTask ApplyAttackAwait()
@@ -82,8 +82,8 @@ namespace EGamePlay.Combat
         //后置处理
         private void PostProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PostGiveAttack, this);
-            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PostReceiveAttack, this);
+            Creator.TriggerActionPoint(ActionPointType.PostExecuteAttack, this);
+            Target.GetComponent<BehaviourPointComponent>().TriggerActionPoint(ActionPointType.PostSufferAttack, this);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace EGamePlay.Combat
         public override void Awake()
         {
             AddComponent<AttributeComponent>().InitializeCharacter();
-            AddComponent<ActionPointComponent>();
+            AddComponent<BehaviourPointComponent>();
             AddComponent<AbilityComponent>();
             //AddComponent<ConditionEventComponent>();
             AddComponent<StatusComponent>();
@@ -94,17 +94,17 @@ namespace EGamePlay.Combat
         #region 行动点事件
         public void ListenActionPoint(ActionPointType actionPointType, Action<Entity> action)
         {
-            GetComponent<ActionPointComponent>().AddListener(actionPointType, action);
+            GetComponent<BehaviourPointComponent>().AddListener(actionPointType, action);
         }
 
         public void UnListenActionPoint(ActionPointType actionPointType, Action<Entity> action)
         {
-            GetComponent<ActionPointComponent>().RemoveListener(actionPointType, action);
+            GetComponent<BehaviourPointComponent>().RemoveListener(actionPointType, action);
         }
 
         public void TriggerActionPoint(ActionPointType actionPointType, Entity action)
         {
-            GetComponent<ActionPointComponent>().TriggerActionPoint(actionPointType, action);
+            GetComponent<BehaviourPointComponent>().TriggerActionPoint(actionPointType, action);
         }
         #endregion
 

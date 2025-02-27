@@ -52,11 +52,11 @@ public sealed class Hero : MonoBehaviour
             CombatEntity.AddComponent<SpellPreviewComponent>();
         }
         //CombatEntity.AddComponent<EquipmentComponent>();
-        CombatEntity.ListenActionPoint(ActionPointType.PreSpell, OnPreSpell);
-        CombatEntity.ListenActionPoint(ActionPointType.PostSpell, OnPostSpell);
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
+        CombatEntity.ListenActionPoint(ActionPointType.PreExecuteSpell, OnPreSpell);
+        CombatEntity.ListenActionPoint(ActionPointType.PostExecuteSpell, OnPostSpell);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferDamage, OnReceiveDamage);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferCure, OnReceiveCure);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferStatus, OnReceiveStatus);
         CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
         CombatEntity.Subscribe<AnimationClip>(OnPlayAnimation);
         CombatEntity.CurrentHealth.Minus(30000);

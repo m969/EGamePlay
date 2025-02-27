@@ -24,7 +24,7 @@ namespace EGamePlay.Combat
     /// 技能和buff都是挂在角色身上的一种状态，而技能表现则是一系列连续的行为（行动、事件）的组合所造成的表现和数值变化
     /// </summary>
     /// <remarks>
-    /// 战斗行动由战斗实体主动发起，包含本次行动所需要用到的所有数据，并且会触发一系列行动点事件 <see cref="ActionPoint"/>
+    /// 战斗行动由战斗实体主动发起，包含本次行动所需要用到的所有数据，并且会触发一系列行动点事件 <see cref="BehaviourPoint"/>
     /// </remarks>
     public interface IActionExecute
     {
@@ -41,5 +41,44 @@ namespace EGamePlay.Combat
         //public void FinishAction();
         //public void PreProcess();
         //public void PostProcess();
+    }
+
+    public static class ActionExecuteExtensions
+    {
+        /// <summary>
+        /// 触发Creator施效点
+        /// </summary>
+        public static void TriggerCreatorApplyPoint(this IActionExecute actionExecute, ApplyPointType pointType)
+        {
+            if (actionExecute.Creator.IsDisposed) return;
+            actionExecute.Creator.GetComponent<BehaviourPointComponent>().TriggerApplyPoint(pointType, (Entity)actionExecute);
+        }
+
+        /// <summary>
+        /// 触发Target施效点
+        /// </summary>
+        public static void TriggerTargetApplyPoint(this IActionExecute actionExecute, ApplyPointType pointType)
+        {
+            if (actionExecute.Target.IsDisposed) return;
+            actionExecute.Target.GetComponent<BehaviourPointComponent>().TriggerApplyPoint(pointType, (Entity)actionExecute);
+        }
+
+        /// <summary>
+        /// 触发Creator行动点
+        /// </summary>
+        public static void TriggerCreatorActionPoint(this IActionExecute actionExecute, ActionPointType pointType)
+        {
+            if (actionExecute.Creator.IsDisposed) return;
+            actionExecute.Creator.GetComponent<BehaviourPointComponent>().TriggerActionPoint(pointType, (Entity)actionExecute);
+        }
+
+        /// <summary>
+        /// 触发Target行动点
+        /// </summary>
+        public static void TriggerTargetActionPoint(this IActionExecute actionExecute, ActionPointType pointType)
+        {
+            if (actionExecute.Target.IsDisposed) return;
+            actionExecute.Target.GetComponent<BehaviourPointComponent>().TriggerActionPoint(pointType, (Entity)actionExecute);
+        }
     }
 }

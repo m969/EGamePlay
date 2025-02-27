@@ -52,7 +52,7 @@ namespace EGamePlay.Combat
         }
 
         //前置处理
-        private void PreProcess()
+        private void ActionProcess()
         {
             if (SourceAssignAction != null && SourceAssignAction.AbilityEffect != null)
             {
@@ -65,9 +65,9 @@ namespace EGamePlay.Combat
             }
         }
 
-        public void ApplyCure()
+        public void Execute()
         {
-            PreProcess();
+            ActionProcess();
 
             var healthComp = Target.GetComponent<HealthPointComponent>();
             if (healthComp.IsFull() == false)
@@ -75,16 +75,16 @@ namespace EGamePlay.Combat
                 healthComp.ReceiveCure(this);
             }
 
-            PostProcess();
+            AfterActionProcess();
 
             FinishAction();
         }
 
         //后置处理
-        private void PostProcess()
+        private void AfterActionProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PostGiveCure, this);
-            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PostReceiveCure, this);
+            Creator.TriggerActionPoint(ActionPointType.PostExecuteCure, this);
+            Target.GetComponent<BehaviourPointComponent>().TriggerActionPoint(ActionPointType.PostSufferCure, this);
         }
     }
 }

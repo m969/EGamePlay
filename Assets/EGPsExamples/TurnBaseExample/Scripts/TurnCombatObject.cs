@@ -25,12 +25,12 @@ public class TurnCombatObject : MonoBehaviour
         CombatObjectData = GetComponent<CombatObjectData>();
         SeatPoint = transform.position;
         CombatEntity.HeroObject = gameObject;
-        CombatEntity.ListenActionPoint(ActionPointType.PreJumpTo, OnPreJumpTo);
-        CombatEntity.ListenActionPoint(ActionPointType.PreGiveAttack, OnPreAttack);
-        CombatEntity.ListenActionPoint(ActionPointType.PostGiveAttack, OnPostAttack);
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
+        CombatEntity.ListenActionPoint(ActionPointType.PreExecuteJumpTo, OnPreJumpTo);
+        CombatEntity.ListenActionPoint(ActionPointType.PreExecuteAttack, OnPreAttack);
+        CombatEntity.ListenActionPoint(ActionPointType.PostExecuteAttack, OnPostAttack);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferDamage, OnReceiveDamage);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferCure, OnReceiveCure);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferStatus, OnReceiveStatus);
         CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
         CombatEntity.Subscribe<EntityDeadEvent>(OnDead);
 

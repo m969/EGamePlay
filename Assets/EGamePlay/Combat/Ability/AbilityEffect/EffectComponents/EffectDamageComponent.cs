@@ -45,7 +45,7 @@ namespace EGamePlay.Combat
                 damageAction.SourceAssignAction = effectAssignAction;
                 damageAction.Target = effectAssignAction.Target;
                 damageAction.DamageSource = DamageSource.Skill;
-                damageAction.ApplyDamage();
+                damageAction.Execute();
             }
         }
     }

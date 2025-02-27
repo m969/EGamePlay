@@ -116,8 +116,8 @@ namespace EGamePlay.Combat
         //后置处理
         private void PostProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PostGiveStatus, this);
-            Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.PostReceiveStatus, this);
+            Creator.TriggerActionPoint(ActionPointType.PostExecuteStatus, this);
+            Target.GetComponent<BehaviourPointComponent>().TriggerActionPoint(ActionPointType.PostSufferStatus, this);
         }
 
         /// 这里处理技能传入的参数数值替换

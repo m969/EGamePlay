@@ -49,7 +49,7 @@ namespace EGamePlay.Combat
                 return;
             }
 
-            AddComponent<ActionPointComponent>();
+            AddComponent<BehaviourPointComponent>();
             AddComponent<AttributeComponent>().InitializeAbilityItem();
             var CurrentHealth = AddComponent<HealthPointComponent>();
             CurrentHealth.HealthPointNumeric = GetComponent<AttributeComponent>().HealthPoint;

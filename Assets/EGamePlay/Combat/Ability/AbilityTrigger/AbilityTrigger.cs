@@ -43,7 +43,7 @@ namespace EGamePlay.Combat
                 /// 按行动点事件触发
                 if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Action)
                 {
-                    AddComponent<ActionPointObserveComponent>();
+                    AddComponent<BehaviourObserveComponent>();
                 }
                 /// 按计时状态事件触发
                 if (TriggerConfig.AutoTriggerType == EffectAutoTriggerType.Condition)

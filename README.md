@@ -71,6 +71,7 @@
 - EGamePlay/Assets/EGamePlay.Unity
 - EGamePlay/Assets/Plugins/Editor/npoi
 - EGamePlay/Excel
+- 目前还不是完美接入，接入过程中会有冲突或者缺失，需要按需处理
 
 ---
 ## 如何将EGamePlay移植到ET框架里
@@ -78,6 +79,8 @@
 - 把EGamePlay/Assets/EGamePlay移到Model程序集下 
 - 把EGamePlay/Assets/EGamePlay.Unity移到ModelView程序集下 
 - 最后要添加条件编译EGAMEPLAY_ET
+- ETHelper文件夹里是老版本的ET代码，会和ET框架的代码有冲突，可以整个删掉，改成用原ET框架的代码，配置表流程也需要改成原ET框架的流程
+- 目前还不是完美接入，接入过程中会有冲突或者缺失，需要按需处理
 
 可以参考这个联网同步demo https://github.com/m969/AOGame
 

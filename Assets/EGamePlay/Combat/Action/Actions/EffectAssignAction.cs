@@ -84,10 +84,10 @@ namespace EGamePlay.Combat
         /// ∫Û÷√¥¶¿Ì
         private void PostProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.AssignEffect, this);
+            Creator.TriggerActionPoint(ActionPointType.ExecuteAssignEffect, this);
             if (!Target.IsDisposed)
             {
-                Target.GetComponent<ActionPointComponent>().TriggerActionPoint(ActionPointType.ReceiveEffect, this);
+                Target.GetComponent<BehaviourPointComponent>().TriggerActionPoint(ActionPointType.SufferAssignEffect, this);
             }
 
             var decorators = AbilityEffect.EffectConfig.Decorators;

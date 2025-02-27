@@ -72,7 +72,7 @@ namespace EGamePlay.Combat
         //前置处理
         private void PreProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PreSpell, this);
+            Creator.TriggerActionPoint(ActionPointType.PreExecuteSpell, this);
         }
 
         public void SpellSkill(bool actionOccupy = true)
@@ -129,7 +129,7 @@ namespace EGamePlay.Combat
         //后置处理
         private void PostProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PostSpell, this);
+            Creator.TriggerActionPoint(ActionPointType.PostExecuteSpell, this);
         }
     }
 }

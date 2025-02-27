@@ -49,7 +49,7 @@ namespace EGamePlay.Combat
         //前置处理
         private void PreProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PreJumpTo, this);
+            Creator.TriggerActionPoint(ActionPointType.PreExecuteJumpTo, this);
         }
 
         public async ETTask ApplyJumpTo()
@@ -72,7 +72,7 @@ namespace EGamePlay.Combat
         //后置处理
         private void PostProcess()
         {
-            Creator.TriggerActionPoint(ActionPointType.PostJumpTo, this);
+            Creator.TriggerActionPoint(ActionPointType.PostExecuteJumpTo, this);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace EGamePlay.Combat
 
         public override void Awake()
         {
-            OwnerEntity.ListenActionPoint(ActionPointType.PreReceiveAttackEffect, TryBlock);
+            OwnerEntity.ListenActionPoint(ActionPointType.PreSufferAttack, TryBlock);
         }
 
         public bool TryMakeAction(out AttackBlockAction action)

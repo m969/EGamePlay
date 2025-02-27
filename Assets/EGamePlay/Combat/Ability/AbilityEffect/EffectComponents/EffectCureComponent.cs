@@ -45,7 +45,7 @@ namespace EGamePlay.Combat
             {
                 action.SourceAssignAction = effectAssignAction;
                 action.Target = effectAssignAction.Target;
-                action.ApplyCure();
+                action.Execute();
             }
         }
     }

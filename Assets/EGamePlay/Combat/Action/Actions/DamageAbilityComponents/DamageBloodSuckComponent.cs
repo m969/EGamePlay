@@ -14,7 +14,7 @@ namespace EGamePlay.Combat
         public override void Awake()
         {
             var combatEntity = Entity.GetParent<CombatEntity>();
-            combatEntity.ListenActionPoint(ActionPointType.PostCauseDamage, OnCauseDamage);
+            combatEntity.ListenActionPoint(ActionPointType.PostExecuteDamage, OnCauseDamage);
         }
 
         private void OnCauseDamage(Entity action)
@@ -30,7 +30,7 @@ namespace EGamePlay.Combat
                     cureAction.Target = combatEntity;
                     cureAction.CureValue = (int)value;
                     cureAction.SourceAssignAction = null;
-                    cureAction.ApplyCure();
+                    cureAction.Execute();
                 }
             }
         }

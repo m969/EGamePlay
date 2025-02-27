@@ -36,9 +36,9 @@ public sealed class Monster : MonoBehaviour
         CombatEntity.Position = transform.position;
         MotionComponent = CombatEntity.GetComponent<MotionComponent>();
         MotionComponent.RunAI();
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, OnReceiveDamage);
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveCure, OnReceiveCure);
-        CombatEntity.ListenActionPoint(ActionPointType.PostReceiveStatus, OnReceiveStatus);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferDamage, OnReceiveDamage);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferCure, OnReceiveCure);
+        CombatEntity.ListenActionPoint(ActionPointType.PostSufferStatus, OnReceiveStatus);
         CombatEntity.Subscribe<RemoveStatusEvent>(OnRemoveStatus);
 
 //#if EGAMEPLAY_EXCEL

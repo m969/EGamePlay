@@ -27,7 +27,7 @@ public class StatusTenacityComponent : EGamePlay.Component
         var statusAbility = entity.As<Ability>();
         var OwnerEntity = statusAbility.OwnerEntity;
         CureAbilityEffect = statusAbility.GetComponent<AbilityEffectComponent>().CureAbilityEffect;
-        OwnerEntity.ListenActionPoint(ActionPointType.PostReceiveDamage, EndReplyHealth);
+        OwnerEntity.ListenActionPoint(ActionPointType.PostSufferDamage, EndReplyHealth);
         //OwnerEntity.ListenCondition(ConditionEventType.WhenInTimeNoDamage, StartReplyHealth, "4");
         statusAbility.AddComponent<UpdateComponent>();
     }
