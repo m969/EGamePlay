@@ -92,7 +92,7 @@ namespace EGamePlay.Combat
             execution.CreateItemUnit();
 #endif
 
-            execution.FireEvent("CreateExecution");
+            SkillAbility.FireEvent("CreateExecution", execution);
             execution.Name = SkillAbility.Name;
             if (SkillTargets.Count > 0)
             {

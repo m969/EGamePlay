@@ -50,7 +50,7 @@ public class SkillExecution1006Component : EGamePlay.Component
 //#if !EGAMEPLAY_EXCEL
             var abilityTriggerComp = GetEntity<AbilityExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
             var effects = abilityTriggerComp.AbilityTriggers;
-            var effect = effects[2];
+            var effect = effects[0];
             effect.OnTrigger(new TriggerContext() { Target = item.Key });
 //#endif
         }
