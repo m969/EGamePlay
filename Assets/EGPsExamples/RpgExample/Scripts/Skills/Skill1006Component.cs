@@ -47,12 +47,10 @@ public class SkillExecution1006Component : EGamePlay.Component
         }
         foreach (var item in EntityChannels)
         {
-//#if !EGAMEPLAY_EXCEL
             var abilityTriggerComp = GetEntity<AbilityExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
             var effects = abilityTriggerComp.AbilityTriggers;
             var effect = effects[0];
             effect.OnTrigger(new TriggerContext() { Target = item.Key });
-//#endif
         }
         Enable = true;
     }
@@ -68,29 +66,19 @@ public class SkillExecution1006Component : EGamePlay.Component
         {
             item.Value.SetPosition(0, GetEntity<AbilityExecution>().OwnerEntity.Position);
             item.Value.SetPosition(1, item.Key.Position);
-            //Log.Debug($"{GetEntity<SkillExecution>().OwnerEntity.Position}    {item.Key.Position}");
         }
         LockTimer.UpdateAsFinish(Time.deltaTime, OnLock);
     }
 
     public void OnLock()
     {
-        //Log.Debug("OnLock");
-//#if !EGAMEPLAY_EXCEL
         foreach (var item in EntityChannels)
         {
             var abilityTriggerComp = GetEntity<AbilityExecution>().SkillAbility.GetComponent<AbilityTriggerComponent>();
             var effects = abilityTriggerComp.AbilityTriggers;
-            for (int i = 0; i < effects.Count; i++)
-            {
-                if (i == 0 || i == 1)
-                {
-                    var effect = effects[i];
-                    effect.OnTrigger(new TriggerContext() { Target = item.Key });
-                }
-            }
+            var effect = effects[1];
+            effect.OnTrigger(new TriggerContext() { Target = item.Key });
         }
-//#endif
         EndExecute();
     }
 
@@ -102,7 +90,5 @@ public class SkillExecution1006Component : EGamePlay.Component
             GameObject.Destroy(item.Value.gameObject);
         }
         EntityChannels.Clear();
-        //Entity.Destroy(this);
-        //base.EndExecute();
     }
 }

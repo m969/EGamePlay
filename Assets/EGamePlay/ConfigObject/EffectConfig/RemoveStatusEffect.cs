@@ -11,7 +11,7 @@ namespace EGamePlay.Combat
             {
                 if (this.RemoveStatus != null)
                 {
-                    return $"移除 [ {this.RemoveStatus.Id} ] 状态效果";
+                    return $"移除 [ {this.RemoveStatus.ShowName} ] 状态效果";
                 }
                 return "移除状态效果";
             }

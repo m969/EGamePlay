@@ -121,7 +121,7 @@ MonoBehaviour:
       Data: 1
     - Name: Duration
       Entry: 4
-      Data: 2000
+      Data: 2
     - Name: Params
       Entry: 7
       Data: 6|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
@@ -160,6 +160,7 @@ MonoBehaviour:
       Entry: 8
       Data: 
   Id: 1006
+  ShowName: 
   SkillSpellType: 0
   AffectTargetType: 2
   TargetSelectType: 2

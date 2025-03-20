@@ -69,6 +69,8 @@ public enum EffectApplyType
     Effect2,
     [LabelText("效果3")]
     Effect3,
+    [LabelText("效果4")]
+    Effect4,
 
     [LabelText("其他")]
     Other = 100,

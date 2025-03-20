@@ -50,7 +50,7 @@ namespace EGamePlay.Combat
 
         public AbilityConfig AddStatusConfig { get; set; }
 
-        [ToggleGroup("Enabled"), LabelText("持续时间")/*, SuffixLabel("毫秒", true)*/]
+        [ToggleGroup("Enabled"), LabelText("持续时间"), SuffixLabel("秒", true)]
         public float Duration;
 
         [HideReferenceObjectPicker]
