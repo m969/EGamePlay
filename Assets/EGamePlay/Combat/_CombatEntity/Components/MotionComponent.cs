@@ -40,7 +40,7 @@ namespace EGamePlay.Combat
             originPos = Position;
         }
 
-        public override void Update()
+        public override void FixedUpdate()
         {
             if (IdleTimer == null)
             {
@@ -49,15 +49,15 @@ namespace EGamePlay.Combat
 #if !EGAMEPLAY_ET
             if (IdleTimer.IsRunning)
             {
-                IdleTimer.UpdateAsFinish(Time.deltaTime, IdleFinish);
+                IdleTimer.UpdateAsFinish(Time.fixedDeltaTime, IdleFinish);
             }
             else
             {
                 if (MoveTimer.IsRunning)
                 {
-                    MoveTimer.UpdateAsFinish(Time.deltaTime, MoveFinish);
+                    MoveTimer.UpdateAsFinish(Time.fixedDeltaTime, MoveFinish);
                     var speed = GetEntity<CombatEntity>().GetComponent<AttributeComponent>().MoveSpeed.Value;
-                    Position += MoveVector * speed;
+                    Position += MoveVector * speed * 5;
                 }
             }
 #endif

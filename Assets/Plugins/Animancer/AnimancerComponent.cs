@@ -194,10 +194,10 @@ namespace Animancer
                 }
                 else if (UnityEditor.EditorApplication.isPlaying)
                 {
-                    if (AnimancerPlayable.HasChangedToOrFromAnimatePhysics(InitialUpdateMode, value))
-                        Debug.LogWarning($"Changing the {nameof(Animator)}.{nameof(Animator.updateMode)}" +
-                            $" to or from {nameof(AnimatorUpdateMode.Fixed)} at runtime will have no effect." +
-                            " You must set it in the Unity Editor or on startup.", this);
+                    //if (AnimancerPlayable.HasChangedToOrFromAnimatePhysics(InitialUpdateMode, value))
+                    //    Debug.LogWarning($"Changing the {nameof(Animator)}.{nameof(Animator.updateMode)}" +
+                    //        $" to or from {nameof(AnimatorUpdateMode.Fixed)} at runtime will have no effect." +
+                    //        " You must set it in the Unity Editor or on startup.", this);
                 }
 #endif
             }

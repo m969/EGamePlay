@@ -52,8 +52,8 @@
 ---
 ## 如何制作一个简单的技能
 - 首先在AbilityConfig.xlsx表里添加一个技能，给定技能id，配置参数
-- 然后右键选择 ```能力/能力配置``` 创建对应id的技能配置，配置效果
-- 然后右键选择 ```能力/Execution``` 创建对应id的技能执行体，配置片段表现
+- 在Project面板右键选择 ```能力/能力配置``` 创建对应id的技能配置，配置效果
+- 在Project面板右键选择 ```能力/Execution``` 创建对应id的技能执行体，配置片段表现
 - 最后就是运行时将技能挂载到CombatEntity上，再通过施法组件SpellComponent释放技能即可
 
 ---
@@ -87,8 +87,16 @@
 ## EGamePlay demo示意图
 ---
 
+- rpg demo，运行RpgExample Scene场景
+
 <img src="Readme/EGamePlay.gif" width="60%">
+
+- 回合制demo，运行TurnBaseExample Scene场景
+
 <img src="Readme/EGamePlayTurn.gif" width="60%">
+
+- 技能调试编辑，运行ExecutionLinkScene场景
+
 <img src="Readme/EGamePlayExecutionLink2.gif" width="90%">
 
 ***
@@ -96,10 +104,14 @@
 ---
 ## 基于Odin和ScriptableObject实现的灵活的技能、buff配置工具
 
+- 可使用菜单栏：```Assets/Create/能力/能力配置``` 创建能力效果配置
 <img src="Readme/AbilityObjectSkill2.png" width="50%">
+
+- 可使用菜单栏：```Tools/EGamePlay/SkillEditorWindow``` 打开SkillEditorWindow界面
 <img src="Readme/SkillEditorWindow.png" width="100%">
 
 ### 技能Excel配置
+- 可使用菜单栏：```Tools/导出配置``` 生成json和配置类
 ![AbilityConfigExcel.png](Readme/AbilityConfigExcel.png)
 
 ---

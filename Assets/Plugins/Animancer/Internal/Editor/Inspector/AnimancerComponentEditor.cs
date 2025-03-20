@@ -86,10 +86,10 @@ namespace Animancer.Editor
                 var updateMode = animator.updateMode;
                 if (AnimancerPlayable.HasChangedToOrFromAnimatePhysics(initialUpdateMode, updateMode))
                 {
-                    EditorGUILayout.HelpBox(
-                        $"Changing to or from {nameof(AnimatorUpdateMode.Fixed)} mode at runtime has no effect" +
-                        $" when using the Playables API. It will continue using the original mode it had on startup.",
-                        MessageType.Warning);
+                    //EditorGUILayout.HelpBox(
+                    //    $"Changing to or from {nameof(AnimatorUpdateMode.Fixed)} mode at runtime has no effect" +
+                    //    $" when using the Playables API. It will continue using the original mode it had on startup.",
+                    //    MessageType.Warning);
 
                     if (AnimancerGUI.TryUseClickEventInLastRect())
                         EditorUtility.OpenWithDefaultApp(Strings.DocsURLs.UpdateModes);
