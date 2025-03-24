@@ -16,7 +16,7 @@
 4、执行体里的碰撞体配置改为更方便扩展的效果列表配置
 
 ---
-[![Unity Version: 2023.2.20f1](https://img.shields.io/badge/Unity-2023.2.20f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
+[![Unity Version: 2022.3.53f1](https://img.shields.io/badge/Unity-2022.3.53f1-333333.svg?logo=unity)](https://unity3d.com/get-unity/download/archive) [![Status: Work-in-progress](https://img.shields.io/badge/status-work--in--progress-orange)](https://github.com/m969/EGamePlay/projects/1)
 
 ## Stargazers over time
 
