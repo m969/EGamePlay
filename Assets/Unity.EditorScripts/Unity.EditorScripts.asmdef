@@ -1,0 +1,24 @@
+{
+    "name": "Unity.EditorScripts",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6c58b67f420144d48877664ae73bd9a7",
+        "GUID:95c69073318a6844a8db3075c41533aa",
+        "GUID:f06555f75b070af458a003d92f9efb00",
+        "GUID:02f771204943f4a40949438e873e3eff",
+        "GUID:645f7d097acee4f40b75a6b9ff1b0822",
+        "GUID:44b68c5cb5bdd2941899f32aad657861",
+        "GUID:935b598d871a8c24b9f6f74d78c1e93a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

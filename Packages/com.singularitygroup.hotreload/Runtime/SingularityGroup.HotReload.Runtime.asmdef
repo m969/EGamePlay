@@ -1,0 +1,28 @@
+{
+    "name": "SingularityGroup.HotReload.Runtime",
+    "rootNamespace": "SingularityGroup.HotReload",
+    "references": [
+        "GUID:343deaaf83e0cee4ca978e7df0b80d21",
+        "GUID:2bafac87e7f4b9b418d9448d219b01ab",
+        "GUID:46c537318f0d530469a1df1fafe86c9c",
+        "GUID:af67dfb2ec5c9c740be50ae4470ed85f",
+        "SingularityGroup.HotReload.Runtime.Public",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "SingularityGroup.HotReload.RuntimeDependencies.dll",
+        "SingularityGroup.HotReload.RuntimeDependencies2019.dll",
+        "SingularityGroup.HotReload.RuntimeDependencies2022.dll",
+        "SingularityGroup.HotReload.RuntimeDependencies2020.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "ENABLE_MONO"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

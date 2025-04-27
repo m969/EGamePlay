@@ -68,17 +68,17 @@ namespace EGamePlay
                 btn.transform.Find("AbilityNameText").GetComponent<Text>().text = $"{item.Value.Id} {item.Value.Name}";
                 btn.transform.Find("AbilityDesText").GetComponent<Text>().text = item.Value.Description;
                 btn.GetComponent<Button>().onClick.AddListener(() => {
-                    var folder = AbilityManagerObject.Instance.SkillAssetFolder;
-                    var obj = AssetDatabase.LoadAssetAtPath<AbilityConfigObject>(folder + $"/Skill_{item.Key}.asset");
-                    UnityEditor.EditorGUIUtility.PingObject(obj);
-                    Selection.activeObject = obj;
+                    //var folder = AbilityManagerObject.Instance.SkillAssetFolder;
+                    //var obj = AssetDatabase.LoadAssetAtPath<AbilityConfigObject>(folder + $"/Skill_{item.Key}.asset");
+                    //UnityEditor.EditorGUIUtility.PingObject(obj);
+                    //Selection.activeObject = obj;
 
-                    EffectListContentTrans.DestroyChildren();
-                    foreach (var item in obj.Effects)
-                    {
-                        var effectItem = Instantiate(EffectConfigItem, EffectListContentTrans);
-                        effectItem.Find("EffectText").GetComponent<Text>().text = item.Label;
-                    }
+                    //EffectListContentTrans.DestroyChildren();
+                    //foreach (var item in obj.Effects)
+                    //{
+                    //    var effectItem = Instantiate(EffectConfigItem, EffectListContentTrans);
+                    //    effectItem.Find("EffectText").GetComponent<Text>().text = item.Label;
+                    //}
                 });
             }
 

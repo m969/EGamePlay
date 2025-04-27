@@ -132,10 +132,6 @@ MonoBehaviour:
   StatusSlotsTrm: {fileID: 0}
   StatusIconPrefab: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
     type: 3}
-  VertigoParticlePrefab: {fileID: 6284956252849737148, guid: 3d0f59f3a7a930544b5b53c0b11aa0b8,
-    type: 3}
-  WeakParticlePrefab: {fileID: 4961819165042474594, guid: 68da64562fb36a643811b219b44b169c,
-    type: 3}
 --- !u!1 &7080712151771937616
 GameObject:
   m_ObjectHideFlags: 0

@@ -2017,6 +2017,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusSlotsTrm
+      value: 
+      objectReference: {fileID: 444583033}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusIconPrefab
+      value: 
+      objectReference: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+        type: 3}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm
@@ -2591,6 +2602,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusSlotsTrm
+      value: 
+      objectReference: {fileID: 444583033}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusIconPrefab
+      value: 
+      objectReference: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+        type: 3}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm
@@ -2741,6 +2763,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1127498806 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5860105633808227977, guid: c6613397838fabc43b029d1e060d3967,
+    type: 3}
+  m_PrefabInstance: {fileID: 5860105634897451706}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127498799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d5a122ac2081b458ca87d79a1b61a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1130065338
 GameObject:
   m_ObjectHideFlags: 0
@@ -3075,6 +3109,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusSlotsTrm
+      value: 
+      objectReference: {fileID: 444583033}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusIconPrefab
+      value: 
+      objectReference: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+        type: 3}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm
@@ -3688,6 +3733,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusSlotsTrm
+      value: 
+      objectReference: {fileID: 444583033}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusIconPrefab
+      value: 
+      objectReference: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+        type: 3}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm
@@ -3964,6 +4020,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusSlotsTrm
+      value: 
+      objectReference: {fileID: 444583033}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusIconPrefab
+      value: 
+      objectReference: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+        type: 3}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm
@@ -4385,6 +4452,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusSlotsTrm
+      value: 
+      objectReference: {fileID: 444583033}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusIconPrefab
+      value: 
+      objectReference: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+        type: 3}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm
@@ -4666,6 +4744,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusSlotsTrm
+      value: 
+      objectReference: {fileID: 444583033}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusIconPrefab
+      value: 
+      objectReference: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+        type: 3}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm
@@ -5078,9 +5167,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2005577133}
-  - component: {fileID: 2005577134}
+  - component: {fileID: 2005577135}
   m_Layer: 0
-  m_Name: EGamePlayInit
+  m_Name: AppLoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5101,7 +5190,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2005577134
+--- !u!114 &2005577135
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5110,21 +5199,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2005577132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a91489559dcd5cc498fe9a298e8772c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 9352e2357701a3941bc915444dcd5bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
+  ReloadPanelObj: {fileID: 0}
   ConfigsCollector: {fileID: 8957007620084665262, guid: 65ef3756840fd9c4bafab58c8af09086,
     type: 3}
-  EntityLog: 0
+  PrefabsCollector: {fileID: 8957007620084665262, guid: 297fd6ab498809240b9f4ed21ae06402,
+    type: 3}
+  SkillConfigObject: {fileID: 0}
 --- !u!1 &2048705141
 GameObject:
   m_ObjectHideFlags: 0
@@ -5638,6 +5721,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 864262584, guid: c6613397838fabc43b029d1e060d3967, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5860105633808227978, guid: c6613397838fabc43b029d1e060d3967,
         type: 3}
       propertyPath: m_RootOrder
@@ -5708,6 +5795,11 @@ PrefabInstance:
       propertyPath: InventoryPanelTrm
       value: 
       objectReference: {fileID: 798870002}
+    - target: {fileID: 5860105633808227979, guid: c6613397838fabc43b029d1e060d3967,
+        type: 3}
+      propertyPath: AnimationComponent
+      value: 
+      objectReference: {fileID: 1127498806}
     - target: {fileID: 5860105633808227989, guid: c6613397838fabc43b029d1e060d3967,
         type: 3}
       propertyPath: m_Name
@@ -5790,6 +5882,12 @@ PrefabInstance:
       propertyPath: StatusSlotsTrm
       value: 
       objectReference: {fileID: 444583033}
+    - target: {fileID: 7080712150425627330, guid: 6677ac332a1c2a244ae29763728ad012,
+        type: 3}
+      propertyPath: StatusIconPrefab
+      value: 
+      objectReference: {fileID: 1336830596704748221, guid: 4295f9a67325e2347b83fc3e3f33ae96,
+        type: 3}
     - target: {fileID: 7080712150425627358, guid: 6677ac332a1c2a244ae29763728ad012,
         type: 3}
       propertyPath: StatusSlotsTrm

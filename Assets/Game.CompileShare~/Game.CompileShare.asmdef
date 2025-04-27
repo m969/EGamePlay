@@ -1,0 +1,18 @@
+{
+    "name": "Game.CompileShare",
+    "rootNamespace": "",
+    "references": [
+        "GUID:645f7d097acee4f40b75a6b9ff1b0822"
+    ],
+    "includePlatforms": [
+        "Stadia"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,7 @@
+# do not include HotReloadSettingsObject inside the upm package.
+#  (needs to be editable by the user)
+#  (only created on first Android build)
+/Resources/HotReloadSettingsObject.asset
+/Resources/HotReloadSettingsObject.asset.meta
+/Resources.meta
+

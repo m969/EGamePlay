@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.IO;
 using EGamePlay.Combat;
 using System.Linq;
+using ECSGame;
 
 namespace EGamePlay
 {
@@ -85,9 +86,9 @@ namespace EGamePlay
 
         private void AfterStart()
         {
-            Monster.Boss.MotionComponent.Enable = false;
-            Monster.Boss.AnimationComponent.Speed = 1;
-            Monster.Boss.AnimationComponent.TryPlayFade(Monster.Boss.AnimationComponent.IdleAnimation);
+            //Monster.Boss.MotionComponent.Enable = false;
+            //Monster.Boss.AnimationComponent.Speed = 1;
+            //AnimationSystem.TryPlayFade(Monster.Boss.CombatEntity, Monster.Boss.AnimationComponent.IdleAnimation);
         }
 
         // Update is called once per frame
@@ -422,21 +423,21 @@ namespace EGamePlay
             IsPlaying = true;
             if (CurrentExecutionObject.AbilityId > 0 && HeroEntity.GetComponent<SkillComponent>().IdSkills.TryGetValue(CurrentExecutionObject.AbilityId, out var skillAbility))
             {
-                skillAbility.LoadExecution();
+                AbilitySystem.LoadExecution(skillAbility);
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
                 {
                     if (skillAbility.ConfigObject.AffectTargetType == SkillAffectTargetType.EnemyTeam)
                     {
-                        HeroEntity.GetComponent<SpellComponent>().SpellWithTarget(skillAbility, BossEntity);
+                        SpellSystem.SpellWithTarget(HeroEntity, skillAbility, BossEntity);
                     }
                     else
                     {
-                        HeroEntity.GetComponent<SpellComponent>().SpellWithTarget(skillAbility, HeroEntity);
+                        SpellSystem.SpellWithTarget(HeroEntity, skillAbility, HeroEntity);
                     }
                 }
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Point)
                 {
-                    HeroEntity.GetComponent<SpellComponent>().SpellWithPoint(skillAbility, BossEntity.Position);
+                    SpellSystem.SpellWithPoint(HeroEntity, skillAbility, BossEntity.Position);
                 }
             }
             else
@@ -445,20 +446,20 @@ namespace EGamePlay
                 //var skillAbility = Hero.Instance.CombatEntity.AttachSkill(new SkillConfigObject() { Id = 9999 });
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
                 {
-                    var execution = HeroEntity.AddChild<AbilityExecution>(null);
+                    var execution = HeroEntity.AddChild<AbilityExecution>();
                     execution.ExecutionObject = CurrentExecutionObject;
                     execution.InputTarget = BossEntity;
-                    execution.LoadExecutionEffects();
-                    execution.BeginExecute();
+                    AbilityExecutionSystem.LoadExecutionEffects(execution);
+                    AbilityExecutionSystem.BeginExecute(execution);
                     //execution.AddComponent<UpdateComponent>();
                 }
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Point)
                 {
-                    var execution = HeroEntity.AddChild<AbilityExecution>(null);
+                    var execution = HeroEntity.AddChild<AbilityExecution>();
                     execution.ExecutionObject = CurrentExecutionObject;
                     execution.InputPoint = BossEntity.Position;
-                    execution.LoadExecutionEffects();
-                    execution.BeginExecute();
+                    AbilityExecutionSystem.LoadExecutionEffects(execution);
+                    AbilityExecutionSystem.BeginExecute(execution);
                     //execution.AddComponent<UpdateComponent>();
                 }
             }

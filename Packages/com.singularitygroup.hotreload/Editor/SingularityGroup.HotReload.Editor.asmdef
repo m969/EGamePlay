@@ -1,0 +1,32 @@
+{
+    "name": "SingularityGroup.HotReload.Editor",
+    "rootNamespace": "SingularityGroup.HotReload",
+    "references": [
+        "SingularityGroup.HotReload.Runtime.Public",
+        "SingularityGroup.HotReload.Runtime",
+        "UnityEditor.UI",
+        "UnityEngine.UI",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "VInspector"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "SingularityGroup.HotReload.RuntimeDependencies.dll",
+        "SingularityGroup.HotReload.RuntimeDependencies2019.dll",
+        "SingularityGroup.HotReload.RuntimeDependencies2020.dll",
+        "SingularityGroup.HotReload.RuntimeDependencies2022.dll",
+        "SingularityGroup.HotReload.EditorDependencies.dll",
+        "Sirenix.OdinInspector.Editor.dll",
+        "Sirenix.Utilities.dll",
+        "Sirenix.OdinInspector.Attributes.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": []
+}

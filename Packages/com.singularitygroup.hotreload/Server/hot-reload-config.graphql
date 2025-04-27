@@ -1,0 +1,99 @@
+"""
+The model of the config file that can optionally be added in the unity project directory.
+The name of the file shall be 'hot-reload-config.json'
+Example json contents:
+{ 
+    "externalSolutions": [
+        "../src/Serialization/Serialization.sln",
+        "../src/WebSocket/WebSocket.sln"
+    ],
+    "additionalSourceDirectories": [
+        "../src/SharedUtility",
+        "../src/UnitTestBoilerplate"
+    ],
+    "projectBlacklist": [
+        "../src/UnitTests/UnitTests.csproj"
+    ],
+    "polyfillSourceFiles": [
+        "Polyfills/CompilerSupport.cs",
+        "Polyfills/IndexRange.cs"
+    ]
+}
+"""
+input HotReloadConfig {
+    """
+    The file paths to external solutions.
+    Paths shall be specified relative to the unity project path.
+    
+    Consider the following example:
+    
+    UnityProject
+    |_ UnityProject.sln
+    src
+    |_ ExternalSlnDir
+       |_ External.sln 
+    
+    here the path would be '../src/ExternalSlnDir/External.sln'
+    """
+    externalSolutions: [String!]
+    
+    """
+    The file paths to additional source directories that are not already part of a solution folder or its sub folders.
+    Paths shall be specified relative to the unity project path.
+
+    Consider this example:
+    
+    UnityProject
+    |_ UnityProject.sln
+    src
+    |_ ExternalSlnDir
+       |_ External.sln
+       |_ External.csproj <- uses Foo.cs
+    |_ SharedUtility
+       |_ Foo.cs
+    
+    In such a case the path '../src/SharedUtility' needs to be specified as an additional source directory.
+    This is mainly to ensure that the file watcher listens to all c# files that are related to the unity project.
+    The Assets/ and Packages/ folders and all paths to local packages specified in the Packages/manifest.json are already covered.
+    """
+    additionalSourceDirectories: [String!]
+
+    """
+    The file paths to project files that Hot Reload should ignore.
+    This is only needed when you add additional project files to the unity project solution.
+    Paths shall be specified relative to the unity project path.
+
+    Consider this example:
+
+    UnityProject
+    |_ UnityProject.sln
+    src
+    |_ ExternalSlnDir
+        |_ External.sln
+        |_ UnitTests
+           |_ UnitTests.csproj
+
+    here the path would be '../src/ExternalSlnDir/UnitTests/UnitTests.csproj'
+    """
+    projectBlacklist: [String!]
+    
+    
+    """
+    The file paths to source files that should get added to all unity .csproj files.
+    Use this is you e.g. use a csc.rsp to include polyfill csharp files when compiling the script assemblies
+    Paths shall be specified relative to the unity project path.
+
+    Consider this example:
+
+    UnityProject
+      |_ UnityProject.sln
+      PolyFills
+        |_ IndexRange.cs
+
+    here the path would be 'PolyFills/IndexRange.cs'
+    """
+    polyfillSourceFiles: [String!]
+}
+
+scalar String
+
