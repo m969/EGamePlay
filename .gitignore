@@ -64,3 +64,4 @@ crashlytics-build.properties
 .vsconfig
 /Assets/Plugins/Sirenix
 /Assets/Plugins/Sirenix.meta
+/Packages/com.singularitygroup.hotreload

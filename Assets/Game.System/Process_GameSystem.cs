@@ -37,10 +37,6 @@ namespace ECSGame
 
             StaticClient.Game = game;
 
-            var combatContext = game.AddChild<CombatContext>();
-            game.CombatContext = combatContext;
-            StaticClient.Context = combatContext;
-
             var canvasTrans = GameObject.Find("Hero").transform.Find("Canvas");
             var healthImage = canvasTrans.Find("Image").GetComponent<Image>();
             var actor = ActorSystem.CreateHero(game, ecsNode.NewInstanceId());
@@ -56,7 +52,7 @@ namespace ECSGame
             actor.CombatEntity.IsHero = true;
             actor.Init();
             game.MyActor = actor;
-            combatContext.Object2Entities.Add(GameObject.Find("Hero"), actor.CombatEntity);
+            game.Object2Entities.Add(GameObject.Find("Hero"), actor.CombatEntity);
 
             var enemiesTrans = GameObject.Find("Enemies").transform;
             for (int i = 0; i < enemiesTrans.childCount; i++)
@@ -78,11 +74,7 @@ namespace ECSGame
                 actor.AddComponent<ActorCombatComponent>();
                 actor.AddComponent<AIComponent>();
                 actor.Init();
-                combatContext.Object2Entities.Add(monsterTrans.gameObject, actor.CombatEntity);
-                //if (game.OtherActor == null)
-                //{
-                //    game.OtherActor = actor;
-                //}
+                game.Object2Entities.Add(monsterTrans.gameObject, actor.CombatEntity);
             }
         }
 

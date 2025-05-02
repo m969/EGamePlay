@@ -141,7 +141,7 @@ namespace EGamePlay
         private static void OnSelectedSelf(Game game)
         {
             var component = game.GetComponent<SpellPreviewComponent>();
-            var combatEntity = StaticClient.Context.HeroEntity;
+            var combatEntity = StaticClient.Game.MyActor.CombatEntity;
             SpellSystem.SpellWithTarget(component.OwnerEntity, component.PreviewingSkill, combatEntity);
         }
 
@@ -149,7 +149,7 @@ namespace EGamePlay
         {
             var component = game.GetComponent<SpellPreviewComponent>();
             CancelPreview(game);
-            var combatEntity = game.CombatContext.Object2Entities[selectObject]; ;
+            var combatEntity = game.Object2Entities[selectObject]; ;
             SpellSystem.SpellWithTarget(component.OwnerEntity, component.PreviewingSkill, combatEntity);
         }
 

@@ -26,11 +26,11 @@ public class GameDebugEditor : OdinEditorWindow
             //    ReloadFGUI();
             //}
 
-            if (AppLoad.NeedReloadShare)
-            {
-                AppLoad.NeedReloadShare = false;
-                CompileShare();
-            }
+            //if (AppLoad.NeedReloadShare)
+            //{
+            //    AppLoad.NeedReloadShare = false;
+            //    CompileShare();
+            //}
         }
     }
 
