@@ -1,4 +1,5 @@
 ﻿using ECS;
+using EGamePlay.Combat;
 using ET;
 using System;
 using System.Collections;
@@ -63,6 +64,24 @@ IAwake<EcsNode, EventComponent>
         public static void Execute<T>(T cmd) where T : struct, IExecuteCommand
         {
             cmd.Entity.EcsNode.GetComponent<EventComponent>().ExecuteCommands.Enqueue(cmd);
+        }
+
+        public static void DriveSystemEvent<T>(EcsEntity entity, Action<T> action)
+        {
+            if (entity == null || entity.IsDisposed)
+            {
+                return;
+            }
+            if (entity.EcsNode.EntityType2Systems.TryGetValue(entity.GetType(), out var systems))
+            {
+                foreach (var item in systems)
+                {
+                    if (item is T eventInstance)
+                    {
+                        action.Invoke(eventInstance);
+                    }
+                }
+            }
         }
 
         public static async ETTask Run<T, A>(T eventRun, A a) where T : AEventRun<T, A>, new() where A : EcsEntity

@@ -12,7 +12,7 @@
     "sg",
     "singularity"
   ],
-  "version": "1.13.5",
+  "version": "1.13.7",
   "dependencies": {
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0"

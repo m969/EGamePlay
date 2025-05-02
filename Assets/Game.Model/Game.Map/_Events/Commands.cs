@@ -43,26 +43,4 @@ namespace ECSGame
     {
         public EcsEntity Entity {  get; set; }
     }
-
-    public struct TriggerClipCmd : ICommand
-    {
-        public EcsEntity Entity { get; set; }
-    }
-
-    public struct EndClipCmd : ICommand
-    {
-        public EcsEntity Entity { get; set; }
-    }
-
-    public struct AfterCauseApplyCmd : ICommand
-    {
-        public EcsEntity Entity { get; set; }
-        public EcsEntity Action { get; set; }
-    }
-
-    public struct AfterReceiveApplyCmd : ICommand
-    {
-        public EcsEntity Entity { get; set; }
-        public EcsEntity Action { get; set; }
-    }
 }

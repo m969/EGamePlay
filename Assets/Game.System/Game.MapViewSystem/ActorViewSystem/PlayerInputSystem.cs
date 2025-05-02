@@ -28,8 +28,6 @@ IInit<Game, PlayerInputComponent>
         {
             var actor = game.MyActor;
             var combatEntity = actor.CombatEntity;
-            //combatEntity.Position = transform.position;
-            //combatEntity.Rotation = transform.GetChild(0).localRotation;
 
             if (combatEntity.SpellingExecution != null && combatEntity.SpellingExecution.ActionOccupy)
                 return;
@@ -45,7 +43,6 @@ IInit<Game, PlayerInputComponent>
                     StopMove(game);
                     component.MoveTweener = DOTween.To(() => TransformSystem.GetPosition(actor), x => TransformSystem.ChangePosition(actor, x), point, time).SetEase(Ease.Linear).OnComplete(() => { AnimationSystem.PlayFade(actor, animComp.IdleAnimation); });
                     TransformSystem.ChangeForward(actor, point - transComp.Position);
-                    //component.LookAtTweener = transform.GetChild(0).DOLookAt(point, 0.2f);
                     AnimationSystem.PlayFade(actor, animComp.RunAnimation);
                 }
             }
@@ -55,7 +52,6 @@ IInit<Game, PlayerInputComponent>
         {
             var component = game.GetComponent<PlayerInputComponent>();
             component.MoveTweener?.Kill();
-            //component.LookAtTweener?.Kill();
         }
 
         public static void DisableMove(Game game)
@@ -64,8 +60,7 @@ IInit<Game, PlayerInputComponent>
             var combatEntity = actor.CombatEntity;
             var component = game.GetComponent<PlayerInputComponent>();
             component.MoveTweener?.Kill();
-            //component.LookAtTweener?.Kill();
-            combatEntity.GetComponent<MotionComponent>().Enable = false;
+            combatEntity.Actor.GetComponent<MotionComponent>().Enable = false;
         }
     }
 }

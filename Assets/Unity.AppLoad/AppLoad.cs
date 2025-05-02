@@ -51,8 +51,11 @@ public class AppLoad : MonoBehaviour
         EcsNode.RegisterDrive<IDisable>();
         EcsNode.RegisterDrive<IDestroy>();
         EcsNode.RegisterDrive<IInit>();
+        EcsNode.RegisterDrive<IAfterInit>();
+        EcsNode.RegisterDrive<IOnChange>();
         EcsNode.RegisterDrive<IUpdate>();
         EcsNode.RegisterDrive<IFixedUpdate>();
+        //EcsNode.RegisterDrive<IOnComponentChange>();
 
         StaticClient.ConfigsCollector = ConfigsCollector;
         StaticClient.PrefabsCollector = PrefabsCollector;

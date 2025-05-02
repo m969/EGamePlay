@@ -13,6 +13,7 @@ namespace SingularityGroup.HotReload.Editor {
         private const string RecompiledUnsupportedChangesOnExitPlaymodeKey = "HotReloadWindow.RecompiledUnsupportedChangesOnExitPlaymode";
         private const string RecompiledUnsupportedChangesInPlaymodeKey = "HotReloadWindow.RecompiledUnsupportedChangesInPlaymode";
         private const string EditorCodePatcherInitKey = "HotReloadWindow.EditorCodePatcherInit";
+        private const string ShowedDebuggerCompatibilityKey = "HotReloadWindow.ShowedDebuggerCompatibility";
         
 
         public static int ServerPort {
@@ -68,6 +69,11 @@ namespace SingularityGroup.HotReload.Editor {
         public static bool EditorCodePatcherInit {
             get { return SessionState.GetBool(EditorCodePatcherInitKey, false); }
             set { SessionState.SetBool(EditorCodePatcherInitKey, value); }
+        }
+        
+        public static bool ShowedDebuggerCompatibility {
+            get { return SessionState.GetBool(ShowedDebuggerCompatibilityKey, false); }
+            set { SessionState.SetBool(ShowedDebuggerCompatibilityKey, value); }
         }
     }
 

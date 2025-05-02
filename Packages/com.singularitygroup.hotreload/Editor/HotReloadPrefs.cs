@@ -55,6 +55,7 @@ namespace SingularityGroup.HotReload.Editor {
         private const string IncludeShaderChangesKey = "HotReloadWindow.IncludeShaderChanges";
         private const string DisableConsoleWindowKey = "HotReloadWindow.DisableConsoleWindow";
         private const string DisableDetailedErrorReportingKey = "HotReloadWindow.DisableDetailedErrorReporting";
+        private const string DebuggerCompatibilityEnabledKey = "HotReloadWindow.DebuggerCompatibilityEnabled";
         private const string RedeemLicenseEmailKey = "HotReloadWindow.RedeemLicenseEmail";
         private const string RedeemLicenseInvoiceKey = "HotReloadWindow.RedeemLicenseInvoice";
         private const string RunTabEventsSuggestionsFoldoutKey = "HotReloadWindow.RunTabEventsSuggestionsFoldout";
@@ -467,6 +468,11 @@ namespace SingularityGroup.HotReload.Editor {
         public static bool DisableDetailedErrorReporting {
             get { return EditorPrefs.GetBool(DisableDetailedErrorReportingKey, false); }
             set { EditorPrefs.SetBool(DisableDetailedErrorReportingKey, value); }
+        }
+        
+        public static bool AutoDisableHotReloadWithDebugger {
+            get { return EditorPrefs.GetBool(DebuggerCompatibilityEnabledKey, true); }
+            set { EditorPrefs.SetBool(DebuggerCompatibilityEnabledKey, value); }
         }
     }
 }

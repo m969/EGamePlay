@@ -71,11 +71,6 @@ namespace ECS
             return (T)this;
         }
 
-        //private EcsNode GetEcsNode()
-        //{
-        //    return EcsNode;
-        //}
-
         public T AddChild<T>(Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
             return AddChild(EcsNode.NewInstanceId(), beforeAwake);
@@ -150,10 +145,15 @@ namespace ECS
             return component as T;
         }
 
-        public void DriveSystems<T>()
-        {
-            EcsNode.DriveEntitySystems(this, typeof(T));
-        }
+        //public void ComponentChange<T>() where T : EcsComponent, new()
+        //{
+        //    EcsNode.DriveEntitySystems(this, typeof(IOnComponentChange));
+        //}
+
+        //public void DriveSystems<T>()
+        //{
+        //    EcsNode.DriveEntitySystems(this, typeof(T));
+        //}
 
         private void DriveAwake(EcsEntity entity)
         {
@@ -182,6 +182,12 @@ namespace ECS
                 EcsNode.DriveComponentSystems(this, item, typeof(IInit));
             }
             EcsNode.DriveEntitySystems(this, typeof(IInit));
+
+            foreach (var item in Components.Values)
+            {
+                EcsNode.DriveComponentSystems(this, item, typeof(IAfterInit));
+            }
+            EcsNode.DriveEntitySystems(this, typeof(IAfterInit));
         }
     }
 }

@@ -41,18 +41,20 @@ namespace ECSGame
             game.CombatContext = combatContext;
             StaticClient.Context = combatContext;
 
+            var canvasTrans = GameObject.Find("Hero").transform.Find("Canvas");
+            var healthImage = canvasTrans.Find("Image").GetComponent<Image>();
             var actor = ActorSystem.CreateHero(game, ecsNode.NewInstanceId());
             actor.AddComponent<ModelViewComponent>(x => x.ModelTrans = GameObject.Find("Hero").transform);
             actor.AddComponent<AnimationComponent>();
             actor.AddComponent<HealthViewComponent>(x =>
             {
-                x.CanvasTrans = GameObject.Find("Hero").transform.Find("Canvas");
-                x.HealthBarImage = x.CanvasTrans.Find("Image").GetComponent<Image>();
+                x.CanvasTrans = canvasTrans;
+                x.HealthBarImage = healthImage;
             });
             actor.GetComponent<CollisionComponent>().Layer = 1;
-            actor.CombatEntity = CombatEntitySystem.Create(game, actor);
+            actor.AddComponent<ActorCombatComponent>();
+            actor.CombatEntity.IsHero = true;
             actor.Init();
-            CombatEntitySystem.HeroInit(actor.CombatEntity);
             game.MyActor = actor;
             combatContext.Object2Entities.Add(GameObject.Find("Hero"), actor.CombatEntity);
 
@@ -60,24 +62,27 @@ namespace ECSGame
             for (int i = 0; i < enemiesTrans.childCount; i++)
             {
                 var monsterTrans = enemiesTrans.GetChild(i);
+                canvasTrans = monsterTrans.Find("Canvas");
+                healthImage = canvasTrans.Find("Image").GetComponent<Image>();
+
                 actor = ActorSystem.CreateMonster(game, ecsNode.NewInstanceId());
                 TransformSystem.ChangePosition(actor, monsterTrans.position);
                 actor.AddComponent<ModelViewComponent>(x => x.ModelTrans = monsterTrans);
                 actor.AddComponent<AnimationComponent>();
                 actor.AddComponent<HealthViewComponent>(x =>
                 {
-                    x.CanvasTrans = monsterTrans.Find("Canvas");
-                    x.HealthBarImage = x.CanvasTrans.Find("Image").GetComponent<Image>();
+                    x.CanvasTrans = canvasTrans;
+                    x.HealthBarImage = healthImage;
                 });
                 actor.GetComponent<CollisionComponent>().Layer = 2;
+                actor.AddComponent<ActorCombatComponent>();
                 actor.AddComponent<AIComponent>();
-                actor.CombatEntity = CombatEntitySystem.Create(game, actor);
                 actor.Init();
                 combatContext.Object2Entities.Add(monsterTrans.gameObject, actor.CombatEntity);
-                if (game.OtherActor == null)
-                {
-                    game.OtherActor = actor;
-                }
+                //if (game.OtherActor == null)
+                //{
+                //    game.OtherActor = actor;
+                //}
             }
         }
 

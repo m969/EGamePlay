@@ -125,6 +125,7 @@ namespace SingularityGroup.HotReload.Editor {
 
                                         EditorGUILayout.Space();
                                     }
+                                    RenderDebuggerCompatibility();
 
                                     // // fields
                                     // RenderShowFeatures();
@@ -235,6 +236,23 @@ namespace SingularityGroup.HotReload.Editor {
                 toggleDescription = "Hot Reload will refresh changed assets such as sprites, prefabs, etc";
             } else {
                 toggleDescription = "Enable to allow Hot Reload to refresh changed assets in the project. All asset types are supported including sprites, prefabs, shaders etc";
+            }
+            EditorGUILayout.LabelField(toggleDescription, HotReloadWindowStyles.WrapStyle);
+            EditorGUILayout.EndToggleGroup();
+            EditorGUILayout.Space(6f);
+        }
+        
+        void RenderDebuggerCompatibility() {
+            var newSettings = EditorGUILayout.BeginToggleGroup(new GUIContent("Auto-disable Hot Reload while a debugger is attached (recommended)"), HotReloadPrefs.AutoDisableHotReloadWithDebugger);
+            if (newSettings != HotReloadPrefs.AutoDisableHotReloadWithDebugger) {
+                HotReloadPrefs.AutoDisableHotReloadWithDebugger = newSettings;
+                CodePatcher.I.debuggerCompatibilityEnabled = !HotReloadPrefs.AutoDisableHotReloadWithDebugger;
+            }
+            string toggleDescription;
+            if (HotReloadPrefs.AutoDisableHotReloadWithDebugger) {
+                toggleDescription = "Hot Reload automatically disables itself while a debugger is attached, as it can otherwise interfere with certain debugger features. Please read the documentation if you consider disabling this setting.";
+            } else {
+                toggleDescription = "When a debugger is attached, Hot Reload will be active, but certain debugger features might not work as expected. Please read our documentation to learn about the limitations.";
             }
             EditorGUILayout.LabelField(toggleDescription, HotReloadWindowStyles.WrapStyle);
             EditorGUILayout.EndToggleGroup();

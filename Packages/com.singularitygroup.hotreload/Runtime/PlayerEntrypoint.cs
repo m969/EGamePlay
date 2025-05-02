@@ -66,6 +66,8 @@ namespace SingularityGroup.HotReload {
                 return;
             }
 
+            CodePatcher.I.debuggerCompatibilityEnabled = true;
+
             try {
                 var customIp = PlayerPrefs.GetString("HotReloadRuntime.CustomIP", "");
                 if (!string.IsNullOrEmpty(customIp)) {

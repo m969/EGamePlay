@@ -164,17 +164,20 @@ namespace EGamePlay
             OnInputPoint(game, point);
         }
 
-        public static void SelectTargetsWithDistance(Game game, Ability SpellSkill, float distance)
+        public static void SelectTargetsWithDistance(Game game, Ability spellSkill, float distance)
         {
             var component = game.GetComponent<SpellPreviewComponent>();
             if (component.OwnerEntity.SpellAbility.TryMakeAction(out var action))
             {
-                //var enemiesRoot = GameObject.Find("Enemies");
-                //foreach (Transform item in enemiesRoot.transform)
+                //foreach (var item in StaticClient.Context.Object2Entities.Values)
                 //{
-                //    if (Vector3.Distance(item.position, Hero.Instance.transform.position) < distance)
+                //    if (item.IsHero)
                 //    {
-                //        action.SkillTargets.Add(item.GetComponent<Monster>().CombatEntity);
+                //        continue;
+                //    }
+                //    if (Vector3.Distance(TransformSystem.GetPosition(item.Actor), TransformSystem.GetPosition(StaticClient.Game.MyActor)) < distance)
+                //    {
+                //        action.SkillTargets.Add(item);
                 //    }
                 //}
 
@@ -184,7 +187,7 @@ namespace EGamePlay
                     return;
                 }
 
-                action.SkillAbility = SpellSkill;
+                action.SkillAbility = spellSkill;
                 SpellActionSystem.Execute(action, false);
             }
         }

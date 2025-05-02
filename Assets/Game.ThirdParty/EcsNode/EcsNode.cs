@@ -52,6 +52,7 @@ namespace ECS
         public Dictionary<Type, List<EcsEntity>> Type2Entities { get; set; }= new();
 
         public Dictionary<Type, IEcsSystem> AllSystems { get; set; }= new();
+        public Dictionary<Type, List<IEcsSystem>> EntityType2Systems { get; set; }= new();
         public Dictionary<Type, Dictionary<Type, List<SystemInfo>>> AllEntitySystems { get; set; }= new();
         public Dictionary<(Type, Type), Dictionary<string, SystemInfo>> AllEntityComponentSystems { get; set; }= new();
         public Dictionary<Type, List<SystemInfo>> AllUpdateSystems { get; set; }= new();
@@ -101,6 +102,7 @@ namespace ECS
             AllTypes = types;
 
             var allSystems = new Dictionary<Type, IEcsSystem>();
+            var entityType2Systems = new Dictionary<Type, List<IEcsSystem>>();
             var allEntitySystems = new Dictionary<Type, Dictionary<Type, List<SystemInfo>>>();
             var allEntityComponentSystems = new Dictionary<(Type, Type), Dictionary<string, SystemInfo>>();
             var allUpdateSystems = new Dictionary<Type, List<SystemInfo>>();
@@ -132,6 +134,13 @@ namespace ECS
                 if (system is IEcsEntitySystem ecsEntitySystem)
                 {
                     var entityType = ecsEntitySystem.EntityType;
+                    if (!entityType2Systems.TryGetValue(entityType, out var ecsSystems))
+                    {
+                        ecsSystems = new List<IEcsSystem>();
+                        entityType2Systems.Add(entityType, ecsSystems);
+                    }
+                    ecsSystems.Add(system);
+
                     if (!allEntitySystems.TryGetValue(entityType, out var typeSystems))
                     {
                         typeSystems = new Dictionary<Type, List<SystemInfo>>();
@@ -226,6 +235,7 @@ namespace ECS
             }
 
             AllSystems = allSystems;
+            EntityType2Systems = entityType2Systems;
             AllEntitySystems = allEntitySystems;
             AllEntityComponentSystems = allEntityComponentSystems;
             AllUpdateSystems = allUpdateSystems;

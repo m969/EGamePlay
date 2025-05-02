@@ -10,12 +10,6 @@ namespace ECSGame
 {
     public static class AIActionExtension
     {
-        //public static AIActionQueue OnNext<T>(this AIActionQueue actionQueue) where T : IAIAction
-        //{
-        //    actionQueue.ActionQueue.Enqueue(typeof(T));
-        //    return actionQueue;
-        //}
-
         public static AINode NextAction<T>(this AINode aiNode) where T : IAIAction, new()
         {
             var newNode = new AINode()

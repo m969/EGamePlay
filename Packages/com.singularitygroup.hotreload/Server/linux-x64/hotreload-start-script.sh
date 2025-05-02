@@ -51,9 +51,6 @@ fi
 CLIARGUMENTS=$(cat "$CLIARGUMENTS_FILE")
 rm "$CLIARGUMENTS_FILE"
 
-# Needs be removed if you have multiple unities
-pgrep CodePatcherCLI | xargs -I {} kill {}
-
 rm -rf "$METHODPATCHDIR"
 SERVER="$EXECUTABLETARGETDIR/CodePatcherCLI"
 

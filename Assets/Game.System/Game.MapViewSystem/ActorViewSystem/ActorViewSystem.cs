@@ -5,9 +5,10 @@ using System.Collections.Generic;
 namespace ECSGame
 {
     public class ActorViewSystem : AEntitySystem<Actor>,
-IAwake<Actor>,
-IInit<Actor>,
-IUpdate<Actor>
+        IAwake<Actor>,
+        IInit<Actor>,
+        IAfterInit<Actor>,
+        IUpdate<Actor>
     {
         public void Awake(Actor entity)
         {
@@ -18,12 +19,14 @@ IUpdate<Actor>
 
         }
 
+        public void AfterInit(Actor entity)
+        {
+            
+        }
+
         public void Update(Actor entity)
         {
-            if (entity.GetComponent<ModelViewComponent>() is { } component)
-            {
-                ModelViewSystem.Update(entity, component);
-            }
+            EntityViewSystem.Update(entity);
         }
     } 
 }

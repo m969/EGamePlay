@@ -17,11 +17,20 @@ namespace ECSGame
 IAwake<EcsEntity, HealthViewComponent>,
 IEnable<EcsEntity, HealthViewComponent>,
 IDisable<EcsEntity, HealthViewComponent>,
-IDestroy<EcsEntity, HealthViewComponent>
+IDestroy<EcsEntity, HealthViewComponent>,
+IAfterInit<EcsEntity, HealthViewComponent>
     {
         public void Awake(EcsEntity entity, HealthViewComponent component)
         {
 
+        }
+
+        public void AfterInit(EcsEntity entity, HealthViewComponent component)
+        {
+            if (entity is Actor actor)
+            {
+                component.HealthBarImage.fillAmount = HealthSystem.ToPercent(actor.CombatEntity);
+            }
         }
 
         public void Enable(EcsEntity entity, HealthViewComponent component)
@@ -52,11 +61,11 @@ IDestroy<EcsEntity, HealthViewComponent>
 
         public static void OnReceiveDamage(EcsEntity entity, EcsEntity combatAction)
         {
-            var component = entity.GetComponent<HealthViewComponent>();
-            var combatEntity = entity.As<Actor>().CombatEntity;
+            var combatEntity = entity.As<CombatEntity>();
+            var component = combatEntity.Actor.GetComponent<HealthViewComponent>();
             var damageAction = combatAction as DamageAction;
             component.HealthBarImage.fillAmount = HealthSystem.ToPercent(combatEntity);
-            var damageTextPrefab = StaticClient.ConfigsCollector.Get<GameObject>("DamageText");
+            var damageTextPrefab = StaticClient.PrefabsCollector.Get<GameObject>("DamageText");
             var damageText = GameObject.Instantiate(damageTextPrefab);
             damageText.transform.SetParent(component.CanvasTrans);
             damageText.transform.localPosition = Vector3.up * 120;
@@ -69,11 +78,11 @@ IDestroy<EcsEntity, HealthViewComponent>
 
         public static void OnReceiveCure(EcsEntity entity, EcsEntity combatAction)
         {
-            var component = entity.GetComponent<HealthViewComponent>();
-            var combatEntity = entity.As<Actor>().CombatEntity;
+            var combatEntity = entity.As<CombatEntity>();
+            var component = combatEntity.Actor.GetComponent<HealthViewComponent>();
             var action = combatAction as CureAction;
             component.HealthBarImage.fillAmount = HealthSystem.ToPercent(combatEntity);
-            var cureTextPrefab = StaticClient.ConfigsCollector.Get<GameObject>("CureText");
+            var cureTextPrefab = StaticClient.PrefabsCollector.Get<GameObject>("CureText");
             var cureText = GameObject.Instantiate(cureTextPrefab);
             cureText.transform.SetParent(component.CanvasTrans);
             cureText.transform.localPosition = Vector3.up * 120;

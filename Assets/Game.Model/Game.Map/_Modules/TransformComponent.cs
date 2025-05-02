@@ -23,11 +23,5 @@ namespace ECSGame
             get;
             set;
         }
-
-        //public UnityEngine.Vector3 ForecastPosition
-        //{
-        //    get;
-        //    set;
-        //}
     }
 }

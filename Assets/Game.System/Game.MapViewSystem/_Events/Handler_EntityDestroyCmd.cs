@@ -10,8 +10,7 @@ namespace ECSGame
     {
         protected override async ET.ETTask Handle(EcsNode ecsNode, EntityDestroyCmd cmd)
         {
-            cmd.Entity.AddComponent<ModelViewComponent>();
-
+            var entity = cmd.Entity;
         }
     }
 }
