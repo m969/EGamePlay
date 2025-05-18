@@ -36,7 +36,7 @@ namespace ECS
                         {
                             item.Enable = value;
                         }
-                        EcsNode.DriveEntitySystems(this, typeof(IEnable));
+                        EcsNode.DriveEntitySystems(this, typeof(IEnable), new object[] { this });
                     }
                     if (enable && !value)
                     {
@@ -45,7 +45,7 @@ namespace ECS
                         {
                             item.Enable = value;
                         }
-                        EcsNode.DriveEntitySystems(this, typeof(IDisable));
+                        EcsNode.DriveEntitySystems(this, typeof(IDisable), new object[] { this });
                     }
                 }
             }
@@ -125,6 +125,7 @@ namespace ECS
             Components.Add(typeof(T), component);
             beforeAwake?.Invoke(component);
             DriveAwake(component);
+            EcsNode.DriveEntitySystems(this, typeof(IOnAddComponent), new object[] { this, component });
             return component;
         }
 
@@ -145,19 +146,25 @@ namespace ECS
             return component as T;
         }
 
-        //public void ComponentChange<T>() where T : EcsComponent, new()
-        //{
-        //    EcsNode.DriveEntitySystems(this, typeof(IOnComponentChange));
-        //}
+        public void ComponentChange<T>() where T : EcsComponent, new()
+        {
+            var entity = this;
+            foreach (var item in entity.Components.Values)
+            {
+                entity.EcsNode.DriveComponentSystems(entity, item, typeof(IOnChange));
+            }
+            entity.EcsNode.DriveEntitySystems(entity, typeof(IOnChange), new object[] { entity });
+        }
 
-        //public void DriveSystems<T>()
-        //{
-        //    EcsNode.DriveEntitySystems(this, typeof(T));
-        //}
+        public void Change<T>(Action<T> changeAction) where T : EcsComponent, new()
+        {
+            changeAction?.Invoke(GetComponent<T>());
+            ComponentChange<T>();
+        }
 
         private void DriveAwake(EcsEntity entity)
         {
-            EcsNode.DriveEntitySystems(entity, typeof(IAwake));
+            EcsNode.DriveEntitySystems(entity, typeof(IAwake), new object[] { entity });
         }
 
         private void DriveAwake<T>(T component) where T : EcsComponent, new()
@@ -167,7 +174,7 @@ namespace ECS
 
         public void DriveDestroy(EcsEntity entity)
         {
-            EcsNode.DriveEntitySystems(entity, typeof(IDestroy));
+            EcsNode.DriveEntitySystems(entity, typeof(IDestroy), new object[] { entity });
         }
 
         public void DriveDestroy<T>(T component) where T : EcsComponent, new()
@@ -181,13 +188,13 @@ namespace ECS
             {
                 EcsNode.DriveComponentSystems(this, item, typeof(IInit));
             }
-            EcsNode.DriveEntitySystems(this, typeof(IInit));
+            EcsNode.DriveEntitySystems(this, typeof(IInit), new object[] { this });
 
             foreach (var item in Components.Values)
             {
                 EcsNode.DriveComponentSystems(this, item, typeof(IAfterInit));
             }
-            EcsNode.DriveEntitySystems(this, typeof(IAfterInit));
+            EcsNode.DriveEntitySystems(this, typeof(IAfterInit), new object[] { this });
         }
     }
 }

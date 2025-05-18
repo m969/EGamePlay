@@ -25,10 +25,10 @@ namespace ECSGame
             ecsNode.AddSystems(typeList.ToArray());
 
             EcsNodeSystem.Create(ecsNode);
-            ecsNode.Init();
-
+            ecsNode.AddComponent<EntityObjectComponent>();
             ecsNode.AddComponent<ReloadComponent>(x => x.SystemAssembly = assembly);
             ecsNode.AddComponent<ConfigManageComponent>(x => x.ConfigsCollector = StaticClient.ConfigsCollector);
+            ecsNode.Init();
 
             var game = GameSystem.Create(ecsNode);
             game.AddComponent<PlayerInputComponent>();

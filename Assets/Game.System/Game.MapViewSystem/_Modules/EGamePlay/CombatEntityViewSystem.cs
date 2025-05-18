@@ -10,11 +10,10 @@ using UnityEngine.UIElements;
 using ECSGame;
 using ECSUnity;
 using ET;
-using System.Drawing;
 
 namespace EGamePlay
 {
-    public class CombatEntityViewControlSystem : AEntitySystem<CombatEntity>,
+    public class CombatEntityControlSystem : AEntitySystem<CombatEntity>,
     IAwake<CombatEntity>,
     IInit<CombatEntity>,
     IUpdate<CombatEntity>,

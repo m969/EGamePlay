@@ -25,22 +25,22 @@ namespace ECS
     }
 }
 
-namespace ECSGame
-{
-    public struct EntityUpdateCmd : ICommand
-    {
-        public EcsEntity Entity {  get; set; }
-        public EcsComponent ChangeComponent;
-        public object Args;
-    }
+//namespace ECSGame
+//{
+//    public struct EntityUpdateCmd : ICommand
+//    {
+//        public EcsEntity Entity {  get; set; }
+//        public EcsComponent ChangeComponent;
+//        public object Args;
+//    }
 
-    public struct EntityCreateCmd : ICommand
-    {
-        public EcsEntity Entity {  get; set; }
-    }
+//    public struct EntityCreateCmd : ICommand
+//    {
+//        public EcsEntity Entity {  get; set; }
+//    }
 
-    public struct EntityDestroyCmd : ICommand
-    {
-        public EcsEntity Entity {  get; set; }
-    }
-}
+//    public struct EntityDestroyCmd : ICommand
+//    {
+//        public EcsEntity Entity {  get; set; }
+//    }
+//}

@@ -12,7 +12,7 @@ using ECSUnity;
 
 namespace EGamePlay
 {
-    public class AbilityItemViewControlSystem : AEntitySystem<AbilityItem>,
+    public class AbilityItemControlSystem : AEntitySystem<AbilityItem>,
     IAwake<AbilityItem>,
     IInit<AbilityItem>,
     IUpdate<AbilityItem>

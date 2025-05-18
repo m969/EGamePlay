@@ -19,14 +19,12 @@ namespace ECSGame
 
         public static void ChangePosition(EcsEntity entity, Vector3 target)
         {
-            entity.GetComponent<TransformComponent>().Position = target;
-            EntitySystem.ComponentChange<EcsEntity, TransformComponent>(entity);
+            entity.Change<TransformComponent>(x => x.Position = target);
         }
 
         public static void ChangeForward(EcsEntity entity, Vector3 foward)
         {
-            entity.GetComponent<TransformComponent>().Forward = foward;
-            EntitySystem.ComponentChange<EcsEntity, TransformComponent>(entity);
+            entity.Change<TransformComponent>(x => x.Forward = foward);
         }
     }
 }

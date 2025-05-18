@@ -25,13 +25,13 @@ namespace ECS
             
         }
 
-        public static void ComponentChange<T, T2>(T entity) where T : EcsEntity, new() where T2 : EcsComponent, new()
-        {
-            foreach (var item in entity.Components.Values)
-            {
-                entity.EcsNode.DriveComponentSystems(entity, item, typeof(IOnChange));
-            }
-            entity.EcsNode.DriveEntitySystems(entity, typeof(IOnChange));
-        }
+        //public static void ComponentChange<T, T2>(T entity) where T : EcsEntity, new() where T2 : EcsComponent, new()
+        //{
+        //    foreach (var item in entity.Components.Values)
+        //    {
+        //        entity.EcsNode.DriveComponentSystems(entity, item, typeof(IOnChange));
+        //    }
+        //    entity.EcsNode.DriveEntitySystems(entity, typeof(IOnChange));
+        //}
     }
 }

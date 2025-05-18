@@ -75,6 +75,8 @@ namespace ECS
             {
                 ecsNode.AddEntities.Enqueue(entity);
             }
+
+            entity.AddComponent<EntityObjectComponent>();
         }
 
         public void RemoveEntity(EcsEntity entity)
@@ -225,7 +227,6 @@ namespace ECS
                                 }
                                 var systemAction = systemType.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
                                 var systemInfo = new SystemInfo() { System = system, Action = systemAction };
-                                //ConsoleLog.Debug($"{entityType.Name} {componentType.Name} {item.Name}");
                                 pairs.Add($"{item.Name}_{systemType.Name}", systemInfo);
                                 break;
                             }
@@ -250,7 +251,7 @@ namespace ECS
             return system as T;
         }
 
-        public void DriveEntitySystems(EcsEntity entity, Type entityType, Type driveType)
+        public void DriveEntitySystems(EcsEntity entity, Type entityType, Type driveType, object[] args)
         {
             AllEntitySystems.TryGetValue(entityType, out var systems);
             if (systems == null)
@@ -266,16 +267,16 @@ namespace ECS
                     {
                         var system = systemInfo.System;
                         var method = systemInfo.Action;
-                        method.Invoke(system, new object[] { entity });
+                        method.Invoke(system, args);
                     }
                 }
             }
         }
 
-        public void DriveEntitySystems<T1>(T1 entity, Type driveType) where T1 : EcsEntity
+        public void DriveEntitySystems<T1>(T1 entity, Type driveType, object[] args) where T1 : EcsEntity
         {
-            DriveEntitySystems(entity, typeof(EcsEntity), driveType);
-            DriveEntitySystems(entity, entity.GetType(), driveType);
+            DriveEntitySystems(entity, typeof(EcsEntity), driveType, args);
+            DriveEntitySystems(entity, entity.GetType(), driveType, args);
         }
 
         public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type entityType, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
@@ -289,7 +290,6 @@ namespace ECS
             {
                 if (item.Key.StartsWith(driveType.Name))
                 {
-                    //ConsoleLog.Debug($"{item.Key} {driveType.Name}");
                     var systemInfo = item.Value;
                     var system = systemInfo.System;
                     var method = systemInfo.Action;
