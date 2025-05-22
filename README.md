@@ -5,7 +5,7 @@
 ---
 
 # 3.0版本
-1、3.0版本技能配置数据结构没有变动，主要是运行时的业务代码大改
+1、3.0版本技能配置数据结构没有变动，主要是运行时的业务代码大重构
 
 2、引入了EcsNode框架，引入System概念，基于EcsNode的 实体-组件-系统 模式重构了运行时代码，将逻辑和数据分离，将业务逻辑和视图逻辑分离
 
@@ -46,7 +46,6 @@
 
 ## demo运行
 - rpg demo，运行RpgExample Scene场景
-- 回合制demo，运行TurnBaseExample Scene场景
 - 技能调试编辑，运行ExecutionLinkScene场景
 
 ---
@@ -66,23 +65,28 @@
 
 ## 如何将EGamePlay移植到别的Unity工程
 如果要将EGamePlay移植到自己的Unity工程里，首先要确保Odin Inspector插件已经在工程中，并加上UNITY条件编译，最后将以下目录复制过去即可：
-- EGamePlay/Assets/Editor
-- EGamePlay/Assets/EGamePlay
-- EGamePlay/Assets/EGamePlay.Unity
-- EGamePlay/Assets/Plugins/Editor/npoi
-- EGamePlay/Excel
+- /Assets/Gizmos
+- /Assets/Game.Model
+- /Assets/Game.System
+- /Assets/Game.ThirdParty
+- /Assets/Unity.EditorScripts/Editor
+- /Assets/Unity.Scripts/UnityMono/EGamePlay
+- /Assets/Plugins/Editor/npoi
+- /Excel
 - 目前还不是完美接入，接入过程中会有冲突或者缺失，需要按需处理
 
 ---
-## 如何将EGamePlay移植到ET框架里
-- 把EGamePlay/Assets/Editor移到ET.Editor程序集下
-- 把EGamePlay/Assets/EGamePlay移到Model程序集下 
-- 把EGamePlay/Assets/EGamePlay.Unity移到ModelView程序集下 
+## 如何将EGamePlay移植到ET框架里(以ET8.1版本为例)
+- 把 /Assets/Unity.EditorScripts/Editor 移到ET.Editor程序集下
+- 把 /Assets/Unity.Scripts/UnityMono/EGamePlay 移到ET.Loader程序集下
+- 把 /Assets/Game.Model 里的业务代码移到Model程序集下
+- 把 /Assets/Game.Model 里的视图代码移到ModelView程序集下
+- 把 /Assets/Game.System 里的业务代码移到Hotfix程序集下
+- 把 /Assets/Game.System 里的视图代码移到HotfixView程序集下
+- 把 /Assets/Game.ThirdParty 移到ThirdParty程序集下
 - 最后要添加条件编译EGAMEPLAY_ET
 - ETHelper文件夹里是老版本的ET代码，会和ET框架的代码有冲突，可以整个删掉，改成用原ET框架的代码，配置表流程也需要改成原ET框架的流程
 - 目前还不是完美接入，接入过程中会有冲突或者缺失，需要按需处理
-
-可以参考这个联网同步demo https://github.com/m969/AOGame
 
 ## EGamePlay demo示意图
 ---
