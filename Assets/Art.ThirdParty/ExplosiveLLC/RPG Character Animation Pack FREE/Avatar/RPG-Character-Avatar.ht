@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1105 &110500000
+HumanTemplate:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: RPG-Character-Avatar
+  m_BoneTemplate:
+    Chest: B_Spine1
+    Head: B_Head
+    Hips: B_Pelvis
+    Left Index Intermediate: B_L_Finger11
+    Left Index Proximal: B_L_Finger1
+    Left Thumb Intermediate: B_L_Finger01
+    Left Thumb Proximal: B_L_Finger0
+    LeftFoot: B_L_Foot
+    LeftHand: B_L_Hand
+    LeftLowerArm: B_L_Forearm
+    LeftLowerLeg: B_L_Calf
+    LeftShoulder: B_L_Clavicle
+    LeftToes: B_L_Toe
+    LeftUpperArm: B_L_UpperArm
+    LeftUpperLeg: B_L_Thigh
+    Neck: B_Neck
+    Right Index Intermediate: B_R_Finger11
+    Right Index Proximal: B_R_Finger1
+    Right Thumb Intermediate: B_R_Finger01
+    Right Thumb Proximal: B_R_Finger0
+    RightFoot: B_R_Foot
+    RightHand: B_R_Hand
+    RightLowerArm: B_R_Forearm
+    RightLowerLeg: B_R_Calf
+    RightShoulder: B_R_Clavicle
+    RightToes: B_R_Toe
+    RightUpperArm: B_R_UpperArm
+    RightUpperLeg: B_R_Thigh
+    Spine: B_Spine

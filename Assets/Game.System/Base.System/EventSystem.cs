@@ -1,4 +1,4 @@
-﻿using ECS;
+using ECS;
 using EGamePlay.Combat;
 using ET;
 using System;
@@ -66,7 +66,7 @@ IAwake<EcsNode, EventComponent>
             cmd.Entity.EcsNode.GetComponent<EventComponent>().ExecuteCommands.Enqueue(cmd);
         }
 
-        public static void DriveSystemEvent<T>(EcsEntity entity, Action<T> action)
+        public static void InvokeSystem<T>(EcsEntity entity, Action<T> action)
         {
             if (entity == null || entity.IsDisposed)
             {
@@ -104,5 +104,5 @@ IAwake<EcsNode, EventComponent>
             await eventRun.Handle(a1, a2, a3);
             Dispatch(new AfterRunEventCmd() { Entity = a1, EventRun = eventRun, EventEntity = a1, EventArgs2 = a2, EventArgs3 = a3 });
         }
-    } 
+    }
 }

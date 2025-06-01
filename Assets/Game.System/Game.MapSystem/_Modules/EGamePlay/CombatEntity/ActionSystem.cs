@@ -81,42 +81,42 @@ namespace EGamePlay
 
         public static void BeforeExecuteAction(CombatEntity entity, Action<IBeforeExecuteAction> action)
         {
-            EventSystem.DriveSystemEvent(entity, action);
+            EventSystem.InvokeSystem(entity, action);
         }
 
         public static void BeforeSufferAction(EcsEntity entity, Action<IBeforeSufferAction> action)
         {
-            EventSystem.DriveSystemEvent(entity, action);
+            EventSystem.InvokeSystem(entity, action);
         }
 
         public static void AfterExecuteAction(CombatEntity entity, Action<IAfterExecuteAction> action)
         {
-            EventSystem.DriveSystemEvent(entity, action);
+            EventSystem.InvokeSystem(entity, action);
         }
 
         public static void AfterSufferAction(EcsEntity entity, Action<IAfterSufferAction> action)
         {
-            EventSystem.DriveSystemEvent(entity, action);
+            EventSystem.InvokeSystem(entity, action);
         }
 
         public static void BeforeCauseApply(CombatEntity entity, Action<IBeforeCauseApply> action)
         {
-            EventSystem.DriveSystemEvent(entity, action);
+            EventSystem.InvokeSystem(entity, action);
         }
 
         public static void BeforeReceiveApply(EcsEntity entity, Action<IBeforeReceiveApply> action)
         {
-            EventSystem.DriveSystemEvent(entity, action);
+            EventSystem.InvokeSystem(entity, action);
         }
 
         public static void AfterCauseApply(CombatEntity entity, Action<IAfterCauseApply> action)
         {
-            EventSystem.DriveSystemEvent(entity, action);
+            EventSystem.InvokeSystem(entity, action);
         }
 
         public static void AfterReceiveApply(EcsEntity entity, Action<IAfterReceiveApply> action)
         {
-            EventSystem.DriveSystemEvent(entity, action);
+            EventSystem.InvokeSystem(entity, action);
         }
     }
 }

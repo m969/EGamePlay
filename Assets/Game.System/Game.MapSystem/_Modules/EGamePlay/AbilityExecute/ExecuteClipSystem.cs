@@ -32,7 +32,7 @@ namespace EGamePlay
 
             var clipType = entity.ClipData.ExecuteClipType;
 
-            /// Ê±¼äµ½´¥·¢Ö´ĞĞĞ§¹û
+            /// æ—¶é—´åˆ°è§¦å‘æ‰§è¡Œæ•ˆæœ
             if (clipType == ExecuteClipType.ActionEvent)
             {
                 entity.AddComponent<ExecuteTimeTriggerComponent>(x =>
@@ -88,12 +88,12 @@ namespace EGamePlay
                 Trigger_CollisionItem(entity);
             }
 
-            EventSystem.DriveSystemEvent<IOnTriggerClip>(entity, x => x.OnTriggerClip(entity));
+            EventSystem.InvokeSystem<IOnTriggerClip>(entity, x => x.OnTriggerClip(entity));
         }
 
         public static void EndClip(ExecuteClip entity)
         {
-            EventSystem.DriveSystemEvent<IOnEndClip>(entity, x => x.OnEndClip(entity));
+            EventSystem.InvokeSystem<IOnEndClip>(entity, x => x.OnEndClip(entity));
         }
 
         private static void Trigger_NewExecution(ExecuteClip entity)
@@ -116,7 +116,7 @@ namespace EGamePlay
             }
         }
 
-        /// <summary>   ¼¼ÄÜÅö×²ÌåÉú³É   </summary>
+        /// <summary>   æŠ€èƒ½ç¢°æ’ä½“ç”Ÿæˆ   </summary>
         private static void Trigger_CollisionItem(ExecuteClip entity)
         {
             var execution = entity.GetParent<AbilityExecution>();

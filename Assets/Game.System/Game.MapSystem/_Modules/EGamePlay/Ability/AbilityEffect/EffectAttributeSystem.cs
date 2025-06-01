@@ -20,7 +20,7 @@ namespace EGamePlay
 
         public void Enable(AbilityEffect entity, EffectAttributeModifyComponent component)
         {
-            //Log.Debug($"EffectAttributeModifyComponent OnEnable {AttributeModifyEffect.AttributeType}");
+            //Log.Debug($"EffectAttributeSystem Enable {component.AttributeModifyEffect.AttributeType}");
             var parentEntity = entity.OwnerAbility.Parent;
             var attributeModifyEffect = component.AttributeModifyEffect;
             var numericValue = component.ModifyValueFormula;
@@ -30,7 +30,6 @@ namespace EGamePlay
             var numericModifier = new FloatModifier() { Value = value };
 
             var attributeType = attributeModifyEffect.AttributeType;
-            //var numeric = parentEntity.GetComponent<AttributeComponent>().GetNumeric(attributeType);
             var numeric = AttributeSystem.GetNumeric(parentEntity as CombatEntity, attributeType);
             if (attributeModifyEffect.ModifyType == ModifyType.BaseValue)
             {

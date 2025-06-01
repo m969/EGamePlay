@@ -1,4 +1,4 @@
-﻿using ECS;
+using ECS;
 using System.Collections.Generic;
 #if EGAMEPLAY_ET
 using AO;
@@ -16,7 +16,6 @@ namespace EGamePlay.Combat
     public class AttributeComponent : EcsComponent<CombatEntity>
     {
         public readonly Dictionary<string, FloatNumeric> attributeNameNumerics = new Dictionary<string, FloatNumeric>();
-        public readonly AttributeUpdateEvent attributeUpdateEvent = new AttributeUpdateEvent();
         public FloatNumeric MoveSpeed { get { return attributeNameNumerics[nameof(AttributeType.MoveSpeed)]; } }//移动速度
         public FloatNumeric HealthPoint { get { return attributeNameNumerics[nameof(AttributeType.HealthPoint)]; } }//当前生命值
         public FloatNumeric HealthPointMax { get { return attributeNameNumerics[nameof(AttributeType.HealthPointMax)]; } }//生命值上限

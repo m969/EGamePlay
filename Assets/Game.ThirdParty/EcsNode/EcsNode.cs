@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -49,14 +49,14 @@ namespace ECS
         }
 
         public Dictionary<long, EcsEntity> AllEntities { get; set; } = new();
-        public Dictionary<Type, List<EcsEntity>> Type2Entities { get; set; }= new();
+        public Dictionary<Type, List<EcsEntity>> Type2Entities { get; set; } = new();
 
-        public Dictionary<Type, IEcsSystem> AllSystems { get; set; }= new();
-        public Dictionary<Type, List<IEcsSystem>> EntityType2Systems { get; set; }= new();
-        public Dictionary<Type, Dictionary<Type, List<SystemInfo>>> AllEntitySystems { get; set; }= new();
-        public Dictionary<(Type, Type), Dictionary<string, SystemInfo>> AllEntityComponentSystems { get; set; }= new();
-        public Dictionary<Type, List<SystemInfo>> AllUpdateSystems { get; set; }= new();
-        public Dictionary<Type, List<SystemInfo>> AllFixedUpdateSystems { get; set; }= new();
+        public Dictionary<Type, IEcsSystem> AllSystems { get; set; } = new();
+        public Dictionary<Type, List<IEcsSystem>> EntityType2Systems { get; set; } = new();
+        public Dictionary<Type, Dictionary<Type, List<SystemInfo>>> AllEntitySystems { get; set; } = new();
+        public Dictionary<(Type, Type), Dictionary<string, SystemInfo>> AllEntityComponentSystems { get; set; } = new();
+        public Dictionary<Type, List<SystemInfo>> AllUpdateSystems { get; set; } = new();
+        public Dictionary<Type, List<SystemInfo>> AllFixedUpdateSystems { get; set; } = new();
         public List<Type> DriveTypes { get; set; } = new();
         public Type[] AllTypes { get; set; }
 
@@ -136,6 +136,7 @@ namespace ECS
                 if (system is IEcsEntitySystem ecsEntitySystem)
                 {
                     var entityType = ecsEntitySystem.EntityType;
+
                     if (!entityType2Systems.TryGetValue(entityType, out var ecsSystems))
                     {
                         ecsSystems = new List<IEcsSystem>();
@@ -169,7 +170,7 @@ namespace ECS
                                     typeSystems.Add(item, new List<SystemInfo>());
                                 }
                                 typeSystems[item].Add(systemInfo);
-                                
+
                                 if (item == typeof(IUpdate))
                                 {
                                     if (allUpdateSystems.ContainsKey(entityType) == false)
@@ -203,6 +204,14 @@ namespace ECS
                 if (system is IEcsComponentSystem ecsEntitySystem2)
                 {
                     var entityType = ecsEntitySystem2.EntityType;
+
+                    if (!entityType2Systems.TryGetValue(entityType, out var ecsSystems))
+                    {
+                        ecsSystems = new List<IEcsSystem>();
+                        entityType2Systems.Add(entityType, ecsSystems);
+                    }
+                    ecsSystems.Add(system);
+
                     var componentType = ecsEntitySystem2.ComponentType;
                     var tuple = (entityType, componentType);
                     allEntityComponentSystems.TryGetValue(tuple, out var pairs);

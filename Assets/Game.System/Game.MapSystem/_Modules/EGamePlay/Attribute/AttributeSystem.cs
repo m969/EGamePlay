@@ -9,6 +9,11 @@ using ET;
 
 namespace EGamePlay
 {
+    public interface IOnNumericUpdate
+    {
+        void OnNumericUpdate(EcsEntity entity, FloatNumeric numeric);
+    }
+
     public class AttributeSystem : AComponentSystem<CombatEntity, AttributeComponent>,
         IAwake<CombatEntity, AttributeComponent>
     {
@@ -61,16 +66,9 @@ namespace EGamePlay
         public static void OnNumericUpdate(EcsEntity entity, FloatNumeric numeric)
         {
             var component = entity.GetComponent<AttributeComponent>();
-            component.attributeUpdateEvent.Numeric = numeric;
+            EventSystem.InvokeSystem<IOnNumericUpdate>(entity, x => { x.OnNumericUpdate(entity, numeric); });
 #if EGAMEPLAY_ET
-            if (Entity.GetComponent<CombatUnitComponent>() != null)
-            {
-                var unit = Entity.GetComponent<CombatUnitComponent>().Unit;
-                if (unit != null)
-                {
-                    AOGame.PublishServer(new UnitAttributeNumericChanged() { Unit = unit, AttributeNumeric = numeric });
-                }
-            }
+
 #endif
         }
     }
