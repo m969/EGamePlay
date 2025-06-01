@@ -9,9 +9,9 @@ using ET;
 
 namespace EGamePlay
 {
-    public interface IOnNumericUpdate
+    public interface IOnAttributeUpdate
     {
-        void OnNumericUpdate(EcsEntity entity, FloatNumeric numeric);
+        void OnAttributeUpdate(EcsEntity entity, FloatNumeric numeric);
     }
 
     public class AttributeSystem : AComponentSystem<CombatEntity, AttributeComponent>,
@@ -63,10 +63,10 @@ namespace EGamePlay
             return component.attributeNameNumerics[attributeName];
         }
 
-        public static void OnNumericUpdate(EcsEntity entity, FloatNumeric numeric)
+        public static void OnUpdate(EcsEntity entity, FloatNumeric numeric)
         {
             var component = entity.GetComponent<AttributeComponent>();
-            EventSystem.InvokeSystem<IOnNumericUpdate>(entity, x => { x.OnNumericUpdate(entity, numeric); });
+            EventSystem.InvokeSystem<IOnAttributeUpdate>(entity, x => { x.OnAttributeUpdate(entity, numeric); });
 #if EGAMEPLAY_ET
 
 #endif

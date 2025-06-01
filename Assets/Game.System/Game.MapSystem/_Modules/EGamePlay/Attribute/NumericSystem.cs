@@ -69,7 +69,7 @@ namespace EGamePlay
             var value2 = (value1 + entity.add) * (100 + entity.pctAdd) / 100f;
             var value3 = (value2 + entity.finalAdd) * (100 + entity.finalPctAdd) / 100f;
             entity.Value = value3;
-            AttributeSystem.OnNumericUpdate(entity.Parent, entity);
+            AttributeSystem.OnUpdate(entity.Parent, entity);
         }
     }
 }

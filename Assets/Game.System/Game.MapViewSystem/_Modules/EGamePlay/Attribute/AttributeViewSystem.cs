@@ -15,15 +15,15 @@ namespace EGamePlay
 {
     public class AttributeViewSystem : AComponentSystem<CombatEntity, AttributeComponent>,
         IAwake<CombatEntity, AttributeComponent>,
-        IOnNumericUpdate
+        IOnAttributeUpdate
     {
         public void Awake(CombatEntity entity, AttributeComponent component)
         {
         }
 
-        public void OnNumericUpdate(EcsEntity entity, FloatNumeric numeric)
+        public void OnAttributeUpdate(EcsEntity entity, FloatNumeric numeric)
         {
-            ConsoleLog.Debug("OnNumericUpdate " + numeric.AttributeType);
+            ConsoleLog.Debug("OnAttributeUpdate " + numeric.AttributeType);
         }
     }
 }
