@@ -23,7 +23,7 @@ namespace EGamePlay
 
         public void OnAttributeUpdate(EcsEntity entity, FloatNumeric numeric)
         {
-            ConsoleLog.Debug("OnAttributeUpdate " + numeric.AttributeType);
+            //ConsoleLog.Debug("OnAttributeUpdate " + numeric.AttributeType);
         }
     }
 }

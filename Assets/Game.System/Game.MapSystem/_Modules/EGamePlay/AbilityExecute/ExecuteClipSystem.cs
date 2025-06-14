@@ -88,12 +88,12 @@ namespace EGamePlay
                 Trigger_CollisionItem(entity);
             }
 
-            EventSystem.InvokeSystem<IOnTriggerClip>(entity, x => x.OnTriggerClip(entity));
+            EventSystem.Dispatch<IOnTriggerClip>(entity, x => x.OnTriggerClip(entity));
         }
 
         public static void EndClip(ExecuteClip entity)
         {
-            EventSystem.InvokeSystem<IOnEndClip>(entity, x => x.OnEndClip(entity));
+            EventSystem.Dispatch<IOnEndClip>(entity, x => x.OnEndClip(entity));
         }
 
         private static void Trigger_NewExecution(ExecuteClip entity)

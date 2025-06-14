@@ -84,6 +84,7 @@
 - 把 /Assets/Game.System 里的业务代码移到Hotfix程序集下
 - 把 /Assets/Game.System 里的视图代码移到HotfixView程序集下
 - 把 /Assets/Game.ThirdParty 移到ThirdParty程序集下
+- 视图代码看文件夹，包含View或Unity字符的就是视图代码（比如Game.MapView，Game.UnitySystem），其余的就是纯业务代码
 - 最后要添加条件编译EGAMEPLAY_ET
 - ETHelper文件夹里是老版本的ET代码，会和ET框架的代码有冲突，可以整个删掉，改成用原ET框架的代码，配置表流程也需要改成原ET框架的流程
 - 目前还不是完美接入，接入过程中会有冲突或者缺失，需要按需处理

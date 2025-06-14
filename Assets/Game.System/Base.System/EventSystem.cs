@@ -66,7 +66,7 @@ IAwake<EcsNode, EventComponent>
             cmd.Entity.EcsNode.GetComponent<EventComponent>().ExecuteCommands.Enqueue(cmd);
         }
 
-        public static void InvokeSystem<T>(EcsEntity entity, Action<T> action)
+        public static void Dispatch<T>(EcsEntity entity, Action<T> action)
         {
             if (entity == null || entity.IsDisposed)
             {

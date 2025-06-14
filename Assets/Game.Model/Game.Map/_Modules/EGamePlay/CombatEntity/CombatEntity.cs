@@ -1,4 +1,4 @@
-﻿using ECS;
+using ECS;
 using ECSGame;
 using EGamePlay.Combat;
 using System;
@@ -18,9 +18,6 @@ namespace EGamePlay.Combat
     /// </summary>
     public sealed class CombatEntity : EcsEntity, IPosition
     {
-        public GameObject HeroObject { get; set; }
-        public Transform ModelTrans { get; set; }
-
         public Actor Actor { get; set; }
 
         //效果赋给行动能力

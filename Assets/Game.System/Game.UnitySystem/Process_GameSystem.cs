@@ -1,4 +1,4 @@
-﻿using ECS;
+using ECS;
 using ECSUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -53,6 +53,7 @@ namespace ECSGame
             actor.Init();
             game.MyActor = actor;
             game.Object2Entities.Add(GameObject.Find("Hero"), actor.CombatEntity);
+            StaticClient.Hero = actor.CombatEntity;
 
             var enemiesTrans = GameObject.Find("Enemies").transform;
             for (int i = 0; i < enemiesTrans.childCount; i++)
@@ -75,6 +76,11 @@ namespace ECSGame
                 actor.AddComponent<AIComponent>();
                 actor.Init();
                 game.Object2Entities.Add(monsterTrans.gameObject, actor.CombatEntity);
+
+                if (monsterTrans.name == "Monster")
+                {
+                    StaticClient.Boss = actor.CombatEntity;
+                }
             }
         }
 

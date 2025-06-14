@@ -6,15 +6,16 @@ using System.IO;
 using EGamePlay.Combat;
 using System.Linq;
 using ECSGame;
+using ECSUnity;
 
 namespace EGamePlay
 {
     public class ExecutionLinkPanel : MonoBehaviour
     {
         public static ExecutionLinkPanel Instance { get; set; }
-        public Text SkillTimeText;
-        public Text SkillNameText;
-        public Text SkillDescText;
+        //public Text SkillTimeText;
+        //public Text SkillNameText;
+        //public Text SkillDescText;
         public Image SkillTimeImage;
         public Transform TimeCursorTrm;
         [Space(10)]
@@ -31,12 +32,12 @@ namespace EGamePlay
         public Button AddClipBtn;
         public Button SaveBtn;
         public Button DeleteClipBtn;
-        public Toggle PauseToggle;
+        //public Toggle PauseToggle;
         public Button PlayButton;
-        public Button ReloadButton;
-        public Button StepBtn;
-        public Transform ContentTrm;
-        public Transform Button;
+        //public Button ReloadButton;
+        //public Button StepBtn;
+        //public Transform ContentTrm;
+        //public Transform Button;
 
         //public Unit Unit { get; set; }
         //public Unit Monster { get; set; }
@@ -61,10 +62,7 @@ namespace EGamePlay
 
             var r = GetComponent<RectTransform>();
             PanelWidth = Screen.width - r.offsetMin.x + r.offsetMax.x;
-            //PanelWidth = GetComponent<RectTransform>().sizeDelta.x;
-            //Log.Debug($"{GetComponent<RectTransform>().offsetMin} {GetComponent<RectTransform>().offsetMax}");
 
-            //Button.SetParent(null);
             TrackTrm.SetParent(null);
 
             FrameTextPos = FrameTextTrm.GetComponent<RectTransform>().localPosition;
@@ -86,6 +84,9 @@ namespace EGamePlay
 
         private void AfterStart()
         {
+            HeroEntity = StaticClient.Hero;
+            BossEntity = StaticClient.Boss;
+
             //Monster.Boss.MotionComponent.Enable = false;
             //Monster.Boss.AnimationComponent.Speed = 1;
             //AnimationSystem.TryPlayFade(Monster.Boss.CombatEntity, Monster.Boss.AnimationComponent.IdleAnimation);
@@ -105,7 +106,7 @@ namespace EGamePlay
                 if (SkillTimeImage.fillAmount >= 1)
                 {
                     IsPlaying = false;
-                    PlayButton.GetComponentInChildren<Text>().text = "²¥·Å";
+                    PlayButton.GetComponentInChildren<Text>().text = "æ’­æ”¾";
                 }
             }
 
@@ -421,7 +422,8 @@ namespace EGamePlay
             SkillTimeImage.fillAmount = 0;
             CurrentTime = 0;
             IsPlaying = true;
-            if (CurrentExecutionObject.AbilityId > 0 && HeroEntity.GetComponent<SkillComponent>().IdSkills.TryGetValue(CurrentExecutionObject.AbilityId, out var skillAbility))
+            var skillComp = HeroEntity.GetComponent<SkillComponent>();
+            if (CurrentExecutionObject.AbilityId > 0 && skillComp.IdSkills.TryGetValue(CurrentExecutionObject.AbilityId, out var skillAbility))
             {
                 AbilitySystem.LoadExecution(skillAbility);
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
@@ -442,8 +444,7 @@ namespace EGamePlay
             }
             else
             {
-                HeroEntity.ModelTrans.localRotation = Quaternion.LookRotation(BossEntity.Position - HeroEntity.Position);
-                //var skillAbility = Hero.Instance.CombatEntity.AttachSkill(new SkillConfigObject() { Id = 9999 });
+                TransformSystem.ChangeForward(HeroEntity.Actor, BossEntity.Position - HeroEntity.Position);
                 if (CurrentExecutionObject.TargetInputType == ExecutionTargetInputType.Target)
                 {
                     var execution = HeroEntity.AddChild<AbilityExecution>();

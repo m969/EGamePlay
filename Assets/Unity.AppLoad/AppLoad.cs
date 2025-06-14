@@ -1,4 +1,4 @@
-﻿using ECS;
+using ECS;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ public class AppLoad : MonoBehaviour
     public static bool NeedReload { get; set; } = false;
     public static bool NeedReloadShare { get; set; } = false;
     private EcsNode EcsNode { get; set; }
-    private Dictionary<string, string> ScriptFiles {  get; set; } = new Dictionary<string, string>();
+    private Dictionary<string, string> ScriptFiles { get; set; } = new Dictionary<string, string>();
     public GameObject ReloadPanelObj;
     public ReferenceCollector ConfigsCollector;
     public ReferenceCollector PrefabsCollector;
