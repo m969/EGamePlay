@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
@@ -20,30 +20,30 @@ namespace EGamePlay.Combat
         : SerializedScriptableObject
 #endif
     {
-//#if UNITY_EDITOR
-//        private static AbilityManagerObject _instance;
-//        public static AbilityManagerObject Instance
-//        {
-//            get
-//            {
-//                _instance = AssetDatabase.LoadAssetAtPath<AbilityManagerObject>("Assets/EGPsExamples/Resources/AbilityManager.asset");
-//                if (_instance == null)
-//                {
-//                    _instance = new AbilityManagerObject();
-//                    AssetDatabase.CreateAsset(_instance, "Assets/EGPsExamples/Resources/AbilityManager.asset");
-//                    AssetDatabase.SaveAssets();
-//                    AssetDatabase.Refresh();
-//                }
-//                return _instance;
-//            }
-//        }
-//#endif
+#if UNITY_EDITOR
+        private static AbilityManagerObject _instance;
+        public static AbilityManagerObject Instance
+        {
+            get
+            {
+                _instance = AssetDatabase.LoadAssetAtPath<AbilityManagerObject>("Assets/Art.RpgExample/Resources/AbilityManager.asset");
+                if (_instance == null)
+                {
+                    _instance = new AbilityManagerObject();
+                    AssetDatabase.CreateAsset(_instance, "Assets/Art.RpgExample/Resources/AbilityManager.asset");
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                }
+                return _instance;
+            }
+        }
+#endif
 
         //public string ObjectAssetFolder = "Assets/Resources";
 
-        public string SkillAssetFolder = "Assets/EGPsExamples/Resources/AbilityObjects/Skill";
-        public string BuffAssetFolder = "Assets/EGPsExamples/Resources/AbilityObjects/Buff";
-        public string ExecutionAssetFolder = "Assets/EGPsExamples/Resources/ExecutionObjects";
+        public string SkillAssetFolder = "Assets/Art.RpgExample/Resources/AbilityObjects/Skill";
+        public string BuffAssetFolder = "Assets/Art.RpgExample/Resources/AbilityObjects/Buff";
+        public string ExecutionAssetFolder = "Assets/Art.RpgExample/Resources/ExecutionObjects";
 
         //public string SkillExecutionAssetFolder = "Assets/Resources/ExecutionObjects";
         //public string StatusExecutionAssetFolder = "Assets/Resources/ExecutionObjects";

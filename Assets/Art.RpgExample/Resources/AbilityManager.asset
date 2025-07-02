@@ -44,7 +44,7 @@ MonoBehaviour:
     - Name: EffectTypes
       Entry: 7
       Data: 2|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[EGamePlay.Combat.EffectDescription,
-        Assembly-CSharp]], mscorlib
+        Game.Model]], mscorlib
     - Name: comparer
       Entry: 9
       Data: 1
@@ -57,5 +57,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  SkillAssetFolder: Assets/EGPsExamples/Resources/AbilityObjects/Skill
-  BuffAssetFolder: Assets/EGPsExamples/Resources/AbilityObjects/Buff
+  SkillAssetFolder: Assets/Art.RpgExample/Resources/AbilityObjects/Skill
+  BuffAssetFolder: Assets/Art.RpgExample/Resources/AbilityObjects/Buff
+  ExecutionAssetFolder: Assets/Art.RpgExample/Resources/ExecutionObjects
