@@ -66,7 +66,7 @@ namespace EGamePlay
         public static void OnUpdate(EcsEntity entity, FloatNumeric numeric)
         {
             var component = entity.GetComponent<AttributeComponent>();
-            EventSystem.Dispatch<IOnAttributeUpdate>(entity, system => { system.OnAttributeUpdate(entity, numeric); });
+            EventSystem.Dispatch<IOnAttributeUpdate>(entity, anySystem => { anySystem.OnAttributeUpdate(entity, numeric); });
         }
     }
 }

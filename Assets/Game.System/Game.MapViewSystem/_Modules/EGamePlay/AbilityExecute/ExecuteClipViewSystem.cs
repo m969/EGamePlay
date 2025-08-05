@@ -67,13 +67,21 @@ namespace EGamePlay
             }
         }
 
+        /// <summary>
+        /// 生成粒子特效
+        /// </summary>
+        /// <param name="entity"></param>
         private static void Trigger_ParticleEffect(ExecuteClip entity)
         {
             var component = entity.GetComponent<ExecuteParticleEffectComponent>();
-            var combatEntity = entity.GetParent<AbilityExecution>().OwnerEntity;
-            component.ParticleEffectObj = GameObject.Instantiate(component.ParticleEffectPrefab, combatEntity.Position, combatEntity.Rotation);
+            var execution = entity.GetParent<AbilityExecution>();
+            component.ParticleEffectObj = GameObject.Instantiate(component.ParticleEffectPrefab, execution.Position, execution.Rotation);
         }
 
+        /// <summary>
+        /// 销毁粒子特效
+        /// </summary>
+        /// <param name="entity"></param>
         private static void TriggerEnd_ParticleEffect(ExecuteClip entity)
         {
             var component = entity.GetComponent<ExecuteParticleEffectComponent>();

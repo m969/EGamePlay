@@ -13,10 +13,13 @@ using EGamePlay.Combat;
 using Sirenix.OdinInspector;
 using DG.DemiEditor;
 using ECS;
+using Sirenix.OdinInspector.Editor.Drawers;
 
 public enum AbilityType
 {
+    [LabelText("技能")]
     Skill,
+    [LabelText("Buff")]
     Buff
 }
 
@@ -28,6 +31,7 @@ public enum ConditionType
 public class SkillEditorWindow : OdinMenuEditorWindow
 {
     public static string SkillConfigObjectsPath => AbilityManagerObject.Instance.SkillAssetFolder;
+    public static string BuffConfigObjectsPath => AbilityManagerObject.Instance.BuffAssetFolder;
     public static string ExecutionObjectsPath => AbilityManagerObject.Instance.ExecutionAssetFolder;
 
     public Dictionary<string, ExecutionObject> ExecutionObjects = new Dictionary<string, ExecutionObject>();
@@ -53,7 +57,12 @@ public class SkillEditorWindow : OdinMenuEditorWindow
     int totalCount = 0;
     protected override OdinMenuTree BuildMenuTree()
     {
-        var tree = new OdinMenuTree(true);
+        var abilityType = EditorPrefs.GetInt("SkillEditorAbilityType", ((int)AbilityType.Skill));
+        enumType = (AbilityType)abilityType;
+
+        ExecutionObjects.Clear();
+
+        var tree = new OdinMenuTree(false);
         tree.DefaultMenuStyle.IconSize = 32.00f;
         tree.Config.DrawSearchToolbar = true;
 
@@ -63,42 +72,66 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         if (configsCollector != null)
         {
             var configText = configsCollector.Get<TextAsset>("AbilityConfig");
-            //var configTypeName = $"ET.AbilityConfig";
-            //var configType = assembly.GetType(configTypeName);
-            //var typeName = $"ET.AbilityConfigCategory";
-            //var configCategoryType = assembly.GetType(typeName);
             var configCategory = new AbilityConfigCategory();
             configCategory.ConfigText = configText.text;
             configCategory.BeginInit();
             SkillConfigCategory = configCategory;
         }
+
+        allConditions = new List<string>();
         var allSkill = SkillConfigCategory.GetAll();
         foreach (var item in allSkill.Values)
         {
-            if (item.Type == "Buff") continue;
             var path = $"{SkillConfigObjectsPath}/Skill_{item.Id}.asset";
+            if (item.Type == "Buff")
+            {
+                if (enumType == AbilityType.Buff)
+                {
+                    path = $"{BuffConfigObjectsPath}/Buff_{item.Id}.asset";
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (enumType == AbilityType.Buff)
+                {
+                    continue;
+                }
+            }
             var path2 = $"{ExecutionObjectsPath}/Execution_{item.Id}.asset";
             var asset = AssetDatabase.LoadAssetAtPath<AbilityConfigObject>(path);
-            var asset2 = AssetDatabase.LoadAssetAtPath<ExecutionObject>(path2);
+            //Debug.Log(path);
             if (asset != null)
             {
+                var key = $"{item.Id}_{item.Name}";
+                tree.Add(key, asset);
+
+                var asset2 = AssetDatabase.LoadAssetAtPath<ExecutionObject>(path2);
+                if (asset2 != null)
+                {
+                    ExecutionObjects[$"{item.Id}"] = asset2;
+                }
+
                 foreach (TriggerConfig triggerConfig in asset.TriggerActions)
                 {
-                    if (triggerConfig.StateCheckList.Count > 0)
+                    if (triggerConfig.StateCheckList.Count == 0)
                     {
                         continue;
                     }
-                    allConditions.AddRange(triggerConfig.StateCheckList);
+                    foreach (var stateCheck in triggerConfig.StateCheckList)
+                    {
+                        allConditions.Add(stateCheck.TrimStart('#'));
+                    }
                 }
             }
-
-            var key = $"{item.Id}_{item.Name}";
-            tree.Add(key, asset);
-            ExecutionObjects[key] = asset2;
         }
         return tree;
     }
 
+    private bool typeChanged = false;
     private AbilityType enumType = AbilityType.Skill;
     private ConditionType conditionType = ConditionType.StateCheck;
     protected override void DrawMenu()
@@ -113,7 +146,21 @@ public class SkillEditorWindow : OdinMenuEditorWindow
 
         //}
         //GUILayout.EndHorizontal();
-        enumType = (AbilityType)EditorGUILayout.EnumPopup(enumType, GUILayout.ExpandWidth(true));
+
+        //var drawer = new EnumDrawer<AbilityType>();
+        //if (drawer.CanDrawTypeFilter(typeof(AbilityType)))
+        //{
+        //    drawer.DrawProperty()
+        //}
+
+        var newType = (AbilityType)EditorGUILayout.Popup(((int)enumType), new string[] { "技能", "Buff" }, GUILayout.ExpandWidth(true));
+        if (newType != enumType)
+        {
+            enumType = newType;
+            EditorPrefs.SetInt("SkillEditorAbilityType", ((int)newType));
+            typeChanged = true;
+            //ForceMenuTreeRebuild();
+        }
         base.DrawMenu();
     }
 
@@ -122,37 +169,52 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         base.OnImGUI();
     }
 
+    private void OnSelectionChange()
+    {
+
+    }
+
     protected override void OnBeginDrawEditors()
     {
-        var selected = this.MenuTree.Selection.FirstOrDefault();
+        var selected = this.MenuTree.Selection.SelectedValue;
         var toolbarHeight = this.MenuTree.Config.SearchToolbarHeight;
 
         bool changed = false;
-        SirenixEditorGUI.BeginHorizontalToolbar(toolbarHeight);
-        {
-            var data = selected.Value as AbilityConfigObject;
-            EditorGUILayout.ObjectField(data, typeof(AbilityConfigObject), false);
-            if (GUILayout.Button("Select In Editor"))
-            {
-                Selection.objects = this.MenuTree.Selection.Where(_ => _.Value is AbilityConfigObject)
-                    .Select(_ => (_.Value as AbilityConfigObject)).ToArray();
-            }
-        }
-        SirenixEditorGUI.EndHorizontalToolbar();
 
-        SirenixEditorGUI.BeginHorizontalToolbar(toolbarHeight);
+        if (selected != null)
         {
-            var data = ExecutionObjects[selected.Name];
-            if (data != null)
+            SirenixEditorGUI.BeginHorizontalToolbar(toolbarHeight);
             {
-                EditorGUILayout.ObjectField(data, typeof(ExecutionObject), false);
+                var data = selected as AbilityConfigObject;
+                EditorGUILayout.ObjectField(data, typeof(AbilityConfigObject), false);
                 if (GUILayout.Button("Select In Editor"))
                 {
-                    EditorGUIUtility.PingObject(data);
+                    Selection.objects = this.MenuTree.Selection.Where(_ => _.Value is AbilityConfigObject)
+                        .Select(_ => (_.Value as AbilityConfigObject)).ToArray();
                 }
             }
+            SirenixEditorGUI.EndHorizontalToolbar();
+
+            SirenixEditorGUI.BeginHorizontalToolbar(toolbarHeight);
+            {
+                var data = selected as AbilityConfigObject;
+                if (ExecutionObjects.TryGetValue($"{data.Id}", out var executionObject))
+                {
+                    EditorGUILayout.ObjectField(executionObject, typeof(ExecutionObject), false);
+                    if (GUILayout.Button("Select In Editor"))
+                    {
+                        EditorGUIUtility.PingObject(executionObject);
+                    }
+                }
+            }
+            SirenixEditorGUI.EndHorizontalToolbar();
         }
-        SirenixEditorGUI.EndHorizontalToolbar();
+
+        if (typeChanged)
+        {
+            changed = true;
+            typeChanged = false;
+        }
 
         if (changed)
         {
@@ -175,7 +237,7 @@ public class SkillEditorWindow : OdinMenuEditorWindow
         foreach (var condition in allConditions)
         {
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("复制", GUILayout.Width(60)))
+            if (GUILayout.Button("⿻", GUILayout.Width(25)))//复制
             {
 
             }

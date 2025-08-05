@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d94b31d7cad340479dce17e71326ede, type: 3}
-  m_Name: State_101
+  m_Name: Buff_102
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -55,7 +55,7 @@ MonoBehaviour:
       Data: "(\u6DFB\u52A0\u4FEE\u9970)"
     - Name: ActionControlType
       Entry: 3
-      Data: 14
+      Data: 4
     - Name: 
       Entry: 8
       Data: 
@@ -65,8 +65,8 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  Id: 101
-  ShowName: "\u7729\u6655"
+  Id: 102
+  ShowName: "\u6C89\u9ED8"
   SkillSpellType: 1
   AffectTargetType: 2
   TargetSelectType: 0
