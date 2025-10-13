@@ -1,5 +1,5 @@
 {
-    "name": "Game.System",
+    "name": "App.System",
     "rootNamespace": "",
     "references": [
         "GUID:44b68c5cb5bdd2941899f32aad657861",

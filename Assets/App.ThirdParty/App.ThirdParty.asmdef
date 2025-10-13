@@ -1,14 +1,10 @@
 {
-    "name": "Game.Model",
+    "name": "App.ThirdParty",
     "rootNamespace": "",
-    "references": [
-        "GUID:645f7d097acee4f40b75a6b9ff1b0822",
-        "GUID:95c69073318a6844a8db3075c41533aa",
-        "GUID:4c25c05f410a3a447a75c3b0909152ef"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

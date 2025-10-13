@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GameUtils;
 using ET;
 using System.Collections.Generic;
@@ -25,8 +25,6 @@ namespace EGamePlay.Combat
         public string Name { get; set; }
 
         public List<AbilityEffect> AbilityEffects { get; private set; } = new List<AbilityEffect>();
-        //public AbilityEffect DamageAbilityEffect { get; set; }
-        //public AbilityEffect CureAbilityEffect { get; set; }
         public List<AbilityTrigger> AbilityTriggers { get; private set; } = new List<AbilityTrigger>();
     }
 }

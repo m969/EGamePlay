@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -33,12 +33,12 @@ namespace ET
         }
     }
 
-    public class ExcelExporterEditor: EditorWindow
+    public class ExcelExporterEditor : EditorWindow
     {
         [MenuItem("Tools/导出配置")]
         private static void ShowWindow()
         {
-            GetWindow(typeof (ExcelExporterEditor));
+            GetWindow(typeof(ExcelExporterEditor));
         }
 
         private void OnEnable()
@@ -58,7 +58,7 @@ namespace ET
         {
             try
             {
-                const string clientPath = "./Assets/Game.Model/Game.Map/_Modules/EGamePlay.ThirdParty/Config/Texts";
+                const string clientPath = "./Assets/App.Model/Game.Model/game.thirdparty.model/com.model.egameplay/ThirdParty/Config/Texts";
 
                 if (GUILayout.Button("导出客户端配置"))
                 {
@@ -66,7 +66,7 @@ namespace ET
                     Log.Debug($"{ExcelPath}");
                     ExportAll(clientPath);
 
-                    ExportAllClass(@"./Assets/Game.Model/Game.Map/_Modules/EGamePlay.ThirdParty/Config/Scripts", "namespace ET\n{\n");//using MongoDB.Bson.Serialization.Attributes;\n\n
+                    ExportAllClass(@"./Assets/App.Model/Game.Model/game.thirdparty.model/com.model.egameplay/ThirdParty/Config/Scripts", "namespace ET\n{\n");//using MongoDB.Bson.Serialization.Attributes;\n\n
 
                     Log.Info($"导出客户端配置完成!");
                 }
@@ -351,9 +351,9 @@ namespace ET
         private static string GetCellString(ISheet sheet, int i, int j)
         {
             IRow _irow = sheet.GetRow(i);
-            if(_irow != null)
+            if (_irow != null)
             {
-               return GetCellString(_irow, j);
+                return GetCellString(_irow, j);
             }
             return "";
         }
@@ -372,7 +372,7 @@ namespace ET
         {
             if (cell != null)
             {
-                if(cell.CellType == CellType.Numeric || (cell.CellType == CellType.Formula && cell.CachedFormulaResultType == CellType.Numeric))
+                if (cell.CellType == CellType.Numeric || (cell.CellType == CellType.Formula && cell.CachedFormulaResultType == CellType.Numeric))
                 {
                     return cell.NumericCellValue.ToString();
                 }

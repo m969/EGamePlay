@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Art.RpgExample/RpgExample Scene.unity
+    path: Assets/GameResources.RpgExample/RpgExample Scene.unity
     guid: 24ce72af458909446a2e47d992c74785
   m_configObjects: {}
