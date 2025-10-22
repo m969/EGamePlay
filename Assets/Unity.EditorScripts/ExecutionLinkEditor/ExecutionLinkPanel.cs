@@ -84,8 +84,8 @@ namespace EGamePlay
 
         private void AfterStart()
         {
-            HeroEntity = StaticClient.Hero;
-            BossEntity = StaticClient.Boss;
+            HeroEntity = UnityAppStatic.Hero;
+            BossEntity = UnityAppStatic.Boss;
 
             //Monster.Boss.MotionComponent.Enable = false;
             //Monster.Boss.AnimationComponent.Speed = 1;

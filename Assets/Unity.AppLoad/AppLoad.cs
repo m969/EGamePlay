@@ -45,7 +45,7 @@ public class AppLoad : MonoBehaviour
 
         EcsNode = new EcsNode(1);
         EcsNode.Id = EcsNode.NewInstanceId();
-        StaticClient.EcsNode = EcsNode;
+        UnityAppStatic.EcsNode = EcsNode;
         EcsNode.RegisterDrive<IAwake>();
         EcsNode.RegisterDrive<IEnable>();
         EcsNode.RegisterDrive<IDisable>();
@@ -57,14 +57,14 @@ public class AppLoad : MonoBehaviour
         EcsNode.RegisterDrive<IUpdate>();
         EcsNode.RegisterDrive<IFixedUpdate>();
 
-        StaticClient.ConfigsCollector = ConfigsCollector;
-        StaticClient.PrefabsCollector = PrefabsCollector;
-        Process_GameSystem.RpgInit(EcsNode, typeof(Process_GameSystem).Assembly);
+        UnityAppStatic.ConfigsCollector = ConfigsCollector;
+        UnityAppStatic.PrefabsCollector = PrefabsCollector;
+        UnityAppRun.RpgInit(EcsNode, typeof(UnityAppRun).Assembly);
     }
 
     public void Reload()
     {
-        Process_GameSystem.Reload(EcsNode, typeof(Process_GameSystem).Assembly);
+        UnityAppRun.Reload(EcsNode, typeof(UnityAppRun).Assembly);
     }
 
     bool CheckScriptFiles()

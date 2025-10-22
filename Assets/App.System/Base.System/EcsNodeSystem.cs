@@ -23,5 +23,5 @@ namespace ECSGame
             ecsNode.AddComponent<EventComponent>();
             ecsNode.AddComponent<TimerComponent>();
         }
-    } 
+    }
 }

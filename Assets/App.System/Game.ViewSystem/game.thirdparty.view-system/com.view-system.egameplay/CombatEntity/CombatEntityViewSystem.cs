@@ -42,7 +42,7 @@ namespace EGamePlay
                     {
                         TransformSystem.ChangeForward(entity.Actor, spellAction.InputPoint - TransformSystem.GetPosition(entity.Actor));
                     }
-                    PlayerInputSystem.DisableMove(StaticClient.Game);
+                    PlayerInputSystem.DisableMove(UnityAppStatic.Game);
                 }
             }
         }

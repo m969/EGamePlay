@@ -57,7 +57,7 @@ namespace EGamePlay
             var executeComp = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>();
             var itemData = executeComp.CollisionExecuteData;
             var collisionData = AbilityItemCollisionExecuteSystem.GetItemEffect<CollisionEffect>(abilityItem);
-            StaticClient.Game.Object2Items[proxyObj.gameObject] = abilityItem;
+            UnityAppStatic.Game.Object2Items[proxyObj.gameObject] = abilityItem;
 
             if (collisionData.Shape == CollisionShape.Sphere)
             {
@@ -90,13 +90,13 @@ namespace EGamePlay
                     }
                     var owner = abilityItem.AbilityEntity.OwnerEntity;
                     EcsEntity target = null;
-                    if (StaticClient.Game.Object2Entities.TryGetValue(other.gameObject, out var otherEntity))
+                    if (UnityAppStatic.Game.Object2Entities.TryGetValue(other.gameObject, out var otherEntity))
                     {
                         target = otherEntity;
                     }
                     else
                     {
-                        if (StaticClient.Game.Object2Items.TryGetValue(other.gameObject, out var otherItem))
+                        if (UnityAppStatic.Game.Object2Items.TryGetValue(other.gameObject, out var otherItem))
                         {
                             target = otherItem;
                         }

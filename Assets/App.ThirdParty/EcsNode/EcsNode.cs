@@ -75,8 +75,6 @@ namespace ECS
             {
                 ecsNode.AddEntities.Enqueue(entity);
             }
-
-            entity.AddComponent<EntityObjectComponent>();
         }
 
         public void RemoveEntity(EcsEntity entity)
