@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ECS
 {
-    public interface IEnable
+    public interface IEnable : IDrive
     {
     }
 
@@ -19,7 +19,7 @@ namespace ECS
         void Enable(T entity, T2 component);
     }
 
-    public interface IDisable
+    public interface IDisable : IDrive
     {
     }
 

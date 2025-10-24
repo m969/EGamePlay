@@ -1,7 +1,7 @@
 
 namespace ECS
 {
-    public interface IOnChange
+    public interface IOnChange : IDrive
     {
 
     }

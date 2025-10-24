@@ -20,7 +20,10 @@ namespace ECSGame
 
         public static void Update(EcsEntity entity)
         {
-
+            if (entity.GetComponent<ModelViewComponent>() is { } modelViewComponent)
+            {
+                ModelViewSystem.Update(entity, modelViewComponent);
+            }
         }
     } 
 }

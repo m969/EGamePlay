@@ -15,7 +15,6 @@ namespace ECS
     public class EcsComponent : EcsObject, IEcsComponent
     {
         public EcsEntity Entity { get; set; }
-        public T GetEntity<T>() where T : EcsEntity { return Entity as T; }
         private bool enable;
         public bool Enable
         {

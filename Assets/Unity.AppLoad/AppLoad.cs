@@ -18,14 +18,15 @@ public class Define
 
 public class AppLoad : MonoBehaviour
 {
+    public GameType GameType;
     public static bool NeedReload { get; set; } = false;
     public static bool NeedReloadShare { get; set; } = false;
-    private EcsNode EcsNode { get; set; }
     private Dictionary<string, string> ScriptFiles { get; set; } = new Dictionary<string, string>();
     public GameObject ReloadPanelObj;
     public ReferenceCollector ConfigsCollector;
     public ReferenceCollector PrefabsCollector;
     public AbilityConfigObject SkillConfigObject;
+    public Assembly SystemAssembly { get; private set; }
 
     // Start is called before the first frame update
     void Awake()
@@ -43,28 +44,26 @@ public class AppLoad : MonoBehaviour
 
         CheckScriptFiles();
 
-        EcsNode = new EcsNode(1);
-        EcsNode.Id = EcsNode.NewInstanceId();
-        UnityAppStatic.EcsNode = EcsNode;
-        EcsNode.RegisterDrive<IAwake>();
-        EcsNode.RegisterDrive<IEnable>();
-        EcsNode.RegisterDrive<IDisable>();
-        EcsNode.RegisterDrive<IDestroy>();
-        EcsNode.RegisterDrive<IInit>();
-        EcsNode.RegisterDrive<IAfterInit>();
-        EcsNode.RegisterDrive<IOnChange>();
-        EcsNode.RegisterDrive<IOnAddComponent>();
-        EcsNode.RegisterDrive<IUpdate>();
-        EcsNode.RegisterDrive<IFixedUpdate>();
-
         UnityAppStatic.ConfigsCollector = ConfigsCollector;
         UnityAppStatic.PrefabsCollector = PrefabsCollector;
-        UnityAppRun.RpgInit(EcsNode, typeof(UnityAppRun).Assembly);
+
+        // LoadSystemAssembly("Init");
+        UnityAppRun.Init(typeof(UnityAppRun).Assembly, (int)GameType);
+    }
+
+    private void LoadSystemAssembly(string method)
+    {
+        var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "App.System.dll"));
+        var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "App.System.pdb"));
+        var assembly = Assembly.Load(assBytes, pdbBytes);
+        var methodInfo = assembly.GetType("ECSUnity.UnityAppRun").GetMethod(method);
+        methodInfo.Invoke(null, new object[2] { assembly, ((int)GameType) });
+        SystemAssembly = assembly;
     }
 
     public void Reload()
     {
-        UnityAppRun.Reload(EcsNode, typeof(UnityAppRun).Assembly);
+        LoadSystemAssembly("Reload");
     }
 
     bool CheckScriptFiles()
@@ -104,11 +103,11 @@ public class AppLoad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EcsNode?.DriveEntityUpdate();
+        UnityAppStatic.Game?.DriveEntityUpdate();
     }
 
     void FixedUpdate()
     {
-        EcsNode?.DriveEntityFixedUpdate();
+        UnityAppStatic.Game?.DriveEntityFixedUpdate();
     }
 }

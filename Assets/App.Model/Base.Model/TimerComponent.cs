@@ -24,9 +24,6 @@ namespace ECS
     {
         public List<long> TimeList = new();
         public Dictionary<long, object> Timers { get; set; } = new();
-        //public Dictionary<long, Queue<ETTask>> SameTimers { get; set; } = new();
-
-        //public List<long> FrameList = new();
         public Dictionary<int, FrameTimer> FrameTimers { get; set; } = new();
     }
 }

@@ -6,14 +6,14 @@ using System.Reflection;
 
 namespace ECS
 {
-    public enum EcsNodeType
-    {
-        TrueAuthority = 1,
-        LocalPrePlay = 2,
-    }
+    //public enum EcsNodeType
+    //{
+    //    TrueAuthority = 1,
+    //    LocalPrePlay = 2,
+    //}
 
     public class ConfigComponent : EcsComponent
     {
-        public EcsNodeType NodeType { get; set; }
+        //public EcsNodeType NodeType { get; set; }
     }
 }

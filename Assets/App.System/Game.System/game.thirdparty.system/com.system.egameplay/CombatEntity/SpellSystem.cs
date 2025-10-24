@@ -57,7 +57,6 @@ namespace EGamePlay
 #if EGAMEPLAY_ET
         private float CalCos(float3 a, float3 b)
         {
-            // µã»ý
             var dotProduct = a[0] * b[0] + a[1] * b[1];
             var d = MathF.Sqrt(a[0] * a[0] + a[1] * a[1]) * MathF.Sqrt(b[0] * b[0] + b[1] * b[1]);
             return dotProduct / d;

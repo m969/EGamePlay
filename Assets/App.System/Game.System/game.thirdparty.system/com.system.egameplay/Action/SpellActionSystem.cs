@@ -25,7 +25,6 @@ namespace EGamePlay
             EcsObject.Destroy(entity);
         }
 
-        //Ç°ÖÃ´¦Àí
         private static void ActionProcess(SpellAction entity)
         {
             ActionSystem.BeforeExecuteAction(entity.Creator, x => x.BeforeExecuteAction(entity.Creator, entity));
@@ -70,7 +69,7 @@ namespace EGamePlay
             }
         }
 
-        //ºóÖÃ´¦Àí
+        //ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½
         private static void AfterActionProcess(SpellAction entity)
         {
             ActionSystem.AfterExecuteAction(entity.Creator, x => x.AfterExecuteAction(entity.Creator, entity));

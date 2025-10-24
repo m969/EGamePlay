@@ -30,7 +30,7 @@ namespace EGamePlay
     {
         public void Awake(EcsNode entity, ConfigManageComponent component)
         {
-            StaticConfig.Config = component;
+            AppStatic.Config = component;
             var assembly = Assembly.GetAssembly(typeof(ConfigManageComponent));
             if (component.ConfigsCollector == null)
             {

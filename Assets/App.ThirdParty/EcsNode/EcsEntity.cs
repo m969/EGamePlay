@@ -9,17 +9,20 @@ namespace ECS
     public class EcsEntity : EcsObject
     {
         public long Id { get; set; }
-        //public long InstanceId { get; set; }
+        public long InstanceId { get; set; }
         //public long UniqueId { get; set; }
         public bool IsDisposed
         {
             get
             {
-                return Id == 0;
+                return InstanceId == 0;
             }
         }
-        public Dictionary<long, EcsEntity> Id2Children = new();
-        public Dictionary<Type, EcsComponent> Components { get; set; } = new();
+        public Dictionary<long, EcsEntity> Id2Children = new Dictionary<long, EcsEntity>();
+        public Dictionary<Type, EcsComponent> Components { get; set; } = new Dictionary<Type, EcsComponent>();
+
+        public EntityState<EcsEntity> EntityState { get; private set; }
+
         public EcsEntity Parent { get; set; }
         private bool enable;
         public bool Enable
@@ -36,7 +39,7 @@ namespace ECS
                         {
                             item.Enable = value;
                         }
-                        EcsNode.DriveEntitySystems(this, typeof(IEnable), new object[] { this });
+                        EcsNode.DriveEntitySystems(this, typeof(IEnable));
                     }
                     if (enable && !value)
                     {
@@ -45,7 +48,7 @@ namespace ECS
                         {
                             item.Enable = value;
                         }
-                        EcsNode.DriveEntitySystems(this, typeof(IDisable), new object[] { this });
+                        EcsNode.DriveEntitySystems(this, typeof(IDisable));
                     }
                 }
             }
@@ -73,13 +76,18 @@ namespace ECS
 
         public T AddChild<T>(Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
-            return AddChild(EcsNode.NewInstanceId(), beforeAwake);
+            return AddChild(EcsNode.NewEntityId(), beforeAwake);
         }
 
         public T AddChild<T>(long id, Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
             var entity = new T();
             entity.Id = id;
+            entity.InstanceId = EcsNode.NewInstanceId();
+
+            entity.EntityState = new EntityState<EcsEntity>();
+            entity.EntityState.SetEntity(entity);
+
             entity.Parent = this;
             Id2Children.Add(entity.Id, entity);
             beforeAwake?.Invoke(entity);
@@ -87,7 +95,7 @@ namespace ECS
             DriveAwake(entity);
             return entity;
         }
-
+        
         public EcsEntity AddChild(Type type, Action<EcsEntity> beforeAwake = null)
         {
             return AddChild(EcsNode.NewInstanceId(), type, beforeAwake);
@@ -97,6 +105,11 @@ namespace ECS
         {
             var entity = Activator.CreateInstance(type) as EcsEntity;
             entity.Id = id;
+            entity.InstanceId = EcsNode.NewInstanceId();
+
+            entity.EntityState = new EntityState<EcsEntity>();
+            entity.EntityState.SetEntity(entity);
+
             entity.Parent = this;
             Id2Children.Add(entity.Id, entity);
             beforeAwake?.Invoke(entity);
@@ -136,7 +149,9 @@ namespace ECS
 
         public void RemoveComponent(Type type)
         {
-            DriveDestroy(Components[type]);
+            var component = Components[type];
+            DriveDestroy(component);
+            EcsNode.DriveEntitySystems(this, typeof(IOnRemoveComponent), new object[] { this, component });
             Components.Remove(type);
         }
 
@@ -146,13 +161,22 @@ namespace ECS
             return component as T;
         }
 
+        public bool TryGetComponent<T>(out T component) where T : EcsComponent, new()
+        {
+            Components.TryGetValue(typeof(T), out var component2);
+            component = component2 as T;
+            return component2 != null;
+        }
+        
         public void ComponentChange<T>() where T : EcsComponent, new()
         {
             var entity = this;
-            foreach (var item in entity.Components.Values)
+            var component = GetComponent<T>();
+            if (component == null)
             {
-                entity.EcsNode.DriveComponentSystems(entity, item, typeof(IOnChange));
+                return;
             }
+            entity.EcsNode.DriveComponentSystems(entity, component, typeof(IOnChange));
             entity.EcsNode.DriveEntitySystems(entity, typeof(IOnChange), new object[] { entity });
         }
 
@@ -164,7 +188,7 @@ namespace ECS
 
         private void DriveAwake(EcsEntity entity)
         {
-            EcsNode.DriveEntitySystems(entity, typeof(IAwake), new object[] { entity });
+            EcsNode.DriveEntitySystems(entity, typeof(IAwake));
         }
 
         private void DriveAwake<T>(T component) where T : EcsComponent, new()
@@ -172,29 +196,63 @@ namespace ECS
             EcsNode.DriveComponentSystems(this, component, typeof(IAwake));
         }
 
-        public void DriveDestroy(EcsEntity entity)
+        public void Init()
         {
-            EcsNode.DriveEntitySystems(entity, typeof(IDestroy), new object[] { entity });
+            var ecsObject = this;
+            if (ecsObject is EcsNode ecsNode)
+            {
+                //因为EcsNode是根节点，不走AddChild的Awake，所以这里手动Awake一下
+                DriveAwake(ecsNode);
+            }
+
+            if (ecsObject is EcsEntity entity)
+            {
+                foreach (var item in entity.Components.Values)
+                {
+                    entity.EcsNode.DriveComponentSystems(entity, item, typeof(IInit));
+                }
+                entity.EcsNode.DriveEntitySystems(entity, typeof(IInit));
+
+                foreach (var item in entity.Components.Values)
+                {
+                    entity.EcsNode.DriveComponentSystems(entity, item, typeof(IAfterInit));
+                }
+                entity.EcsNode.DriveEntitySystems(entity, typeof(IAfterInit));
+            }
+            //if (ecsObject is EcsComponent component)
+            //{
+            //    component.Entity.EcsNode.DriveComponentSystems(component.Entity, component, typeof(IInit));
+            //    component.Entity.EcsNode.DriveComponentSystems(component.Entity, component, typeof(IAfterInit));
+            //}
         }
 
-        public void DriveDestroy<T>(T component) where T : EcsComponent, new()
+        private void DriveDestroy(EcsEntity entity)
+        {
+            EcsNode.DriveEntitySystems(entity, typeof(IDestroy));
+        }
+
+        private void DriveDestroy<T>(T component) where T : EcsComponent, new()
         {
             EcsNode.DriveComponentSystems(this, component, typeof(IDestroy));
         }
 
-        public void Init()
+        public void Dispatch<T>(Action<T> action) where T : IDispatch
         {
-            foreach (var item in Components.Values)
+            var entity = this;
+            if (entity == null || entity.IsDisposed)
             {
-                EcsNode.DriveComponentSystems(this, item, typeof(IInit));
+                return;
             }
-            EcsNode.DriveEntitySystems(this, typeof(IInit), new object[] { this });
-
-            foreach (var item in Components.Values)
+            if (entity.EcsNode.EntityType2Systems.TryGetValue(entity.GetType(), out var systems))
             {
-                EcsNode.DriveComponentSystems(this, item, typeof(IAfterInit));
+                foreach (var item in systems)
+                {
+                    if (item is T eventInstance)
+                    {
+                        action.Invoke(eventInstance);
+                    }
+                }
             }
-            EcsNode.DriveEntitySystems(this, typeof(IAfterInit), new object[] { this });
         }
     }
 }

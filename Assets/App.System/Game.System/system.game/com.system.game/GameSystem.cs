@@ -1,33 +1,53 @@
 ﻿using ECS;
+using ECSUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace ECSGame
 {
     public class GameSystem : AEntitySystem<Game>,
-IAwake<Game>,
 IInit<Game>,
 IUpdate<Game>
     {
-        public void Awake(Game entity)
+        public static Game Create(Assembly systemAssembly)
         {
-            
+            var game = EcsNodeSystem.Create<Game>(EcsType.Game, systemAssembly);
+            return game;
         }
 
-        public void Init(Game entity)
+        public void Init(Game game)
         {
 
         }
 
         public void Update(Game entity)
         {
-
+            AppStatic.DeltaTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - AppStatic.NowMilliseconds;
+            AppStatic.DeltaTimeSeconds = AppStatic.DeltaTimeMilliseconds / 1000f;
+            AppStatic.NowMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            AppStatic.NowSeconds = AppStatic.NowMilliseconds / 1000f;
+            // if (entity.Type == ((int)GameType.TrueGameDemo))
+            // {
+            //     GameTrueWorldSystem.Update(entity);
+            // }
+            // else
+            // {
+            //     GameWorldSystem.Update(entity);
+            // }
         }
 
-        public static Game Create(EcsNode ecsNode)
+        public void FixedUpdate(Game entity)
         {
-            var game = ecsNode.AddChild<Game>();
-            return game;
+            // if (entity.Type == ((int)GameType.TrueGameDemo))
+            // {
+            //     GameTrueWorldSystem.FixedUpdate(entity);
+            // }
+            // else
+            // {
+            //     GameWorldSystem.FixedUpdate(entity);
+            // }
         }
     } 
 }

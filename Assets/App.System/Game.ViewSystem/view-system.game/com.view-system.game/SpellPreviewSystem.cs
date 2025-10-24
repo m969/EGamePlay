@@ -101,12 +101,12 @@ namespace EGamePlay
             var targetSelectType = SkillTargetSelectType.Custom;
             var affectTargetType = SkillAffectTargetType.EnemyTeam;
             var skillId = component.PreviewingSkill.Config.Id;
-            if (component.PreviewingSkill.Config.TargetSelect == "�ֶ�ָ��") targetSelectType = SkillTargetSelectType.PlayerSelect;
-            if (component.PreviewingSkill.Config.TargetSelect == "��ײ���") targetSelectType = SkillTargetSelectType.CollisionSelect;
-            if (component.PreviewingSkill.Config.TargetSelect == "����ָ��") targetSelectType = SkillTargetSelectType.ConditionSelect;
-            if (component.PreviewingSkill.Config.TargetGroup == "����") affectTargetType = SkillAffectTargetType.Self;
-            if (component.PreviewingSkill.Config.TargetGroup == "����") affectTargetType = SkillAffectTargetType.SelfTeam;
-            if (component.PreviewingSkill.Config.TargetGroup == "�з�") affectTargetType = SkillAffectTargetType.EnemyTeam;
+            if (component.PreviewingSkill.Config.TargetSelect == "手动指定") targetSelectType = SkillTargetSelectType.PlayerSelect;
+            if (component.PreviewingSkill.Config.TargetSelect == "碰撞检测") targetSelectType = SkillTargetSelectType.CollisionSelect;
+            if (component.PreviewingSkill.Config.TargetSelect == "条件指定") targetSelectType = SkillTargetSelectType.ConditionSelect;
+            if (component.PreviewingSkill.Config.TargetGroup == "自身") affectTargetType = SkillAffectTargetType.Self;
+            if (component.PreviewingSkill.Config.TargetGroup == "己方") affectTargetType = SkillAffectTargetType.SelfTeam;
+            if (component.PreviewingSkill.Config.TargetGroup == "敌方") affectTargetType = SkillAffectTargetType.EnemyTeam;
             if (targetSelectType == SkillTargetSelectType.PlayerSelect)
             {
                 TargetSelectManager.Instance.TargetLimitType = TargetLimitType.EnemyTeam;

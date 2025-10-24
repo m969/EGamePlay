@@ -48,10 +48,11 @@ IAwake<EcsNode, TimerComponent>
         public static ETTask WaitAsync(EcsEntity entity, long milliSeconds)
         {
             var ettask = ETTask.Create();
-            
+
             var ecsNode = entity.EcsNode;
 
             var timerComp = ecsNode.GetComponent<TimerComponent>();
+            //var time = milliSeconds;
             var time = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond + milliSeconds;
             if (!timerComp.Timers.ContainsKey(time))
             {

@@ -16,7 +16,6 @@ public class ConsoleLog
 
     public static void Debug(object log)
     {
-        //System.Diagnostics.StackTrace.
         Logger?.Log(log);
         LogAction?.Invoke(log);
     }

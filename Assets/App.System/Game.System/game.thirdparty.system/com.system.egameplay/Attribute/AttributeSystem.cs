@@ -9,7 +9,7 @@ using ET;
 
 namespace EGamePlay
 {
-    public interface IOnAttributeUpdate
+    public interface IOnAttributeUpdate:IDispatch
     {
         void OnAttributeUpdate(EcsEntity entity, FloatNumeric numeric);
     }
@@ -66,7 +66,7 @@ namespace EGamePlay
         public static void OnUpdate(EcsEntity entity, FloatNumeric numeric)
         {
             var component = entity.GetComponent<AttributeComponent>();
-            EventSystem.Dispatch<IOnAttributeUpdate>(entity, anySystem => { anySystem.OnAttributeUpdate(entity, numeric); });
+            entity.Dispatch<IOnAttributeUpdate>(anySystem => { anySystem.OnAttributeUpdate(entity, numeric); });
         }
     }
 }

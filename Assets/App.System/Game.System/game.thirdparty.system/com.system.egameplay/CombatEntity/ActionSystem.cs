@@ -12,42 +12,42 @@ using System.Security.Cryptography;
 
 namespace EGamePlay
 {
-    public interface IBeforeExecuteAction
+    public interface IBeforeExecuteAction:IDispatch
     {
         void BeforeExecuteAction(CombatEntity entity, EcsEntity combatAction);
     }
 
-    public interface IBeforeSufferAction
+    public interface IBeforeSufferAction:IDispatch
     {
         void BeforeSufferAction(EcsEntity entity, EcsEntity combatAction);
     }
 
-    public interface IAfterExecuteAction
+    public interface IAfterExecuteAction:IDispatch
     {
         void AfterExecuteAction(CombatEntity entity, EcsEntity combatAction);
     }
 
-    public interface IAfterSufferAction
+    public interface IAfterSufferAction:IDispatch
     {
         void AfterSufferAction(EcsEntity entity, EcsEntity combatAction);
     }
 
-    public interface IBeforeCauseApply
+    public interface IBeforeCauseApply:IDispatch
     {
         void BeforeCauseApply(CombatEntity entity, EcsEntity combatAction);
     }
 
-    public interface IBeforeReceiveApply
+    public interface IBeforeReceiveApply:IDispatch
     {
         void BeforeReceiveApply(EcsEntity entity, EcsEntity combatAction);
     }
 
-    public interface IAfterCauseApply
+    public interface IAfterCauseApply:IDispatch
     {
         void AfterCauseApply(CombatEntity entity, EcsEntity combatAction);
     }
 
-    public interface IAfterReceiveApply
+    public interface IAfterReceiveApply:IDispatch
     {
         void AfterReceiveApply(EcsEntity entity, EcsEntity combatAction);
     }
@@ -81,42 +81,42 @@ namespace EGamePlay
 
         public static void BeforeExecuteAction(CombatEntity entity, Action<IBeforeExecuteAction> action)
         {
-            EventSystem.Dispatch(entity, action);
+            entity?.Dispatch(action);
         }
 
         public static void BeforeSufferAction(EcsEntity entity, Action<IBeforeSufferAction> action)
         {
-            EventSystem.Dispatch(entity, action);
+            entity?.Dispatch(action);
         }
 
         public static void AfterExecuteAction(CombatEntity entity, Action<IAfterExecuteAction> action)
         {
-            EventSystem.Dispatch(entity, action);
+            entity?.Dispatch(action);
         }
 
         public static void AfterSufferAction(EcsEntity entity, Action<IAfterSufferAction> action)
         {
-            EventSystem.Dispatch(entity, action);
+            entity?.Dispatch(action);
         }
 
         public static void BeforeCauseApply(CombatEntity entity, Action<IBeforeCauseApply> action)
         {
-            EventSystem.Dispatch(entity, action);
+            entity?.Dispatch(action);
         }
 
         public static void BeforeReceiveApply(EcsEntity entity, Action<IBeforeReceiveApply> action)
         {
-            EventSystem.Dispatch(entity, action);
+            entity?.Dispatch(action);
         }
 
         public static void AfterCauseApply(CombatEntity entity, Action<IAfterCauseApply> action)
         {
-            EventSystem.Dispatch(entity, action);
+            entity?.Dispatch(action);
         }
 
         public static void AfterReceiveApply(EcsEntity entity, Action<IAfterReceiveApply> action)
         {
-            EventSystem.Dispatch(entity, action);
+            entity?.Dispatch(action);
         }
     }
 }

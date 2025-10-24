@@ -75,7 +75,7 @@ namespace EGamePlay
 
             HealthSystem.Minus(entity, 30000);
 
-            var allConfigs = StaticConfig.Config.GetAll<AbilityConfig>().Values.ToArray();
+            var allConfigs = AppStatic.Config.GetAll<AbilityConfig>().Values.ToArray();
             for (int i = 0; i < allConfigs.Length; i++)
             {
                 var config = allConfigs[i];

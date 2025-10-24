@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ECS
 {
-    public interface IAwake
+    public interface IAwake : IDrive
     {
     }
 

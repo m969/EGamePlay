@@ -44,5 +44,19 @@ IDestroy<EcsEntity, ModelViewComponent>
             }
             GameObject.Destroy(component.ModelTrans.gameObject);
         }
+
+        public static void Update(EcsEntity entity, ModelViewComponent component)
+        {
+            if (component.ModelTrans == null)
+            {
+                return;
+            }
+            var transformComp = entity.GetComponent<TransformComponent>();
+            component.ModelTrans.position = transformComp.Position;
+            if (transformComp.Forward != Vector3.zero)
+            {
+                component.ModelTrans.GetChild(0).forward = transformComp.Forward;
+            }
+        }
     }
 }

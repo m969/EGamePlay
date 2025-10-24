@@ -41,7 +41,7 @@ namespace EGamePlay
             //ConsoleLog.Debug($"AbilityViewSystem Awake {entity.Config.KeyName}");
             if (entity.Config.Type == "Buff")
             {
-                var abilityConfig = StaticConfig.Config.Get<AbilityConfig>(entity.Config.Id);
+                var abilityConfig = AppStatic.Config.Get<AbilityConfig>(entity.Config.Id);
                 var keyName = abilityConfig.KeyName;
 
                 var combatEntity = entity.GetParent<CombatEntity>();

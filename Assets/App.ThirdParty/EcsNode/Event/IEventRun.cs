@@ -7,88 +7,23 @@ using System.Threading.Tasks;
 
 namespace ECS
 {
+    public interface IDomainEvent
+    {
+    }
+
     public interface IEventRun
     {
-        //public EcsEntity Entity { get; }
+        public ETTask Handle(EcsNode domain, IDomainEvent a);
     }
 
-    //public abstract class AEventRun<T> : IEventRun where T : class, IEventRun, new()
-    //{
-    //    public static T NewEvent()
-    //    {
-    //        return new T();
-    //    }
-
-    //    protected abstract ETTask Run();
-
-    //    public async ETTask Handle()
-    //    {
-    //        try
-    //        {
-    //            await Run();
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            ConsoleLog.Error(e);
-    //        }
-    //    }
-    //}
-
-    public abstract class AEventRun<T, A> : IEventRun where T : class, IEventRun, new() where A : EcsEntity
+    public abstract class AEventRun<T, A> : IEventRun where T : EcsNode where A : IDomainEvent
     {
-        public static T NewEvent()
-        {
-            return new T();
-        }
-
-        protected abstract ETTask Run(A a);
-        public async ETTask Handle(A a)
+        protected abstract ETTask Run(T domain, A a);
+        public async ETTask Handle(EcsNode domain, IDomainEvent a)
         {
             try
             {
-                await Run(a);
-            }
-            catch (Exception e)
-            {
-                ConsoleLog.Error(e);
-            }
-        }
-    }
-
-    public abstract class AEventRun<T, A1, A2> : IEventRun where T : class, IEventRun, new() where A1 : EcsEntity
-    {
-        public static T NewEvent()
-        {
-            return new T();
-        }
-
-        protected abstract ETTask Run(A1 a1, A2 a2);
-        public async ETTask Handle(A1 a1, A2 a2)
-        {
-            try
-            {
-                await Run(a1, a2);
-            }
-            catch (Exception e)
-            {
-                ConsoleLog.Error(e);
-            }
-        }
-    }
-
-    public abstract class AEventRun<T, A1, A2, A3> : IEventRun where T : class, IEventRun, new() where A1 : EcsEntity
-    {
-        public static T NewEvent()
-        {
-            return new T();
-        }
-
-        protected abstract ETTask Run(A1 a1, A2 a2, A3 a3);
-        public async ETTask Handle(A1 a1, A2 a2, A3 a3)
-        {
-            try
-            {
-                await Run(a1, a2, a3);
+                await Run((T)domain, (A)a);
             }
             catch (Exception e)
             {

@@ -10,12 +10,12 @@ using ECSGame;
 
 namespace EGamePlay
 {
-    public interface IOnTriggerClip
+    public interface IOnTriggerClip:IDispatch
     {
         void OnTriggerClip(ExecuteClip entity);
     }
 
-    public interface IOnEndClip
+    public interface IOnEndClip:IDispatch
     {
         void OnEndClip(ExecuteClip entity);
     }
@@ -88,12 +88,12 @@ namespace EGamePlay
                 Trigger_CollisionItem(entity);
             }
 
-            EventSystem.Dispatch<IOnTriggerClip>(entity, x => x.OnTriggerClip(entity));
+            entity.Dispatch<IOnTriggerClip>(x => x.OnTriggerClip(entity));
         }
 
         public static void EndClip(ExecuteClip entity)
         {
-            EventSystem.Dispatch<IOnEndClip>(entity, x => x.OnEndClip(entity));
+            entity.Dispatch<IOnEndClip>(x => x.OnEndClip(entity));
         }
 
         private static void Trigger_NewExecution(ExecuteClip entity)

@@ -7,9 +7,12 @@ using UnityEngine;
 
 namespace ECSGame
 {
-    public class Game : EcsEntity
+    public class Game : EcsNode
     {
-        //public CombatContext CombatContext { get; set; }
+        public Game(ushort ecsTypeId) : base(ecsTypeId)
+        {
+        }
+        public int Type { get; set; }
         public Actor MyActor { get; set; }
         public Actor OtherActor { get; set; }
 #if !SERVER

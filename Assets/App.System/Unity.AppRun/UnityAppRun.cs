@@ -14,23 +14,13 @@ namespace ECSGame
 {
     public class UnityAppRun
     {
-        public static void RpgInit(EcsNode ecsNode, Assembly assembly)
+        public static void Init(Assembly systemAssembly, int gameType)
         {
             ConsoleLog.Debug($"UnityAppRun Init");
+            AppStatic.GameType = (GameType)gameType;
+            var game = GameSystem.Create(systemAssembly);
 
-            var allTypes = assembly.GetTypes();
-            var typeList = new List<Type>();
-            typeList.AddRange(allTypes);
-
-            ecsNode.AddSystems(typeList.ToArray());
-
-            EcsNodeSystem.Create(ecsNode);
-            ecsNode.AddComponent<EntityObjectComponent>();
-            ecsNode.AddComponent<ReloadComponent>(x => x.SystemAssembly = assembly);
-            ecsNode.AddComponent<ConfigManageComponent>(x => x.ConfigsCollector = UnityAppStatic.ConfigsCollector);
-            ecsNode.Init();
-
-            var game = GameSystem.Create(ecsNode);
+            game.AddComponent<ConfigManageComponent>(x => x.ConfigsCollector = UnityAppStatic.ConfigsCollector);
             game.AddComponent<PlayerInputComponent>();
             game.AddComponent<SpellPreviewComponent>();
             game.Init();
@@ -39,7 +29,7 @@ namespace ECSGame
 
             var canvasTrans = GameObject.Find("Hero").transform.Find("Canvas");
             var healthImage = canvasTrans.Find("Image").GetComponent<Image>();
-            var actor = ActorSystem.CreateHero(game, ecsNode.NewInstanceId());
+            var actor = ActorSystem.CreateHero(game, game.NewInstanceId());
             actor.AddComponent<ModelViewComponent>(x => x.ModelTrans = GameObject.Find("Hero").transform);
             actor.AddComponent<AnimationComponent>();
             actor.AddComponent<HealthViewComponent>(x =>
@@ -62,7 +52,7 @@ namespace ECSGame
                 canvasTrans = monsterTrans.Find("Canvas");
                 healthImage = canvasTrans.Find("Image").GetComponent<Image>();
 
-                actor = ActorSystem.CreateMonster(game, ecsNode.NewInstanceId());
+                actor = ActorSystem.CreateMonster(game, game.NewInstanceId());
                 TransformSystem.ChangePosition(actor, monsterTrans.position);
                 actor.AddComponent<ModelViewComponent>(x => x.ModelTrans = monsterTrans);
                 actor.AddComponent<AnimationComponent>();
@@ -123,19 +113,25 @@ namespace ECSGame
         //    //--示例结束--
         //}
 
-        public static void Reload(EcsNode ecsNode, Assembly assembly)
+        public static void Reload(Assembly systemAssembly, int gameType)
         {
-            ConsoleLog.Debug($"Process_GameSystem Reload");
+            ConsoleLog.Debug($"AppRunStatic Reload");
 
-            ecsNode.GetComponent<ReloadComponent>().SystemAssembly = assembly;
+            foreach (var ecsNode in EcsDomain.EcsNodes.Values)
+            {
+                ecsNode.GetComponent<ReloadComponent>().SystemAssembly = systemAssembly;
+                EcsNodeSystem.RegisterSystems(ecsNode, systemAssembly);
+            }
 
-            var allTypes = assembly.GetTypes();
-            var typeList = new List<Type>();
-            typeList.AddRange(allTypes);
+            // ReloadUI();
 
-            ecsNode.AddSystems(typeList.ToArray());
-
-            EventSystem.Reload(ecsNode);
+            //foreach (var item in ecsNode.Id2Children.Values)
+            //{
+            //    if (item is Actor actor)
+            //    {
+            //        MoveSystem.SetSpeed(actor, 2);
+            //    }
+            //}
         }
     }
 }

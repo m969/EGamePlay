@@ -22,9 +22,9 @@ namespace ECSGame
             entity.Change<TransformComponent>(x => x.Position = target);
         }
 
-        public static void ChangeForward(EcsEntity entity, Vector3 foward)
+        public static void ChangeForward(EcsEntity entity, Vector3 forward)
         {
-            entity.Change<TransformComponent>(x => x.Forward = foward);
+            entity.Change<TransformComponent>(x => x.Forward = forward);
         }
     }
 }

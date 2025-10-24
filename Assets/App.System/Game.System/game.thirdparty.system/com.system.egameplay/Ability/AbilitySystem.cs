@@ -18,7 +18,7 @@ namespace EGamePlay
     {
         public void Awake(Ability entity)
         {
-            entity.Config = StaticConfig.Config.Get<AbilityConfig>(entity.ConfigObject.Id);
+            entity.Config = AppStatic.Config.Get<AbilityConfig>(entity.ConfigObject.Id);
             entity.Name = entity.Config.Name;
 
             CheckAffectTargetType(entity);
@@ -43,21 +43,21 @@ namespace EGamePlay
 
         private static void CheckAffectTargetType(Ability entity)
         {
-            if (entity.Config.TargetGroup == "¼º·½")
+            if (entity.Config.TargetGroup == "å·±æ–¹")
             {
                 entity.ConfigObject.AffectTargetType = SkillAffectTargetType.SelfTeam;
             }
-            else if (entity.Config.TargetGroup == "µĞ·½")
+            else if (entity.Config.TargetGroup == "æ•Œæ–¹")
             {
                 entity.ConfigObject.AffectTargetType = SkillAffectTargetType.EnemyTeam;
             }
-            else if (entity.Config.TargetGroup == "×ÔÉí")
+            else if (entity.Config.TargetGroup == "è‡ªèº«")
             {
                 entity.ConfigObject.AffectTargetType = SkillAffectTargetType.Self;
             }
             else
             {
-                Log.Error($"¼¼ÄÜÄ¿±êÕóÓª´íÎó {entity.Config.TargetGroup}");
+                Log.Error($"æŠ€èƒ½ç›®æ ‡é˜µè¥é”™è¯¯ {entity.Config.TargetGroup}");
             }
         }
 
@@ -65,21 +65,21 @@ namespace EGamePlay
         {
             if (entity.IsSkill)
             {
-                if (entity.Config.TargetSelect == "Åö×²¼ì²â")
+                if (entity.Config.TargetSelect == "ç¢°æ’æ£€æµ‹")
                 {
                     entity.ConfigObject.TargetSelectType = SkillTargetSelectType.CollisionSelect;
                 }
-                else if (entity.Config.TargetSelect == "Ìõ¼şÖ¸¶¨")
+                else if (entity.Config.TargetSelect == "æ¡ä»¶æŒ‡å®š")
                 {
                     entity.ConfigObject.TargetSelectType = SkillTargetSelectType.ConditionSelect;
                 }
-                else if (entity.Config.TargetSelect == "ÊÖ¶¯Ö¸¶¨")
+                else if (entity.Config.TargetSelect == "æ‰‹åŠ¨æŒ‡å®š")
                 {
                     entity.ConfigObject.TargetSelectType = SkillTargetSelectType.PlayerSelect;
                 }
                 else
                 {
-                    Log.Error($"Ä¿±êÑ¡È¡ÀàĞÍ´íÎó {entity.Config.TargetSelect}");
+                    Log.Error($"ç›®æ ‡é€‰å–ç±»å‹é”™è¯¯ {entity.Config.TargetSelect}");
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace EGamePlay
         }
 
         /// <summary>
-        /// ¹ÒÔØÄÜÁ¦£¬¼¼ÄÜ¡¢±»¶¯¡¢buffµÈ¶¼Í¨¹ıÕâ¸ö½Ó¿Ú¹ÒÔØ
+        /// æŒ‚è½½èƒ½åŠ›ï¼ŒæŠ€èƒ½ã€è¢«åŠ¨ã€buffç­‰éƒ½é€šè¿‡è¿™ä¸ªæ¥å£æŒ‚è½½
         /// </summary>
         public static Ability Attach(CombatEntity entity, object configObject)
         {

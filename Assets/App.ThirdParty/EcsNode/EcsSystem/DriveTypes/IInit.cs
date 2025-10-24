@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace ECS
 {
-	public interface IInit
-	{
-	}
+    public interface IInit : IDrive
+    {
+    }
 
     public interface IInit<T> : IInit where T : EcsEntity
     {
@@ -15,11 +15,11 @@ namespace ECS
     }
 
     public interface IInit<T, T2> : IInit where T : EcsEntity where T2 : EcsComponent
-	{
-		void Init(T entity, T2 component);
-	}
+    {
+        void Init(T entity, T2 component);
+    }
 
-    public interface IAfterInit
+    public interface IAfterInit : IDrive
     {
     }
 
