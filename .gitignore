@@ -65,3 +65,4 @@ crashlytics-build.properties
 /Assets/Plugins/Sirenix
 /Assets/Plugins/Sirenix.meta
 /Packages/com.singularitygroup.hotreload
+/.vscode
