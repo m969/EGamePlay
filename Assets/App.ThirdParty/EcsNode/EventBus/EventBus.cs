@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,15 +9,15 @@ namespace ECS
     {
     }
 
-    public abstract class AEvent : IEvent
-    {
-    }
+    // public abstract class AEvent : IEvent
+    // {
+    // }
 
-    public abstract class AAsyncEvent : IEvent
-    {
-        public List<ET.ETTask> HandlerTasks { get; set; } = new List<ET.ETTask>();
-        public object NetworkMessage { get; set; }
-    }
+    // public abstract class AAsyncEvent : IEvent
+    // {
+    //     public List<ET.ETTask> HandlerTasks { get; set; } = new List<ET.ETTask>();
+    //     public object NetworkMessage { get; set; }
+    // }
 
     public class EventBusNode
     {
@@ -34,7 +35,7 @@ namespace ECS
         public EventBusNode LastNode { get; set; }
 
 
-        public void AddEcsNode(EcsNode ecsNode)
+        public void AddEcs(EcsNode ecsNode)
         {
             if (FirstNode == null)
             {
@@ -50,7 +51,7 @@ namespace ECS
             //}
         }
 
-        public void RemoveEcsNode(EcsNode ecsNode)
+        public void RemoveEcs(EcsNode ecsNode)
         {
             //if (EcsNodes.Contains(ecsNode))
             //{
@@ -78,12 +79,32 @@ namespace ECS
             }
         }
 
-        public void Send(IEvent eventObject)
+        public void DriveUpdate()
         {
-            //foreach (var ecsNode in EcsNodes)
-            //{
-            //    //ecsNode.Dispatch<>
-            //}
+            var node = FirstNode;
+            while (node != null)
+            {
+                node.EcsNode.DriveEntityUpdate();
+                node = node.NextNode;
+            }
+        }
+
+        public void DriveFixedUpdate()
+        {
+            var node = FirstNode;
+            while (node != null)
+            {
+                node.EcsNode.DriveEntityFixedUpdate();
+                node = node.NextNode;
+            }
+        }
+
+        public static void Send<T>(T eventObject) where T : IEvent
+        {
+            Instance.ForeachNodeFromFirst((ecsNode) =>
+            {
+                ecsNode.Dispatch<IEventHandle<T>>(x => x.OnHandleEvent(ecsNode, eventObject));
+            });
         }
     }
 }

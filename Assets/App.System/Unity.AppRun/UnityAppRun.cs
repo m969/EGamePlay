@@ -16,7 +16,11 @@ namespace ECSGame
     {
         public static void Init(Assembly systemAssembly, int gameType)
         {
-            ConsoleLog.Debug($"UnityAppRun Init");
+            ConsoleLog.Debug($"UnityAppRun Init {Application.platform} {(GameType)gameType}");
+
+            AppStatic.NowMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            AppStatic.NowSeconds = AppStatic.NowMilliseconds / 1000f;
+
             AppStatic.GameType = (GameType)gameType;
             var game = GameSystem.Create(systemAssembly);
 
@@ -115,13 +119,13 @@ namespace ECSGame
 
         public static void Reload(Assembly systemAssembly, int gameType)
         {
-            ConsoleLog.Debug($"AppRunStatic Reload");
+            ConsoleLog.Debug($"UnityAppRun Reload");
 
-            foreach (var ecsNode in EcsDomain.EcsNodes.Values)
+            EventBus.Instance.ForeachNodeFromFirst(ecsNode=>
             {
                 ecsNode.GetComponent<ReloadComponent>().SystemAssembly = systemAssembly;
                 EcsNodeSystem.RegisterSystems(ecsNode, systemAssembly);
-            }
+            });
 
             // ReloadUI();
 
@@ -132,6 +136,21 @@ namespace ECSGame
             //        MoveSystem.SetSpeed(actor, 2);
             //    }
             //}
+        }
+
+        public static void Update()
+        {
+            AppStatic.DeltaTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - AppStatic.NowMilliseconds;
+            AppStatic.DeltaTimeSeconds = AppStatic.DeltaTimeMilliseconds / 1000f;
+            AppStatic.NowMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            AppStatic.NowSeconds = AppStatic.NowMilliseconds / 1000f;
+
+            EventBus.Instance.DriveUpdate();
+        }
+
+        public static void FixedUpdate()
+        {
+            EventBus.Instance.DriveFixedUpdate();
         }
     }
 }

@@ -45,11 +45,11 @@ IAwake<EcsNode, TimerComponent>
             }
         }
 
-        public static ETTask WaitAsync(EcsEntity entity, long milliSeconds)
+        public static ETTask WaitAsync(long milliSeconds)
         {
             var ettask = ETTask.Create();
 
-            var ecsNode = entity.EcsNode;
+            var ecsNode = EventBus.Instance.FirstNode.EcsNode;
 
             var timerComp = ecsNode.GetComponent<TimerComponent>();
             //var time = milliSeconds;

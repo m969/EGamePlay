@@ -103,11 +103,11 @@ public class AppLoad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UnityAppStatic.Game?.DriveEntityUpdate();
+        UnityAppRun.Update();
     }
 
     void FixedUpdate()
     {
-        UnityAppStatic.Game?.DriveEntityFixedUpdate();
+        UnityAppRun.FixedUpdate();
     }
 }

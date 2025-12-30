@@ -428,7 +428,7 @@ namespace ECS
                     continue;
                 }
                 var entityType = item.Key;
-                if (entityType.BaseType == typeof(EcsNode))
+                if (entityType == typeof(EcsNode) || entityType.BaseType == typeof(EcsNode))
                 {
                     var systemList = item.Value;
                     foreach (var systemInfo in systemList)
@@ -439,11 +439,18 @@ namespace ECS
                         }
                         var system = systemInfo.System;
                         var method = systemInfo.Action;
-                        if (entityType != typeof(EcsNode) && entityType != this.GetType())
+
+                        if (entityType == typeof(EcsNode))
                         {
-                            continue;
+                            method.Invoke(system, new object[] { this });
                         }
-                        method.Invoke(system, new object[] { this });
+                        else
+                        {
+                            if (entityType == this.GetType())// entityType != typeof(EcsNode) && 
+                            {
+                                method.Invoke(system, new object[] { this });
+                            }
+                        }
                     }
                     continue;
                 }
@@ -475,7 +482,7 @@ namespace ECS
                     continue;
                 }
                 var entityType = item.Key;
-                if (entityType.BaseType == typeof(EcsNode))
+                if (entityType == typeof(EcsNode) || entityType.BaseType == typeof(EcsNode))
                 {
                     var systemList = item.Value;
                     foreach (var systemInfo in systemList)
@@ -486,11 +493,18 @@ namespace ECS
                         }
                         var system = systemInfo.System;
                         var method = systemInfo.Action;
-                        if (entityType != typeof(EcsNode) && entityType != this.GetType())
+                        
+                        if (entityType == typeof(EcsNode))
                         {
-                            continue;
+                            method.Invoke(system, new object[] { this });
                         }
-                        method.Invoke(system, new object[] { this });
+                        else
+                        {
+                            if (entityType == this.GetType())// entityType != typeof(EcsNode) && 
+                            {
+                                method.Invoke(system, new object[] { this });
+                            }
+                        }
                     }
                     continue;
                 }

@@ -9,8 +9,13 @@ using UnityEngine;
 
 namespace ECSGame
 {
-    public class EcsNodeSystem : AEntitySystem<EcsNode>, IUpdate<EcsNode>
+    public class EcsNodeSystem : AEntitySystem<EcsNode>, IUpdate<EcsNode>, IDestroy<EcsNode>, IAwake<EcsNode>
     {
+        public void Awake(EcsNode entity)
+        {
+            ConsoleLog.Debug($"EcsNodeSystem Awake: {entity.GetType().Name}, Id: {entity.Id}, InstanceId: {entity.InstanceId}");
+        }
+
         public void Update(EcsNode ecsNode)
         {
             if (ecsNode.GetComponent<TimerComponent>() is { } timerComponent)
@@ -18,6 +23,11 @@ namespace ECSGame
                 TimerSystem.Update(ecsNode, timerComponent);
             }
             //EventSystem.Update(ecsNode);
+        }
+
+        public void Destroy(EcsNode entity)
+        {
+            EventBus.Instance.RemoveEcs(entity);
         }
 
         public static T Create<T>(ushort nodeIndex, Assembly systemAssembly) where T : EcsNode
@@ -28,6 +38,10 @@ namespace ECSGame
             ecsNode.RegisterDrives(typeof(EcsNode).Assembly.GetTypes());
 
             RegisterSystems(ecsNode, systemAssembly);
+
+            // ecsNode.DriveEntitySystems(ecsNode, typeof(IAwake));
+
+            EventBus.Instance.AddEcs(ecsNode);
 
             ecsNode.AddComponent<TimerComponent>();
             ecsNode.AddComponent<ReloadComponent>();
