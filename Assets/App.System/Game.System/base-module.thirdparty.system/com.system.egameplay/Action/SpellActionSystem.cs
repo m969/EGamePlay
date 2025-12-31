@@ -69,7 +69,6 @@ namespace EGamePlay
             }
         }
 
-        //���ô���
         private static void AfterActionProcess(SpellAction entity)
         {
             ActionSystem.AfterExecuteAction(entity.Creator, x => x.AfterExecuteAction(entity.Creator, entity));

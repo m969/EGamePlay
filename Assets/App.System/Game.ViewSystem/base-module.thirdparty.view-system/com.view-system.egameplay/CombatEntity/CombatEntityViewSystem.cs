@@ -19,7 +19,8 @@ namespace EGamePlay
     IUpdate<CombatEntity>,
     IBeforeExecuteAction,
     IAfterCauseApply,
-    IAfterReceiveApply
+    IAfterReceiveApply,
+    IAfterExecuteAction
     {
         public void Awake(CombatEntity entity)
         {
@@ -45,6 +46,11 @@ namespace EGamePlay
                     PlayerInputSystem.DisableMove(UnityAppStatic.Game);
                 }
             }
+        }
+
+        public void AfterExecuteAction(CombatEntity entity, EcsEntity combatAction)
+        {
+            entity.Actor.Dispatch<IAfterExecuteAction>(x => x.AfterExecuteAction(entity, combatAction));
         }
 
         public void AfterCauseApply(CombatEntity entity, EcsEntity combatAction)

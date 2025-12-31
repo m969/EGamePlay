@@ -1,4 +1,6 @@
 ﻿using ECS;
+using EGamePlay;
+using EGamePlay.Combat;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,7 +10,8 @@ namespace ECSGame
         IAwake<Actor>,
         IInit<Actor>,
         IAfterInit<Actor>,
-        IUpdate<Actor>
+        IUpdate<Actor>,
+        IAfterExecuteAction
     {
         public void Awake(Actor entity)
         {
@@ -28,5 +31,11 @@ namespace ECSGame
         {
             EntityViewSystem.Update(entity);
         }
-    } 
+
+        public void AfterExecuteAction(CombatEntity entity, EcsEntity combatAction)
+        {
+            var animationComp = entity.Actor.GetComponent<ECSGame.AnimationComponent>();
+            AnimationSystem.PlayFade(entity.Actor, animationComp.IdleAnimation);
+        }
+    }
 }

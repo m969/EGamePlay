@@ -50,9 +50,9 @@ public static class RotationExtension
             return rotation * Vector3.forward;
         }
 
-        public static Quaternion GetRotation(this Vector3 up)
+        public static Quaternion GetRotation(this Vector3 forward)
         {
-            return Quaternion.LookRotation(Vector3.forward, up);
+            return Quaternion.LookRotation(forward);
         }
 #else
     public static Vector3 GetForward(this Quaternion rotation)

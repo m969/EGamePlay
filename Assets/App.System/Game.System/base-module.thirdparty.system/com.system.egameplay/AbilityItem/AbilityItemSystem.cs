@@ -133,7 +133,6 @@ namespace EGamePlay
             var collisionExecuteData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
             if (abilityItem.AbilityEntity != null)
             {
-                //Log.Debug($"AbilityItem OnTriggerEvent {collisionExecuteData.ActionData.ActionEventType}");
                 if (collisionExecuteData.ActionData.ActionEventType == FireEventType.AssignEffect)
                 {
                     var effects = abilityItem.AbilityEntity.AbilityTriggers;
@@ -176,7 +175,6 @@ namespace EGamePlay
 
         public static void OnTriggerNewExecution(AbilityItem abilityItem, ActionEventData actionEventData)
         {
-            Log.Debug($"AbilityItem OnTriggerNewExecution");
             var executionObject = AssetUtils.LoadObject<ExecutionObject>($"{AbilityManagerObject.ExecutionResFolder}/" + actionEventData.NewExecution);
             if (executionObject == null)
             {
@@ -191,7 +189,6 @@ namespace EGamePlay
             AbilityExecutionSystem.BeginExecute(execution);
         }
 
-        /// <summary>   目标飞行碰撞体     </summary>
         public static void TargetFlyProcess(AbilityItem abilityItem, CombatEntity inputTarget)
         {
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
@@ -201,7 +198,6 @@ namespace EGamePlay
             AbilityItemMoveSystem.MoveToTarget(abilityItem, inputTarget, 0.02f);
         }
 
-        /// <summary>   前向飞行碰撞体     </summary>
         public static void ForwardFlyProcess(AbilityItem abilityItem, float inputRadian)
         {
             abilityItem.Position = abilityItem.AbilityExecution.OwnerEntity.Position;
@@ -213,7 +209,6 @@ namespace EGamePlay
             AbilityItemMoveSystem.MoveToPoint(abilityItem, destination, 0.02f);
         }
 
-        /// <summary>   路径飞行     </summary>
         public static void PathFlyProcess(AbilityItem abilityItem, Vector3 inputPoint)
         {
             var execution = abilityItem.AbilityExecution;
@@ -249,7 +244,6 @@ namespace EGamePlay
             AbilityItemMoveSystem.DOMove(abilityItem);
         }
 
-        /// <summary>   朝向路径飞行     </summary>
         public static void DirectionPathFlyProcess(AbilityItem abilityItem, Vector3 inputPoint, float inputRadian)
         {
             var execution = abilityItem.AbilityExecution;
@@ -290,7 +284,6 @@ namespace EGamePlay
             AbilityItemMoveSystem.DOMove(abilityItem);
         }
 
-        /// <summary>   固定位置碰撞体     </summary>
         public static void FixedPositionProcess(AbilityItem abilityItem)
         {
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
@@ -307,7 +300,6 @@ namespace EGamePlay
             }
         }
 
-        /// <summary>   输入位置碰撞体     </summary>
         public static void SelectedPositionProcess(AbilityItem abilityItem, Vector3 InputPoint)
         {
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
@@ -318,7 +310,6 @@ namespace EGamePlay
             }
         }
 
-        /// <summary>   输入方向碰撞体     </summary>
         public static void SelectedDirectionProcess(AbilityItem abilityItem)
         {
             var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
