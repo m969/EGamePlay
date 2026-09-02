@@ -40,16 +40,14 @@ namespace EGamePlay
                     }
                     if (entity.Target is AbilityItem abilityItem)
                     {
-                        var collisionComp = entity.Target.GetComponent<AbilityItemCollisionExecuteComponent>();
-                        var causeCollisionComp = entity.CauseItem.GetComponent<AbilityItemCollisionExecuteComponent>();
-                        var actionEvent = collisionComp.CollisionExecuteData.ActionData.ActionEventType;
+                        var actionEvent = AbilityItemCollisionExecuteSystem.GetActionEventData(abilityItem).ActionEventType;
                         if (entity.Target.GetComponent<AbilityItemShieldComponent>() != null)
                         {
                             if (entity.CauseItem.OwnerEntity.IsHero != abilityItem.OwnerEntity.IsHero)
                             {
                                 AbilityItemSystem.OnTriggerEvent(entity.CauseItem, entity.Target);
 
-                                if (causeCollisionComp.CollisionExecuteData.ActionData.FireType == FireType.CollisionTrigger)
+                                if (AbilityItemCollisionExecuteSystem.GetActionEventData(entity.CauseItem).FireType == FireType.CollisionTrigger)
                                 {
                                     HealthSystem.SetDie(entity.CauseItem);
                                 }

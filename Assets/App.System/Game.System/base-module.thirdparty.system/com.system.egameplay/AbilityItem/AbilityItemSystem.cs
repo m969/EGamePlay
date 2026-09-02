@@ -81,7 +81,7 @@ namespace EGamePlay
             if (entity.GetComponent<AbilityItemCollisionExecuteComponent>()  is { } component)
             {
                 var clipData = component.ExecuteClipData;
-                var actionEvenData = component.CollisionExecuteData.ActionData;
+                var actionEvenData = AbilityItemCollisionExecuteSystem.GetActionEventData(entity);
                 if (clipData.ExecuteClipType == ExecuteClipType.ItemExecute && actionEvenData.FireType == FireType.EndTrigger)
                 {
                     OnTriggerEvent(entity, null);
@@ -130,10 +130,10 @@ namespace EGamePlay
                 }
             }
 
-            var collisionExecuteData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().CollisionExecuteData;
+            var actionEventData = AbilityItemCollisionExecuteSystem.GetActionEventData(abilityItem);
             if (abilityItem.AbilityEntity != null)
             {
-                if (collisionExecuteData.ActionData.ActionEventType == FireEventType.AssignEffect)
+                if (actionEventData.ActionEventType == FireEventType.AssignEffect)
                 {
                     var effects = abilityItem.AbilityEntity.AbilityTriggers;
                     for (int i = 0; i < effects.Count; i++)
@@ -156,9 +156,9 @@ namespace EGamePlay
 
             if (abilityItem.AbilityExecution != null)
             {
-                if (collisionExecuteData.ActionData.ActionEventType == FireEventType.TriggerNewExecution)
+                if (actionEventData.ActionEventType == FireEventType.TriggerNewExecution)
                 {
-                    OnTriggerNewExecution(abilityItem, collisionExecuteData.ActionData);
+                    OnTriggerNewExecution(abilityItem, actionEventData);
                 }
             }
 
@@ -195,18 +195,21 @@ namespace EGamePlay
             abilityItem.TargetEntity = inputTarget;
             abilityItem.Position = abilityItem.AbilityExecution.OwnerEntity.Position;
             abilityItem.AddComponent<AbilityItemMoveComponent>();
-            AbilityItemMoveSystem.MoveToTarget(abilityItem, inputTarget, 0.02f);
+            // 使用配置的速度，而不是硬编码的 0.02f
+            AbilityItemMoveSystem.MoveToTarget(abilityItem, inputTarget, (float)clipData.ItemData.Speed);
         }
 
         public static void ForwardFlyProcess(AbilityItem abilityItem, float inputRadian)
         {
+            var clipData = abilityItem.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
             abilityItem.Position = abilityItem.AbilityExecution.OwnerEntity.Position;
 
             var z = MathF.Sin(inputRadian);
             var x = MathF.Cos(inputRadian);
             var destination = abilityItem.Position + new Vector3(x, 0, z) * 30;
             abilityItem.AddComponent<AbilityItemMoveComponent>();
-            AbilityItemMoveSystem.MoveToPoint(abilityItem, destination, 0.02f);
+            // 使用配置的速度，而不是硬编码的 0.02f
+            AbilityItemMoveSystem.MoveToPoint(abilityItem, destination, (float)clipData.ItemData.Speed);
         }
 
         public static void PathFlyProcess(AbilityItem abilityItem, Vector3 inputPoint)

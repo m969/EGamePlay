@@ -14,18 +14,19 @@ namespace EGamePlay
         public void Awake(AbilityItem entity, AbilityItemCollisionExecuteComponent component)
         {
             //ExecuteClipData = initData as ExecuteClipData;
-            if (component.CollisionExecuteData.ActionData.ActionEventType == FireEventType.AssignEffect)
+            var actionData = GetActionEventData(entity);
+            if (actionData.ActionEventType == FireEventType.AssignEffect)
             {
-                entity.ExecuteTriggerType = component.CollisionExecuteData.ActionData.ExecuteTrigger;
-                if (component.CollisionExecuteData.ActionData.FireType == FireType.StartTrigger)
+                entity.ExecuteTriggerType = actionData.ExecuteTrigger;
+                if (actionData.FireType == FireType.StartTrigger)
                 {
-                    if (component.CollisionExecuteData.ActionData.EffectApplyTarget == EffectApplyTarget.Self)
+                    if (actionData.EffectApplyTarget == EffectApplyTarget.Self)
                     {
                         AbilityItemSystem.OnTriggerEvent(entity, entity);
                     }
                 }
             }
-            if (component.CollisionExecuteData.ActionData.ActionEventType == FireEventType.TriggerNewExecution)
+            if (actionData.ActionEventType == FireEventType.TriggerNewExecution)
             {
 
             }
@@ -34,7 +35,7 @@ namespace EGamePlay
         public void Destroy(AbilityItem entity, AbilityItemCollisionExecuteComponent component)
         {
             var clipData = entity.GetComponent<AbilityItemCollisionExecuteComponent>().ExecuteClipData;
-            var actionEvenData = entity.GetComponent<AbilityItemCollisionExecuteComponent>().CollisionExecuteData.ActionData;
+            var actionEvenData = GetActionEventData(entity);
             if (clipData.ExecuteClipType == ExecuteClipType.ItemExecute && actionEvenData.FireType == FireType.EndTrigger)
             {
                 AbilityItemSystem.OnTriggerEvent(entity, null);
@@ -61,9 +62,31 @@ namespace EGamePlay
             return effectData;
         }
 
+        /// <summary>
+        /// 获取触发事件数据：优先使用 Inspector 中可见的 ActionEventEffect（触发事件），
+        /// 若未启用则回退到隐藏的 ItemData.ActionData（旧配置），以兼容旧资源。
+        /// </summary>
+        public static ActionEventData GetActionEventData(AbilityItem entity)
+        {
+            var component = entity.GetComponent<AbilityItemCollisionExecuteComponent>();
+            var actionEvent = GetItemEffect<ActionEventEffect>(entity);
+            if (actionEvent != null && actionEvent.Enabled)
+            {
+                return new ActionEventData
+                {
+                    FireType = actionEvent.FireType,
+                    ActionEventType = actionEvent.ActionEventType,
+                    ExecuteTrigger = actionEvent.ExecuteTrigger,
+                    EffectApplyTarget = actionEvent.EffectApplyTarget,
+                    NewExecution = actionEvent.NewExecution,
+                };
+            }
+            return component.CollisionExecuteData.ActionData;
+        }
+
         public static AbilityEffect[] GetAssignEffects(AbilityItem entity, AbilityItemCollisionExecuteComponent component)
         {
-            var triggerType = component.CollisionExecuteData.ActionData.ExecuteTrigger;
+            var triggerType = GetActionEventData(entity).ExecuteTrigger;
             var effects = entity.AbilityEntity.AbilityEffects;
             var list = new List<AbilityEffect>();
             for (int i = 0; i < effects.Count; i++)
