@@ -20,8 +20,6 @@
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/m969/EGamePlay.svg)](https://starchart.cc/m969/EGamePlay)
-
 ---
 # 文档：
 - [EGamePlay文档(wiki)](https://github.com/m969/EGamePlay/wiki)
